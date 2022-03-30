@@ -1,0 +1,71 @@
+@import '~theme/variables.global.scss';
+@import '~theme/easings.global.scss';
+
+.root {
+  position: relative;
+  width: fit-content;
+}
+
+.tooltipBody {
+  z-index: 1;
+  position: absolute;
+  padding: 9px 12px;
+  opacity: 0;
+  width: max-content;
+  border-radius: 8px;
+  box-shadow: var(--boxShadowTooltip);
+  background-color: var(--colorBgInnerCard);
+  pointer-events: none;
+  transform: scale(0.6);
+  transition: opacity ease $durFast, transform $easeOutBack $durNorm;
+
+  .root:hover & {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: initial;
+  }
+
+  &.position--bottom {
+    top: calc(100% + 8px);
+    transform-origin: 50% -8px;
+  }
+
+  &.position--top {
+    bottom: calc(100% + 8px);
+    transform-origin: 50% calc(100% - 8px);
+  }
+
+  &.position--top,
+  &.position--bottom {
+    left: 50%;
+    transform: translateX(-50%) scale(0.6);
+
+    .root:hover & {
+      transform: translateX(-50%) scale(1);
+    }
+  }
+
+  &.position--top-left {
+    left: 0;
+    bottom: calc(100% + 6px);
+    transform-origin: 0 calc(100% - 8px);
+  }
+
+  &.position--top-right {
+    right: 0;
+    bottom: calc(100% + 6px);
+    transform-origin: 100% calc(100% - 8px);
+  }
+
+  &.position--bottom-left {
+    left: 0;
+    top: calc(100% + 6px);
+    transform-origin: 0% -8px;
+  }
+
+  &.position--bottom-right {
+    right: 0;
+    top: calc(100% + 6px);
+    transform-origin: 100% -8px;
+  }
+}
