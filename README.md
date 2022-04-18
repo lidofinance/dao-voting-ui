@@ -1,5 +1,20 @@
 # Lido DAO Voting UI
 
+### Abstract
+
+Over the past year, there were multiple situations with Aragon voting UI being unavailable or dysfunctional at the times of ongoing DAO votings. It is critical to have a UI-friendly fallback option in the form of Lido's own resilient voting UI app.
+
+### Functionality
+
+The proposed UI consists of one essential page with a limited set of actions available.
+
+The required functionality includes:
+
+- accessing specific voting outside of Aragon voting UI
+- getting on-chain details related to specific voting by voting ID (status, voting results, voting start/end date, parsed EVM script)
+- connecting wallet (similar to Lido on Ethereum staking widget)
+- casting vote (Yes/No)
+
 ## Pre-requisites
 
 - Node.js v12+
@@ -60,4 +75,3 @@ yarn build && yarn start
 - [TypeChain](https://github.com/ethereum-ts/Typechain#readme)
 - [Web3 React](https://github.com/NoahZinsmeister/web3-react#readme)
 - [The Ethers Project](https://github.com/ethers-io/ethers.js/)
-- [EVM Script Decoder](https://github.com/lidofinance/evm-script-decoder)
