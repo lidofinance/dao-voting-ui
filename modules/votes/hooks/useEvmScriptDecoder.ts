@@ -7,6 +7,7 @@ import { ABIProviderLocal } from 'evm-script-decoder/lib/ABIProviderLocal'
 import {
   FinanceAbi__factory,
   MiniMeTokenAbi__factory,
+  NodeOperatorsRegistryAbi__factory,
   TokenManagerAbi__factory,
   VotingAbi__factory,
 } from 'generated'
@@ -26,6 +27,8 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
             TokenManagerAbi__factory.abi as any,
           [CONTRACT_ADDRESSES.Finance[chainId]!]:
             FinanceAbi__factory.abi as any,
+          [CONTRACT_ADDRESSES.NodeOperatorsRegistry[chainId]!]:
+            NodeOperatorsRegistryAbi__factory.abi as any,
         }),
       ),
     `evm-script-decoder-${chainId}`,
