@@ -12,6 +12,7 @@ import {
   VotingAbi__factory,
 } from 'generated'
 import * as CONTRACT_ADDRESSES from 'modules/blockChain/contractAddresses'
+import { TreasuryAbi__factory } from 'generated/factories/TreasuryAbi__factory'
 
 export function useEVMScriptDecoder(): EVMScriptDecoder {
   const { chainId } = useWeb3()
@@ -29,6 +30,8 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
             FinanceAbi__factory.abi as any,
           [CONTRACT_ADDRESSES.NodeOperatorsRegistry[chainId]!]:
             NodeOperatorsRegistryAbi__factory.abi as any,
+          [CONTRACT_ADDRESSES.Treasury[chainId]!]:
+            TreasuryAbi__factory.abi as any,
         }),
       ),
     `evm-script-decoder-${chainId}`,
