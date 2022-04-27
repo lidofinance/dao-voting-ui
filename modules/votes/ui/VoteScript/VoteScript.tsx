@@ -20,7 +20,11 @@ export function VoteScript({ script }: Props) {
       ) : (
         <>
           {decoded?.calls.map((call, i) => (
-            <Call key={call.address + call.methodId} id={i + 1} call={call} />
+            <Call
+              key={call.address + call.methodId + call.encodedCallData}
+              id={i + 1}
+              call={call}
+            />
           ))}
         </>
       )}
