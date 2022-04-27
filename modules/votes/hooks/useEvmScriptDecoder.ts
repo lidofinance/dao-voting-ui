@@ -12,7 +12,7 @@ import {
 } from 'generated'
 import * as CONTRACT_ADDRESSES from 'modules/blockChain/contractAddresses'
 
-export function useEVMScriptDecoder() {
+export function useEVMScriptDecoder(): EVMScriptDecoder {
   const { chainId } = useWeb3()
 
   return useGlobalMemo(
