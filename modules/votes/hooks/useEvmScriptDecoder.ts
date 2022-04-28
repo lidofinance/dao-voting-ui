@@ -12,6 +12,7 @@ import {
   LidoDAOAbi__factory,
   MiniMeTokenAbi__factory,
   NodeOperatorsRegistryAbi__factory,
+  NodeOperatorsRegistryRepoAbi__factory,
   TokenManagerAbi__factory,
   TokenRecovererForManagerContractsAbi__factory,
   VotingAbi__factory,
@@ -49,6 +50,8 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
             TokenRecovererForManagerContractsAbi__factory.abi as any,
           [CONTRACT_ADDRESSES.LidoAppRepo[chainId]!]:
             LidoAppRepoAbi__factory.abi as any,
+          [CONTRACT_ADDRESSES.NodeOperatorsRegistryRepo[chainId]!]:
+            NodeOperatorsRegistryRepoAbi__factory.abi as any,
         }),
       ),
     `evm-script-decoder-${chainId}`,
