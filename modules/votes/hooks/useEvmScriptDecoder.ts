@@ -14,6 +14,7 @@ import {
 } from 'generated'
 import * as CONTRACT_ADDRESSES from 'modules/blockChain/contractAddresses'
 import { TreasuryAbi__factory } from 'generated/factories/TreasuryAbi__factory'
+import { VotingRepoAbi__factory } from 'generated/factories/VotingRepoAbi__factory'
 
 export function useEVMScriptDecoder(): EVMScriptDecoder {
   const { chainId } = useWeb3()
@@ -34,6 +35,8 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
           [CONTRACT_ADDRESSES.Treasury[chainId]!]:
             TreasuryAbi__factory.abi as any,
           [CONTRACT_ADDRESSES.ACL[chainId]!]: ACLAbi__factory.abi as any,
+          [CONTRACT_ADDRESSES.VotingRepo[chainId]!]:
+            VotingRepoAbi__factory.abi as any,
         }),
       ),
     `evm-script-decoder-${chainId}`,
