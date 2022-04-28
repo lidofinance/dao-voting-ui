@@ -216,6 +216,19 @@
     "type": "function"
   },
   {
+    "constant": false,
+    "inputs": [
+      { "name": "_name", "type": "string" },
+      { "name": "_rewardAddress", "type": "address" },
+      { "name": "_stakingLimit", "type": "uint64" }
+    ],
+    "name": "addNodeOperator",
+    "outputs": [{ "name": "id", "type": "uint256" }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [],
     "name": "getInitializationBlock",
