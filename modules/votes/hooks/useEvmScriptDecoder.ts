@@ -8,6 +8,7 @@ import {
   ACLAbi__factory,
   EasyTrackAbi__factory,
   FinanceAbi__factory,
+  LidoAppRepoAbi__factory,
   LidoDAOAbi__factory,
   MiniMeTokenAbi__factory,
   NodeOperatorsRegistryAbi__factory,
@@ -46,6 +47,8 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
             EasyTrackAbi__factory.abi as any,
           [CONTRACT_ADDRESSES.TokenRecovererForManagerContracts[chainId]!]:
             TokenRecovererForManagerContractsAbi__factory.abi as any,
+          [CONTRACT_ADDRESSES.LidoAppRepo[chainId]!]:
+            LidoAppRepoAbi__factory.abi as any,
         }),
       ),
     `evm-script-decoder-${chainId}`,
