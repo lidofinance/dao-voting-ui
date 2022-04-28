@@ -7,6 +7,7 @@ import { ABIProviderLocal } from 'evm-script-decoder/lib/ABIProviderLocal'
 import {
   ACLAbi__factory,
   FinanceAbi__factory,
+  LidoDAOAbi__factory,
   MiniMeTokenAbi__factory,
   NodeOperatorsRegistryAbi__factory,
   TokenManagerAbi__factory,
@@ -37,6 +38,8 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
           [CONTRACT_ADDRESSES.ACL[chainId]!]: ACLAbi__factory.abi as any,
           [CONTRACT_ADDRESSES.VotingRepo[chainId]!]:
             VotingRepoAbi__factory.abi as any,
+          [CONTRACT_ADDRESSES.LidoDAO[chainId]!]:
+            LidoDAOAbi__factory.abi as any,
         }),
       ),
     `evm-script-decoder-${chainId}`,
