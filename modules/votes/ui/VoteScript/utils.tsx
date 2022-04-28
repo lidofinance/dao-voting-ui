@@ -9,7 +9,7 @@ export const formatCallString = (abi?: ABIElement, callData?: string[]) => {
       .join(',')
     if (inputsFormatted) inputsFormatted += '\n'
 
-    res += `${abi.type} ${abi.name} (${inputsFormatted})`
+    res += `${abi.type} ${abi.name}(${inputsFormatted})`
   } else {
     res += '[abi not found]'
   }
