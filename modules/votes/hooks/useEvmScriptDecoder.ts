@@ -12,6 +12,7 @@ import {
   MiniMeTokenAbi__factory,
   NodeOperatorsRegistryAbi__factory,
   TokenManagerAbi__factory,
+  TokenRecovererForManagerContractsAbi__factory,
   VotingAbi__factory,
 } from 'generated'
 import * as CONTRACT_ADDRESSES from 'modules/blockChain/contractAddresses'
@@ -43,6 +44,8 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
             LidoDAOAbi__factory.abi as any,
           [CONTRACT_ADDRESSES.EasyTrack[chainId]!]:
             EasyTrackAbi__factory.abi as any,
+          [CONTRACT_ADDRESSES.TokenRecovererForManagerContracts[chainId]!]:
+            TokenRecovererForManagerContractsAbi__factory.abi as any,
         }),
       ),
     `evm-script-decoder-${chainId}`,
