@@ -13,6 +13,7 @@ import {
   MiniMeTokenAbi__factory,
   NodeOperatorsRegistryAbi__factory,
   NodeOperatorsRegistryRepoAbi__factory,
+  OracleRepoAbi__factory,
   StethAbi__factory,
   TokenManagerAbi__factory,
   TokenRecovererForManagerContractsAbi__factory,
@@ -54,6 +55,8 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
           [CONTRACT_ADDRESSES.NodeOperatorsRegistryRepo[chainId]!]:
             NodeOperatorsRegistryRepoAbi__factory.abi as any,
           [CONTRACT_ADDRESSES.Steth[chainId]!]: StethAbi__factory.abi as any,
+          [CONTRACT_ADDRESSES.OracleRepo[chainId]!]:
+            OracleRepoAbi__factory.abi as any,
         }),
       ),
     `evm-script-decoder-${chainId}`,
