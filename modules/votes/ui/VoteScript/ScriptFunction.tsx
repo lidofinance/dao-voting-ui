@@ -1,5 +1,6 @@
 import { ABIElement } from 'evm-script-decoder/lib/types'
-import { ScriptFunctionWrapper } from './styles'
+import { ScriptBox } from './styles'
+import { formatCallString } from './utils'
 
 type Props = {
   abi?: ABIElement
@@ -7,24 +8,7 @@ type Props = {
 }
 
 export function ScriptFunction({ abi, callData }: Props) {
-  if (!abi) {
-    return <p>ABI missing</p>
-  }
+  const callString = formatCallString(abi, callData)
 
-  // TODO: add syntax highlighting
-  return (
-    <ScriptFunctionWrapper>
-      <code>
-        {`${abi.type} ${abi.name}(
-        ${abi.inputs
-          ?.map(
-            ({ type, name }, i) =>
-              `${type} ${name}, // ${String(callData![i])}`,
-          )
-          .join('\n\t')}
-)
-`}
-      </code>
-    </ScriptFunctionWrapper>
-  )
+  return <ScriptBox value={callString} />
 }

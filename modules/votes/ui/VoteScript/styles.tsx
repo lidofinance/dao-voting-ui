@@ -22,21 +22,6 @@ export const ScriptBox = styled.textarea.attrs({
   outline: none;
 `
 
-export const ScriptFunctionWrapper = styled.pre`
-  border-radius: ${props => props.theme.borderRadiusesMap.sm}px;
-  background-color: rgb(242, 242, 244);
-  padding: ${props => props.theme.spaceMap.sm}px;
-  color: rgb(22, 22, 24);
-  overflow-x: auto;
-  code {
-    font-family: 'Courier New', Courier, monospace !important;
-  }
-`
-
-export const SciptFunctionType = styled.span`
-  color: rgb(15, 14, 255);
-`
-
 export const CallWrapper = styled.div`
   margin: ${props => props.theme.spaceMap.md}px 0;
 `
