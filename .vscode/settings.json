@@ -15,7 +15,7 @@
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
     ".next": true,
-    "generated": true,
-    "abi": true
+    "generated": false,
+    "abi": false
   }
 }
