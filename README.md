@@ -15,6 +15,9 @@ The required functionality includes:
 - connecting wallet (similar to Lido on Ethereum staking widget)
 - casting vote (Yes/No)
 
+[More details](
+https://www.notion.so/Custom-voting-UI-feature-description-bde7fde42d3749a3afcbab3a56f26674)
+
 ## Pre-requisites
 
 - Node.js v12+

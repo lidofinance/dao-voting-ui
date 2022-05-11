@@ -1,0 +1,48 @@
+[
+  {
+    "name": "Recover",
+    "inputs": [
+      { "name": "sender", "type": "address", "indexed": true },
+      { "name": "manager", "type": "address", "indexed": true },
+      { "name": "token", "type": "address", "indexed": true },
+      { "name": "amount", "type": "uint256", "indexed": false },
+      { "name": "recovered_amount", "type": "uint256", "indexed": false }
+    ],
+    "anonymous": false,
+    "type": "event"
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "constructor",
+    "inputs": [{ "name": "agent", "type": "address" }],
+    "outputs": []
+  },
+  {
+    "stateMutability": "pure",
+    "type": "function",
+    "name": "agent",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "address" }]
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "name": "recover",
+    "inputs": [
+      { "name": "manager", "type": "address" },
+      { "name": "token", "type": "address" }
+    ],
+    "outputs": [{ "name": "", "type": "uint256" }]
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "name": "recover",
+    "inputs": [
+      { "name": "manager", "type": "address" },
+      { "name": "token", "type": "address" },
+      { "name": "amount", "type": "uint256" }
+    ],
+    "outputs": [{ "name": "", "type": "uint256" }]
+  }
+]

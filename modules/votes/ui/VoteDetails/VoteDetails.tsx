@@ -1,15 +1,14 @@
-import { Text, DataTable, DataTableRow } from '@lidofinance/lido-ui'
-import { FormattedDate } from 'modules/shared/ui/Utils/FormattedDate'
-import {
-  VotesTitleWrap,
-  VotesBarWrap,
-  VotesBarNay,
-  VotesBarYea,
-  ScriptBox,
-} from './VoteDetailsStyle'
-
+import { DataTable, DataTableRow, Text } from '@lidofinance/lido-ui'
 import { weiToNum, weiToStr } from 'modules/blockChain/utils/parseWei'
+import { FormattedDate } from 'modules/shared/ui/Utils/FormattedDate'
 import type { Vote } from 'modules/votes/types'
+import VoteScript from '../VoteScript'
+import {
+  VotesBarNay,
+  VotesBarWrap,
+  VotesBarYea,
+  VotesTitleWrap,
+} from './VoteDetailsStyle'
 
 type Props = {
   vote: Vote
@@ -77,11 +76,7 @@ export function VoteDetails({ vote }: Props) {
         <VotesBarYea style={{ width: `${yeaPct}%` }} />
       </VotesBarWrap>
 
-      <Text color="text" size="xxs">
-        Script:
-      </Text>
-
-      <ScriptBox value={vote.script} />
+      <VoteScript script={vote.script} />
     </>
   )
 }
