@@ -1,4 +1,5 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+import { VoteStatus } from 'modules/votes/types'
 
 export const VotesTitleWrap = styled.div`
   margin-top: 16px;
@@ -26,4 +27,17 @@ export const VotesBarNay = styled(VotesBar)`
 
 export const VotesBarYea = styled(VotesBar)`
   background-color: ${({ theme }) => theme.colors.primary};
+`
+
+type StatusTextProps = { status?: VoteStatus }
+export const StatusText = styled.div`
+  font-weight: 600;
+  ${({ status }: StatusTextProps) => css`
+    color: ${({ theme }) =>
+      status === VoteStatus.Rejected
+        ? theme.colors.error
+        : status === VoteStatus.Executed
+        ? theme.colors.success
+        : theme.colors.primary};
+  `}
 `

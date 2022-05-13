@@ -22,6 +22,8 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
   const { swrVote, swrCanVote, swrCanExecute } = useFormVoteInfo({ voteId })
   const { txVote, handleVote, isSubmitting } = useFormVoteSubmit({ voteId })
 
+  const isLoading = swrVote.isValidating && swrCanExecute.isValidating
+
   const showActions =
     isWalletConnected && swrCanVote.data === true && !txVote.isSuccess
 
@@ -45,11 +47,14 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
           />
         </Fieldset>
 
-        {swrVote.isValidating && <PageLoader />}
+        {isLoading && <PageLoader />}
 
-        {!swrVote.isValidating && !swrCanVote.isValidating && swrVote.data && (
+        {!isLoading && swrVote.data && (
           <>
-            <VoteDetails vote={swrVote.data} />
+            <VoteDetails
+              vote={swrVote.data}
+              canExecute={Boolean(swrCanExecute.data)}
+            />
 
             {!txVote.isEmpty && <TxRow label="Vote" tx={txVote} />}
 
