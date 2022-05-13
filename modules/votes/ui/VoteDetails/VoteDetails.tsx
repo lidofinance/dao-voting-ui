@@ -20,17 +20,12 @@ export function VoteDetails({ vote }: Props) {
   const total = nayNum + yeaNum
   const nayPct = total > 0 ? (nayNum / total) * 100 : 0
   const yeaPct = total > 0 ? (yeaNum / total) * 100 : 0
+  const status = vote.executed ? 'Executed' : !vote.open ? 'Rejected' : 'Open'
 
   return (
     <>
       <DataTable>
-        <DataTableRow title="Open status">
-          {vote.open ? 'Open' : 'Not open'}
-        </DataTableRow>
-
-        <DataTableRow title="Execution status">
-          {vote.executed ? 'Executed' : 'Not executed'}
-        </DataTableRow>
+        <DataTableRow title="Status">{status}</DataTableRow>
 
         <DataTableRow title="Start date">
           <FormattedDate
