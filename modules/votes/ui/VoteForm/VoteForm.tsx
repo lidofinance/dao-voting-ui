@@ -1,7 +1,7 @@
 import { useFormVoteInfo } from './useFormVoteInfo'
 import { useFormVoteSubmit } from './useFormVoteSubmit'
 
-import { Container, Block, Input, Text } from '@lidofinance/lido-ui'
+import { Container, Block, Input } from '@lidofinance/lido-ui'
 import { Title } from 'modules/shared/ui/Common/Title'
 import { Fieldset } from 'modules/shared/ui/Common/Fieldset'
 import { PageLoader } from 'modules/shared/ui/Common/PageLoader'
@@ -9,6 +9,7 @@ import { VoteDetails } from 'modules/votes/ui/VoteDetails'
 import { TxRow } from 'modules/blockChain/ui/TxRow'
 import { VoteFormActions } from '../VoteFormActions'
 import { VoteFormMustConnect } from '../VoteFormMustConnect'
+import { VoteFormVoterState } from '../VoteFormVoterState'
 
 type Props = {
   voteId?: string
@@ -16,23 +17,24 @@ type Props = {
 }
 
 export function VoteForm({ voteId, onChangeVoteId }: Props) {
-  const { txVote, handleVote, isSubmitting } = useFormVoteSubmit({ voteId })
-
   const {
     swrVote,
+    swrCanVote,
     swrCanExecute,
-    balanceAtFormatted,
+    votePower,
     voteTime,
     isLoading,
     isWalletConnected,
-    showActions,
-    showCannotVote,
-  } = useFormVoteInfo({
+    voterState,
+  } = useFormVoteInfo({ voteId })
+
+  const { txVote, handleVote, isSubmitting } = useFormVoteSubmit({
     voteId,
-    isVoteTxSuccess: txVote.isSuccess,
+    onFinish: () => 'Finish',
   })
 
-  console.log('Balance at: ', balanceAtFormatted)
+  console.log('Balance at: ', votePower)
+  console.log('Voter state: ', voterState)
 
   return (
     <Container as="main" size="tight">
@@ -61,21 +63,33 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
               canExecute={Boolean(swrCanExecute.data)}
             />
 
-            {!txVote.isEmpty && <TxRow label="Vote" tx={txVote} />}
-
             {!isWalletConnected && <VoteFormMustConnect />}
 
-            {showActions && (
-              <VoteFormActions
-                isSubmitting={isSubmitting}
-                onVote={handleVote}
-              />
-            )}
+            {isWalletConnected && (
+              <>
+                <VoteFormVoterState
+                  votePower={votePower!}
+                  voterState={voterState!}
+                  canVote={swrCanVote.data!}
+                />
 
-            {showCannotVote && (
-              <Text size="xxs" color="secondary">
-                You can not vote
-              </Text>
+                {swrCanVote.data && (
+                  <>
+                    <br />
+                    <VoteFormActions
+                      isSubmitting={isSubmitting}
+                      onVote={handleVote}
+                    />
+                  </>
+                )}
+
+                {!txVote.isEmpty && (
+                  <>
+                    <br />
+                    <TxRow label="Vote transaction" tx={txVote} />
+                  </>
+                )}
+              </>
             )}
           </>
         )}

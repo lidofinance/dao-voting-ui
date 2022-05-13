@@ -6,13 +6,13 @@ import {
   ContractVoting,
   ContractGovernanceToken,
 } from 'modules/blockChain/contracts'
+import { VoterState } from 'modules/votes/types'
 
 type Args = {
   voteId?: string
-  isVoteTxSuccess: boolean
 }
 
-export function useFormVoteInfo({ voteId, isVoteTxSuccess }: Args) {
+export function useFormVoteInfo({ voteId }: Args) {
   const { walletAddress, isWalletConnected } = useWeb3()
 
   const swrVoteTime = ContractVoting.useSwrRpc('voteTime', [])
@@ -35,12 +35,17 @@ export function useFormVoteInfo({ voteId, isVoteTxSuccess }: Args) {
     { onError: noop },
   )
 
-  const swrBalanceAt = ContractGovernanceToken.useSwrWeb3(
+  const swrVoterState = ContractVoting.useSwrRpc(
+    Boolean(voteId && walletAddress) && 'getVoterState',
+    [voteId!, walletAddress!],
+  )
+
+  const swrBalanceAt = ContractGovernanceToken.useSwrRpc(
     Boolean(walletAddress && swrVote.data) && 'balanceOfAt',
     [walletAddress!, swrVote.data?.snapshotBlock!],
   )
 
-  const balanceAtFormatted = swrBalanceAt.data && formatEther(swrBalanceAt.data)
+  const votePower = swrBalanceAt.data && formatEther(swrBalanceAt.data)
   const voteTime = swrVoteTime.data && swrVoteTime.data.toNumber()
 
   const isLoading =
@@ -48,11 +53,14 @@ export function useFormVoteInfo({ voteId, isVoteTxSuccess }: Args) {
     swrVote.isValidating &&
     swrCanExecute.isValidating
 
-  const showActions =
-    isWalletConnected && swrCanVote.data === true && !isVoteTxSuccess
-
-  const showCannotVote =
-    isWalletConnected && swrCanVote.data === false && !isVoteTxSuccess
+  const voterState =
+    swrVoterState.data === undefined
+      ? null
+      : swrVoterState.data === 0
+      ? VoterState.NotVoted
+      : swrVoterState.data === 0
+      ? VoterState.VotedYay
+      : VoterState.VotedNay
 
   return {
     swrVoteTime,
@@ -60,11 +68,10 @@ export function useFormVoteInfo({ voteId, isVoteTxSuccess }: Args) {
     swrCanVote,
     swrCanExecute,
     swrBalanceAt,
-    balanceAtFormatted,
+    votePower,
     voteTime,
     isLoading,
     isWalletConnected,
-    showActions,
-    showCannotVote,
+    voterState,
   }
 }

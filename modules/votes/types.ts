@@ -11,3 +11,9 @@ export enum VoteStatus {
   Pending = 'Pending',
   Rejected = 'Rejected',
 }
+
+export enum VoterState {
+  NotVoted = 'NotVoted',
+  VotedYay = 'VotedYay',
+  VotedNay = 'VotedNay',
+}

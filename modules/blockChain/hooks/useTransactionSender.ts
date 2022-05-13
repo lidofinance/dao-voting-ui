@@ -13,7 +13,7 @@ type PopulateFn<A extends unknown[]> =
   | ((...args: A) => PopulatedTransaction)
   | ((...args: A) => Promise<PopulatedTransaction>)
 
-type Options = {
+export type Options = {
   onFinish?: (resultTx: ResultTx, status: TxStatus) => void
 }
 

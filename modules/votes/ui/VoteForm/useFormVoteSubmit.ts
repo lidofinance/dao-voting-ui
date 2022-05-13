@@ -1,5 +1,8 @@
 import { useCallback, useState } from 'react'
-import { useTransactionSender } from 'modules/blockChain/hooks/useTransactionSender'
+import {
+  useTransactionSender,
+  Options,
+} from 'modules/blockChain/hooks/useTransactionSender'
 
 import { ContractVoting } from 'modules/blockChain/contracts'
 import type { VoteMode } from '../../types'
@@ -7,9 +10,10 @@ import type { VoteMode } from '../../types'
 
 type Args = {
   voteId?: string
+  onFinish?: Options['onFinish']
 }
 
-export function useFormVoteSubmit({ voteId }: Args) {
+export function useFormVoteSubmit({ voteId, onFinish }: Args) {
   const contractVoting = ContractVoting.useWeb3()
   const [isSubmitting, setSubmitting] = useState<false | VoteMode>(false)
 
@@ -27,7 +31,7 @@ export function useFormVoteSubmit({ voteId }: Args) {
     },
     [contractVoting],
   )
-  const txVote = useTransactionSender(populateVote)
+  const txVote = useTransactionSender(populateVote, { onFinish })
 
   const handleVote = useCallback(
     async (mode: VoteMode) => {
