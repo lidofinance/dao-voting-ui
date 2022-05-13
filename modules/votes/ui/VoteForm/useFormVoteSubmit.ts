@@ -2,9 +2,8 @@ import { useCallback, useState } from 'react'
 import { useTransactionSender } from 'modules/blockChain/hooks/useTransactionSender'
 
 import { ContractVoting } from 'modules/blockChain/contracts'
+import type { VoteMode } from '../../types'
 // import { estimateGasFallback } from 'modules/shared/utils/estimateGasFallback'
-
-type VoteMode = 'yay' | 'nay'
 
 type Args = {
   voteId?: string
