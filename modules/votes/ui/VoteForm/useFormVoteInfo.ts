@@ -58,7 +58,7 @@ export function useFormVoteInfo({ voteId }: Args) {
       ? null
       : swrVoterState.data === 0
       ? VoterState.NotVoted
-      : swrVoterState.data === 0
+      : swrVoterState.data === 1
       ? VoterState.VotedYay
       : VoterState.VotedNay
 
