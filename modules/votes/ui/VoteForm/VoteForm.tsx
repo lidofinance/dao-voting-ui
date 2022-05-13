@@ -1,5 +1,6 @@
 import { useFormVoteInfo } from './useFormVoteInfo'
 import { useFormVoteSubmit } from './useFormVoteSubmit'
+import { useVotePassedCallback } from '../../hooks/useVotePassedCallback'
 
 import { Container, Block, Input } from '@lidofinance/lido-ui'
 import { Title } from 'modules/shared/ui/Common/Title'
@@ -26,15 +27,22 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
     isLoading,
     isWalletConnected,
     voterState,
+    doRevalidate,
   } = useFormVoteInfo({ voteId })
 
   const { txVote, handleVote, isSubmitting } = useFormVoteSubmit({
     voteId,
-    onFinish: () => 'Finish',
+    onFinish: doRevalidate,
   })
 
   console.log('Balance at: ', votePower)
   console.log('Voter state: ', voterState)
+
+  useVotePassedCallback({
+    startDate: swrVote.data?.startDate.toNumber(),
+    voteTime,
+    onPass: doRevalidate,
+  })
 
   return (
     <Container as="main" size="tight">

@@ -1,6 +1,7 @@
 import { noop } from 'lodash'
 import { formatEther } from 'ethers/lib/utils'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
+import { useCallback } from 'react'
 
 import {
   ContractVoting,
@@ -45,6 +46,15 @@ export function useFormVoteInfo({ voteId }: Args) {
     [walletAddress!, swrVote.data?.snapshotBlock!],
   )
 
+  const revalidateVote = swrVote.mutate
+  const revalidateVoterState = swrVoterState.mutate
+  const revalidateCanVote = swrCanVote.mutate
+  const doRevalidate = useCallback(() => {
+    revalidateVote()
+    revalidateVoterState()
+    revalidateCanVote()
+  }, [revalidateCanVote, revalidateVote, revalidateVoterState])
+
   const votePower = swrBalanceAt.data && formatEther(swrBalanceAt.data)
   const voteTime = swrVoteTime.data && swrVoteTime.data.toNumber()
 
@@ -73,5 +83,6 @@ export function useFormVoteInfo({ voteId }: Args) {
     isLoading,
     isWalletConnected,
     voterState,
+    doRevalidate,
   }
 }

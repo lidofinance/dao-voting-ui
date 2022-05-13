@@ -39,7 +39,7 @@ export function useVoteTimeCountdown(startDate: number, duration: number) {
 
   useEffect(() => {
     if (isPassed) return
-    const interval = setInterval(() => setTimeLeft(getTimeLeft()), 100)
+    const interval = setInterval(() => setTimeLeft(getTimeLeft()), 250)
     return () => {
       clearInterval(interval)
     }
