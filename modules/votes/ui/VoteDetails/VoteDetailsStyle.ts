@@ -41,3 +41,13 @@ export const StatusText = styled.div`
         : theme.colors.primary};
   `}
 `
+
+export const TextNay = styled.span`
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.error};
+`
+
+export const TextYay = styled.span`
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.primary};
+`

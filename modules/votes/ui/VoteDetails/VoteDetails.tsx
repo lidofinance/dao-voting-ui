@@ -10,6 +10,8 @@ import {
   VotesBarWrap,
   VotesBarYea,
   VotesTitleWrap,
+  TextNay,
+  TextYay,
 } from './VoteDetailsStyle'
 
 import { Vote, VoteStatus } from 'modules/votes/types'
@@ -80,13 +82,13 @@ export function VoteDetails({ vote, voteTime, canExecute }: Props) {
 
       <VotesTitleWrap>
         <Text color="text" size="xxs">
-          Nay: {nayNum}{' '}
+          <TextNay>Nay: {nayNum}</TextNay>{' '}
           <Text as="span" color="secondary" size="xxs">
             ({nayPct.toFixed(2)}%)
           </Text>
         </Text>
         <Text color="text" size="xxs">
-          Yay: {yeaNum}{' '}
+          <TextYay>Yay: {yeaNum}</TextYay>{' '}
           <Text as="span" color="secondary" size="xxs">
             ({yeaPct.toFixed(2)}%)
           </Text>
