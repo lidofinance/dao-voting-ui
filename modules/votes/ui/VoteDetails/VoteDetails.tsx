@@ -2,7 +2,8 @@ import { useMemo } from 'react'
 
 import { DataTable, DataTableRow, Text } from '@lidofinance/lido-ui'
 import { FormattedDate } from 'modules/shared/ui/Utils/FormattedDate'
-import VoteScript from '../VoteScript'
+import { VoteScript } from '../VoteScript'
+import { VoteDetailsCountdown } from '../VoteDetailsCountdown'
 import {
   StatusText,
   VotesBarNay,
@@ -16,10 +17,11 @@ import { weiToNum, weiToStr } from 'modules/blockChain/utils/parseWei'
 
 type Props = {
   vote: Vote
+  voteTime: number
   canExecute: boolean
 }
 
-export function VoteDetails({ vote, canExecute }: Props) {
+export function VoteDetails({ vote, voteTime, canExecute }: Props) {
   const nayNum = weiToNum(vote.nay)
   const yeaNum = weiToNum(vote.yea)
   const total = nayNum + yeaNum
@@ -40,9 +42,21 @@ export function VoteDetails({ vote, canExecute }: Props) {
           <StatusText status={status}>{status}</StatusText>
         </DataTableRow>
 
+        <VoteDetailsCountdown
+          voteTime={voteTime}
+          startDate={vote.startDate.toNumber()}
+        />
+
         <DataTableRow title="Start date">
           <FormattedDate
             date={vote.startDate.toNumber()}
+            format="MMM DD, YYYY / hh:mm a"
+          />
+        </DataTableRow>
+
+        <DataTableRow title="End date">
+          <FormattedDate
+            date={vote.startDate.toNumber() + voteTime}
             format="MMM DD, YYYY / hh:mm a"
           />
         </DataTableRow>

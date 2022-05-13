@@ -1,4 +1,3 @@
-import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useFormVoteInfo } from './useFormVoteInfo'
 import { useFormVoteSubmit } from './useFormVoteSubmit'
 
@@ -17,18 +16,23 @@ type Props = {
 }
 
 export function VoteForm({ voteId, onChangeVoteId }: Props) {
-  const { isWalletConnected } = useWeb3()
-
-  const { swrVote, swrCanVote, swrCanExecute } = useFormVoteInfo({ voteId })
   const { txVote, handleVote, isSubmitting } = useFormVoteSubmit({ voteId })
 
-  const isLoading = swrVote.isValidating && swrCanExecute.isValidating
+  const {
+    swrVote,
+    swrCanExecute,
+    balanceAtFormatted,
+    voteTime,
+    isLoading,
+    isWalletConnected,
+    showActions,
+    showCannotVote,
+  } = useFormVoteInfo({
+    voteId,
+    isVoteTxSuccess: txVote.isSuccess,
+  })
 
-  const showActions =
-    isWalletConnected && swrCanVote.data === true && !txVote.isSuccess
-
-  const showCannotVote =
-    isWalletConnected && swrCanVote.data === false && !txVote.isSuccess
+  console.log('Balance at: ', balanceAtFormatted)
 
   return (
     <Container as="main" size="tight">
@@ -53,6 +57,7 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
           <>
             <VoteDetails
               vote={swrVote.data}
+              voteTime={voteTime!}
               canExecute={Boolean(swrCanExecute.data)}
             />
 

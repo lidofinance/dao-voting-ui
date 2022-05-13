@@ -1,1 +1,1 @@
-export { VoteScript as default } from './VoteScript'
+export * from './VoteScript'
