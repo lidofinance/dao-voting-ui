@@ -35,10 +35,7 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
     onFinish: doRevalidate,
   })
 
-  console.log('Balance at: ', votePower)
-  console.log('Voter state: ', voterState)
-
-  useVotePassedCallback({
+  const isPassed = useVotePassedCallback({
     startDate: swrVote.data?.startDate.toNumber(),
     voteTime,
     onPass: doRevalidate,
@@ -79,6 +76,7 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
                   votePower={votePower!}
                   voterState={voterState!}
                   canVote={swrCanVote.data!}
+                  isPassed={Boolean(isPassed)}
                 />
 
                 {swrCanVote.data && (

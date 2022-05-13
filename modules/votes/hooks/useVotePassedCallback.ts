@@ -17,7 +17,11 @@ export function useVotePassedCallback({ startDate, voteTime, onPass }: Args) {
   const [isPassed, setPassed] = useState(checkIsPassed())
 
   useEffect(() => {
-    if (isPassed || isPassed === null || !startDate || !voteTime) return
+    if (isPassed || isPassed === null || !startDate || !voteTime) {
+      const check = checkIsPassed()
+      if (isPassed !== check) setPassed(check)
+      return
+    }
 
     const interval = setInterval(() => {
       if (checkIsPassed()) {

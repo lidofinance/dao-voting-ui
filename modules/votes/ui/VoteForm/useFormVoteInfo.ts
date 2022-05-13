@@ -55,7 +55,7 @@ export function useFormVoteInfo({ voteId }: Args) {
     revalidateCanVote()
   }, [revalidateCanVote, revalidateVote, revalidateVoterState])
 
-  const votePower = swrBalanceAt.data && formatEther(swrBalanceAt.data)
+  const votePower = swrBalanceAt.data && Number(formatEther(swrBalanceAt.data))
   const voteTime = swrVoteTime.data && swrVoteTime.data.toNumber()
 
   const isLoading =

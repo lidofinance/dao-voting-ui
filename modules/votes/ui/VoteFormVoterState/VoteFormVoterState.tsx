@@ -5,11 +5,17 @@ import { VoterState } from 'modules/votes/types'
 
 type Props = {
   canVote: boolean
-  votePower: string
+  votePower: number
   voterState: VoterState
+  isPassed: boolean
 }
 
-export function VoteFormVoterState({ votePower, voterState, canVote }: Props) {
+export function VoteFormVoterState({
+  votePower,
+  voterState,
+  canVote,
+  isPassed,
+}: Props) {
   const { data: symbol } = useGovernanceSymbol()
 
   const isNotVoted = voterState === VoterState.NotVoted
@@ -55,13 +61,34 @@ export function VoteFormVoterState({ votePower, voterState, canVote }: Props) {
             </Text>
           </>
         )}
+
+        {isPassed === true && (
+          <>
+            <br />
+            <Text size="xs" color="secondary">
+              This vote is closed
+            </Text>
+          </>
+        )}
       </>
     )
   }
 
-  return (
-    <Text size="xs" color="secondary">
-      You can not vote
-    </Text>
-  )
+  if (isPassed === false && !canVote && Number(votePower) === 0) {
+    return (
+      <Text size="xs" color="secondary">
+        You can not do vote because you had no {symbol} when the vote started
+      </Text>
+    )
+  }
+
+  if (isPassed === true && !canVote) {
+    return (
+      <Text size="xs" color="secondary">
+        This vote is closed
+      </Text>
+    )
+  }
+
+  return null
 }
