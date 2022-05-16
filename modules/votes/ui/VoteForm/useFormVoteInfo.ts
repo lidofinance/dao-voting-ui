@@ -39,6 +39,7 @@ export function useFormVoteInfo({ voteId }: Args) {
   const swrVoterState = ContractVoting.useSwrRpc(
     Boolean(voteId && walletAddress) && 'getVoterState',
     [voteId!, walletAddress!],
+    { onError: noop },
   )
 
   const swrBalanceAt = ContractGovernanceToken.useSwrRpc(
