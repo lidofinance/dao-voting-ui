@@ -12,6 +12,7 @@ import {
   TextYay,
 } from './VoteDetailsStyle'
 
+import { getVoteStatusText } from '../../utils/getVoteStatusText'
 import { Vote, VoteStatus } from 'modules/votes/types'
 import { weiToNum, weiToStr } from 'modules/blockChain/utils/parseWei'
 
@@ -33,7 +34,7 @@ export function VoteDetails({ status, vote, voteTime, isEnded }: Props) {
     <>
       <DataTable>
         <DataTableRow title="Status">
-          <StatusText status={status}>{status}</StatusText>
+          <StatusText status={status}>{getVoteStatusText(status)}</StatusText>
         </DataTableRow>
 
         <VoteDetailsCountdown
