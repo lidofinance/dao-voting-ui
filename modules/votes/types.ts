@@ -3,7 +3,7 @@ import { UnwrapPromise } from 'next/dist/lib/coalesced-function'
 
 export type Vote = UnwrapPromise<ReturnType<VotingAbi['getVote']>>
 
-export type VoteMode = 'yay' | 'nay'
+export type VoteMode = 'yay' | 'nay' | 'enact'
 
 export enum VoteStatus {
   Active = 'Active',

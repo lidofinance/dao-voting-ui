@@ -33,10 +33,11 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
     doRevalidate,
   } = useFormVoteInfo({ voteId })
 
-  const { txVote, handleVote, isSubmitting } = useFormVoteSubmit({
-    voteId,
-    onFinish: doRevalidate,
-  })
+  const { txVote, txEnact, handleVote, handleEnact, isSubmitting } =
+    useFormVoteSubmit({
+      voteId,
+      onFinish: doRevalidate,
+    })
 
   const isPassed = useVotePassedCallback({
     startDate: swrVote.data?.startDate.toNumber(),
@@ -102,8 +103,10 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
                   <>
                     <br />
                     <VoteFormActions
+                      canExecute={Boolean(canExecute)}
                       isSubmitting={isSubmitting}
                       onVote={handleVote}
+                      onEnact={handleEnact}
                     />
                   </>
                 )}
@@ -112,6 +115,13 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
                   <>
                     <br />
                     <TxRow label="Vote transaction" tx={txVote} />
+                  </>
+                )}
+
+                {!txEnact.isEmpty && (
+                  <>
+                    <br />
+                    <TxRow label="Vote enact" tx={txEnact} />
                   </>
                 )}
               </>

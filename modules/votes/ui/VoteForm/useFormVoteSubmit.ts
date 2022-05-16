@@ -35,9 +35,7 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
         args.voteId,
         args.mode === 'yay',
         false,
-        {
-          gasLimit: 650000,
-        },
+        { gasLimit: 650000 },
       )
       return tx
     },
@@ -71,9 +69,37 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
     [voteId, txVote],
   )
 
+  const populateEnact = useCallback(
+    async (args: { voteId: string }) => {
+      const tx = await contractVoting.populateTransaction.executeVote(
+        args.voteId,
+        { gasLimit: 650000 },
+      )
+      return tx
+    },
+    [contractVoting],
+  )
+  const txEnact = useTransactionSender(populateEnact, {
+    onError: handleError,
+    onFinish: handleFinish,
+  })
+
+  const handleEnact = useCallback(async () => {
+    if (!voteId) return
+    try {
+      setSubmitting('enact')
+      await txEnact.send({ voteId })
+    } catch (err) {
+      console.error(err)
+      setSubmitting(false)
+    }
+  }, [voteId, txEnact])
+
   return {
     txVote,
+    txEnact,
     handleVote,
+    handleEnact,
     isSubmitting,
   }
 }
