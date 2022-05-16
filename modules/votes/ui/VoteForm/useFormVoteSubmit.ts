@@ -51,8 +51,6 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
       } catch (err) {
         console.error(err)
       }
-
-      setSubmitting(false)
     },
     [voteId, txVote],
   )

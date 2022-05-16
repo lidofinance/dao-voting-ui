@@ -7,14 +7,14 @@ type Props = {
   canVote: boolean
   votePower: number
   voterState: VoterState
-  isPassed: boolean
+  isEnded: boolean
 }
 
 export function VoteFormVoterState({
   votePower,
   voterState,
   canVote,
-  isPassed,
+  isEnded,
 }: Props) {
   const { data: symbol } = useGovernanceSymbol()
 
@@ -62,7 +62,7 @@ export function VoteFormVoterState({
           </>
         )}
 
-        {isPassed === true && (
+        {isEnded === true && (
           <>
             <br />
             <Text size="xs" color="secondary">
@@ -74,7 +74,7 @@ export function VoteFormVoterState({
     )
   }
 
-  if (isPassed === false && !canVote && Number(votePower) === 0) {
+  if (isEnded === false && !canVote && Number(votePower) === 0) {
     return (
       <Text size="xs" color="secondary">
         You can not do vote because you had no {symbol} when the vote started
@@ -82,7 +82,7 @@ export function VoteFormVoterState({
     )
   }
 
-  if (isPassed === true && !canVote) {
+  if (isEnded === true && !canVote) {
     return (
       <Text size="xs" color="secondary">
         This vote is closed

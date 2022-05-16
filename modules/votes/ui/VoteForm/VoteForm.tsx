@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { useFormVoteInfo } from './useFormVoteInfo'
 import { useFormVoteSubmit } from './useFormVoteSubmit'
 import { useVotePassedCallback } from '../../hooks/useVotePassedCallback'
@@ -11,6 +12,8 @@ import { TxRow } from 'modules/blockChain/ui/TxRow'
 import { VoteFormActions } from '../VoteFormActions'
 import { VoteFormMustConnect } from '../VoteFormMustConnect'
 import { VoteFormVoterState } from '../VoteFormVoterState'
+
+import { VoteStatus } from 'modules/votes/types'
 
 type Props = {
   voteId?: string
@@ -41,6 +44,21 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
     onPass: doRevalidate,
   })
 
+  const vote = swrVote.data
+  const canExecute = swrCanExecute.data
+
+  const status = useMemo(() => {
+    if (!vote) return null
+    if (vote.open && !vote.executed) return VoteStatus.Active
+    if (!vote.open && vote.executed) return VoteStatus.Executed
+    if (!vote.open && !vote.executed && canExecute) return VoteStatus.Pending
+    if (!vote.open && !vote.executed && !canExecute) return VoteStatus.Rejected
+  }, [vote, canExecute])
+
+  const isEndedBeforeTime =
+    status === VoteStatus.Rejected || status === VoteStatus.Executed
+  const isEnded = Boolean(isPassed) || isEndedBeforeTime
+
   return (
     <Container as="main" size="tight">
       <Title
@@ -64,8 +82,9 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
           <>
             <VoteDetails
               vote={swrVote.data}
+              status={status!}
               voteTime={voteTime!}
-              canExecute={Boolean(swrCanExecute.data)}
+              isEnded={isEnded}
             />
 
             {!isWalletConnected && <VoteFormMustConnect />}
@@ -76,7 +95,7 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
                   votePower={votePower!}
                   voterState={voterState!}
                   canVote={swrCanVote.data!}
-                  isPassed={Boolean(isPassed)}
+                  isEnded={isEnded}
                 />
 
                 {swrCanVote.data && (

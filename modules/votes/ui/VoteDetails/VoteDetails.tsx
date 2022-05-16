@@ -1,5 +1,3 @@
-import { useMemo } from 'react'
-
 import { DataTable, DataTableRow, Text } from '@lidofinance/lido-ui'
 import { FormattedDate } from 'modules/shared/ui/Utils/FormattedDate'
 import { VoteScript } from '../VoteScript'
@@ -19,23 +17,17 @@ import { weiToNum, weiToStr } from 'modules/blockChain/utils/parseWei'
 
 type Props = {
   vote: Vote
+  status: VoteStatus
   voteTime: number
-  canExecute: boolean
+  isEnded: boolean
 }
 
-export function VoteDetails({ vote, voteTime, canExecute }: Props) {
+export function VoteDetails({ status, vote, voteTime, isEnded }: Props) {
   const nayNum = weiToNum(vote.nay)
   const yeaNum = weiToNum(vote.yea)
   const total = nayNum + yeaNum
   const nayPct = total > 0 ? (nayNum / total) * 100 : 0
   const yeaPct = total > 0 ? (yeaNum / total) * 100 : 0
-
-  const status = useMemo(() => {
-    if (vote.open && !vote.executed) return VoteStatus.Active
-    if (!vote.open && vote.executed) return VoteStatus.Executed
-    if (!vote.open && !vote.executed && canExecute) return VoteStatus.Pending
-    if (!vote.open && !vote.executed && !canExecute) return VoteStatus.Rejected
-  }, [vote, canExecute])
 
   return (
     <>
@@ -45,6 +37,7 @@ export function VoteDetails({ vote, voteTime, canExecute }: Props) {
         </DataTableRow>
 
         <VoteDetailsCountdown
+          isEndedBeforeTime={isEnded}
           voteTime={voteTime}
           startDate={vote.startDate.toNumber()}
         />
@@ -56,12 +49,14 @@ export function VoteDetails({ vote, voteTime, canExecute }: Props) {
           />
         </DataTableRow>
 
-        <DataTableRow title="End date">
-          <FormattedDate
-            date={vote.startDate.toNumber() + voteTime}
-            format="MMM DD, YYYY / hh:mm a"
-          />
-        </DataTableRow>
+        {!isEnded && (
+          <DataTableRow title="End date">
+            <FormattedDate
+              date={vote.startDate.toNumber() + voteTime}
+              format="MMM DD, YYYY / hh:mm a"
+            />
+          </DataTableRow>
+        )}
 
         <DataTableRow title="Support required">
           {weiToStr(vote.supportRequired)}
