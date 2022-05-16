@@ -13,13 +13,16 @@ type PopulateFn<A extends unknown[]> =
   | ((...args: A) => PopulatedTransaction)
   | ((...args: A) => Promise<PopulatedTransaction>)
 
+export type FinishHandler = (resultTx: ResultTx, status: TxStatus) => void
+
 export type Options = {
-  onFinish?: (resultTx: ResultTx, status: TxStatus) => void
+  onError?: () => void
+  onFinish?: FinishHandler
 }
 
 export function useTransactionSender<A extends unknown[]>(
   populateTx: PopulateFn<A>,
-  { onFinish }: Options = {},
+  { onError, onFinish }: Options = {},
 ) {
   const { library, walletAddress, chainId } = useWeb3()
   const [resultTx, setResultTx] = useState<ResultTx | null>(null)
@@ -46,12 +49,13 @@ export function useTransactionSender<A extends unknown[]>(
         setResultTx(res)
         if (res.type === 'safe') finish('success', res)
       } catch (error: any) {
+        onError?.()
         setStatus('empty')
         console.error(error)
         ToastError(error.message || (error as any).toString(), {})
       }
     },
-    [finish, populateTx, sendTransactionGnosisWorkaround],
+    [finish, populateTx, sendTransactionGnosisWorkaround, onError],
   )
 
   useEffect(() => {

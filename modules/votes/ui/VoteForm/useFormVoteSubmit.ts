@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import {
   useTransactionSender,
-  Options,
+  FinishHandler,
 } from 'modules/blockChain/hooks/useTransactionSender'
 
 import { ContractVoting } from 'modules/blockChain/contracts'
@@ -10,12 +10,24 @@ import type { VoteMode } from '../../types'
 
 type Args = {
   voteId?: string
-  onFinish?: Options['onFinish']
+  onFinish?: FinishHandler
 }
 
 export function useFormVoteSubmit({ voteId, onFinish }: Args) {
   const contractVoting = ContractVoting.useWeb3()
   const [isSubmitting, setSubmitting] = useState<false | VoteMode>(false)
+
+  const handleFinish = useCallback(
+    (...args: Parameters<FinishHandler>) => {
+      setSubmitting(false)
+      onFinish?.(...args)
+    },
+    [setSubmitting, onFinish],
+  )
+
+  const handleError = useCallback(() => {
+    setSubmitting(false)
+  }, [])
 
   const populateVote = useCallback(
     async (args: { voteId: string; mode: VoteMode }) => {
@@ -31,7 +43,10 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
     },
     [contractVoting],
   )
-  const txVote = useTransactionSender(populateVote, { onFinish })
+  const txVote = useTransactionSender(populateVote, {
+    onError: handleError,
+    onFinish: handleFinish,
+  })
 
   const handleVote = useCallback(
     async (mode: VoteMode) => {
@@ -50,6 +65,7 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
         await txVote.send({ voteId, mode })
       } catch (err) {
         console.error(err)
+        setSubmitting(false)
       }
     },
     [voteId, txVote],
