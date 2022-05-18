@@ -14,7 +14,7 @@ import {
 
 import { getVoteStatusText } from '../../utils/getVoteStatusText'
 import { Vote, VoteStatus } from 'modules/votes/types'
-import { weiToNum, weiToStr } from 'modules/blockChain/utils/parseWei'
+import { weiToNum } from 'modules/blockChain/utils/parseWei'
 
 type Props = {
   vote: Vote
@@ -29,6 +29,8 @@ export function VoteDetails({ status, vote, voteTime, isEnded }: Props) {
   const total = nayNum + yeaNum
   const nayPct = total > 0 ? (nayNum / total) * 100 : 0
   const yeaPct = total > 0 ? (yeaNum / total) * 100 : 0
+
+  const votingPower = weiToNum(vote.votingPower)
 
   return (
     <>
@@ -59,16 +61,18 @@ export function VoteDetails({ status, vote, voteTime, isEnded }: Props) {
           </DataTableRow>
         )}
 
-        <DataTableRow title="Support required">
-          {weiToStr(vote.supportRequired)}
+        <DataTableRow title="Support %">
+          {yeaPct}%{' '}
+          <Text as="span" color="secondary" size="xxs">
+            (&gt;{weiToNum(vote.supportRequired) * 100}% needed)
+          </Text>
         </DataTableRow>
 
-        <DataTableRow title="Voting power">
-          {weiToStr(vote.votingPower)}
-        </DataTableRow>
-
-        <DataTableRow title="Min accept quorum">
-          {weiToStr(vote.minAcceptQuorum)}
+        <DataTableRow title="Minimal approval %">
+          {(yeaNum / votingPower) * 100}%{' '}
+          <Text as="span" color="secondary" size="xxs">
+            (&gt;{weiToNum(vote.minAcceptQuorum) * 100}% needed)
+          </Text>
         </DataTableRow>
 
         <DataTableRow title="Snapshot block">

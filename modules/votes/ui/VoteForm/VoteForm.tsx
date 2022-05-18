@@ -3,7 +3,8 @@ import { useFormVoteInfo } from './useFormVoteInfo'
 import { useFormVoteSubmit } from './useFormVoteSubmit'
 import { useVotePassedCallback } from '../../hooks/useVotePassedCallback'
 
-import { Container, Block, Input } from '@lidofinance/lido-ui'
+import { Container, Block } from '@lidofinance/lido-ui'
+import { InputNumber } from 'modules/shared/ui/Controls/InputNumber'
 import { Title } from 'modules/shared/ui/Common/Title'
 import { Fieldset } from 'modules/shared/ui/Common/Fieldset'
 import { PageLoader } from 'modules/shared/ui/Common/PageLoader'
@@ -68,7 +69,7 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
       />
       <Block>
         <Fieldset>
-          <Input
+          <InputNumber
             label="Vote #"
             name="voteId"
             error={swrVote.error ? 'Vote not found' : undefined}
