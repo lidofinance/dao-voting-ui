@@ -23,12 +23,21 @@ type Props = {
   isEnded: boolean
 }
 
+const formatFloatPct = (pct: number) => {
+  if (pct < 0.01) {
+    return Math.ceil(pct * 10000) / 100
+  } else if (pct > 0.99) {
+    return Math.floor(pct * 10000) / 100
+  }
+  return Math.round(pct * 10000) / 100
+}
+
 export function VoteDetails({ status, vote, voteTime, isEnded }: Props) {
   const nayNum = weiToNum(vote.nay)
   const yeaNum = weiToNum(vote.yea)
   const total = nayNum + yeaNum
-  const nayPct = total > 0 ? (nayNum / total) * 100 : 0
-  const yeaPct = total > 0 ? (yeaNum / total) * 100 : 0
+  const nayPct = total > 0 ? formatFloatPct(nayNum / total) : 0
+  const yeaPct = total > 0 ? formatFloatPct(yeaNum / total) : 0
 
   const votingPower = weiToNum(vote.votingPower)
 
@@ -68,8 +77,8 @@ export function VoteDetails({ status, vote, voteTime, isEnded }: Props) {
           </Text>
         </DataTableRow>
 
-        <DataTableRow title="Minimal approval %">
-          {(yeaNum / votingPower) * 100}%{' '}
+        <DataTableRow title="Minimum approval %">
+          {formatFloatPct(yeaNum / votingPower)}%{' '}
           <Text as="span" color="secondary" size="xxs">
             (&gt;{weiToNum(vote.minAcceptQuorum) * 100}% needed)
           </Text>
