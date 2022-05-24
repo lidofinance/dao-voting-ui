@@ -56,7 +56,7 @@ import * as urls from 'modules/network/utils/urls'
 // }
 
 export function Header() {
-  const {chainId} = useWeb3()
+  const { chainId } = useWeb3()
   const [isBurgerOpened, setBurgerOpened] = useState(false)
   // const handleCloseMobileMenu = useCallback(() => setBurgerOpened(false), [])
   useScrollLock(isBurgerOpened)

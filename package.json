@@ -45,6 +45,7 @@
     "memory-cache": "0.2.0",
     "mkdirp": "1.0.4",
     "moment": "2.29.1",
+    "moment-duration-format": "^2.3.2",
     "next": "12.1.2",
     "next-connect": "0.12.2",
     "next-secure-headers": "2.2.0",

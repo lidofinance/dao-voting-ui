@@ -1,38 +1,65 @@
-import { debounce } from 'lodash'
 import { useMemo } from 'react'
-import { useRouter } from 'next/dist/client/router'
 import { useFormVoteInfo } from './useFormVoteInfo'
 import { useFormVoteSubmit } from './useFormVoteSubmit'
+import { useVotePassedCallback } from '../../hooks/useVotePassedCallback'
 
-import { Container, Block, Button, Input, Text } from '@lidofinance/lido-ui'
+import { Container, Block } from '@lidofinance/lido-ui'
+import { InputNumber } from 'modules/shared/ui/Controls/InputNumber'
 import { Title } from 'modules/shared/ui/Common/Title'
 import { Fieldset } from 'modules/shared/ui/Common/Fieldset'
 import { PageLoader } from 'modules/shared/ui/Common/PageLoader'
 import { VoteDetails } from 'modules/votes/ui/VoteDetails'
 import { TxRow } from 'modules/blockChain/ui/TxRow'
-import { Actions } from './VoteFormStyle'
+import { VoteFormActions } from '../VoteFormActions'
+import { VoteFormMustConnect } from '../VoteFormMustConnect'
+import { VoteFormVoterState } from '../VoteFormVoterState'
 
-import * as urls from 'modules/network/utils/urls'
+import { VoteStatus } from 'modules/votes/types'
 
 type Props = {
   voteId?: string
+  onChangeVoteId: React.ChangeEventHandler<HTMLInputElement>
 }
 
-export function VoteForm({ voteId }: Props) {
-  const router = useRouter()
+export function VoteForm({ voteId, onChangeVoteId }: Props) {
+  const {
+    swrVote,
+    swrCanVote,
+    swrCanExecute,
+    votePower,
+    voteTime,
+    isLoading,
+    isWalletConnected,
+    voterState,
+    doRevalidate,
+  } = useFormVoteInfo({ voteId })
 
-  const { swrVote, swrCanVote, swrCanExecute } = useFormVoteInfo({ voteId })
-  const { txVote, handleVote, isSubmitting } = useFormVoteSubmit({ voteId })
+  const { txVote, txEnact, handleVote, handleEnact, isSubmitting } =
+    useFormVoteSubmit({
+      voteId,
+      onFinish: doRevalidate,
+    })
 
-  const handleChangeVoteId = useMemo(() => {
-    return debounce((e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value
-      router.replace(urls.vote(value), undefined, {
-        scroll: false,
-        shallow: true,
-      })
-    }, 500)
-  }, [router])
+  const isPassed = useVotePassedCallback({
+    startDate: swrVote.data?.startDate.toNumber(),
+    voteTime,
+    onPass: doRevalidate,
+  })
+
+  const vote = swrVote.data
+  const canExecute = swrCanExecute.data
+
+  const status = useMemo(() => {
+    if (!vote) return null
+    if (vote.open && !vote.executed) return VoteStatus.Active
+    if (!vote.open && vote.executed) return VoteStatus.Executed
+    if (!vote.open && !vote.executed && canExecute) return VoteStatus.Pending
+    if (!vote.open && !vote.executed && !canExecute) return VoteStatus.Rejected
+  }, [vote, canExecute])
+
+  const isEndedBeforeTime =
+    status === VoteStatus.Rejected || status === VoteStatus.Executed
+  const isEnded = Boolean(isPassed) || isEndedBeforeTime
 
   return (
     <Container as="main" size="tight">
@@ -42,45 +69,63 @@ export function VoteForm({ voteId }: Props) {
       />
       <Block>
         <Fieldset>
-          <Input
+          <InputNumber
             label="Vote #"
             name="voteId"
             error={swrVote.error ? 'Vote not found' : undefined}
-            onChange={handleChangeVoteId}
+            onChange={onChangeVoteId}
             defaultValue={voteId}
           />
         </Fieldset>
 
-        {swrVote.isValidating && <PageLoader />}
+        {isLoading && <PageLoader />}
 
-        {!swrVote.isValidating && !swrCanVote.isValidating && swrVote.data && (
+        {!isLoading && swrVote.data && (
           <>
-            <VoteDetails vote={swrVote.data} />
+            <VoteDetails
+              vote={swrVote.data}
+              status={status!}
+              voteTime={voteTime!}
+              isEnded={isEnded}
+            />
 
-            {!txVote.isEmpty && <TxRow label="Vote" tx={txVote} />}
+            {!isWalletConnected && <VoteFormMustConnect />}
 
-            {swrCanVote.data === true && !txVote.isSuccess && (
-              <Actions>
-                <Button
-                  children="Nay"
-                  color="error"
-                  loading={isSubmitting === 'nay'}
-                  disabled={isSubmitting === 'yay'}
-                  onClick={() => handleVote('nay')}
+            {isWalletConnected && (
+              <>
+                <VoteFormVoterState
+                  votePower={votePower!}
+                  voterState={voterState!}
+                  canVote={swrCanVote.data!}
+                  isEnded={isEnded}
                 />
-                <Button
-                  children="Yay"
-                  loading={isSubmitting === 'yay'}
-                  disabled={isSubmitting === 'nay'}
-                  onClick={() => handleVote('yay')}
-                />
-              </Actions>
-            )}
 
-            {swrCanVote.data === false && !txVote.isSuccess && (
-              <Text size="xxs" color="secondary">
-                You can not vote
-              </Text>
+                {swrCanVote.data && (
+                  <>
+                    <br />
+                    <VoteFormActions
+                      canExecute={Boolean(canExecute)}
+                      isSubmitting={isSubmitting}
+                      onVote={handleVote}
+                      onEnact={handleEnact}
+                    />
+                  </>
+                )}
+
+                {!txVote.isEmpty && (
+                  <>
+                    <br />
+                    <TxRow label="Vote transaction" tx={txVote} />
+                  </>
+                )}
+
+                {!txEnact.isEmpty && (
+                  <>
+                    <br />
+                    <TxRow label="Vote enact" tx={txEnact} />
+                  </>
+                )}
+              </>
             )}
           </>
         )}

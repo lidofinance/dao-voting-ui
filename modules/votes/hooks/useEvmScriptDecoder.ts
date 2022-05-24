@@ -8,13 +8,11 @@ import {
   ACLAbi__factory,
   EasyTrackAbi__factory,
   FinanceAbi__factory,
-  LidoAppRepoAbi__factory,
   LidoDAOAbi__factory,
   MiniMeTokenAbi__factory,
   NodeOperatorsRegistryAbi__factory,
-  NodeOperatorsRegistryRepoAbi__factory,
   OracleAbi__factory,
-  OracleRepoAbi__factory,
+  RepoAbi__factory,
   StethAbi__factory,
   TokenManagerAbi__factory,
   TokenRecovererForManagerContractsAbi__factory,
@@ -52,12 +50,12 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
           [CONTRACT_ADDRESSES.TokenRecovererForManagerContracts[chainId]!]:
             TokenRecovererForManagerContractsAbi__factory.abi as any,
           [CONTRACT_ADDRESSES.LidoAppRepo[chainId]!]:
-            LidoAppRepoAbi__factory.abi as any,
+            RepoAbi__factory.abi as any,
           [CONTRACT_ADDRESSES.NodeOperatorsRegistryRepo[chainId]!]:
-            NodeOperatorsRegistryRepoAbi__factory.abi as any,
+            RepoAbi__factory.abi as any,
           [CONTRACT_ADDRESSES.Steth[chainId]!]: StethAbi__factory.abi as any,
           [CONTRACT_ADDRESSES.OracleRepo[chainId]!]:
-            OracleRepoAbi__factory.abi as any,
+            RepoAbi__factory.abi as any,
           [CONTRACT_ADDRESSES.Oracle[chainId]!]: OracleAbi__factory.abi as any,
         }),
       ),
