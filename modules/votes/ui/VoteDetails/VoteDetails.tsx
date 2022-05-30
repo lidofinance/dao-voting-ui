@@ -91,13 +91,13 @@ export function VoteDetails({ status, vote, voteTime, isEnded }: Props) {
 
       <VotesTitleWrap>
         <Text color="text" size="xxs">
-          <TextNay>Nay: {nayNum.toFixed(4)}</TextNay>{' '}
+          <TextNay>Nay: {Number(nayNum.toFixed(4))}</TextNay>{' '}
           <Text as="span" color="secondary" size="xxs">
             ({nayPct.toFixed(2)}%)
           </Text>
         </Text>
         <Text color="text" size="xxs">
-          <TextYay>Yay: {yeaNum.toFixed(4)}</TextYay>{' '}
+          <TextYay>Yay: {Number(yeaNum.toFixed(4))}</TextYay>{' '}
           <Text as="span" color="secondary" size="xxs">
             ({yeaPct.toFixed(2)}%)
           </Text>
