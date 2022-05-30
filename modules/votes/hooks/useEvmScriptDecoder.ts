@@ -17,6 +17,7 @@ import {
   TokenManagerAbi__factory,
   TokenRecovererForManagerContractsAbi__factory,
   VotingAbi__factory,
+  CompositePostRebaseBeaconReceiverAbi__factory,
 } from 'generated'
 import * as CONTRACT_ADDRESSES from 'modules/blockChain/contractAddresses'
 import { TreasuryAbi__factory } from 'generated/factories/TreasuryAbi__factory'
@@ -57,6 +58,8 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
           [CONTRACT_ADDRESSES.OracleRepo[chainId]!]:
             RepoAbi__factory.abi as any,
           [CONTRACT_ADDRESSES.Oracle[chainId]!]: OracleAbi__factory.abi as any,
+          [CONTRACT_ADDRESSES.CompositePostRebaseBeaconReceiver[chainId]!]:
+            CompositePostRebaseBeaconReceiverAbi__factory.abi as any,
         }),
       ),
     `evm-script-decoder-${chainId}`,
