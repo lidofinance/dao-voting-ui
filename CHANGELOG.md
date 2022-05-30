@@ -1,4 +1,21 @@
-# 0.1.0 (2022-05-24)
+# [0.2.0](https://github.com/lidofinance/dao-voting-ui/compare/0.1.0...0.2.0) (2022-05-30)
+
+
+### Bug Fixes
+
+* Release flow for the last time ([e08558c](https://github.com/lidofinance/dao-voting-ui/commit/e08558c5d426b01d2ea2a83e62f3fb15aa9b9738))
+* Release flow secrets passing ([66cd9dd](https://github.com/lidofinance/dao-voting-ui/commit/66cd9dd98d8c3baa03dd168772263559cbf466a6))
+* vote number formatting ([ead4e86](https://github.com/lidofinance/dao-voting-ui/commit/ead4e8635827794e57a30017219ac1fb6d1936f3))
+
+
+### Features
+
+* **common:** added .github codeowners ([a494933](https://github.com/lidofinance/dao-voting-ui/commit/a494933bd4f2c323b448406fc84b2604e4fbf4fd))
+* vote value numbers formatting ([a325ad0](https://github.com/lidofinance/dao-voting-ui/commit/a325ad0c04116dc738e6004998ee21e4d6b83f10))
+
+
+
+# [0.1.0](https://github.com/lidofinance/dao-voting-ui/compare/7e17bd025e1816b381a0e04d9f8294bf8167445f...0.1.0) (2022-05-24)
 
 
 ### Bug Fixes
