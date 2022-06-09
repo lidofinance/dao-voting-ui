@@ -37,7 +37,7 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
   } = useFormVoteInfo({ voteId })
 
   const revalidateDelayed = useCallback(() => {
-    setTimeout(() => doRevalidate(), 600)
+    setTimeout(() => doRevalidate(), 1000)
   }, [doRevalidate])
 
   const { txVote, txEnact, handleVote, handleEnact, isSubmitting } =
@@ -66,18 +66,18 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
 
     const { open, executed, phase } = vote
 
-    if (open && !executed && phase === 0 && !isPassedMain) {
-      return VoteStatus.ActiveMain
+    if (!open || isPassed) {
+      if (executed) return VoteStatus.Executed
+      if (canExecute) return VoteStatus.Pending
+      return VoteStatus.Rejected
     }
 
-    if (open && !executed && (phase === 1 || isPassedMain)) {
+    if (isPassedMain || (!executed && phase === 1)) {
       return VoteStatus.ActiveObjection
     }
 
-    if (!open && executed) return VoteStatus.Executed
-    if (!open && !executed && canExecute) return VoteStatus.Pending
-    if (!open && !executed && !canExecute) return VoteStatus.Rejected
-  }, [vote, canExecute, isPassedMain])
+    return VoteStatus.ActiveMain
+  }, [vote, canExecute, isPassed, isPassedMain])
 
   const isEndedBeforeTime =
     status === VoteStatus.Rejected || status === VoteStatus.Executed
