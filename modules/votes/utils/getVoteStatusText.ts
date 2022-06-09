@@ -1,7 +1,8 @@
 import { VoteStatus } from '../types'
 
 const VOTE_STATUS_TEXTS = {
-  [VoteStatus.Active]: 'Active',
+  [VoteStatus.ActiveMain]: 'Active — Main Phase',
+  [VoteStatus.ActiveObjection]: 'Active — Objection phase',
   [VoteStatus.Pending]: 'Passed',
   [VoteStatus.Executed]: 'Passed (Enacted)',
   [VoteStatus.Rejected]: 'Rejected',

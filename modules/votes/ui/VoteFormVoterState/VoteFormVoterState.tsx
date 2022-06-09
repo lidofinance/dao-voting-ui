@@ -1,9 +1,10 @@
 import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
 
 import { Text } from '@lidofinance/lido-ui'
-import { VoterState } from 'modules/votes/types'
+import { VoterState, VoteStatus } from 'modules/votes/types'
 
 type Props = {
+  status: VoteStatus
   canVote: boolean
   votePower: number
   voterState: VoterState
@@ -11,6 +12,7 @@ type Props = {
 }
 
 export function VoteFormVoterState({
+  status,
   votePower,
   voterState,
   canVote,
@@ -31,6 +33,12 @@ export function VoteFormVoterState({
         </Text>
         <br />
         (this was your balance when the vote started)
+        {status === VoteStatus.ActiveObjection && (
+          <>
+            <br />
+            Only Nay available in objection phase
+          </>
+        )}
       </Text>
     )
   }

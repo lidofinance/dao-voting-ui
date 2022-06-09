@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo, Fragment } from 'react'
 import { useFormVoteInfo } from './useFormVoteInfo'
 import { useFormVoteSubmit } from './useFormVoteSubmit'
 import { useVotePassedCallback } from '../../hooks/useVotePassedCallback'
@@ -26,24 +26,36 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
     swrVote,
     swrCanVote,
     swrCanExecute,
+    startDate,
     votePower,
     voteTime,
+    objectionPhaseTime,
     isLoading,
     isWalletConnected,
     voterState,
     doRevalidate,
   } = useFormVoteInfo({ voteId })
 
+  const revalidateDelayed = useCallback(() => {
+    setTimeout(() => doRevalidate(), 600)
+  }, [doRevalidate])
+
   const { txVote, txEnact, handleVote, handleEnact, isSubmitting } =
     useFormVoteSubmit({
       voteId,
-      onFinish: doRevalidate,
+      onFinish: revalidateDelayed,
     })
 
   const isPassed = useVotePassedCallback({
-    startDate: swrVote.data?.startDate.toNumber(),
+    startDate,
     voteTime,
-    onPass: doRevalidate,
+    onPass: revalidateDelayed,
+  })
+
+  const isPassedMain = useVotePassedCallback({
+    startDate,
+    voteTime: voteTime && objectionPhaseTime && voteTime - objectionPhaseTime,
+    onPass: revalidateDelayed,
   })
 
   const vote = swrVote.data
@@ -51,11 +63,21 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
 
   const status = useMemo(() => {
     if (!vote) return null
-    if (vote.open && !vote.executed) return VoteStatus.Active
-    if (!vote.open && vote.executed) return VoteStatus.Executed
-    if (!vote.open && !vote.executed && canExecute) return VoteStatus.Pending
-    if (!vote.open && !vote.executed && !canExecute) return VoteStatus.Rejected
-  }, [vote, canExecute])
+
+    const { open, executed, phase } = vote
+
+    if (open && !executed && phase === 0 && !isPassedMain) {
+      return VoteStatus.ActiveMain
+    }
+
+    if (open && !executed && (phase === 1 || isPassedMain)) {
+      return VoteStatus.ActiveObjection
+    }
+
+    if (!open && executed) return VoteStatus.Executed
+    if (!open && !executed && canExecute) return VoteStatus.Pending
+    if (!open && !executed && !canExecute) return VoteStatus.Rejected
+  }, [vote, canExecute, isPassedMain])
 
   const isEndedBeforeTime =
     status === VoteStatus.Rejected || status === VoteStatus.Executed
@@ -80,12 +102,13 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
 
         {isLoading && <PageLoader />}
 
-        {!isLoading && swrVote.data && (
-          <>
+        {!isLoading && swrVote.data && status && (
+          <Fragment key={voteId}>
             <VoteDetails
               vote={swrVote.data}
-              status={status!}
+              status={status}
               voteTime={voteTime!}
+              objectionPhaseTime={objectionPhaseTime!}
               isEnded={isEnded}
             />
 
@@ -94,6 +117,7 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
             {isWalletConnected && (
               <>
                 <VoteFormVoterState
+                  status={status}
                   votePower={votePower!}
                   voterState={voterState!}
                   canVote={swrCanVote.data!}
@@ -104,6 +128,7 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
                   <>
                     <br />
                     <VoteFormActions
+                      status={status}
                       canExecute={Boolean(canExecute)}
                       isSubmitting={isSubmitting}
                       onVote={handleVote}
@@ -127,7 +152,7 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
                 )}
               </>
             )}
-          </>
+          </Fragment>
         )}
       </Block>
     </Container>

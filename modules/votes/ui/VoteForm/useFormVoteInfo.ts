@@ -18,6 +18,11 @@ export function useFormVoteInfo({ voteId }: Args) {
 
   const swrVoteTime = ContractVoting.useSwrRpc('voteTime', [])
 
+  const swrObjectionPhaseTime = ContractVoting.useSwrRpc(
+    'objectionPhaseTime',
+    [],
+  )
+
   const swrVote = ContractVoting.useSwrRpc(
     Boolean(voteId) && 'getVote',
     [voteId!],
@@ -56,8 +61,11 @@ export function useFormVoteInfo({ voteId }: Args) {
     revalidateCanVote()
   }, [revalidateCanVote, revalidateVote, revalidateVoterState])
 
+  const startDate = swrVote.data?.startDate.toNumber()
   const votePower = swrBalanceAt.data && Number(formatEther(swrBalanceAt.data))
   const voteTime = swrVoteTime.data && swrVoteTime.data.toNumber()
+  const objectionPhaseTime =
+    swrObjectionPhaseTime.data && swrObjectionPhaseTime.data.toNumber()
 
   const isLoading =
     swrVoteTime.isValidating &&
@@ -75,12 +83,15 @@ export function useFormVoteInfo({ voteId }: Args) {
 
   return {
     swrVoteTime,
+    swrObjectionPhaseTime,
     swrVote,
     swrCanVote,
     swrCanExecute,
     swrBalanceAt,
     votePower,
     voteTime,
+    startDate,
+    objectionPhaseTime,
     isLoading,
     isWalletConnected,
     voterState,

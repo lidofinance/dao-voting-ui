@@ -1,9 +1,10 @@
 import { Button } from '@lidofinance/lido-ui'
 import { Actions } from './VoteFormActionsStyle'
 
-import type { VoteMode } from '../../types'
+import { VoteMode, VoteStatus } from '../../types'
 
 type Props = {
+  status: VoteStatus
   canExecute: boolean
   isSubmitting: false | VoteMode
   onVote: (mode: VoteMode) => void
@@ -11,6 +12,7 @@ type Props = {
 }
 
 export function VoteFormActions({
+  status,
   canExecute,
   isSubmitting,
   onVote,
@@ -26,12 +28,14 @@ export function VoteFormActions({
           disabled={isSubmitting && isSubmitting !== 'nay'}
           onClick={() => onVote('nay')}
         />
-        <Button
-          children="Yay"
-          loading={isSubmitting === 'yay'}
-          disabled={isSubmitting && isSubmitting !== 'yay'}
-          onClick={() => onVote('yay')}
-        />
+        {status === VoteStatus.ActiveMain && (
+          <Button
+            children="Yay"
+            loading={isSubmitting === 'yay'}
+            disabled={isSubmitting && isSubmitting !== 'yay'}
+            onClick={() => onVote('yay')}
+          />
+        )}
         {canExecute && (
           <Button
             color="success"

@@ -15,24 +15,23 @@ import {
 import { getVoteStatusText } from '../../utils/getVoteStatusText'
 import { Vote, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
+import { formatFloatPct } from 'modules/shared/utils/formatFloatPct'
 
 type Props = {
   vote: Vote
   status: VoteStatus
   voteTime: number
+  objectionPhaseTime: number
   isEnded: boolean
 }
 
-const formatFloatPct = (pct: number) => {
-  if (pct < 0.01) {
-    return Math.ceil(pct * 10000) / 100
-  } else if (pct > 0.99) {
-    return Math.floor(pct * 10000) / 100
-  }
-  return Math.round(pct * 10000) / 100
-}
-
-export function VoteDetails({ status, vote, voteTime, isEnded }: Props) {
+export function VoteDetails({
+  status,
+  vote,
+  voteTime,
+  objectionPhaseTime,
+  isEnded,
+}: Props) {
   const nayNum = weiToNum(vote.nay)
   const yeaNum = weiToNum(vote.yea)
   const total = nayNum + yeaNum
@@ -49,9 +48,17 @@ export function VoteDetails({ status, vote, voteTime, isEnded }: Props) {
         </DataTableRow>
 
         <VoteDetailsCountdown
-          isEndedBeforeTime={isEnded}
-          voteTime={voteTime}
+          title="Objection phase will start in"
           startDate={vote.startDate.toNumber()}
+          voteTime={voteTime - objectionPhaseTime}
+          isEndedBeforeTime={isEnded}
+        />
+
+        <VoteDetailsCountdown
+          title="Time remaining"
+          startDate={vote.startDate.toNumber()}
+          voteTime={voteTime}
+          isEndedBeforeTime={isEnded}
         />
 
         <DataTableRow title="Start date">

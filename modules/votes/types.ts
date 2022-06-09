@@ -6,7 +6,8 @@ export type Vote = UnwrapPromise<ReturnType<VotingAbi['getVote']>>
 export type VoteMode = 'yay' | 'nay' | 'enact'
 
 export enum VoteStatus {
-  Active = 'Active',
+  ActiveMain = 'ActiveMain',
+  ActiveObjection = 'ActiveObjection',
   Executed = 'Executed',
   Pending = 'Pending',
   Rejected = 'Rejected',
