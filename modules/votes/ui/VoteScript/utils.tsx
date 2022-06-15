@@ -1,6 +1,10 @@
-import { ABIElement } from 'evm-script-decoder/lib/types'
+import { ABIElement, EVMScriptDecoded } from 'evm-script-decoder/lib/types'
 
-export const formatCallString = (abi?: ABIElement, callData?: string[]) => {
+export const formatCallString = (
+  id: number,
+  abi?: ABIElement,
+  callData?: (string | EVMScriptDecoded)[],
+) => {
   let res = 'Code:\n'
 
   if (abi) {
@@ -16,7 +20,20 @@ export const formatCallString = (abi?: ABIElement, callData?: string[]) => {
 
   res += '\n\nCall data:\n'
   if (callData) {
-    res += callData.map((data, i) => `[${i}] ${data}`).join('\n')
+    res += callData
+      .map((data, i) => {
+        let callRes = `[${i + 1}] `
+        if (
+          typeof data === 'object' &&
+          abi?.inputs?.[i].name === '_evmScript'
+        ) {
+          callRes += `See parsed evm script at ${id}.${i + 1}`
+        } else {
+          callRes += data
+        }
+        return callRes
+      })
+      .join('\n')
   } else {
     res += '[call data not found]'
   }
