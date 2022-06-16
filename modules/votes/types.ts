@@ -10,6 +10,7 @@ export enum VoteStatus {
   ActiveObjection = 'ActiveObjection',
   Executed = 'Executed',
   Pending = 'Pending',
+  Passed = 'Passed',
   Rejected = 'Rejected',
 }
 

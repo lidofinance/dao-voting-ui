@@ -6,7 +6,7 @@ import { VoteMode, VoteStatus } from '../../types'
 type Props = {
   status: VoteStatus
   canVote: boolean
-  canExecute: boolean
+  canEnact: boolean
   isSubmitting: false | VoteMode
   onVote: (mode: VoteMode) => void
   onEnact: () => void
@@ -15,7 +15,7 @@ type Props = {
 export function VoteFormActions({
   status,
   canVote,
-  canExecute,
+  canEnact,
   isSubmitting,
   onVote,
   onEnact,
@@ -40,7 +40,7 @@ export function VoteFormActions({
             onClick={() => onVote('yay')}
           />
         )}
-        {canExecute && (
+        {canEnact && (
           <Button
             color="success"
             children="Enact"

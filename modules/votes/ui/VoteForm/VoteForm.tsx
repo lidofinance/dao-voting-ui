@@ -15,6 +15,7 @@ import { VoteFormMustConnect } from '../VoteFormMustConnect'
 import { VoteFormVoterState } from '../VoteFormVoterState'
 
 import { VoteStatus } from 'modules/votes/types'
+import { isVoteEnactable } from 'modules/votes/utils/isVoteEnactable'
 
 type Props = {
   voteId?: string
@@ -69,7 +70,8 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
 
     if (!open) {
       if (executed) return VoteStatus.Executed
-      if (canExecute) return VoteStatus.Pending
+      if (canExecute && !isVoteEnactable(vote)) return VoteStatus.Passed
+      if (canExecute && isVoteEnactable(vote)) return VoteStatus.Pending
       return VoteStatus.Rejected
     }
 
@@ -129,7 +131,9 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
                 <VoteFormActions
                   status={status}
                   canVote={Boolean(swrCanVote.data)}
-                  canExecute={Boolean(canExecute)}
+                  canEnact={
+                    Boolean(canExecute) && status === VoteStatus.Pending
+                  }
                   isSubmitting={isSubmitting}
                   onVote={handleVote}
                   onEnact={handleEnact}
