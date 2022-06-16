@@ -53,13 +53,20 @@ export function useFormVoteInfo({ voteId }: Args) {
   )
 
   const revalidateVote = swrVote.mutate
-  const revalidateVoterState = swrVoterState.mutate
   const revalidateCanVote = swrCanVote.mutate
+  const revalidateCanExecute = swrCanExecute.mutate
+  const revalidateVoterState = swrVoterState.mutate
   const doRevalidate = useCallback(() => {
     revalidateVote()
-    revalidateVoterState()
     revalidateCanVote()
-  }, [revalidateCanVote, revalidateVote, revalidateVoterState])
+    revalidateCanExecute()
+    revalidateVoterState()
+  }, [
+    revalidateVote,
+    revalidateCanVote,
+    revalidateCanExecute,
+    revalidateVoterState,
+  ])
 
   const startDate = swrVote.data?.startDate.toNumber()
   const votePower = swrBalanceAt.data && Number(formatEther(swrBalanceAt.data))

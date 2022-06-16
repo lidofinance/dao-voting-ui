@@ -37,7 +37,9 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
   } = useFormVoteInfo({ voteId })
 
   const revalidateDelayed = useCallback(() => {
-    setTimeout(() => doRevalidate(), 1000)
+    doRevalidate()
+    // Sometimes first revalidate glitching for unknown reason
+    // setTimeout(() => doRevalidate(), 1000)
   }, [doRevalidate])
 
   const { txVote, txEnact, handleVote, handleEnact, isSubmitting } =
@@ -52,7 +54,7 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
     onPass: revalidateDelayed,
   })
 
-  const isPassedMain = useVotePassedCallback({
+  useVotePassedCallback({
     startDate,
     voteTime: voteTime && objectionPhaseTime && voteTime - objectionPhaseTime,
     onPass: revalidateDelayed,
@@ -60,24 +62,23 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
 
   const vote = swrVote.data
   const canExecute = swrCanExecute.data
+  const { open, executed, phase } = vote || {}
 
   const status = useMemo(() => {
     if (!vote) return null
 
-    const { open, executed, phase } = vote
-
-    if (!open || isPassed) {
+    if (!open) {
       if (executed) return VoteStatus.Executed
       if (canExecute) return VoteStatus.Pending
       return VoteStatus.Rejected
     }
 
-    if (isPassedMain || (!executed && phase === 1)) {
+    if (!executed && phase === 1) {
       return VoteStatus.ActiveObjection
     }
 
     return VoteStatus.ActiveMain
-  }, [vote, canExecute, isPassed, isPassedMain])
+  }, [vote, open, executed, phase, canExecute])
 
   const isEndedBeforeTime =
     status === VoteStatus.Rejected || status === VoteStatus.Executed
@@ -124,18 +125,15 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
                   isEnded={isEnded}
                 />
 
-                {swrCanVote.data && (
-                  <>
-                    <br />
-                    <VoteFormActions
-                      status={status}
-                      canExecute={Boolean(canExecute)}
-                      isSubmitting={isSubmitting}
-                      onVote={handleVote}
-                      onEnact={handleEnact}
-                    />
-                  </>
-                )}
+                <br />
+                <VoteFormActions
+                  status={status}
+                  canVote={Boolean(swrCanVote.data)}
+                  canExecute={Boolean(canExecute)}
+                  isSubmitting={isSubmitting}
+                  onVote={handleVote}
+                  onEnact={handleEnact}
+                />
 
                 {!txVote.isEmpty && (
                   <>

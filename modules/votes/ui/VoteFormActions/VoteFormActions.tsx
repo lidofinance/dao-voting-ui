@@ -5,6 +5,7 @@ import { VoteMode, VoteStatus } from '../../types'
 
 type Props = {
   status: VoteStatus
+  canVote: boolean
   canExecute: boolean
   isSubmitting: false | VoteMode
   onVote: (mode: VoteMode) => void
@@ -13,6 +14,7 @@ type Props = {
 
 export function VoteFormActions({
   status,
+  canVote,
   canExecute,
   isSubmitting,
   onVote,
@@ -21,14 +23,16 @@ export function VoteFormActions({
   return (
     <>
       <Actions>
-        <Button
-          children="Nay"
-          color="error"
-          loading={isSubmitting === 'nay'}
-          disabled={isSubmitting && isSubmitting !== 'nay'}
-          onClick={() => onVote('nay')}
-        />
-        {status === VoteStatus.ActiveMain && (
+        {canVote && (
+          <Button
+            children="Nay"
+            color="error"
+            loading={isSubmitting === 'nay'}
+            disabled={isSubmitting && isSubmitting !== 'nay'}
+            onClick={() => onVote('nay')}
+          />
+        )}
+        {canVote && status === VoteStatus.ActiveMain && (
           <Button
             children="Yay"
             loading={isSubmitting === 'yay'}
