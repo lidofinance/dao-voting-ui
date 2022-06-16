@@ -29,3 +29,8 @@ export const CallWrapper = styled.div`
 export const CallTitle = styled(Text)`
   margin-bottom: ${props => props.theme.spaceMap.sm}px;
 `
+
+export const Padding = styled.div`
+  padding-left: 20px;
+  border-left: 2px solid ${p => p.theme.colors.borderLight};
+`
