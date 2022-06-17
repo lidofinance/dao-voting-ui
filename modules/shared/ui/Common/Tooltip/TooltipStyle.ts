@@ -64,7 +64,7 @@ export const Body = styled.div<BodyProps>`
   opacity: 0;
   width: max-content;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.foreground};
+  background-color: rgba(0, 0, 0, 0.8);
   pointer-events: none;
   transform: scale(0.6);
   transition: ${({ theme }) =>

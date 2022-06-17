@@ -21,7 +21,12 @@ export function Tooltip({
     <Wrap className={className}>
       {children}
       <Body position={position} style={{ maxWidth }}>
-        <Text size={12} weight={500} children={tooltip} />
+        <Text
+          size={12}
+          weight={500}
+          color="primaryContrast"
+          children={tooltip}
+        />
       </Body>
     </Wrap>
   )
