@@ -1,4 +1,4 @@
-import { useCallback, useMemo, Fragment } from 'react'
+import { useMemo, Fragment } from 'react'
 import { useFormVoteInfo } from './useFormVoteInfo'
 import { useFormVoteSubmit } from './useFormVoteSubmit'
 import { useVotePassedCallback } from '../../hooks/useVotePassedCallback'
@@ -25,11 +25,12 @@ type Props = {
 export function VoteForm({ voteId, onChangeVoteId }: Props) {
   const {
     swrVote,
-    swrCanVote,
-    swrCanExecute,
+    vote,
     startDate,
-    votePower,
     voteTime,
+    votePower,
+    canVote,
+    canExecute,
     objectionPhaseTime,
     isLoading,
     isWalletConnected,
@@ -37,31 +38,24 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
     doRevalidate,
   } = useFormVoteInfo({ voteId })
 
-  const revalidateDelayed = useCallback(() => {
-    // Immediate revalidation glitches sometime
-    setTimeout(() => doRevalidate(), 1000)
-  }, [doRevalidate])
-
   const { txVote, txEnact, handleVote, handleEnact, isSubmitting } =
     useFormVoteSubmit({
       voteId,
-      onFinish: revalidateDelayed,
+      onFinish: doRevalidate,
     })
 
-  const isPassed = useVotePassedCallback({
+  useVotePassedCallback({
     startDate,
     voteTime,
-    onPass: revalidateDelayed,
+    onPass: doRevalidate,
   })
 
   useVotePassedCallback({
     startDate,
     voteTime: voteTime && objectionPhaseTime && voteTime - objectionPhaseTime,
-    onPass: revalidateDelayed,
+    onPass: doRevalidate,
   })
 
-  const vote = swrVote.data
-  const canExecute = swrCanExecute.data
   const { open, executed, phase } = vote || {}
 
   const status = useMemo(() => {
@@ -81,9 +75,10 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
     return VoteStatus.ActiveMain
   }, [vote, open, executed, phase, canExecute])
 
-  const isEndedBeforeTime =
+  console.log(vote, status, open, executed, phase, canExecute, votePower)
+
+  const isEnded =
     status === VoteStatus.Rejected || status === VoteStatus.Executed
-  const isEnded = Boolean(isPassed) || isEndedBeforeTime
   const canEnact = Boolean(canExecute) && status === VoteStatus.Pending
 
   return (
@@ -105,10 +100,10 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
 
         {isLoading && <PageLoader />}
 
-        {!isLoading && swrVote.data && status && (
+        {!isLoading && vote && status && (
           <Fragment key={voteId}>
             <VoteDetails
-              vote={swrVote.data}
+              vote={vote}
               status={status}
               voteTime={voteTime!}
               objectionPhaseTime={objectionPhaseTime!}
@@ -123,7 +118,7 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
                   status={status}
                   votePower={votePower!}
                   voterState={voterState!}
-                  canVote={swrCanVote.data!}
+                  canVote={canVote}
                   canEnact={canEnact}
                   isEnded={isEnded}
                 />
@@ -131,7 +126,7 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
                 <br />
                 <VoteFormActions
                   status={status}
-                  canVote={Boolean(swrCanVote.data)}
+                  canVote={canVote}
                   canEnact={canEnact}
                   isSubmitting={isSubmitting}
                   onVote={handleVote}

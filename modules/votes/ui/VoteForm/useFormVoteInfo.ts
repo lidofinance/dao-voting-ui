@@ -1,7 +1,8 @@
 import { noop } from 'lodash'
 import { formatEther } from 'ethers/lib/utils'
-import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useCallback } from 'react'
+import { useSWR } from 'modules/network/hooks/useSwr'
+import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 
 import {
   ContractVoting,
@@ -14,94 +15,95 @@ type Args = {
 }
 
 export function useFormVoteInfo({ voteId }: Args) {
-  const { walletAddress, isWalletConnected } = useWeb3()
+  const { chainId, walletAddress, isWalletConnected } = useWeb3()
 
-  const swrVoteTime = ContractVoting.useSwrRpc('voteTime', [])
+  const swrVote = useSWR(
+    voteId ? [`vote-info`, voteId, chainId, walletAddress] : null,
+    async (
+      _,
+      _voteId: typeof voteId,
+      _chainId: typeof chainId,
+      _walletAddress: typeof walletAddress,
+    ) => {
+      if (!_voteId || !_walletAddress) return null
 
-  const swrObjectionPhaseTime = ContractVoting.useSwrRpc(
-    'objectionPhaseTime',
-    [],
-  )
+      const connectArg = { chainId: _chainId }
+      const contractVoting = ContractVoting.connectRpc(connectArg)
+      const contractToken = ContractGovernanceToken.connectRpc(connectArg)
 
-  const swrVote = ContractVoting.useSwrRpc(
-    Boolean(voteId) && 'getVote',
-    [voteId!],
+      const [
+        voteTime,
+        objectionPhaseTime,
+        vote,
+        canVote,
+        canExecute,
+        voterState,
+      ] = await Promise.all([
+        contractVoting.voteTime(),
+        contractVoting.objectionPhaseTime(),
+        contractVoting.getVote(_voteId),
+        contractVoting.canVote(_voteId, _walletAddress),
+        contractVoting.canExecute(_voteId),
+        contractVoting.getVoterState(_voteId, _walletAddress),
+      ])
+
+      const balanceAt = await contractToken.balanceOfAt(
+        _walletAddress,
+        vote.snapshotBlock,
+      )
+
+      const votePower = Number(formatEther(balanceAt))
+
+      return {
+        voteTime,
+        objectionPhaseTime,
+        vote,
+        canVote,
+        canExecute,
+        voterState,
+        votePower,
+      }
+    },
     { onError: noop },
   )
 
-  const swrCanVote = ContractVoting.useSwrRpc(
-    Boolean(voteId) && 'canVote',
-    [voteId!, walletAddress!],
-    { onError: noop },
-  )
-
-  const swrCanExecute = ContractVoting.useSwrRpc(
-    Boolean(voteId) && 'canExecute',
-    [voteId!],
-    { onError: noop },
-  )
-
-  const swrVoterState = ContractVoting.useSwrRpc(
-    Boolean(voteId && walletAddress) && 'getVoterState',
-    [voteId!, walletAddress!],
-    { onError: noop },
-  )
-
-  const swrBalanceAt = ContractGovernanceToken.useSwrRpc(
-    Boolean(walletAddress && swrVote.data) && 'balanceOfAt',
-    [walletAddress!, swrVote.data?.snapshotBlock!],
-  )
-
-  const revalidateVote = swrVote.mutate
-  const revalidateCanVote = swrCanVote.mutate
-  const revalidateCanExecute = swrCanExecute.mutate
-  const revalidateVoterState = swrVoterState.mutate
-  const doRevalidate = useCallback(() => {
-    revalidateVote()
-    revalidateCanVote()
-    revalidateCanExecute()
-    revalidateVoterState()
-  }, [
-    revalidateVote,
-    revalidateCanVote,
-    revalidateCanExecute,
-    revalidateVoterState,
-  ])
-
-  const startDate = swrVote.data?.startDate.toNumber()
-  const votePower = swrBalanceAt.data && Number(formatEther(swrBalanceAt.data))
-  const voteTime = swrVoteTime.data && swrVoteTime.data.toNumber()
-  const objectionPhaseTime =
-    swrObjectionPhaseTime.data && swrObjectionPhaseTime.data.toNumber()
-
-  const isLoading =
-    swrVoteTime.isValidating &&
-    swrVote.isValidating &&
-    swrCanExecute.isValidating
+  const vote = swrVote.data?.vote
+  const startDate = vote?.startDate.toNumber()
+  const voteTime = swrVote.data?.voteTime.toNumber()
+  const objectionPhaseTime = swrVote.data?.objectionPhaseTime.toNumber()
+  const votePower = swrVote.data?.votePower
+  const canVote = Boolean(swrVote.data?.canVote)
+  const canExecute = swrVote.data?.canExecute
+  const isLoading = swrVote.initialLoading
 
   const voterState =
-    swrVoterState.data === undefined
+    swrVote.data?.voterState === undefined
       ? null
-      : swrVoterState.data === 0
+      : swrVote.data.voterState === 0
       ? VoterState.NotVoted
-      : swrVoterState.data === 1
+      : swrVote.data.voterState === 1
       ? VoterState.VotedYay
       : VoterState.VotedNay
 
+  const mutateFn = swrVote.mutate
+  const doRevalidate = useCallback(() => {
+    // Immediate revalidation glitches sometimes
+    // That's why there is timeout
+    setTimeout(() => mutateFn(), 1200)
+  }, [mutateFn])
+
   return {
-    swrVoteTime,
-    swrObjectionPhaseTime,
     swrVote,
-    swrCanVote,
-    swrCanExecute,
-    swrBalanceAt,
-    votePower,
+    vote,
     voteTime,
+    votePower,
+    voterState,
     startDate,
     objectionPhaseTime,
+    canVote,
+    canExecute,
     isLoading,
     isWalletConnected,
-    voterState,
     doRevalidate,
   }
 }

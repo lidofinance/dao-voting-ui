@@ -54,7 +54,11 @@ export function VoteFormVoterState({
         {status === VoteStatus.ActiveObjection && (
           <>
             <br />
-            Only Nay available in objection phase
+            Only{' '}
+            <Text as="span" size="xs" color="text">
+              Nay
+            </Text>{' '}
+            available in objection phase
           </>
         )}
       </Text>
