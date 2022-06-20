@@ -1,5 +1,5 @@
 import { DataTable, DataTableRow, Text } from '@lidofinance/lido-ui'
-import { Tooltip } from 'modules/shared/ui/Common/Tooltip'
+import { VotePhasesTooltip } from '../VotePhasesTooltip'
 import { FormattedDate } from 'modules/shared/ui/Utils/FormattedDate'
 import { VoteScript } from '../VoteScript'
 import { VoteDetailsCountdown } from '../VoteDetailsCountdown'
@@ -46,21 +46,9 @@ export function VoteDetails({
       <DataTable>
         <DataTableRow
           title={
-            <Tooltip
-              position="bottom-left"
-              maxWidth={360}
-              tooltip={
-                <>
-                  Each voting comes in two phases.
-                  <br />
-                  In the first phase (or&nbsp;Main&nbsp;phase), participants can
-                  either vote pro or contra, whereas in the second phase only
-                  objections can be submitted.
-                </>
-              }
-            >
+            <VotePhasesTooltip position="bottom-left">
               <>Status &#9432;</>
-            </Tooltip>
+            </VotePhasesTooltip>
           }
         >
           <StatusText status={status}>{getVoteStatusText(status)}</StatusText>
@@ -103,7 +91,7 @@ export function VoteDetails({
           </Text>
         </DataTableRow>
 
-        <DataTableRow title="Minimum approval %">
+        <DataTableRow title="Approval %">
           {formatFloatPct(yeaNum / votingPower)}%{' '}
           <Text as="span" color="secondary" size="xxs">
             (&gt;{weiToNum(vote.minAcceptQuorum) * 100}% needed)

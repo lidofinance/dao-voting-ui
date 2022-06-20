@@ -1,5 +1,5 @@
 import { Button } from '@lidofinance/lido-ui'
-import { Actions } from './VoteFormActionsStyle'
+import { Actions, PhasesTooltip } from './VoteFormActionsStyle'
 
 import { VoteMode, VoteStatus } from '../../types'
 
@@ -20,6 +20,18 @@ export function VoteFormActions({
   onVote,
   onEnact,
 }: Props) {
+  const yayBtn = (
+    <Button
+      children="Yay"
+      loading={isSubmitting === 'yay'}
+      disabled={
+        (isSubmitting && isSubmitting !== 'yay') ||
+        status === VoteStatus.ActiveObjection
+      }
+      onClick={() => onVote('yay')}
+    />
+  )
+
   return (
     <>
       <Actions>
@@ -32,13 +44,14 @@ export function VoteFormActions({
             onClick={() => onVote('nay')}
           />
         )}
-        {canVote && status === VoteStatus.ActiveMain && (
-          <Button
-            children="Yay"
-            loading={isSubmitting === 'yay'}
-            disabled={isSubmitting && isSubmitting !== 'yay'}
-            onClick={() => onVote('yay')}
-          />
+        {canVote && (
+          <>
+            {status === VoteStatus.ActiveObjection ? (
+              <PhasesTooltip position="top-right">{yayBtn}</PhasesTooltip>
+            ) : (
+              yayBtn
+            )}
+          </>
         )}
         {canEnact && (
           <Button

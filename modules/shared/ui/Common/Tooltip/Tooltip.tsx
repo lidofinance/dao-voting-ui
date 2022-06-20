@@ -2,6 +2,8 @@ import React from 'react'
 import { Text } from 'modules/shared/ui/Common/Text'
 import { Wrap, Body, Position } from './TooltipStyle'
 
+export type { Position } from './TooltipStyle'
+
 type Props = {
   position?: Position
   tooltip?: React.ReactNode

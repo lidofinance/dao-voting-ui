@@ -6,6 +6,7 @@ import { VoterState, VoteStatus } from 'modules/votes/types'
 type Props = {
   status: VoteStatus
   canVote: boolean
+  canEnact: boolean
   votePower: number
   voterState: VoterState
   isEnded: boolean
@@ -13,16 +14,33 @@ type Props = {
 
 export function VoteFormVoterState({
   status,
+  canVote,
+  canEnact,
   votePower,
   voterState,
-  canVote,
   isEnded,
 }: Props) {
   const { data: symbol } = useGovernanceSymbol()
 
+  const isMainPhase = status === VoteStatus.ActiveMain
+  const isObjPhase = status === VoteStatus.ActiveObjection
   const isNotVoted = voterState === VoterState.NotVoted
   const isVotedYay = voterState === VoterState.VotedYay
   const isVotedNay = voterState === VoterState.VotedNay
+
+  const elVoteIsClosed = (
+    <Text size="xs" color="secondary">
+      This vote is closed
+    </Text>
+  )
+
+  const elEnactText = (
+    <Text size="xs" color="secondary">
+      The voting period is closed and the vote has passed.
+      <br />
+      Anyone can now enact this vote to execute its action.
+    </Text>
+  )
 
   if (canVote && isNotVoted) {
     return (
@@ -57,7 +75,7 @@ export function VoteFormVoterState({
           </Text>
         </Text>
 
-        {canVote && (
+        {canVote && (isMainPhase || (isObjPhase && isVotedYay)) && (
           <>
             <br />
             <Text size="xs" color="secondary">
@@ -70,12 +88,17 @@ export function VoteFormVoterState({
           </>
         )}
 
-        {isEnded === true && (
+        {canEnact && isEnded && (
           <>
             <br />
-            <Text size="xs" color="secondary">
-              This vote is closed
-            </Text>
+            {elEnactText}
+          </>
+        )}
+
+        {!canEnact && isEnded && (
+          <>
+            <br />
+            {elVoteIsClosed}
           </>
         )}
       </>
@@ -90,12 +113,12 @@ export function VoteFormVoterState({
     )
   }
 
-  if (isEnded === true && !canVote) {
-    return (
-      <Text size="xs" color="secondary">
-        This vote is closed
-      </Text>
-    )
+  if (canEnact) {
+    return elEnactText
+  }
+
+  if (isEnded && !canVote) {
+    return elVoteIsClosed
   }
 
   return null

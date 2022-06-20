@@ -38,9 +38,8 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
   } = useFormVoteInfo({ voteId })
 
   const revalidateDelayed = useCallback(() => {
-    doRevalidate()
-    // Sometimes first revalidate glitching for unknown reason
-    // setTimeout(() => doRevalidate(), 1000)
+    // Immediate revalidation glitches sometime
+    setTimeout(() => doRevalidate(), 1000)
   }, [doRevalidate])
 
   const { txVote, txEnact, handleVote, handleEnact, isSubmitting } =
@@ -85,6 +84,7 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
   const isEndedBeforeTime =
     status === VoteStatus.Rejected || status === VoteStatus.Executed
   const isEnded = Boolean(isPassed) || isEndedBeforeTime
+  const canEnact = Boolean(canExecute) && status === VoteStatus.Pending
 
   return (
     <Container as="main" size="tight">
@@ -124,6 +124,7 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
                   votePower={votePower!}
                   voterState={voterState!}
                   canVote={swrCanVote.data!}
+                  canEnact={canEnact}
                   isEnded={isEnded}
                 />
 
@@ -131,9 +132,7 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
                 <VoteFormActions
                   status={status}
                   canVote={Boolean(swrCanVote.data)}
-                  canEnact={
-                    Boolean(canExecute) && status === VoteStatus.Pending
-                  }
+                  canEnact={canEnact}
                   isSubmitting={isSubmitting}
                   onVote={handleVote}
                   onEnact={handleEnact}
