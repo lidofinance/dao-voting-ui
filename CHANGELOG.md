@@ -1,3 +1,12 @@
+# [0.3.0](https://github.com/lidofinance/dao-voting-ui/compare/0.2.0...0.3.0) (2022-06-21)
+
+
+### Features
+
+* Make release flow up-to date ([bd17ae4](https://github.com/lidofinance/dao-voting-ui/commit/bd17ae498c773dacd8f84daba1a104d93db12b28))
+
+
+
 # [0.2.0](https://github.com/lidofinance/dao-voting-ui/compare/0.1.0...0.2.0) (2022-05-30)
 
 
