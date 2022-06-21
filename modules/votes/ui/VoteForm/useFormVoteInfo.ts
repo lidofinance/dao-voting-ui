@@ -25,34 +25,34 @@ export function useFormVoteInfo({ voteId }: Args) {
       _chainId: typeof chainId,
       _walletAddress: typeof walletAddress,
     ) => {
-      if (!_voteId || !_walletAddress) return null
+      if (!_voteId) return null
 
       const connectArg = { chainId: _chainId }
       const contractVoting = ContractVoting.connectRpc(connectArg)
       const contractToken = ContractGovernanceToken.connectRpc(connectArg)
 
-      const [
-        voteTime,
-        objectionPhaseTime,
-        vote,
-        canVote,
-        canExecute,
-        voterState,
-      ] = await Promise.all([
-        contractVoting.voteTime(),
-        contractVoting.objectionPhaseTime(),
-        contractVoting.getVote(_voteId),
-        contractVoting.canVote(_voteId, _walletAddress),
-        contractVoting.canExecute(_voteId),
-        contractVoting.getVoterState(_voteId, _walletAddress),
-      ])
+      const [voteTime, objectionPhaseTime, vote, canExecute] =
+        await Promise.all([
+          contractVoting.voteTime(),
+          contractVoting.objectionPhaseTime(),
+          contractVoting.getVote(_voteId),
+          contractVoting.canExecute(_voteId),
+        ])
 
-      const balanceAt = await contractToken.balanceOfAt(
-        _walletAddress,
-        vote.snapshotBlock,
-      )
+      const [canVote, voterState, votePower] = await (async () => {
+        if (!_walletAddress) {
+          return [false, null, 0] as const
+        }
 
-      const votePower = Number(formatEther(balanceAt))
+        const [_canVote, _voterState, balanceAt] = await Promise.all([
+          contractVoting.canVote(_voteId, _walletAddress),
+          contractVoting.getVoterState(_voteId, _walletAddress),
+          contractToken.balanceOfAt(_walletAddress, vote.snapshotBlock),
+        ])
+        const _votePower = Number(formatEther(balanceAt))
+
+        return [_canVote, _voterState, _votePower] as const
+      })()
 
       return {
         voteTime,

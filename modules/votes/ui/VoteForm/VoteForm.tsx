@@ -75,8 +75,6 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
     return VoteStatus.ActiveMain
   }, [vote, open, executed, phase, canExecute])
 
-  console.log(vote, status, open, executed, phase, canExecute, votePower)
-
   const isEnded =
     status === VoteStatus.Rejected || status === VoteStatus.Executed
   const canEnact = Boolean(canExecute) && status === VoteStatus.Pending
