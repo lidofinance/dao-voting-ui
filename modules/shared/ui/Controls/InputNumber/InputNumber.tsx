@@ -6,10 +6,11 @@ type InputProps = React.ComponentProps<typeof Input>
 
 export function InputNumber({
   value: valueProp,
+  defaultValue = '',
   onChange,
   ...props
 }: InputProps) {
-  const [valueState, setValue] = useState('')
+  const [valueState, setValue] = useState(defaultValue)
 
   const value = valueProp !== undefined ? valueProp : valueState
 

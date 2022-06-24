@@ -1,38 +1,59 @@
 import { Button } from '@lidofinance/lido-ui'
-import { Actions } from './VoteFormActionsStyle'
+import { Actions, PhasesTooltip } from './VoteFormActionsStyle'
 
-import type { VoteMode } from '../../types'
+import { VoteMode, VoteStatus } from '../../types'
 
 type Props = {
-  canExecute: boolean
+  status: VoteStatus
+  canVote: boolean
+  canEnact: boolean
   isSubmitting: false | VoteMode
   onVote: (mode: VoteMode) => void
   onEnact: () => void
 }
 
 export function VoteFormActions({
-  canExecute,
+  status,
+  canVote,
+  canEnact,
   isSubmitting,
   onVote,
   onEnact,
 }: Props) {
+  const yayBtn = (
+    <Button
+      children="Yay"
+      loading={isSubmitting === 'yay'}
+      disabled={
+        (isSubmitting && isSubmitting !== 'yay') ||
+        status === VoteStatus.ActiveObjection
+      }
+      onClick={() => onVote('yay')}
+    />
+  )
+
   return (
     <>
       <Actions>
-        <Button
-          children="Nay"
-          color="error"
-          loading={isSubmitting === 'nay'}
-          disabled={isSubmitting && isSubmitting !== 'nay'}
-          onClick={() => onVote('nay')}
-        />
-        <Button
-          children="Yay"
-          loading={isSubmitting === 'yay'}
-          disabled={isSubmitting && isSubmitting !== 'yay'}
-          onClick={() => onVote('yay')}
-        />
-        {canExecute && (
+        {canVote && (
+          <Button
+            children="Nay"
+            color="error"
+            loading={isSubmitting === 'nay'}
+            disabled={isSubmitting && isSubmitting !== 'nay'}
+            onClick={() => onVote('nay')}
+          />
+        )}
+        {canVote && (
+          <>
+            {status === VoteStatus.ActiveObjection ? (
+              <PhasesTooltip position="top-right">{yayBtn}</PhasesTooltip>
+            ) : (
+              yayBtn
+            )}
+          </>
+        )}
+        {canEnact && (
           <Button
             color="success"
             children="Enact"

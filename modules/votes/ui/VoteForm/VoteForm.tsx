@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, Fragment } from 'react'
 import { useFormVoteInfo } from './useFormVoteInfo'
 import { useFormVoteSubmit } from './useFormVoteSubmit'
 import { useVotePassedCallback } from '../../hooks/useVotePassedCallback'
@@ -15,6 +15,7 @@ import { VoteFormMustConnect } from '../VoteFormMustConnect'
 import { VoteFormVoterState } from '../VoteFormVoterState'
 
 import { VoteStatus } from 'modules/votes/types'
+import { isVoteEnactable } from 'modules/votes/utils/isVoteEnactable'
 
 type Props = {
   voteId?: string
@@ -24,10 +25,13 @@ type Props = {
 export function VoteForm({ voteId, onChangeVoteId }: Props) {
   const {
     swrVote,
-    swrCanVote,
-    swrCanExecute,
-    votePower,
+    vote,
+    startDate,
     voteTime,
+    votePower,
+    canVote,
+    canExecute,
+    objectionPhaseTime,
     isLoading,
     isWalletConnected,
     voterState,
@@ -40,26 +44,40 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
       onFinish: doRevalidate,
     })
 
-  const isPassed = useVotePassedCallback({
-    startDate: swrVote.data?.startDate.toNumber(),
+  useVotePassedCallback({
+    startDate,
     voteTime,
     onPass: doRevalidate,
   })
 
-  const vote = swrVote.data
-  const canExecute = swrCanExecute.data
+  useVotePassedCallback({
+    startDate,
+    voteTime: voteTime && objectionPhaseTime && voteTime - objectionPhaseTime,
+    onPass: doRevalidate,
+  })
+
+  const { open, executed, phase } = vote || {}
 
   const status = useMemo(() => {
     if (!vote) return null
-    if (vote.open && !vote.executed) return VoteStatus.Active
-    if (!vote.open && vote.executed) return VoteStatus.Executed
-    if (!vote.open && !vote.executed && canExecute) return VoteStatus.Pending
-    if (!vote.open && !vote.executed && !canExecute) return VoteStatus.Rejected
-  }, [vote, canExecute])
 
-  const isEndedBeforeTime =
+    if (!open) {
+      if (executed) return VoteStatus.Executed
+      if (canExecute && !isVoteEnactable(vote)) return VoteStatus.Passed
+      if (canExecute && isVoteEnactable(vote)) return VoteStatus.Pending
+      return VoteStatus.Rejected
+    }
+
+    if (!executed && phase === 1) {
+      return VoteStatus.ActiveObjection
+    }
+
+    return VoteStatus.ActiveMain
+  }, [vote, open, executed, phase, canExecute])
+
+  const isEnded =
     status === VoteStatus.Rejected || status === VoteStatus.Executed
-  const isEnded = Boolean(isPassed) || isEndedBeforeTime
+  const canEnact = Boolean(canExecute) && status === VoteStatus.Pending
 
   return (
     <Container as="main" size="tight">
@@ -80,12 +98,13 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
 
         {isLoading && <PageLoader />}
 
-        {!isLoading && swrVote.data && (
-          <>
+        {!isLoading && vote && status && (
+          <Fragment key={voteId}>
             <VoteDetails
-              vote={swrVote.data}
-              status={status!}
+              vote={vote}
+              status={status}
               voteTime={voteTime!}
+              objectionPhaseTime={objectionPhaseTime!}
               isEnded={isEnded}
             />
 
@@ -94,23 +113,23 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
             {isWalletConnected && (
               <>
                 <VoteFormVoterState
+                  status={status}
                   votePower={votePower!}
                   voterState={voterState!}
-                  canVote={swrCanVote.data!}
+                  canVote={canVote}
+                  canEnact={canEnact}
                   isEnded={isEnded}
                 />
 
-                {swrCanVote.data && (
-                  <>
-                    <br />
-                    <VoteFormActions
-                      canExecute={Boolean(canExecute)}
-                      isSubmitting={isSubmitting}
-                      onVote={handleVote}
-                      onEnact={handleEnact}
-                    />
-                  </>
-                )}
+                <br />
+                <VoteFormActions
+                  status={status}
+                  canVote={canVote}
+                  canEnact={canEnact}
+                  isSubmitting={isSubmitting}
+                  onVote={handleVote}
+                  onEnact={handleEnact}
+                />
 
                 {!txVote.isEmpty && (
                   <>
@@ -127,7 +146,7 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
                 )}
               </>
             )}
-          </>
+          </Fragment>
         )}
       </Block>
     </Container>

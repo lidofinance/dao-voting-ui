@@ -35,6 +35,10 @@ type CallArgs = {
   library: Library
 }
 
+type CallRpcArgs = {
+  chainId: CHAINS
+}
+
 export function createContractHelpers<F extends Factory>({
   address,
   factory,
@@ -51,15 +55,16 @@ export function createContractHelpers<F extends Factory>({
     return factory.connect(address[chainId] as string, library) as Instance
   }
 
+  function connectRpc({ chainId }: CallRpcArgs) {
+    const library = getStaticRpcBatchProvider(chainId, getRpcUrl(chainId))
+    return connect({ chainId, library })
+  }
+
   function useInstanceRpc() {
     const { chainId } = useWeb3()
 
     return useGlobalMemo(
-      () =>
-        connect({
-          chainId,
-          library: getStaticRpcBatchProvider(chainId, getRpcUrl(chainId)),
-        }),
+      () => connectRpc({ chainId }),
       `contract-rpc-${chainId}-${address[chainId]}`,
     )
   }
@@ -107,6 +112,7 @@ export function createContractHelpers<F extends Factory>({
     address,
     factory,
     connect,
+    connectRpc,
     useRpc: useInstanceRpc,
     useWeb3: useInstanceWeb3,
     useSwrWeb3,

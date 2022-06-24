@@ -3,25 +3,23 @@ import { useVoteTimeCountdown } from 'modules/votes/hooks/useVoteTimeCountdown'
 import { DataTableRow } from '@lidofinance/lido-ui'
 
 type Props = {
-  isEndedBeforeTime: boolean
-  voteTime: number
+  title: React.ReactNode
   startDate: number
+  voteTime: number
+  isEndedBeforeTime: boolean
 }
 
 export function VoteDetailsCountdown({
-  isEndedBeforeTime,
-  voteTime,
+  title,
   startDate,
+  voteTime,
+  isEndedBeforeTime,
 }: Props) {
-  const timeDelta = useVoteTimeCountdown(voteTime, startDate)
+  const timeDelta = useVoteTimeCountdown(startDate, voteTime)
 
   if (timeDelta.isPassed || isEndedBeforeTime) {
     return null
   }
 
-  return (
-    <DataTableRow title="Time remaining">
-      {timeDelta.diffFormatted}
-    </DataTableRow>
-  )
+  return <DataTableRow title={title}>{timeDelta.diffFormatted}</DataTableRow>
 }

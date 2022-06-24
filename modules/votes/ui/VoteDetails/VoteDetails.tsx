@@ -1,4 +1,5 @@
 import { DataTable, DataTableRow, Text } from '@lidofinance/lido-ui'
+import { VotePhasesTooltip } from '../VotePhasesTooltip'
 import { FormattedDate } from 'modules/shared/ui/Utils/FormattedDate'
 import { VoteScript } from '../VoteScript'
 import { VoteDetailsCountdown } from '../VoteDetailsCountdown'
@@ -15,24 +16,23 @@ import {
 import { getVoteStatusText } from '../../utils/getVoteStatusText'
 import { Vote, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
+import { formatFloatPct } from 'modules/shared/utils/formatFloatPct'
 
 type Props = {
   vote: Vote
   status: VoteStatus
   voteTime: number
+  objectionPhaseTime: number
   isEnded: boolean
 }
 
-const formatFloatPct = (pct: number) => {
-  if (pct < 0.01) {
-    return Math.ceil(pct * 10000) / 100
-  } else if (pct > 0.99) {
-    return Math.floor(pct * 10000) / 100
-  }
-  return Math.round(pct * 10000) / 100
-}
-
-export function VoteDetails({ status, vote, voteTime, isEnded }: Props) {
+export function VoteDetails({
+  status,
+  vote,
+  voteTime,
+  objectionPhaseTime,
+  isEnded,
+}: Props) {
   const nayNum = weiToNum(vote.nay)
   const yeaNum = weiToNum(vote.yea)
   const total = nayNum + yeaNum
@@ -44,14 +44,28 @@ export function VoteDetails({ status, vote, voteTime, isEnded }: Props) {
   return (
     <>
       <DataTable>
-        <DataTableRow title="Status">
+        <DataTableRow
+          title={
+            <VotePhasesTooltip position="bottom-left">
+              <>Status &#9432;</>
+            </VotePhasesTooltip>
+          }
+        >
           <StatusText status={status}>{getVoteStatusText(status)}</StatusText>
         </DataTableRow>
 
         <VoteDetailsCountdown
-          isEndedBeforeTime={isEnded}
-          voteTime={voteTime}
+          title="Objection phase will start in"
           startDate={vote.startDate.toNumber()}
+          voteTime={voteTime - objectionPhaseTime}
+          isEndedBeforeTime={isEnded}
+        />
+
+        <VoteDetailsCountdown
+          title="Time remaining"
+          startDate={vote.startDate.toNumber()}
+          voteTime={voteTime}
+          isEndedBeforeTime={isEnded}
         />
 
         <DataTableRow title="Start date">
@@ -77,7 +91,7 @@ export function VoteDetails({ status, vote, voteTime, isEnded }: Props) {
           </Text>
         </DataTableRow>
 
-        <DataTableRow title="Minimum approval %">
+        <DataTableRow title="Approval %">
           {formatFloatPct(yeaNum / votingPower)}%{' '}
           <Text as="span" color="secondary" size="xxs">
             (&gt;{weiToNum(vote.minAcceptQuorum) * 100}% needed)

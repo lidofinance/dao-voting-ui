@@ -33,8 +33,9 @@ export function useTransactionSender<A extends unknown[]>(
     (finishStatus: TxStatus, finishTx: ResultTx) => {
       setStatus(finishStatus)
       if (finishStatus === 'success') onFinish?.(finishTx, finishStatus)
+      if (finishStatus === 'failed') onError?.()
     },
-    [onFinish],
+    [onFinish, onError],
   )
 
   const send = useCallback(
