@@ -1,3 +1,4 @@
+import ms from 'ms'
 import { Cache } from 'memory-cache'
 import getConfig from 'next/config'
 import type { NextApiRequest, NextApiResponse } from 'next'
@@ -12,6 +13,8 @@ const { serverRuntimeConfig } = getConfig()
 const { etherscanApiKey } = serverRuntimeConfig
 
 const cache = new Cache<string, unknown>()
+
+const ABORT_TIMEOUT = ms('5s')
 
 export default async function etherscan(
   req: NextApiRequest,
@@ -67,13 +70,18 @@ export default async function etherscan(
     if (cached) {
       res.status(200).json(cached)
     } else {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), ABORT_TIMEOUT)
+
       const requested = await fetchWithFallback([url], chainId, {
         method: 'POST',
         body: JSON.stringify(req.body),
+        signal: controller.signal,
       })
 
       const { result } = await requested.json()
 
+      clearTimeout(timeoutId)
       cache.put(url, result, ETHERSCAN_CACHE_TTL)
       res.status(requested.status).json(result)
     }
