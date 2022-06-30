@@ -58,8 +58,6 @@ export default async function etherscan(
 
     const url = `${etherscanUrl}?${queryParams.join('&')}`
 
-    console.log(url)
-
     const requested = await fetchWithFallback([url], chainId, {
       method: 'POST',
       body: JSON.stringify(req.body),
