@@ -1,3 +1,4 @@
+import { Cache } from 'memory-cache'
 import getConfig from 'next/config'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { ChainNames, parseChainId } from 'modules/blockChain/chains'
@@ -5,9 +6,12 @@ import { fetchWithFallback } from 'modules/network/utils/fetchWithFallback'
 import { CHAINS } from '@lido-sdk/constants'
 import { logger } from 'modules/shared/utils/log'
 import clone from 'just-clone'
+import { ETHERSCAN_CACHE_TTL } from 'modules/config'
 
 const { serverRuntimeConfig } = getConfig()
 const { etherscanApiKey } = serverRuntimeConfig
+
+const cache = new Cache<string, unknown>()
 
 export default async function etherscan(
   req: NextApiRequest,
@@ -58,14 +62,21 @@ export default async function etherscan(
 
     const url = `${etherscanUrl}?${queryParams.join('&')}`
 
-    const requested = await fetchWithFallback([url], chainId, {
-      method: 'POST',
-      body: JSON.stringify(req.body),
-    })
+    const cached = cache.get(url)
 
-    const responded = await requested.json()
+    if (cached) {
+      res.status(200).json(cached)
+    } else {
+      const requested = await fetchWithFallback([url], chainId, {
+        method: 'POST',
+        body: JSON.stringify(req.body),
+      })
 
-    res.status(requested.status).json(responded.result)
+      const { result } = await requested.json()
+
+      cache.put(url, result, ETHERSCAN_CACHE_TTL)
+      res.status(requested.status).json(result)
+    }
 
     logger.info('Request to api/etherscan successfully fullfilled', {
       ...requestInfo,
