@@ -4,6 +4,7 @@ import { buildInfo } from './buildInfo'
 import { chainInfo } from './chainInfo'
 import { METRICS_PREFIX } from './constants'
 import { contractInfo } from './contractInfo'
+import { etherscanResponseTime, rpcResponseTime } from './responseTime'
 
 const registry = new Registry()
 
@@ -12,6 +13,8 @@ if (process.env.NODE_ENV === 'production') {
   registry.registerMetric(chainInfo)
   registry.registerMetric(ethereumResponse)
   registry.registerMetric(contractInfo)
+  registry.registerMetric(rpcResponseTime)
+  registry.registerMetric(etherscanResponseTime)
 
   collectDefaultMetrics({ prefix: METRICS_PREFIX, register: registry })
 }

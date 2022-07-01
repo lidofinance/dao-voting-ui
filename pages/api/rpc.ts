@@ -4,6 +4,7 @@ import { getRpcJsonUrls } from 'modules/blockChain/utils/getRpcUrls'
 import { fetchWithFallback } from 'modules/network/utils/fetchWithFallback'
 import { logger } from 'modules/shared/utils/log'
 import clone from 'just-clone'
+import { rpcResponseTime } from 'modules/shared/metrics/responseTime'
 
 export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
   const requestInfo = {
@@ -19,8 +20,9 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
 
   try {
     const chainId = parseChainId(String(req.query.chainId))
-
     const urls = getRpcJsonUrls(chainId)
+    const endMetric = rpcResponseTime.startTimer()
+
     const requested = await fetchWithFallback(urls, chainId, {
       method: 'POST',
       // Next by default parses our body for us, we don't want that here
@@ -29,6 +31,7 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
 
     const responded = await requested.json()
 
+    endMetric()
     res.status(requested.status).json(responded)
 
     logger.info('Request to api/rpc successfully fullfilled', {

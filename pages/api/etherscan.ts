@@ -8,6 +8,7 @@ import { CHAINS } from '@lido-sdk/constants'
 import { logger } from 'modules/shared/utils/log'
 import clone from 'just-clone'
 import { ETHERSCAN_CACHE_TTL } from 'modules/config'
+import { etherscanResponseTime } from 'modules/shared/metrics/responseTime'
 
 const { serverRuntimeConfig } = getConfig()
 const { etherscanApiKey } = serverRuntimeConfig
@@ -72,6 +73,7 @@ export default async function etherscan(
     } else {
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), ABORT_TIMEOUT)
+      const endMetric = etherscanResponseTime.startTimer()
 
       const requested = await fetchWithFallback([url], chainId, {
         method: 'POST',
@@ -81,6 +83,7 @@ export default async function etherscan(
 
       const { result } = await requested.json()
 
+      endMetric()
       clearTimeout(timeoutId)
       cache.put(url, result, ETHERSCAN_CACHE_TTL)
       res.status(requested.status).json(result)
