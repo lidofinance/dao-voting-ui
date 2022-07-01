@@ -73,7 +73,9 @@ export default async function etherscan(
     } else {
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), ABORT_TIMEOUT)
-      const endMetric = etherscanResponseTime.startTimer()
+      const endMetric = etherscanResponseTime
+        .labels(String(chainId))
+        .startTimer()
 
       const requested = await fetchWithFallback([url], chainId, {
         method: 'POST',
