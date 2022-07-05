@@ -1,4 +1,5 @@
 export * from './providers/configProvider'
 export * from './utils/parseEnvConfig'
+export * from './network'
 export * from './storage'
 export * from './types'
