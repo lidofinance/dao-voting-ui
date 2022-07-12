@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react'
+import { memo, useMemo, useEffect } from 'react'
 import Head from 'next/head'
 import getConfig from 'next/config'
 import NextApp, { AppProps, AppContext } from 'next/app'
@@ -20,8 +20,8 @@ import { ConfigProvider } from 'modules/config/providers/configProvider'
 import { ModalProvider } from 'modules/modal/ModalProvider'
 import { NetworkSwitcher } from 'modules/blockChain/ui/NetworkSwitcher'
 
+import { parseEnvConfig } from 'modules/config/utils/parseEnvConfig'
 import { getAddressList } from 'modules/config/utils/getAddressList'
-import { backendRPC } from 'modules/blockChain/utils/getRpcUrls'
 import { withCsp } from 'modules/shared/utils/csp'
 import { CustomAppProps } from 'modules/shared/utils/utilTypes'
 
@@ -105,15 +105,24 @@ function AppRoot({ Component, pageProps }: AppProps) {
 const AppRootMemo = memo(AppRoot)
 
 function Web3ProviderWrap({ children }: { children: React.ReactNode }) {
-  const { supportedChainIds, defaultChain } = useConfig()
+  const { supportedChainIds, defaultChain, getRpcUrl } = useConfig()
+
+  const backendRPC = useMemo(
+    () =>
+      supportedChainIds.reduce<Record<number, string>>(
+        (res, curr) => ({ ...res, [curr]: getRpcUrl(curr) }),
+        {},
+      ),
+    [supportedChainIds, getRpcUrl],
+  )
+
   return (
     <ProviderWeb3
       defaultChainId={defaultChain}
       supportedChainIds={supportedChainIds}
       rpc={backendRPC}
-    >
-      {children}
-    </ProviderWeb3>
+      children={children}
+    />
   )
 }
 
@@ -137,5 +146,8 @@ export default process.env.NODE_ENV === 'development' ? App : withCsp(App)
 App.getInitialProps = async (appContext: AppContext) => {
   const appProps = await NextApp.getInitialProps(appContext)
   const { publicRuntimeConfig } = getConfig()
-  return { ...appProps, envConfig: publicRuntimeConfig }
+  return {
+    ...appProps,
+    envConfig: parseEnvConfig(publicRuntimeConfig),
+  }
 }

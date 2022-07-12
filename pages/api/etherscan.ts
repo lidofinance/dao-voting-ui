@@ -2,13 +2,13 @@ import ms from 'ms'
 import { Cache } from 'memory-cache'
 import getConfig from 'next/config'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { ChainNames, parseChainId } from 'modules/blockChain/chains'
+import { parseChainId } from 'modules/blockChain/chains'
 import { fetchWithFallback } from 'modules/network/utils/fetchWithFallback'
-import { CHAINS } from '@lido-sdk/constants'
 import { logger } from 'modules/shared/utils/log'
 import clone from 'just-clone'
 import { ETHERSCAN_CACHE_TTL } from 'modules/config'
 import { etherscanResponseTime } from 'modules/shared/metrics/responseTime'
+import { getEtherscanUrl } from 'modules/config/network'
 
 const { serverRuntimeConfig } = getConfig()
 const { etherscanApiKey } = serverRuntimeConfig
@@ -48,22 +48,15 @@ export default async function etherscan(
       return
     }
 
-    const address = req.query.address
-    const chainId = parseChainId(String(req.query.chainId))
-    const chainName = ChainNames[chainId!].toLowerCase()
-
-    const etherscanUrl =
-      chainId === CHAINS.Mainnet
-        ? 'https://api.etherscan.io/api'
-        : `https://api-${chainName}.etherscan.io/api`
-
     const queryParams = [
-      'module=contract',
-      'action=getabi',
-      `address=${address}`,
+      `module=${req.query.module}`,
+      `action=${req.query.action}`,
+      `address=${req.query.address}`,
       `apikey=${etherscanApiKey}`,
     ]
 
+    const chainId = parseChainId(String(req.query.chainId))
+    const etherscanUrl = getEtherscanUrl(chainId)
     const url = `${etherscanUrl}?${queryParams.join('&')}`
 
     const cached = cache.get(url)
@@ -77,18 +70,18 @@ export default async function etherscan(
         .labels(String(chainId))
         .startTimer()
 
-      const requested = await fetchWithFallback([url], chainId, {
+      const result = await fetchWithFallback([url], chainId, {
         method: 'POST',
         body: JSON.stringify(req.body),
         signal: controller.signal,
       })
 
-      const { result } = await requested.json()
+      const parsed = await result.json()
 
       endMetric()
       clearTimeout(timeoutId)
-      cache.put(url, result, ETHERSCAN_CACHE_TTL)
-      res.status(requested.status).json(result)
+      cache.put(url, parsed, ETHERSCAN_CACHE_TTL)
+      res.status(result.status).json(parsed)
     }
 
     logger.info('Request to api/etherscan successfully fullfilled', {

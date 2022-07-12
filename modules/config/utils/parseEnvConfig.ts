@@ -1,9 +1,10 @@
 import { parseChainId } from 'modules/blockChain/chains'
-import { EnvConfig, Config } from '../types'
+import { EnvConfigRaw, EnvConfigParsed } from '../types'
 
-export function parseEnvConfig(envConfig: EnvConfig): Config {
+export function parseEnvConfig(envConfig: EnvConfigRaw): EnvConfigParsed {
   return {
     defaultChain: parseChainId(envConfig.defaultChain),
     supportedChainIds: envConfig.supportedChains.split(',').map(parseChainId),
+    ipfsMode: envConfig.ipfsMode === 'true',
   }
 }

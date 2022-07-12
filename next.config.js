@@ -10,6 +10,8 @@ const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS
 const cspReportOnly = process.env.CSP_REPORT_ONLY
 const cspReportUri = process.env.CSP_REPORT_URI
 
+const ipfsMode = process.env.IPFS_MODE
+
 module.exports = {
   basePath,
   webpack5: true,
@@ -95,5 +97,6 @@ module.exports = {
   publicRuntimeConfig: {
     defaultChain,
     supportedChains,
+    ipfsMode,
   },
 }

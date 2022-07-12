@@ -1,8 +1,9 @@
 import { Fragment } from 'react'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 
-import { Text, Link } from '@lidofinance/lido-ui'
+import { Text, Link, Loader } from '@lidofinance/lido-ui'
 import { CallTitle, CallWrapper, ScriptBox, Padding } from './styles'
+import { ScriptWrap, ScriptLoaderWrap } from './VoteScriptBodyStyle'
 
 import { EVMScriptDecoded } from 'evm-script-decoder/lib/types'
 import { getEtherscanAddressLink } from '@lido-sdk/helpers'
@@ -25,12 +26,17 @@ export function VoteScriptBody({
 
   if (initialLoading || !decoded?.calls.length) {
     return (
-      <>
+      <ScriptWrap>
+        {initialLoading && (
+          <ScriptLoaderWrap>
+            <Loader size="medium" />
+          </ScriptLoaderWrap>
+        )}
         <Text color="text" size="xxs">
           Binary script
         </Text>
         <ScriptBox value={binary} />
-      </>
+      </ScriptWrap>
     )
   }
 

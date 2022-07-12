@@ -3,6 +3,7 @@ import { formatEther } from 'ethers/lib/utils'
 import { useCallback } from 'react'
 import { useSWR } from 'modules/network/hooks/useSwr'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
+import { useConfig } from 'modules/config/hooks/useConfig'
 
 import {
   ContractVoting,
@@ -15,19 +16,22 @@ type Args = {
 }
 
 export function useFormVoteInfo({ voteId }: Args) {
+  const { getRpcUrl } = useConfig()
   const { chainId, walletAddress, isWalletConnected } = useWeb3()
+  const rpcUrl = getRpcUrl(chainId)
 
   const swrVote = useSWR(
-    voteId ? [`vote-info`, voteId, chainId, walletAddress] : null,
+    voteId ? [`vote-info`, voteId, chainId, walletAddress, rpcUrl] : null,
     async (
       _,
       _voteId: typeof voteId,
       _chainId: typeof chainId,
       _walletAddress: typeof walletAddress,
+      _rpcUrl: typeof rpcUrl,
     ) => {
       if (!_voteId) return null
 
-      const connectArg = { chainId: _chainId }
+      const connectArg = { chainId: _chainId, rpcUrl: _rpcUrl }
       const contractVoting = ContractVoting.connectRpc(connectArg)
       const contractToken = ContractGovernanceToken.connectRpc(connectArg)
 

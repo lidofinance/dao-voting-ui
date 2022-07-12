@@ -23,42 +23,40 @@ import {
   MobileNetworkWrap,
   MobileSpacer,
 } from './HeaderStyle'
-import ActiveMotionsSVG from './icons/active_motions.svg.react'
-import ArchiveSVG from './icons/archive.svg.react'
-// import InfoSVG from './icons/info.svg.react'
-import StartSVG from './icons/start.svg.react'
+import VoteSVG from './icons/vote.svg.react'
+import SettingsSVG from './icons/settings.svg.react'
 
 import { getChainName } from 'modules/blockChain/chains'
 import { getChainColor } from '@lido-sdk/constants'
 import LidoLogoSvg from 'assets/logo.com.svg.react'
 import * as urls from 'modules/network/utils/urls'
 
-// function NavItem({
-//   link,
-//   icon,
-//   onClick,
-//   children,
-// }: {
-//   link: string
-//   icon: React.ReactNode
-//   onClick?: React.MouseEventHandler<HTMLElement>
-//   children: React.ReactNode
-// }) {
-//   const router = useRouter()
-//   return (
-//     <Link passHref href={link}>
-//       <NavLink isActive={router.pathname === link} onClick={onClick}>
-//         {icon}
-//         <div>{children}</div>
-//       </NavLink>
-//     </Link>
-//   )
-// }
+function NavItem({
+  link,
+  icon,
+  onClick,
+  children,
+}: {
+  link: string
+  icon: React.ReactNode
+  onClick?: React.MouseEventHandler<HTMLElement>
+  children: React.ReactNode
+}) {
+  const router = useRouter()
+  return (
+    <Link passHref href={link}>
+      <NavLink isActive={router.pathname.startsWith(link)} onClick={onClick}>
+        {icon}
+        <div>{children}</div>
+      </NavLink>
+    </Link>
+  )
+}
 
 export function Header() {
   const { chainId } = useWeb3()
   const [isBurgerOpened, setBurgerOpened] = useState(false)
-  // const handleCloseMobileMenu = useCallback(() => setBurgerOpened(false), [])
+  const handleCloseMobileMenu = useCallback(() => setBurgerOpened(false), [])
   useScrollLock(isBurgerOpened)
 
   return (
@@ -69,22 +67,12 @@ export function Header() {
             <LidoLogoSvg />
           </Logo>
           <NavItems>
-            {/* <NavItem
-              link={urls.home}
-              icon={<ActiveMotionsSVG />}
-              children="Active motions"
-            />
+            <NavItem link={urls.voteIndex} icon={<VoteSVG />} children="Vote" />
             <NavItem
-              link={urls.archive}
-              icon={<ArchiveSVG />}
-              children="Archive"
+              link={urls.settings}
+              icon={<SettingsSVG />}
+              children="Settings"
             />
-            <NavItem
-              link={urls.startMotion}
-              icon={<StartSVG />}
-              children="Start motion"
-            /> */}
-            {/* <NavItem link={urls.about} icon={<InfoSVG />} children="About" /> */}
           </NavItems>
         </Nav>
 
@@ -111,25 +99,18 @@ export function Header() {
           <MobileMenu>
             <MobileMenuScroll>
               <MobileNavItems>
-                {/* <NavItem
-                  link={urls.home}
-                  icon={<ActiveMotionsSVG />}
-                  children="Active motions"
+                <NavItem
+                  link={urls.voteIndex}
+                  icon={<VoteSVG />}
+                  children="Vote"
                   onClick={handleCloseMobileMenu}
                 />
                 <NavItem
-                  link={urls.archive}
-                  icon={<ArchiveSVG />}
-                  children="Archive"
+                  link={urls.settings}
+                  icon={<SettingsSVG />}
+                  children="Settings"
                   onClick={handleCloseMobileMenu}
                 />
-                <NavItem
-                  link={urls.startMotion}
-                  icon={<StartSVG />}
-                  children="Start motion"
-                  onClick={handleCloseMobileMenu}
-                /> */}
-                {/* <NavItem link={urls.about} icon={<InfoSVG />} children="About" /> */}
               </MobileNavItems>
               <MobileNetworkWrap>
                 <Network>
