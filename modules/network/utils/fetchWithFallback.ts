@@ -1,5 +1,5 @@
 import { CHAINS } from '@lido-sdk/constants'
-import { ethereumResponse } from 'modules/shared/metrics/responseTime'
+import { rpcResponseTime } from 'modules/shared/metrics/responseTime'
 
 type FetchWithFallback = (
   inputs: RequestInfo[],
@@ -16,7 +16,7 @@ export const fetchWithFallback: FetchWithFallback = async (
 
   try {
     const url = new URL(input as string)
-    const end = ethereumResponse
+    const end = rpcResponseTime
       .labels(url.hostname, String(chainId))
       .startTimer()
     const response = await fetch(input, init)
