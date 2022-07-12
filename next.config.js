@@ -39,6 +39,20 @@ module.exports = {
       ],
     })
 
+    config.module.rules.push({
+      test: /\.(t|j)sx?$/,
+      use: [
+        {
+          loader: 'webpack-preprocessor-loader',
+          options: {
+            params: {
+              IPFS_MODE: String(ipfsMode === 'true'),
+            },
+          },
+        },
+      ],
+    })
+
     return config
   },
   // WARNING: Vulnerability fix, don't remove until default Next.js image loader is patched

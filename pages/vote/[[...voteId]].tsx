@@ -24,9 +24,11 @@ export default function VotePage() {
   return <VoteForm voteId={voteId} onChangeVoteId={handleChangeVoteId} />
 }
 
+// #!if IPFS_MODE !== "true"
 // eslint-disable-next-line @typescript-eslint/require-await
 export const getServerSideProps = async () => {
   return {
     props: {},
   }
 }
+// #!endif

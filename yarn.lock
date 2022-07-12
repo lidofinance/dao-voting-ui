@@ -8759,6 +8759,11 @@ webidl-conversions@^3.0.0:
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-3.0.1.tgz#24534275e2a7bc6be7bc86611cc16ae0a5654871"
   integrity sha1-JFNCdeKnvGvnvIZhHMFq4KVlSHE=
 
+webpack-preprocessor-loader@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/webpack-preprocessor-loader/-/webpack-preprocessor-loader-1.2.0.tgz#cba7da4b7fca5626427507c66aac9c055cfe3763"
+  integrity sha512-BR8IDox/sZDlV0Mjc81wkImlfVBF2LplPymd1NioM6ovmcGI7zgVgmZN4f2nSlhB3ECCidcBEcq4FB6tltYXcg==
+
 whatwg-fetch@2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-2.0.4.tgz#dde6a5df315f9d39991aa17621853d720b85566f"

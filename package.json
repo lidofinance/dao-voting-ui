@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "dev-ipfs": "cross-env IPFS_MODE=true next dev",
-    "build-ipfs": "cross-env IPFS_MODE=true next build",
+    "build-ipfs": "cross-env IPFS_MODE=true next build && next export",
     "start": "next start",
     "lint": "next lint",
     "lint:dockerfile": "dockerfilelint Dockerfile",
@@ -86,6 +86,7 @@
     "type-fest": "2.12.1",
     "typescript": "4.4.3",
     "url-loader": "4.1.1",
-    "utility-types": "3.10.0"
+    "utility-types": "3.10.0",
+    "webpack-preprocessor-loader": "^1.2.0"
   }
 }
