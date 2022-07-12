@@ -1,7 +1,7 @@
 import { Histogram } from 'prom-client'
 import { METRICS_PREFIX } from './constants'
 
-export const ethereumResponse = new Histogram({
+export const rpcResponseTime = new Histogram({
   name: METRICS_PREFIX + 'ethereum_response',
   help: 'Ethereum response times',
   labelNames: ['provider', 'chainId'],

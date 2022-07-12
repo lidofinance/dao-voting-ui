@@ -1,4 +1,3 @@
-import { ethereumResponse } from 'modules/network/utils/fetchWithFallback'
 import { collectDefaultMetrics, Registry } from 'prom-client'
 import { buildInfo } from './buildInfo'
 import { chainInfo } from './chainInfo'
@@ -11,7 +10,6 @@ const registry = new Registry()
 if (process.env.NODE_ENV === 'production') {
   registry.registerMetric(buildInfo)
   registry.registerMetric(chainInfo)
-  registry.registerMetric(ethereumResponse)
   registry.registerMetric(contractInfo)
   registry.registerMetric(rpcResponseTime)
   registry.registerMetric(etherscanResponseTime)
