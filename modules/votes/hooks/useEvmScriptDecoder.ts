@@ -1,8 +1,12 @@
 import { useGlobalMemo } from 'modules/shared/hooks/useGlobalMemo'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
+import { useLocalStorage } from '@lido-sdk/react'
 
-import { EVMScriptDecoder } from 'evm-script-decoder/lib/EVMScriptDecoder'
-import { ABIProviderLocal } from 'evm-script-decoder/lib/ABIProviderLocal'
+import { Contract } from 'ethers'
+import { getRpcUrl } from 'modules/blockChain/utils/getRpcUrls'
+import { ABIProvider } from 'evm-script-decoder/lib/types'
+import { EVMScriptDecoder, abiProviders } from 'evm-script-decoder'
+import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
 
 import {
   ACLAbi__factory,
@@ -20,51 +24,67 @@ import {
   CompositePostRebaseBeaconReceiverAbi__factory,
   DepositSecurityModuleAbi__factory,
 } from 'generated'
-import * as CONTRACT_ADDRESSES from 'modules/blockChain/contractAddresses'
+import * as ADDR from 'modules/blockChain/contractAddresses'
 import { TreasuryAbi__factory } from 'generated/factories/TreasuryAbi__factory'
 import { VotingRepoAbi__factory } from 'generated/factories/VotingRepoAbi__factory'
+import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'
+import { STORAGE_SKIP_BUNDLED_ABIS } from 'modules/config'
 
 export function useEVMScriptDecoder(): EVMScriptDecoder {
   const { chainId } = useWeb3()
+  const [skipBundledAbi] = useLocalStorage(STORAGE_SKIP_BUNDLED_ABIS, false)
 
-  return useGlobalMemo(
-    () =>
-      new EVMScriptDecoder(
-        new ABIProviderLocal({
-          [CONTRACT_ADDRESSES.Voting[chainId]!]: VotingAbi__factory.abi as any,
-          [CONTRACT_ADDRESSES.GovernanceToken[chainId]!]:
-            MiniMeTokenAbi__factory.abi as any,
-          [CONTRACT_ADDRESSES.TokenManager[chainId]!]:
-            TokenManagerAbi__factory.abi as any,
-          [CONTRACT_ADDRESSES.Finance[chainId]!]:
-            FinanceAbi__factory.abi as any,
-          [CONTRACT_ADDRESSES.NodeOperatorsRegistry[chainId]!]:
-            NodeOperatorsRegistryAbi__factory.abi as any,
-          [CONTRACT_ADDRESSES.Treasury[chainId]!]:
-            TreasuryAbi__factory.abi as any,
-          [CONTRACT_ADDRESSES.ACL[chainId]!]: ACLAbi__factory.abi as any,
-          [CONTRACT_ADDRESSES.VotingRepo[chainId]!]:
-            VotingRepoAbi__factory.abi as any,
-          [CONTRACT_ADDRESSES.LidoDAO[chainId]!]:
-            LidoDAOAbi__factory.abi as any,
-          [CONTRACT_ADDRESSES.EasyTrack[chainId]!]:
-            EasyTrackAbi__factory.abi as any,
-          [CONTRACT_ADDRESSES.TokenRecovererForManagerContracts[chainId]!]:
-            TokenRecovererForManagerContractsAbi__factory.abi as any,
-          [CONTRACT_ADDRESSES.LidoAppRepo[chainId]!]:
-            RepoAbi__factory.abi as any,
-          [CONTRACT_ADDRESSES.NodeOperatorsRegistryRepo[chainId]!]:
-            RepoAbi__factory.abi as any,
-          [CONTRACT_ADDRESSES.Steth[chainId]!]: StethAbi__factory.abi as any,
-          [CONTRACT_ADDRESSES.OracleRepo[chainId]!]:
-            RepoAbi__factory.abi as any,
-          [CONTRACT_ADDRESSES.Oracle[chainId]!]: OracleAbi__factory.abi as any,
-          [CONTRACT_ADDRESSES.CompositePostRebaseBeaconReceiver[chainId]!]:
-            CompositePostRebaseBeaconReceiverAbi__factory.abi as any,
-          [CONTRACT_ADDRESSES.DepositSecurityModule[chainId]!]:
-            DepositSecurityModuleAbi__factory.abi as any,
+  return useGlobalMemo(() => {
+    const localDecoder = new abiProviders.Local({
+      [ADDR.Voting[chainId]!]: VotingAbi__factory.abi as any,
+      [ADDR.GovernanceToken[chainId]!]: MiniMeTokenAbi__factory.abi as any,
+      [ADDR.TokenManager[chainId]!]: TokenManagerAbi__factory.abi,
+      [ADDR.Finance[chainId]!]: FinanceAbi__factory.abi,
+      [ADDR.NodeOperatorsRegistry[chainId]!]:
+        NodeOperatorsRegistryAbi__factory.abi,
+      [ADDR.Treasury[chainId]!]: TreasuryAbi__factory.abi,
+      [ADDR.ACL[chainId]!]: ACLAbi__factory.abi,
+      [ADDR.VotingRepo[chainId]!]: VotingRepoAbi__factory.abi,
+      [ADDR.LidoDAO[chainId]!]: LidoDAOAbi__factory.abi,
+      [ADDR.EasyTrack[chainId]!]: EasyTrackAbi__factory.abi,
+      [ADDR.TokenRecovererForManagerContracts[chainId]!]:
+        TokenRecovererForManagerContractsAbi__factory.abi,
+      [ADDR.LidoAppRepo[chainId]!]: RepoAbi__factory.abi,
+      [ADDR.NodeOperatorsRegistryRepo[chainId]!]: RepoAbi__factory.abi,
+      [ADDR.Steth[chainId]!]: StethAbi__factory.abi,
+      [ADDR.OracleRepo[chainId]!]: RepoAbi__factory.abi,
+      [ADDR.Oracle[chainId]!]: OracleAbi__factory.abi,
+      [ADDR.CompositePostRebaseBeaconReceiver[chainId]!]:
+        CompositePostRebaseBeaconReceiverAbi__factory.abi,
+      [ADDR.DepositSecurityModule[chainId]!]:
+        DepositSecurityModuleAbi__factory.abi,
+    })
+
+    const etherscanDecoder = new abiProviders.Base({
+      fetcher: async address => fetcherEtherscan(chainId, address),
+      middlewares: [
+        abiProviders.middlewares.ProxyABIMiddleware({
+          implMethodNames: [
+            ...abiProviders.middlewares.ProxyABIMiddleware
+              .DefaultImplMethodNames,
+            '__Proxy_implementation',
+          ],
+          loadImplAddress(proxyAddress, abiElement) {
+            const contract = new Contract(
+              proxyAddress,
+              [abiElement],
+              getStaticRpcBatchProvider(chainId, getRpcUrl(chainId)),
+            )
+            return contract[abiElement.name]()
+          },
         }),
-      ),
-    `evm-script-decoder-${chainId}`,
-  )
+      ],
+    })
+
+    return new EVMScriptDecoder(
+      ...([!skipBundledAbi && localDecoder, etherscanDecoder].filter(
+        Boolean,
+      ) as ABIProvider[]),
+    )
+  }, `evm-script-decoder-${chainId}-${skipBundledAbi ? 'no-local' : 'with-local'}`)
 }
