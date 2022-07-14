@@ -1,5 +1,5 @@
 # build env
-FROM node:14-alpine as build
+FROM node:16-alpine as build
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ COPY . .
 RUN yarn typechain && yarn build
 
 # final image
-FROM node:14-alpine as base
+FROM node:16-alpine as base
 
 ARG BASE_PATH=""
 ENV BASE_PATH=$BASE_PATH
