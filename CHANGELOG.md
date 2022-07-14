@@ -1,3 +1,22 @@
+# [0.5.0](https://github.com/lidofinance/dao-voting-ui/compare/0.4.0...0.5.0) (2022-07-14)
+
+
+### Bug Fixes
+
+* metric labels ([432bebc](https://github.com/lidofinance/dao-voting-ui/commit/432bebced9c2fe740d6964b58868a6e128fc38e1))
+* metrics histogram naming ([237c55f](https://github.com/lidofinance/dao-voting-ui/commit/237c55f2f888f05d3205e26f27f6862e03dac77d))
+* metrics label ([c4847a9](https://github.com/lidofinance/dao-voting-ui/commit/c4847a987c50ed70dba0d2b85ab1eae4560d890d))
+
+
+### Features
+
+* abort etherscan request by timeout ([bb055b0](https://github.com/lidofinance/dao-voting-ui/commit/bb055b05cc9b449004513abd6aa3edf18afe5c54))
+* etherscan requests caching ([a32bc4b](https://github.com/lidofinance/dao-voting-ui/commit/a32bc4b43900a0de759d81f3281dfc1af4365abc))
+* fetch abi from etherscan ([068947e](https://github.com/lidofinance/dao-voting-ui/commit/068947e06963a61150b0975b72c155a8dd2d55c7))
+* tracking response time ([0fa5cd9](https://github.com/lidofinance/dao-voting-ui/commit/0fa5cd942f04266221a5731b07df35d11e47fc6f))
+
+
+
 # [0.4.0](https://github.com/lidofinance/dao-voting-ui/compare/0.3.0...0.4.0) (2022-06-24)
 
 
