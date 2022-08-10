@@ -10,8 +10,8 @@ export const rpcResponseTime = new Histogram({
 })
 
 export const etherscanResponseTime = new Histogram({
-  name: METRICS_PREFIX + 'rpc_service_response',
-  help: 'RPC service response time seconds',
+  name: METRICS_PREFIX + 'etherscan_service_response',
+  help: 'Etherscan response time seconds',
   buckets: [0.1, 0.2, 0.3, 0.6, 1, 1.5, 2, 5],
   labelNames: ['chainId'],
   registers: [],
