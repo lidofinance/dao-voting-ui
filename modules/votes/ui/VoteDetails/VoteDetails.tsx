@@ -92,7 +92,7 @@ export function VoteDetails({
         </DataTableRow>
 
         <DataTableRow title="Approval %">
-          {formatFloatPct(yeaNum / votingPower)}%{' '}
+          {formatFloatPct(yeaNum / votingPower, { floor: true })}%{' '}
           <Text as="span" color="secondary" size="xxs">
             (&gt;{weiToNum(vote.minAcceptQuorum) * 100}% needed)
           </Text>
