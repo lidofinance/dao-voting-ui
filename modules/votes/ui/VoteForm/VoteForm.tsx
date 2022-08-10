@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useMemo, Fragment } from 'react'
 import { useFormVoteInfo } from './useFormVoteInfo'
 import { useFormVoteSubmit } from './useFormVoteSubmit'
@@ -13,9 +14,11 @@ import { TxRow } from 'modules/blockChain/ui/TxRow'
 import { VoteFormActions } from '../VoteFormActions'
 import { VoteFormMustConnect } from '../VoteFormMustConnect'
 import { VoteFormVoterState } from '../VoteFormVoterState'
+import { ErrorMessage } from './VoteFormStyle'
 
 import { VoteStatus } from 'modules/votes/types'
 import { isVoteEnactable } from 'modules/votes/utils/isVoteEnactable'
+import * as urls from 'modules/network/utils/urls'
 
 type Props = {
   voteId?: string
@@ -79,6 +82,8 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
     status === VoteStatus.Rejected || status === VoteStatus.Executed
   const canEnact = Boolean(canExecute) && status === VoteStatus.Pending
 
+  const isNotFound = swrVote.error?.reason === 'VOTING_NO_VOTE'
+
   return (
     <Container as="main" size="tight">
       <Title
@@ -90,13 +95,23 @@ export function VoteForm({ voteId, onChangeVoteId }: Props) {
           <InputNumber
             label="Vote #"
             name="voteId"
-            error={swrVote.error ? 'Vote not found' : undefined}
+            error={isNotFound ? 'Vote not found' : undefined}
             onChange={onChangeVoteId}
             defaultValue={voteId}
           />
         </Fieldset>
 
         {isLoading && <PageLoader />}
+
+        {!isLoading && swrVote.error && !isNotFound && (
+          <ErrorMessage>
+            <p>There is a problem with rpc node currently in use.</p>
+            <p>
+              You can set your own url on{' '}
+              <Link href={urls.settings}>settings</Link> page.
+            </p>
+          </ErrorMessage>
+        )}
 
         {!isLoading && vote && status && (
           <Fragment key={voteId}>
