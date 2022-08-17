@@ -12,7 +12,7 @@ import {
   CheckboxLabelWrap,
 } from 'modules/shared/ui/Controls/Checkbox'
 import { Container, Block, Button, ToastSuccess } from '@lidofinance/lido-ui'
-import { Actions } from './StyledFormStyle'
+import { Actions, DescriptionText, DescriptionTitle } from './StyledFormStyle'
 
 import { ContractVoting } from 'modules/blockChain/contracts'
 import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'
@@ -102,7 +102,7 @@ export function SettingsForm() {
 
   return (
     <Container as="main" size="tight">
-      <Title title="Settings" />
+      <Title title="Settings" subtitle="Configure the app" />
       <Block>
         <Form formMethods={formMethods} onSubmit={handleSubmit}>
           <Fieldset>
@@ -122,7 +122,7 @@ export function SettingsForm() {
           <Fieldset>
             <CheckboxLabelWrap>
               <CheckboxControl name="useBundledAbi" />
-              Use bundled abi first
+              Use built-in ABIs
             </CheckboxLabelWrap>
           </Fieldset>
           <Actions>
@@ -147,22 +147,41 @@ export function SettingsForm() {
       <br />
 
       <Block>
-        Ethereum nodes for use:
-        <br />
-        <a target="_blank" href="https://ethereumnodes.com/" rel="noreferrer">
-          https://ethereumnodes.com/
-        </a>
-        <br />
-        <br />
-        Etherscan api key:
-        <br />
-        <a
-          target="_blank"
-          href="https://etherscan.io/myapikey"
-          rel="noreferrer"
-        >
-          https://etherscan.io/myapikey
-        </a>
+        <DescriptionText>
+          <DescriptionTitle>What are these settings for?</DescriptionTitle>
+          <p>
+            This website relies on a JSON RPC connection and an Etherscan API
+            token. For more reliable operation, consider specifying your own.
+            You can get yours by visiting the links below.
+          </p>
+          <p>
+            Ethereum nodes:{' '}
+            <a
+              target="_blank"
+              href="https://ethereumnodes.com/"
+              rel="noreferrer"
+            >
+              ethereumnodes.com
+            </a>
+            <br />
+            Etherscan api key:{' '}
+            <a
+              target="_blank"
+              href="https://etherscan.io/myapikey"
+              rel="noreferrer"
+            >
+              etherscan.io/myapikey
+            </a>
+          </p>
+          <DescriptionTitle>
+            What does &ldquo;Use built-in ABIs&rdquo; parameter?
+          </DescriptionTitle>
+          <p>
+            This website includes pre-loaded ABIs for script parsing. If you are
+            having trouble viewing the action items, uncheck this box to load
+            ABIs from Etherscan.
+          </p>
+        </DescriptionText>
       </Block>
     </Container>
   )
