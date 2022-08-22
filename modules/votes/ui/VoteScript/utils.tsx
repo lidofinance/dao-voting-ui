@@ -19,7 +19,7 @@ export const formatCallString = (
   }
 
   res += '\n\nCall data:\n'
-  if (callData) {
+  if (callData && callData.length) {
     res += callData
       .map((data, i) => {
         let callRes = `[${i + 1}] `
@@ -34,6 +34,8 @@ export const formatCallString = (
         return callRes
       })
       .join('\n')
+  } else if (callData && !callData.length) {
+    res += '[empty]'
   } else {
     res += '[call data not found]'
   }
