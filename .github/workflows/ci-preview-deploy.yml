@@ -39,7 +39,6 @@ jobs:
       - name: Preview stand deploying
         uses: lidofinance/dispatch-workflow@v1
         env:
-          DISPATCH_BRANCH: "moar-preview"
           APP_ID: ${{ secrets.APP_ID }}
           APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
           TARGET_REPO: "lidofinance/infra-mainnet"
