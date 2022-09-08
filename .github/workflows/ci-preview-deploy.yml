@@ -37,7 +37,7 @@ jobs:
         run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
 
       - name: Preview stand deploying
-        uses: lidofinance/dispatch-workflow@v1
+        uses: lidofinance/dispatch-workflow@debug
         env:
           APP_ID: ${{ secrets.APP_ID }}
           APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
