@@ -1,29 +1,33 @@
 import styled, { css, keyframes } from 'styled-components'
+import { Container } from '@lidofinance/lido-ui'
 import { BREAKPOINT_MOBILE } from 'modules/globalStyles'
 
-export const Wrap = styled.div`
-  margin-bottom: 30px;
-  padding: 20px 0;
+export const Wrap = styled(Container).attrs({
+  as: 'header',
+  size: 'full',
+})`
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  padding: 0 20px;
   display: flex;
+  height: 76px;
   align-items: center;
   justify-content: space-between;
+  background-color: ${({ theme }) => theme.colors.foreground};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   z-index: 99;
-
-  @media (max-width: ${BREAKPOINT_MOBILE}) {
-    position: fixed;
-    left: 20px;
-    top: 0;
-    right: 20px;
-  }
 `
 
 export const Nav = styled.div`
   display: flex;
   align-items: center;
+  width: 30%;
 `
 
 export const Logo = styled.div`
-  margin-right: 40px;
+  margin-right: 20px;
   font-size: 0;
   z-index: 99;
 `
@@ -43,7 +47,7 @@ type NavLinkProps = {
 export const NavLink = styled.a<NavLinkProps>`
   display: flex;
   align-items: center;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   text-decoration: none;
   text-transform: uppercase;
@@ -55,7 +59,7 @@ export const NavLink = styled.a<NavLinkProps>`
   }
 
   &:not(:last-child) {
-    margin-right: 44px;
+    margin-right: 20px;
   }
 
   & svg {
@@ -83,10 +87,16 @@ export const NavLink = styled.a<NavLinkProps>`
 export const ActionsDesktop = styled.div`
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  width: 30%;
 
   @media (max-width: ${BREAKPOINT_MOBILE}) {
     display: none;
   }
+`
+
+export const InputWrap = styled.div`
+  width: 300px;
 `
 
 export const Network = styled.div`
@@ -202,4 +212,9 @@ export const MobileSpacer = styled.div`
   @media (max-width: ${BREAKPOINT_MOBILE}) {
     display: block;
   }
+`
+
+export const HeaderSpacer = styled.div`
+  height: 76px;
+  margin-bottom: 30px;
 `

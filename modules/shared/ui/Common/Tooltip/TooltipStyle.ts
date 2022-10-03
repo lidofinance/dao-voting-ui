@@ -1,8 +1,13 @@
 import styled, { css } from 'styled-components'
 
+type WrapProps = { fitContent?: boolean }
 export const Wrap = styled.div`
   position: relative;
-  width: fit-content;
+  ${({ fitContent }: WrapProps) =>
+    fitContent &&
+    css`
+      width: fit-content;
+    `}
 `
 
 export type Position =

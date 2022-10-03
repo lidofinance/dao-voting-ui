@@ -6,12 +6,14 @@ import { useScrollLock } from 'modules/shared/hooks/useScrollLock'
 import Link from 'next/link'
 import { Text } from 'modules/shared/ui/Common/Text'
 import { HeaderWallet } from '../HeaderWallet'
+import { HeaderVoteInput } from 'modules/votes/ui/HeaderVoteInput'
 import {
   Wrap,
   Logo,
   Nav,
   NavItems,
   NavLink,
+  InputWrap,
   ActionsDesktop,
   Network,
   NetworkBulb,
@@ -22,9 +24,8 @@ import {
   MobileNavItems,
   MobileNetworkWrap,
   MobileSpacer,
+  HeaderSpacer,
 } from './HeaderStyle'
-import VoteSVG from './icons/vote.svg.react'
-import SettingsSVG from './icons/settings.svg.react'
 
 import { getChainName } from 'modules/blockChain/chains'
 import { getChainColor } from '@lido-sdk/constants'
@@ -33,12 +34,10 @@ import * as urls from 'modules/network/utils/urls'
 
 function NavItem({
   link,
-  icon,
   onClick,
   children,
 }: {
   link: string
-  icon: React.ReactNode
   onClick?: React.MouseEventHandler<HTMLElement>
   children: React.ReactNode
 }) {
@@ -46,7 +45,6 @@ function NavItem({
   return (
     <Link passHref href={link}>
       <NavLink isActive={router.pathname.startsWith(link)} onClick={onClick}>
-        {icon}
         <div>{children}</div>
       </NavLink>
     </Link>
@@ -61,20 +59,21 @@ export function Header() {
 
   return (
     <>
+      <HeaderSpacer />
       <Wrap>
         <Nav>
           <Logo>
             <LidoLogoSvg />
           </Logo>
           <NavItems>
-            <NavItem link={urls.voteIndex} icon={<VoteSVG />} children="Vote" />
-            <NavItem
-              link={urls.settings}
-              icon={<SettingsSVG />}
-              children="Settings"
-            />
+            <NavItem link={urls.voteIndex} children="Vote" />
+            <NavItem link={urls.settings} children="Settings" />
           </NavItems>
         </Nav>
+
+        <InputWrap>
+          <HeaderVoteInput />
+        </InputWrap>
 
         <ActionsDesktop>
           <Network>
@@ -101,13 +100,11 @@ export function Header() {
               <MobileNavItems>
                 <NavItem
                   link={urls.voteIndex}
-                  icon={<VoteSVG />}
                   children="Vote"
                   onClick={handleCloseMobileMenu}
                 />
                 <NavItem
                   link={urls.settings}
-                  icon={<SettingsSVG />}
                   children="Settings"
                   onClick={handleCloseMobileMenu}
                 />
@@ -124,8 +121,8 @@ export function Header() {
             </MobileMenuScroll>
           </MobileMenu>
         )}
+        <MobileSpacer />
       </Wrap>
-      <MobileSpacer />
     </>
   )
 }

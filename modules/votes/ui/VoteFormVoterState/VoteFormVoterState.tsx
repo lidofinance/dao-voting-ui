@@ -1,6 +1,7 @@
 import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
 
-import { Text } from '@lidofinance/lido-ui'
+import { Wrap } from './VoteFormVoterStateStyle'
+
 import { VoterState, VoteStatus } from 'modules/votes/types'
 
 type Props = {
@@ -28,102 +29,81 @@ export function VoteFormVoterState({
   const isVotedYay = voterState === VoterState.VotedYay
   const isVotedNay = voterState === VoterState.VotedNay
 
-  const elVoteIsClosed = (
-    <Text size="xs" color="secondary">
-      This vote is closed
-    </Text>
-  )
+  const renderText = () => {
+    const elVoteIsClosed = <>This vote is closed</>
 
-  const elEnactText = (
-    <Text size="xs" color="secondary">
-      The voting period is closed and the vote has passed.
-      <br />
-      Anyone can now enact this vote to execute its action.
-    </Text>
-  )
-
-  if (canVote && isNotVoted) {
-    return (
-      <Text size="xs" color="secondary">
-        You can do vote this with{' '}
-        <Text as="span" size="xs" color="text">
-          {votePower} {symbol}
-        </Text>
-        <br />
-        (this was your balance when the vote started)
-        {status === VoteStatus.ActiveObjection && (
-          <>
-            <br />
-            Only{' '}
-            <Text as="span" size="xs" color="text">
-              Nay
-            </Text>{' '}
-            available in objection phase
-          </>
-        )}
-      </Text>
-    )
-  }
-
-  if (isVotedYay || isVotedNay) {
-    return (
+    const elEnactText = (
       <>
-        <Text size="xs" color="secondary">
-          You voted{' '}
-          <Text as="span" size="xs" color="text">
-            {isVotedNay ? 'NAY' : 'YAY'}
-          </Text>{' '}
-          with{' '}
-          <Text as="span" size="xs" color="text">
-            {votePower} {symbol}
-          </Text>
-        </Text>
-
-        {canVote && (isMainPhase || (isObjPhase && isVotedYay)) && (
-          <>
-            <br />
-            <Text size="xs" color="secondary">
-              You can{' '}
-              <Text as="span" size="xs" color="text">
-                change your vote
-              </Text>{' '}
-              while the voting period is open
-            </Text>
-          </>
-        )}
-
-        {canEnact && isEnded && (
-          <>
-            <br />
-            {elEnactText}
-          </>
-        )}
-
-        {!canEnact && isEnded && (
-          <>
-            <br />
-            {elVoteIsClosed}
-          </>
-        )}
+        The voting period is closed and the vote has passed.
+        <br />
+        Anyone can now enact this vote to execute its action.
       </>
     )
+
+    if (canVote && isNotVoted) {
+      return (
+        <>
+          You can do vote this with{' '}
+          <b>
+            {votePower} {symbol}
+          </b>
+          <br />
+          (this was your balance when the vote started)
+          {status === VoteStatus.ActiveObjection && (
+            <>
+              <br />
+              Only <b>No</b> available in objection phase
+            </>
+          )}
+        </>
+      )
+    }
+
+    if (isVotedYay || isVotedNay) {
+      return (
+        <>
+          You voted <b>{isVotedNay ? 'NO' : 'YES'}</b> with{' '}
+          <b>
+            {votePower} {symbol}
+          </b>
+          {canVote && (isMainPhase || (isObjPhase && isVotedYay)) && (
+            <>
+              <br />
+              You can <b>change your vote</b> while the voting period is open
+            </>
+          )}
+          {canEnact && isEnded && (
+            <>
+              <br />
+              {elEnactText}
+            </>
+          )}
+          {!canEnact && isEnded && (
+            <>
+              <br />
+              {elVoteIsClosed}
+            </>
+          )}
+        </>
+      )
+    }
+
+    if (isEnded === false && !canVote && Number(votePower) === 0) {
+      return (
+        <>
+          You can not do vote because you had no {symbol} when the vote started
+        </>
+      )
+    }
+
+    if (canEnact) {
+      return <>{elEnactText}</>
+    }
+
+    if (isEnded && !canVote) {
+      return <>{elVoteIsClosed}</>
+    }
   }
 
-  if (isEnded === false && !canVote && Number(votePower) === 0) {
-    return (
-      <Text size="xs" color="secondary">
-        You can not do vote because you had no {symbol} when the vote started
-      </Text>
-    )
-  }
-
-  if (canEnact) {
-    return elEnactText
-  }
-
-  if (isEnded && !canVote) {
-    return elVoteIsClosed
-  }
-
-  return null
+  return <Wrap>{renderText()}</Wrap>
 }
