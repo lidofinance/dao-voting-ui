@@ -12,4 +12,14 @@ export const Wrap = styled.div`
   b {
     font-weight: 700;
   }
+
+  p {
+    &:not(:last-child) {
+      margin-bottom: 4px;
+    }
+  }
+
+  &:empty {
+    display: none;
+  }
 `

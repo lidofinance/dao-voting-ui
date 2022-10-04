@@ -27,6 +27,7 @@ export const ButtonVote = styled(Button)`
   padding: 0 16px;
   text-align: start;
   height: 56px;
+
   ${({ color }: ButtonVoteProps) => {
     if (color === 'success') {
       return css`

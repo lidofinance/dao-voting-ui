@@ -1,18 +1,15 @@
-// import { Text as TextLocal } from 'modules/shared/ui/Common/Text'
 import { Text, Identicon, trimAddress } from '@lidofinance/lido-ui'
 import { FormattedDate } from 'modules/shared/ui/Utils/FormattedDate'
 import { VoteScript } from '../VoteScript'
 import { VoteDetailsCountdown } from '../VoteDetailsCountdown'
 import { VoteStatusBanner } from '../VoteStatusBanner'
 import {
-  // VotesBarNay,
-  // VotesBarWrap,
-  // VotesBarYea,
-  // VotesTitleWrap,
-  // TextNay,
-  // TextYay,
+  VotesBarNay,
+  VotesBarWrap,
+  VotesBarYea,
+  VotesTitleWrap,
   Box,
-  BoxRow,
+  BoxVotes,
   InfoRow,
   InfoLabel,
   InfoValue,
@@ -62,7 +59,7 @@ export function VoteDetails({
   const nayNum = weiToNum(vote.nay)
   const yeaNum = weiToNum(vote.yea)
   const total = nayNum + yeaNum
-  // const nayPct = total > 0 ? formatFloatPct(nayNum / total) : 0
+  const nayPct = total > 0 ? formatFloatPct(nayNum / total) : 0
   const yeaPct = total > 0 ? formatFloatPct(yeaNum / total) : 0
 
   const votingPower = weiToNum(vote.votingPower)
@@ -146,37 +143,34 @@ export function VoteDetails({
         <FormattedDate date={endDate} format="MMMM DD, YYYY at hh:mm A" />
       </Box>
 
-      <BoxRow>
-        <Box>WIP</Box>
-        <Box>WIP</Box>
-        {/* <TextLocal size={12} weight={400} isCentered>
-          Voting ends{' '}
-          <FormattedDate
-            date={endDate}
-            format="MMMM DD, YYYY at hh:mm A"
-          />
-        </TextLocal> */}
-      </BoxRow>
-
-      {/* <VotesTitleWrap>
-        <Text color="text" size="xxs">
-          <TextNay>Nay: {Number(nayNum.toFixed(4))}</TextNay>{' '}
-          <Text as="span" color="secondary" size="xxs">
-            ({nayPct.toFixed(2)}%)
+      <BoxVotes>
+        <VotesTitleWrap>
+          <Text color="text" size="xxs">
+            <Text as="span" color="secondary" size="xxs">
+              No —{' '}
+            </Text>
+            {Number(nayNum.toFixed(4))}{' '}
+            <Text as="span" color="secondary" size="xxs">
+              ({nayPct.toFixed(2)}%)
+            </Text>
           </Text>
-        </Text>
-        <Text color="text" size="xxs">
-          <TextYay>Yay: {Number(yeaNum.toFixed(4))}</TextYay>{' '}
-          <Text as="span" color="secondary" size="xxs">
-            ({yeaPct.toFixed(2)}%)
+          <Text color="text" size="xxs">
+            <Text as="span" color="secondary" size="xxs">
+              Yes —{' '}
+            </Text>
+            {Number(yeaNum.toFixed(4))}{' '}
+            <Text as="span" color="secondary" size="xxs">
+              ({yeaPct.toFixed(2)}%)
+            </Text>
           </Text>
-        </Text>
-      </VotesTitleWrap>
+        </VotesTitleWrap>
 
-      <VotesBarWrap>
-        <VotesBarNay style={{ width: `${nayPct}%` }} />
-        <VotesBarYea style={{ width: `${yeaPct}%` }} />
-      </VotesBarWrap> */}
+        <VotesBarWrap>
+          <VotesBarNay style={{ width: `${nayPct}%` }} />
+          <VotesBarYea style={{ width: `${yeaPct}%` }} />
+        </VotesBarWrap>
+      </BoxVotes>
+
       <InfoRowFull title="Script" />
       <VoteScript script={vote.script} />
     </>

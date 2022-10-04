@@ -1,6 +1,7 @@
 import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
 
 import { Wrap } from './VoteFormVoterStateStyle'
+import { FormattedDate } from 'modules/shared/ui/Utils/FormattedDate'
 
 import { VoterState, VoteStatus } from 'modules/votes/types'
 
@@ -10,6 +11,8 @@ type Props = {
   canEnact: boolean
   votePower: number
   voterState: VoterState
+  snapshotBlock: number
+  startDate: number
   isEnded: boolean
 }
 
@@ -19,6 +22,8 @@ export function VoteFormVoterState({
   canEnact,
   votePower,
   voterState,
+  snapshotBlock,
+  startDate,
   isEnded,
 }: Props) {
   const { data: symbol } = useGovernanceSymbol()
@@ -29,81 +34,71 @@ export function VoteFormVoterState({
   const isVotedYay = voterState === VoterState.VotedYay
   const isVotedNay = voterState === VoterState.VotedNay
 
-  const renderText = () => {
-    const elVoteIsClosed = <>This vote is closed</>
+  const elStartBlockDate = (
+    <>
+      (block {snapshotBlock} minted at{' '}
+      <FormattedDate date={startDate} format="hh:mm A on DD of MMMM YYYY" />
+      ).
+    </>
+  )
 
-    const elEnactText = (
-      <>
-        The voting period is closed and the vote has passed.
-        <br />
-        Anyone can now enact this vote to execute its action.
-      </>
-    )
+  const elThisWasYourBalance = (
+    <>This was your balance when the vote started {elStartBlockDate}</>
+  )
 
-    if (canVote && isNotVoted) {
-      return (
-        <>
-          You can do vote this with{' '}
-          <b>
-            {votePower} {symbol}
-          </b>
-          <br />
-          (this was your balance when the vote started)
-          {status === VoteStatus.ActiveObjection && (
-            <>
-              <br />
-              Only <b>No</b> available in objection phase
-            </>
-          )}
-        </>
-      )
-    }
+  const elChange = (
+    <p>
+      You can <b>change your vote</b> while the voting period is open but you
+      can only vote <b>“No”</b> in the objection phase.
+    </p>
+  )
 
-    if (isVotedYay || isVotedNay) {
-      return (
-        <>
-          You voted <b>{isVotedNay ? 'NO' : 'YES'}</b> with{' '}
-          <b>
-            {votePower} {symbol}
-          </b>
-          {canVote && (isMainPhase || (isObjPhase && isVotedYay)) && (
-            <>
-              <br />
-              You can <b>change your vote</b> while the voting period is open
-            </>
-          )}
-          {canEnact && isEnded && (
-            <>
-              <br />
-              {elEnactText}
-            </>
-          )}
-          {!canEnact && isEnded && (
-            <>
-              <br />
-              {elVoteIsClosed}
-            </>
-          )}
-        </>
-      )
-    }
+  const elNotVotedYet = (
+    <>
+      <p>
+        Voting with{' '}
+        <b>
+          {votePower} {symbol}
+        </b>
+        . {elThisWasYourBalance}
+      </p>
+    </>
+  )
 
-    if (isEnded === false && !canVote && Number(votePower) === 0) {
-      return (
-        <>
-          You can not do vote because you had no {symbol} when the vote started
-        </>
-      )
-    }
+  const elAlreadyVoted = (
+    <>
+      <p>
+        You have voted <b>“{isVotedNay ? 'No' : 'Yes'}”</b> with{' '}
+        <b>
+          {votePower} {symbol}
+        </b>
+        . {elThisWasYourBalance}
+      </p>
+    </>
+  )
 
-    if (canEnact) {
-      return <>{elEnactText}</>
-    }
+  const elCantVote = (
+    <p>
+      You can not do vote because you had no <b>{symbol}</b> when the vote
+      started {elStartBlockDate}.
+    </p>
+  )
 
-    if (isEnded && !canVote) {
-      return <>{elVoteIsClosed}</>
-    }
-  }
+  const elEnactText = (
+    <p>
+      The voting period is closed and the vote has passed.
+      <br />
+      Anyone can now enact this vote to execute its action.
+    </p>
+  )
 
-  return <Wrap>{renderText()}</Wrap>
+  return (
+    <Wrap>
+      {isEnded === false && !canVote && Number(votePower) === 0 && elCantVote}
+      {isEnded === false && canVote && isNotVoted && elNotVotedYet}
+      {(isVotedYay || isVotedNay) && elAlreadyVoted}
+      {canVote && (isMainPhase || (isObjPhase && isVotedYay)) && elChange}
+      {canEnact && isEnded && elEnactText}
+    </Wrap>
+  )
 }

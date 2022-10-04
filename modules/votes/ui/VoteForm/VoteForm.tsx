@@ -160,6 +160,8 @@ export function VoteForm({ voteId }: Props) {
                   voterState={voterState!}
                   canVote={canVote}
                   canEnact={canEnact}
+                  snapshotBlock={vote.snapshotBlock.toNumber()}
+                  startDate={startDate!}
                   isEnded={isEnded}
                 />
 

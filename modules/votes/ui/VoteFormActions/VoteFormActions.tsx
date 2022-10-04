@@ -38,7 +38,8 @@ export function VoteFormActions({
       }
       disabled={
         (isSubmitting && isSubmitting !== 'yay') ||
-        status === VoteStatus.ActiveObjection
+        status === VoteStatus.ActiveObjection ||
+        voterState === VoterState.VotedYay
       }
       onClick={() => onVote('yay')}
     >
@@ -63,7 +64,10 @@ export function VoteFormActions({
               ? 'error'
               : 'secondary'
           }
-          disabled={isSubmitting && isSubmitting !== 'nay'}
+          disabled={
+            (isSubmitting && isSubmitting !== 'nay') ||
+            voterState === VoterState.VotedNay
+          }
           onClick={() => onVote('nay')}
         >
           <CrossSVG />{' '}

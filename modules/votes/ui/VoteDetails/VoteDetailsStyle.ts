@@ -3,40 +3,35 @@ import { Text as TextLocal } from 'modules/shared/ui/Common/Text'
 import { DataTable as DataTableOriginal } from '@lidofinance/lido-ui'
 
 export const VotesTitleWrap = styled.div`
-  margin-bottom: 6px;
+  margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
+
+  & * {
+    line-height: 1;
+  }
 `
 
 export const VotesBarWrap = styled.div`
   display: flex;
-  margin-bottom: 16px;
-  height: 8px;
-  border-radius: 4px;
+  height: 6px;
+  border-radius: 3px;
   overflow: hidden;
-  background-color: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.foreground};
+  background-color: ${({ theme }) => theme.colors.foreground};
 `
 
 const VotesBar = styled.div`
   height: 100%;
+  overflow: hidden;
 `
 
 export const VotesBarNay = styled(VotesBar)`
-  background-color: ${({ theme }) => theme.colors.error};
+  background-color: #e14d4d;
 `
 
 export const VotesBarYea = styled(VotesBar)`
-  background-color: ${({ theme }) => theme.colors.primary};
-`
-
-export const TextNay = styled.span`
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.error};
-`
-
-export const TextYay = styled.span`
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.primary};
+  background-color: #53ba95;
 `
 
 type BoxProps = { isCentered?: boolean }
@@ -51,14 +46,8 @@ export const Box = styled.div`
   background-color: ${({ theme }) => theme.colors.background};
 `
 
-export const BoxRow = styled.div`
-  margin-bottom: 20px;
-  display: flex;
-  gap: 10px;
-
-  & > ${Box} {
-    flex: 1 1 auto;
-  }
+export const BoxVotes = styled(Box)`
+  padding: 20px;
 `
 
 export const VoteTitle = styled(TextLocal).attrs({
