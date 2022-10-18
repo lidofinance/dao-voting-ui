@@ -4,7 +4,7 @@ import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { Text, Link } from '@lidofinance/lido-ui'
 import { CallTitle, CallWrapper, ScriptBox, Padding } from './styles'
 
-import { EVMScriptDecoded } from 'evm-script-decoder/lib/types'
+import { EVMScriptDecoded } from '@lidofinance/evm-script-decoder/lib/types'
 import { getEtherscanAddressLink } from '@lido-sdk/helpers'
 import { formatCallString } from './utils'
 
