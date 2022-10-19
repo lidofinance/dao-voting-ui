@@ -4,8 +4,8 @@ import { useLocalStorage } from '@lido-sdk/react'
 
 import { Contract } from 'ethers'
 import { getRpcUrl } from 'modules/blockChain/utils/getRpcUrls'
-import { ABIProvider } from 'evm-script-decoder/lib/types'
-import { EVMScriptDecoder, abiProviders } from 'evm-script-decoder'
+import { ABIProvider } from '@lidofinance/evm-script-decoder/lib/types'
+import { EVMScriptDecoder, abiProviders } from '@lidofinance/evm-script-decoder'
 import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
 
 import {
