@@ -15,7 +15,7 @@ import * as urls from 'modules/network/utils/urls'
 
 export function HeaderVoteInput() {
   const router = useRouter()
-  const { replace } = router
+  const { replace, asPath } = router
   const { voteId: urlVoteId = [] } = router.query
   const [voteId] = urlVoteId as string[]
   const [inputValue, setValue] = useState(voteId || '')
@@ -37,6 +37,12 @@ export function HeaderVoteInput() {
   useEffect(() => {
     changeRoute(inputValue)
   }, [inputValue, changeRoute])
+
+  useEffect(() => {
+    if (asPath === '/vote' && inputValue) {
+      changeRoute(inputValue)
+    }
+  }, [asPath, inputValue, changeRoute])
 
   const handleChangeVoteId = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
