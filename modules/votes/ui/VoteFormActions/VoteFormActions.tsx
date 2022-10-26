@@ -26,65 +26,43 @@ export function VoteFormActions({
 }: Props) {
   if (!canVote && !canEnact) return null
 
-  const yayBtn = (
-    <ButtonVote
-      loading={isSubmitting === 'yay'}
-      color={
-        voterState === VoterState.NotVoted
-          ? 'primary'
-          : voterState === VoterState.VotedYay
-          ? 'success'
-          : 'secondary'
-      }
-      disabled={
-        (isSubmitting && isSubmitting !== 'yay') ||
-        status === VoteStatus.ActiveObjection ||
-        voterState === VoterState.VotedYay
-      }
-      onClick={() => onVote('yay')}
-    >
-      <CheckSVG />{' '}
-      {voterState === VoterState.VotedYay
-        ? 'Voted Yes'
-        : voterState === VoterState.VotedNay
-        ? 'Change Vote to Yes'
-        : 'Vote Yes'}
-    </ButtonVote>
-  )
-
   return (
     <Actions>
       {canVote && (
-        <ButtonVote
-          loading={isSubmitting === 'nay'}
-          color={
-            voterState === VoterState.NotVoted
-              ? 'primary'
-              : voterState === VoterState.VotedNay
-              ? 'error'
-              : 'secondary'
-          }
-          disabled={
-            (isSubmitting && isSubmitting !== 'nay') ||
-            voterState === VoterState.VotedNay
-          }
-          onClick={() => onVote('nay')}
-        >
-          <CrossSVG />{' '}
-          {voterState === VoterState.VotedNay
-            ? 'Voted No'
-            : voterState === VoterState.VotedYay
-            ? 'Change Vote to No'
-            : 'Vote No'}
-        </ButtonVote>
-      )}
-      {canVote && (
         <>
-          {status === VoteStatus.ActiveObjection ? (
-            <PhasesTooltip position="top-right">{yayBtn}</PhasesTooltip>
-          ) : (
-            yayBtn
-          )}
+          <ButtonVote
+            loading={isSubmitting === 'nay'}
+            color={voterState === VoterState.VotedNay ? 'error' : 'secondary'}
+            disabled={
+              (isSubmitting && isSubmitting !== 'nay') ||
+              voterState === VoterState.VotedNay
+            }
+            onClick={() => onVote('nay')}
+          >
+            <CrossSVG />{' '}
+            {voterState === VoterState.VotedNay
+              ? 'Voted No'
+              : voterState === VoterState.VotedYay
+              ? 'Change Vote to No'
+              : 'Vote No'}
+          </ButtonVote>
+          <ButtonVote
+            loading={isSubmitting === 'yay'}
+            color={voterState === VoterState.VotedYay ? 'success' : 'secondary'}
+            disabled={
+              (isSubmitting && isSubmitting !== 'yay') ||
+              status === VoteStatus.ActiveObjection ||
+              voterState === VoterState.VotedYay
+            }
+            onClick={() => onVote('yay')}
+          >
+            <CheckSVG />{' '}
+            {voterState === VoterState.VotedYay
+              ? 'Voted Yes'
+              : voterState === VoterState.VotedNay
+              ? 'Change Vote to Yes'
+              : 'Vote Yes'}
+          </ButtonVote>
         </>
       )}
       {canEnact && (
