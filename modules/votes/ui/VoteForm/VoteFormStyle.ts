@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Text } from 'modules/shared/ui/Common/Text'
 
 export const Desc = styled.div`
   padding: 20px 0;
@@ -18,4 +19,12 @@ export const ErrorMessage = styled.div`
   & a {
     color: #fff;
   }
+`
+
+export const ClearButton = styled(Text).attrs({
+  size: 14,
+  weight: 700,
+  color: 'primary',
+})`
+  cursor: pointer;
 `

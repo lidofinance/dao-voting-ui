@@ -1,6 +1,5 @@
-import { debounce } from 'lodash'
-import { useMemo, useState, useCallback, useEffect } from 'react'
-import { useRouter } from 'next/router'
+import { useCallback } from 'react'
+import { useVotePrompt } from 'modules/votes/providers/VotePrompt'
 
 import {
   Input,
@@ -11,61 +10,30 @@ import {
 import SearchIconSVG from './icons/search.com.svg.react'
 import ClearIconSVG from 'assets/clear.com.svg.react'
 
-import * as urls from 'modules/network/utils/urls'
-
 export function HeaderVoteInput() {
-  const router = useRouter()
-  const { replace, asPath } = router
-  const { voteId: urlVoteId = [] } = router.query
-  const [voteId] = urlVoteId as string[]
-  const [inputValue, setValue] = useState(voteId || '')
-
-  const handleClear = useCallback(() => {
-    setValue('')
-  }, [])
-
-  const changeRoute = useMemo(() => {
-    return debounce((value: string) => {
-      replace(urls.vote(value), undefined, {
-        scroll: false,
-        shallow: true,
-      })
-    }, 500)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
-    changeRoute(inputValue)
-  }, [inputValue, changeRoute])
-
-  useEffect(() => {
-    if (asPath === '/vote' && inputValue) {
-      changeRoute(inputValue)
-    }
-  }, [asPath, inputValue, changeRoute])
+  const { setVoteId, voteId, clearVoteId, changeRoute } = useVotePrompt()
 
   const handleChangeVoteId = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setValue(e.target.value)
+      setVoteId(e.target.value)
     },
-    [],
+    [setVoteId],
   )
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
-        changeRoute(inputValue)
+        changeRoute(voteId)
       }
     },
-    [changeRoute, inputValue],
+    [changeRoute, voteId],
   )
 
   return (
     <Wrap>
       <Input
         name="voteId"
-        value={inputValue}
-        defaultValue={voteId}
+        value={voteId}
         placeholder="DAO Vote #"
         onChange={handleChangeVoteId}
         onKeyDown={handleKeyDown}
@@ -73,8 +41,8 @@ export function HeaderVoteInput() {
       <SearchIconWrap>
         <SearchIconSVG />
       </SearchIconWrap>
-      {inputValue && (
-        <ClearIconWrap onClick={handleClear}>
+      {voteId && (
+        <ClearIconWrap onClick={clearVoteId}>
           <ClearIconSVG />
         </ClearIconWrap>
       )}

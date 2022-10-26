@@ -3,6 +3,7 @@ import { useMemo, Fragment } from 'react'
 import { useFormVoteInfo } from './useFormVoteInfo'
 import { useFormVoteSubmit } from './useFormVoteSubmit'
 import { useVotePassedCallback } from '../../hooks/useVotePassedCallback'
+import { useVotePrompt } from 'modules/votes/providers/VotePrompt'
 
 import { Text } from 'modules/shared/ui/Common/Text'
 import { Card } from 'modules/shared/ui/Common/Card'
@@ -13,7 +14,7 @@ import { TxRow } from 'modules/blockChain/ui/TxRow'
 import { VoteFormActions } from '../VoteFormActions'
 import { VoteFormMustConnect } from '../VoteFormMustConnect'
 import { VoteFormVoterState } from '../VoteFormVoterState'
-import { Desc, ErrorMessage } from './VoteFormStyle'
+import { Desc, ErrorMessage, ClearButton } from './VoteFormStyle'
 
 import { VoteStatus } from 'modules/votes/types'
 import { isVoteEnactable } from 'modules/votes/utils/isVoteEnactable'
@@ -39,6 +40,7 @@ export function VoteForm({ voteId }: Props) {
     doRevalidate,
     startEvent,
   } = useFormVoteInfo({ voteId })
+  const { clearVoteId } = useVotePrompt()
 
   const { txVote, txEnact, handleVote, handleEnact, isSubmitting } =
     useFormVoteSubmit({
@@ -114,6 +116,8 @@ export function VoteForm({ voteId }: Props) {
             Sorry, we weren&apos;t able to find any votes for your search. Try
             another search.
           </Text>
+          <br />
+          <ClearButton onClick={clearVoteId}>Clear search</ClearButton>
         </Desc>
       )}
 
