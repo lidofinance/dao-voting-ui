@@ -1,5 +1,5 @@
 import { Button } from '@lidofinance/lido-ui'
-import { Actions, PhasesTooltip, ButtonVote } from './VoteFormActionsStyle'
+import { Actions, ButtonVote } from './VoteFormActionsStyle'
 import CheckSVG from 'assets/check.com.svg.react'
 import CrossSVG from 'assets/cross.com.svg.react'
 
