@@ -17,6 +17,7 @@ import {
   CreatorBadge,
   DataTable,
 } from './VoteDetailsStyle'
+import { AddressPop } from 'modules/shared/ui/Common/AddressPop'
 
 import { Vote, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
@@ -82,10 +83,12 @@ export function VoteDetails({
       <DataTable>
         <InfoRowFull title="Created by">
           {creator && (
-            <CreatorBadge>
-              <Identicon diameter={16} address={creator} />
-              <div>{trimAddress(creator, 4)}</div>
-            </CreatorBadge>
+            <AddressPop address={creator}>
+              <CreatorBadge>
+                <Identicon diameter={16} address={creator} />
+                <div>{trimAddress(creator, 4)}</div>
+              </CreatorBadge>
+            </AddressPop>
           )}
         </InfoRowFull>
 
