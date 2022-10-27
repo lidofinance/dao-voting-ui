@@ -11,7 +11,8 @@ import SearchIconSVG from './icons/search.com.svg.react'
 import ClearIconSVG from 'assets/clear.com.svg.react'
 
 export function HeaderVoteInput() {
-  const { setVoteId, voteId, clearVoteId, changeRoute } = useVotePrompt()
+  const { setVoteId, voteId, clearVoteId, changeRouteInstantly } =
+    useVotePrompt()
 
   const handleChangeVoteId = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,10 +24,10 @@ export function HeaderVoteInput() {
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
-        changeRoute(voteId)
+        changeRouteInstantly(voteId)
       }
     },
-    [changeRoute, voteId],
+    [changeRouteInstantly, voteId],
   )
 
   return (

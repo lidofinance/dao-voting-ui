@@ -5,12 +5,14 @@ type VotePromptContext = {
   voteId: string
   setVoteId: (voteId: string) => void
   clearVoteId: () => void
-  changeRoute: (voteId: string) => void
+  changeRouteDebounced: (voteId: string) => void
+  changeRouteInstantly: (voteId: string) => void
 }
 
 export const votePromptContext = createContext<VotePromptContext>({
   voteId: '',
   setVoteId: noop,
   clearVoteId: noop,
-  changeRoute: noop,
+  changeRouteDebounced: noop,
+  changeRouteInstantly: noop,
 })

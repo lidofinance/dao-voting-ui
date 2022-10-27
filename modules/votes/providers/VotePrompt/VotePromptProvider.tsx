@@ -57,7 +57,8 @@ export function VotePromptProvider({ children }: Props) {
         voteId: voteId,
         setVoteId,
         clearVoteId,
-        changeRoute: changeRouteDebounced,
+        changeRouteDebounced,
+        changeRouteInstantly,
       }}
     >
       {children}
