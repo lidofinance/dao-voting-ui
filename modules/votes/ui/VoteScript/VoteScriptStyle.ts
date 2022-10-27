@@ -47,9 +47,9 @@ export const VoteScriptBodyWrap = styled.div`
   position: relative;
   margin-top: -1px;
   margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
-  border-radius: 0 ${({ theme }) => theme.borderRadiusesMap.lg}px;
-  ${({ theme }) => theme.borderRadiusesMap.lg}px;
-  ${({ theme }) => theme.borderRadiusesMap.lg}px;
+  border-radius: 0 ${({ theme }) => theme.borderRadiusesMap.lg}px
+    ${({ theme }) => theme.borderRadiusesMap.lg}px
+    ${({ theme }) => theme.borderRadiusesMap.lg}px;
   border: 1px solid ${({ theme }) => theme.colors.border};
   background-color: ${({ theme }) => theme.colors.background};
 `
