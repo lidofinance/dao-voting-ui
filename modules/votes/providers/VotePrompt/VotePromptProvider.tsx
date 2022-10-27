@@ -12,13 +12,14 @@ type Props = {
 export function VotePromptProvider({ children }: Props) {
   const router = useRouter()
   const { replace, asPath } = router
+
+  // https://github.com/vercel/next.js/issues/18127
   const replaceRef = useRef(replace)
+  if (replaceRef.current !== replace) replaceRef.current = replace
 
   const { voteId: urlVoteIdArr = [] } = router.query
   const [urlVoteId] = urlVoteIdArr as string[]
   const [voteId, setVoteIdState] = useState(urlVoteId || '')
-
-  if (replaceRef.current !== replace) replaceRef.current = replace
 
   const changeRouteInstantly = useCallback((value: string) => {
     replaceRef.current(urls.vote(value), undefined, {
