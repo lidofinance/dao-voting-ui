@@ -65,10 +65,11 @@ type BodyProps = { position: Position }
 export const Body = styled.div<BodyProps>`
   z-index: 1;
   position: absolute;
-  padding: 9px 12px;
+  padding: ${({ theme }) => theme.spaceMap.sm}px
+    ${({ theme }) => theme.spaceMap.md}px;
   opacity: 0;
   width: max-content;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.borderRadiusesMap.md}px;
   background-color: rgba(0, 0, 0, 0.8);
   pointer-events: none;
   transform: scale(0.6);

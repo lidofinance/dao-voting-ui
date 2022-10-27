@@ -10,7 +10,7 @@ export const Wrap = styled(Container).attrs({
   left: 0;
   top: 0;
   right: 0;
-  padding: 0 20px;
+  padding: 0 ${({ theme }) => theme.spaceMap.lg}px;
   display: flex;
   height: 76px;
   align-items: center;
@@ -27,7 +27,7 @@ export const Nav = styled.div`
 `
 
 export const Logo = styled.div`
-  margin-right: 20px;
+  margin-right: ${({ theme }) => theme.spaceMap.lg}px;
   font-size: 0;
   z-index: 99;
 `
@@ -47,7 +47,7 @@ type NavLinkProps = {
 export const NavLink = styled.a<NavLinkProps>`
   display: flex;
   align-items: center;
-  font-size: 12px;
+  font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
   font-weight: 800;
   text-decoration: none;
   text-transform: uppercase;
@@ -59,12 +59,12 @@ export const NavLink = styled.a<NavLinkProps>`
   }
 
   &:not(:last-child) {
-    margin-right: 20px;
+    margin-right: ${({ theme }) => theme.spaceMap.lg}px;
   }
 
   & svg {
     display: block;
-    margin-right: 8px;
+    margin-right: ${({ theme }) => theme.spaceMap.sm}px;
     fill: currentColor;
   }
 
@@ -174,7 +174,7 @@ const menuAppearing = keyframes`
 export const MobileMenu = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 60px 20px 0;
+  padding: 60px ${({ theme }) => theme.spaceMap.lg}px 0;
   position: fixed;
   overflow: auto;
   top: 0;
@@ -195,7 +195,7 @@ export const MobileMenuScroll = styled.div`
 export const MobileNavItems = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
 `
 
 export const MobileNetworkWrap = styled.div`

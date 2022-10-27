@@ -6,13 +6,9 @@ import { CopyOpenActions } from 'modules/shared/ui/Common/CopyOpenActions'
 import { IdenticonBadge } from '@lidofinance/lido-ui'
 import { Wrap, Pop, BadgeWrap } from './AddressPopStyle'
 
-import { minmax } from 'modules/shared/utils/minmax'
+import { calcPopoverPosition } from './calcPopoverPosition'
 
-type BadgeProps = React.ComponentProps<typeof IdenticonBadge>
-
-type Props = BadgeProps & {
-  children?: React.ReactNode
-}
+type Props = React.ComponentProps<typeof IdenticonBadge>
 
 export function AddressPop({ children, ...badgeProps }: Props) {
   const { address } = badgeProps
@@ -20,9 +16,12 @@ export function AddressPop({ children, ...badgeProps }: Props) {
   const wrapRef = useRef<HTMLDivElement | null>(null)
   const popRef = useRef<HTMLDivElement | null>(null)
 
-  const [{ isOpened, position }, setState] = useSimpleReducer({
+  const [{ isOpened, position }, setState] = useSimpleReducer<{
+    isOpened: boolean
+    position?: { left: number; top: number }
+  }>({
     isOpened: false,
-    position: undefined as { left: number; top: number } | undefined,
+    position: undefined,
   })
 
   const handleOpen = useCallback(() => {
@@ -30,24 +29,12 @@ export function AddressPop({ children, ...badgeProps }: Props) {
   }, [setState])
 
   useEffect(() => {
-    if (isOpened && !position) {
-      const wrapEl = wrapRef.current
-      const popEl = popRef.current
-      if (!wrapEl || !popEl) return
+    const wrapEl = wrapRef.current
+    const popEl = popRef.current
 
-      const wrapBox = wrapEl.getBoundingClientRect()
-      const popBox = popEl.getBoundingClientRect()
+    if (!wrapEl || !popEl || !isOpened || position) return
 
-      const left = wrapBox.left + wrapBox.width / 2 - popBox.width / 2
-      const top = wrapBox.top + wrapBox.height / 2 - popBox.height / 2
-
-      const nextPosition = {
-        left: minmax(10, left, window.innerWidth - popBox.width - 10),
-        top: minmax(10, top, window.innerHeight - popBox.height - 10),
-      }
-
-      setState({ position: nextPosition })
-    }
+    setState({ position: calcPopoverPosition(wrapEl, popEl) })
   }, [isOpened, position, setState])
 
   useClickAway(popRef, () => setState({ isOpened: false, position: undefined }))

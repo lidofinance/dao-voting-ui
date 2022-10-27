@@ -66,8 +66,8 @@ export function Header() {
             <LidoLogoSvg />
           </Logo>
           <NavItems>
-            <NavItem link={urls.voteIndex} children="Vote" />
-            <NavItem link={urls.settings} children="Settings" />
+            <NavItem link={urls.voteIndex}>Vote</NavItem>
+            <NavItem link={urls.settings}>Settings</NavItem>
           </NavItems>
         </Nav>
 
@@ -98,16 +98,12 @@ export function Header() {
           <MobileMenu>
             <MobileMenuScroll>
               <MobileNavItems>
-                <NavItem
-                  link={urls.voteIndex}
-                  children="Vote"
-                  onClick={handleCloseMobileMenu}
-                />
-                <NavItem
-                  link={urls.settings}
-                  children="Settings"
-                  onClick={handleCloseMobileMenu}
-                />
+                <NavItem link={urls.voteIndex} onClick={handleCloseMobileMenu}>
+                  Vote
+                </NavItem>
+                <NavItem link={urls.settings} onClick={handleCloseMobileMenu}>
+                  Settings
+                </NavItem>
               </MobileNavItems>
               <MobileNetworkWrap>
                 <Network>

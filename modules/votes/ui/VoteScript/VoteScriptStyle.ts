@@ -9,8 +9,9 @@ export const Tabs = styled.div`
 type TabProps = { isActive?: boolean }
 export const Tab = styled.div`
   position: relative;
-  padding: 6px 20px;
-  font-size: 12px;
+  padding: ${({ theme }) => theme.spaceMap.sm}px
+    ${({ theme }) => theme.spaceMap.lg}px;
+  font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
   font-weight: 400;
   color: ${({ theme }) => theme.colors.text};
   border: 1px solid ${({ theme }) => theme.colors.border};
@@ -45,14 +46,16 @@ export const Tab = styled.div`
 export const VoteScriptBodyWrap = styled.div`
   position: relative;
   margin-top: -1px;
-  margin-bottom: 20px;
-  border-radius: 0 10px 10px 10px;
+  margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
+  border-radius: 0 ${({ theme }) => theme.borderRadiusesMap.lg}px;
+  ${({ theme }) => theme.borderRadiusesMap.lg}px;
+  ${({ theme }) => theme.borderRadiusesMap.lg}px;
   border: 1px solid ${({ theme }) => theme.colors.border};
   background-color: ${({ theme }) => theme.colors.background};
 `
 
 export const CallWrapper = styled.div`
-  padding: 20px;
+  padding: ${({ theme }) => theme.spaceMap.lg}px;
 
   &:not(:last-child) {
     border-bottom: 1px solid ${p => p.theme.colors.border};
@@ -60,7 +63,7 @@ export const CallWrapper = styled.div`
 `
 
 export const CallTitle = styled(Text)`
-  margin-bottom: ${props => props.theme.spaceMap.sm}px;
+  margin-bottom: ${({ theme }) => theme.spaceMap.sm}px;
   font-weight: 600;
   font-family: SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono,
     Courier New, monospace !important;
@@ -82,7 +85,7 @@ export const ScriptBox = styled.div`
   width: 100%;
   font-family: SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono,
     Courier New, monospace !important;
-  font-size: 12px;
+  font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
   color: ${({ theme }) => theme.colors.text};
   border-radius: 8px;
   background-color: rgba(255, 255, 255, 0.2);

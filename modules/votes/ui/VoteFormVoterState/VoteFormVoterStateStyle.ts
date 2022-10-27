@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 
 export const Wrap = styled.div`
-  padding: 20px;
-  font-size: 12px;
+  padding: ${({ theme }) => theme.spaceMap.lg}px;
+  font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
   font-weight: 400;
-  line-height: 20px;
+  line-height: ${({ theme }) => theme.fontSizesMap.lg}px;
   color: ${({ theme }) => theme.colors.text};
   background-color: #fffae0;
-  border-radius: 10px;
+  border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
 
   b {
     font-weight: 700;
@@ -15,7 +15,7 @@ export const Wrap = styled.div`
 
   p {
     &:not(:last-child) {
-      margin-bottom: 4px;
+      margin-bottom: ${({ theme }) => theme.spaceMap.xs}px;
     }
   }
 

@@ -19,10 +19,10 @@ export const Disconnect = styled.button`
 export const AddressBadge = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 8px;
+  padding: 0 ${({ theme }) => theme.spaceMap.sm}px;
   height: 44px;
-  font-size: 14px;
-  border-radius: 10px;
+  font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
+  border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
   border: 1px solid ${({ theme }) => theme.colors.border};
   background-color: ${({ theme }) => theme.colors.foreground};
   user-select: none;
@@ -30,7 +30,7 @@ export const AddressBadge = styled.div`
 `
 
 export const AddressText = styled.div`
-  margin-left: 5px;
+  margin-left: ${({ theme }) => theme.spaceMap.xs}px;
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: ${({ theme }) => theme.fontSizesMap.sm};
 `

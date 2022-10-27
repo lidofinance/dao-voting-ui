@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components'
 import { VoteStatus } from 'modules/votes/types'
 
 export const BannerText = styled.div`
-  font-size: 14px;
+  font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
   font-weight: 400;
 `
 
@@ -15,9 +15,9 @@ const Badge = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 8px;
-  width: 20px;
-  height: 20px;
+  margin-right: ${({ theme }) => theme.spaceMap.sm}px;
+  width: ${({ theme }) => theme.spaceMap.lg}px;
+  height: ${({ theme }) => theme.spaceMap.lg}px;
 
   & svg {
     display: block;
@@ -28,7 +28,7 @@ export const BadgePassed = styled(Badge)`
   & svg {
     width: 16px;
     height: 16px;
-    fill: #53ba95;
+    fill: ${({ theme }) => theme.colors.success};
   }
 `
 
@@ -42,7 +42,7 @@ export const BadgeFailed = styled(Badge)`
 
 export const BadgeOngoing = styled(Badge)`
   color: #fff;
-  font-size: 14px;
+  font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
   font-weight: 700;
   border-radius: 5px;
   background-color: ${({ theme }) => theme.colors.primary};
@@ -52,9 +52,9 @@ type WrapProps = { status?: VoteStatus }
 export const Wrap = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
 
   ${({ status }: WrapProps) =>
     (status === VoteStatus.ActiveMain ||
@@ -75,7 +75,7 @@ export const Wrap = styled.div`
       background-color: rgba(83, 186, 149, 0.1);
 
       & ${BannerText} {
-        color: #53ba95;
+        color: ${({ theme }) => theme.colors.success};
       }
     `}
 
@@ -85,7 +85,7 @@ export const Wrap = styled.div`
       background-color: rgba(225, 77, 77, 0.1);
 
       & ${BannerText} {
-        color: #e14d4d;
+        color: ${({ theme }) => theme.colors.error};
       }
     `}
 `

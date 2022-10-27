@@ -3,7 +3,7 @@ import { VotePhasesTooltip } from '../VotePhasesTooltip'
 import { Button } from '@lidofinance/lido-ui'
 
 export const Actions = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
   display: flex;
   gap: 10px;
 
@@ -31,7 +31,7 @@ export const ButtonVote = styled(Button)`
   ${({ color }: ButtonVoteProps) => {
     if (color === 'success') {
       return css`
-        background-color: #53ba95;
+        background-color: ${({ theme }) => theme.colors.success};
       `
     }
   }}
@@ -43,7 +43,7 @@ export const ButtonVote = styled(Button)`
 
   svg {
     display: block;
-    margin-right: 8px;
+    margin-right: ${({ theme }) => theme.spaceMap.sm}px;
     width: 24px;
     height: 24px;
     fill: currentColor;
