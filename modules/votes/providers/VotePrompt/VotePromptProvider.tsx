@@ -47,7 +47,7 @@ export function VotePromptProvider({ children }: Props) {
   }, [changeRouteInstantly])
 
   useEffect(() => {
-    if (asPath === '/vote' && voteId) {
+    if (asPath === urls.voteIndex && voteId) {
       changeRouteDebounced(voteId)
     }
   }, [asPath, voteId, changeRouteDebounced])
