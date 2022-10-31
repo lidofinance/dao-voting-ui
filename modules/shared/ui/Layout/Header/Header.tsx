@@ -25,6 +25,7 @@ import {
   MobileNetworkWrap,
   MobileSpacer,
   HeaderSpacer,
+  NavBurger,
 } from './HeaderStyle'
 
 import { getChainName } from 'modules/blockChain/chains'
@@ -85,14 +86,16 @@ export function Header() {
           <HeaderWallet />
         </ActionsDesktop>
 
-        <BurgerWrap
-          isOpened={isBurgerOpened}
-          onClick={() => setBurgerOpened(!isBurgerOpened)}
-        >
-          <BurgerLine />
-          <BurgerLine />
-          <BurgerLine />
-        </BurgerWrap>
+        <NavBurger>
+          <BurgerWrap
+            isOpened={isBurgerOpened}
+            onClick={() => setBurgerOpened(!isBurgerOpened)}
+          >
+            <BurgerLine />
+            <BurgerLine />
+            <BurgerLine />
+          </BurgerWrap>
+        </NavBurger>
 
         {isBurgerOpened && (
           <MobileMenu>

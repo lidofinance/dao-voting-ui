@@ -136,16 +136,22 @@ export const BurgerLine = styled.div`
   }
 `
 
+export const NavBurger = styled.div`
+  display: none;
+  justify-content: flex-end;
+  position: relative;
+  z-index: 99;
+  width: 30%;
+
+  @media (max-width: ${BREAKPOINT_MOBILE}) {
+    display: flex;
+  }
+`
+
 type BurgerWrapProps = { isOpened: boolean }
 export const BurgerWrap = styled.div<BurgerWrapProps>`
   margin: -10px;
   padding: 10px;
-  z-index: 99;
-  display: none;
-
-  @media (max-width: ${BREAKPOINT_MOBILE}) {
-    display: block;
-  }
 
   ${({ isOpened }) =>
     isOpened &&

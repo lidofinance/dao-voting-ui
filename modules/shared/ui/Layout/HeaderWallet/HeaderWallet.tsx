@@ -16,9 +16,10 @@ export function HeaderWallet() {
         <Button
           size="sm"
           onClick={openConnectWalletModal}
-          children="Connect"
           style={{ width: '100%' }}
-        />
+        >
+          Connect wallet
+        </Button>
       </Wrap>
     )
   }
