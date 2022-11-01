@@ -22,6 +22,8 @@ import { AddressPop } from 'modules/shared/ui/Common/AddressPop'
 import { Vote, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { formatFloatPct } from 'modules/shared/utils/formatFloatPct'
+import { formatNumber } from 'modules/shared/utils/formatNumber'
+import { ContractGovernanceToken } from 'modules/blockChain/contracts'
 
 function InfoRowFull({
   title,
@@ -57,11 +59,25 @@ export function VoteDetails({
   creator,
   isEnded,
 }: Props) {
+  const { data: totalSupplyWei } = ContractGovernanceToken.useSwrRpc(
+    'totalSupplyAt',
+    [vote.snapshotBlock],
+  )
+  const totalSupply = totalSupplyWei && weiToNum(totalSupplyWei)
+  const totalSupplyFormatted = totalSupply && formatNumber(totalSupply, 4)
   const nayNum = weiToNum(vote.nay)
   const yeaNum = weiToNum(vote.yea)
   const total = nayNum + yeaNum
+
   const nayPct = total > 0 ? formatFloatPct(nayNum / total) : 0
   const yeaPct = total > 0 ? formatFloatPct(yeaNum / total) : 0
+
+  const nayPctOfTotalSupply = totalSupply
+    ? formatFloatPct(nayNum / totalSupply)
+    : 0
+  const yeaPctOfTotalSupply = totalSupply
+    ? formatFloatPct(yeaNum / totalSupply)
+    : 0
 
   const votingPower = weiToNum(vote.votingPower)
   const startDate = vote.startDate.toNumber()
@@ -81,6 +97,10 @@ export function VoteDetails({
       <VoteTitle>Vote #{voteId}</VoteTitle>
 
       <DataTable>
+        <InfoRowFull title="Snapshot block">
+          {vote.snapshotBlock.toString()}
+        </InfoRowFull>
+
         <InfoRowFull title="Created by">
           {creator && (
             <AddressPop address={creator}>
@@ -123,47 +143,50 @@ export function VoteDetails({
         )}
 
         <InfoRowFull title="Support %">
-          {yeaPct}%{' '}
+          {yeaPct}%&nbsp;
           <Text as="span" color="secondary" size="xxs">
             (&gt;{weiToNum(vote.supportRequired) * 100}% needed)
           </Text>
         </InfoRowFull>
 
         <InfoRowFull title="Approval %">
-          {formatFloatPct(yeaNum / votingPower, { floor: true })}%{' '}
+          {formatFloatPct(yeaNum / votingPower, { floor: true })}%&nbsp;
           <Text as="span" color="secondary" size="xxs">
             (&gt;{weiToNum(vote.minAcceptQuorum) * 100}% needed)
           </Text>
         </InfoRowFull>
 
-        <InfoRowFull title="Snapshot block">
-          {vote.snapshotBlock.toString()}
+        <InfoRowFull title={`“Yes” voted`}>
+          {formatNumber(nayNum, 4)}&nbsp; / {totalSupplyFormatted}&nbsp;
+          <Text as="span" color="secondary" size="xxs">
+            ({nayPctOfTotalSupply.toFixed(2)}%)
+          </Text>
+        </InfoRowFull>
+
+        <InfoRowFull title={`“No” voted`}>
+          {formatNumber(yeaNum, 4)}&nbsp; / {totalSupplyFormatted}&nbsp;
+          <Text as="span" color="secondary" size="xxs">
+            ({yeaPctOfTotalSupply.toFixed(2)}%)
+          </Text>
         </InfoRowFull>
       </DataTable>
 
-      <Box isCentered>
-        Voting {isEnded ? 'ended at' : 'ends'}{' '}
-        <FormattedDate date={endDate} format="MMMM DD, YYYY at hh:mm A" />
-      </Box>
-
       <BoxVotes>
         <VotesTitleWrap>
-          <Text color="text" size="xxs">
+          <Text size="xxs">
             <Text as="span" color="secondary" size="xxs">
               No —{' '}
             </Text>
-            {Number(nayNum.toFixed(4))}{' '}
-            <Text as="span" color="secondary" size="xxs">
-              ({nayPct.toFixed(2)}%)
+            <Text as="span" size="xxs">
+              {nayPctOfTotalSupply.toFixed(2)}%
             </Text>
           </Text>
-          <Text color="text" size="xxs">
+          <Text size="xxs" style={{ textAlign: 'right' }}>
             <Text as="span" color="secondary" size="xxs">
               Yes —{' '}
             </Text>
-            {Number(yeaNum.toFixed(4))}{' '}
-            <Text as="span" color="secondary" size="xxs">
-              ({yeaPct.toFixed(2)}%)
+            <Text as="span" size="xxs">
+              {yeaPctOfTotalSupply.toFixed(2)}%
             </Text>
           </Text>
         </VotesTitleWrap>
@@ -173,6 +196,11 @@ export function VoteDetails({
           <VotesBarYea style={{ width: `${yeaPct}%` }} />
         </VotesBarWrap>
       </BoxVotes>
+
+      <Box isCentered>
+        Voting {isEnded ? 'ended at' : 'ends'}{' '}
+        <FormattedDate date={endDate} format="MMMM DD, YYYY at hh:mm A" />
+      </Box>
 
       <InfoRowFull title="Script" />
       <VoteScript script={vote.script} />

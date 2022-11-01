@@ -6,10 +6,6 @@ export const VotesTitleWrap = styled.div`
   margin-bottom: ${({ theme }) => theme.spaceMap.sm}px;
   display: flex;
   justify-content: space-between;
-
-  & * {
-    line-height: 1;
-  }
 `
 
 export const VotesBarWrap = styled.div`
