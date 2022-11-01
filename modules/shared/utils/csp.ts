@@ -24,6 +24,7 @@ export const contentSecurityPolicy = {
       'https://api.thegraph.com',
       'https://*.infura.io',
       'https://*.alchemyapi.io',
+      'https://*.etherscan.io/api',
       ...trustedHosts,
     ],
     prefetchSrc: ["'self'", ...trustedHosts],
