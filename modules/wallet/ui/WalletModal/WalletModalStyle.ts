@@ -10,7 +10,7 @@ export const Content = styled.div`
 export const Connected = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: ${({ theme }) => theme.spaceMap.md}px;
 `
 
 export const Connector = styled.div`
@@ -31,7 +31,7 @@ export const Row = styled.div`
   align-items: center;
 
   &:not(:last-child) {
-    margin-bottom: 15px;
+    margin-bottom: ${({ theme }) => theme.spaceMap.md}px;
   }
 `
 

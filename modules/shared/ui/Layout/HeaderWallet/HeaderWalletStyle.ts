@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { IdenticonBadge } from '@lidofinance/lido-ui'
 
 export const Wrap = styled.div`
   display: flex;
@@ -17,8 +16,21 @@ export const Disconnect = styled.button`
   font-weight: 500;
 `
 
-export const AddressBadge = styled(IdenticonBadge)`
+export const AddressBadge = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0 ${({ theme }) => theme.spaceMap.sm}px;
+  height: 44px;
+  font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
+  border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  background-color: ${({ theme }) => theme.colors.foreground};
+  user-select: none;
   cursor: pointer;
-  font-size: 12px;
-  background: rgba(39, 56, 82, 0.1);
+`
+
+export const AddressText = styled.div`
+  margin-left: ${({ theme }) => theme.spaceMap.xs}px;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: ${({ theme }) => theme.fontSizesMap.sm};
 `

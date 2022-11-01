@@ -10,12 +10,12 @@ export const Actions = styled.div`
 `
 
 export const DescriptionText = styled.div`
-  font-size: 14px;
+  font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
   font-weight: 500;
   line-height: 1.5;
 
   & p:not(:last-child) {
-    margin-bottom: 8px;
+    margin-bottom: ${({ theme }) => theme.spaceMap.sm}px;
   }
 
   & a {
@@ -25,13 +25,13 @@ export const DescriptionText = styled.div`
 `
 
 export const DescriptionTitle = styled.div`
-  margin-bottom: 8px;
-  font-size: 16px;
+  margin-bottom: ${({ theme }) => theme.spaceMap.sm}px;
+  font-size: ${({ theme }) => theme.fontSizesMap.sm}px;
   font-weight: 800;
   line-height: 1.5;
   color: ${({ theme }) => theme.colors.text};
 
   &:not(:first-child) {
-    margin-top: 16px;
+    margin-top: ${({ theme }) => theme.spaceMap.md}px;
   }
 `

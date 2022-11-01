@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useConfig } from 'modules/config/hooks/useConfig'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 
-import { Title } from 'modules/shared/ui/Common/Title'
+import { Card } from 'modules/shared/ui/Common/Card'
 import { Fieldset } from 'modules/shared/ui/Common/Fieldset'
 import { Form } from 'modules/shared/ui/Controls/Form'
 import { InputControl } from 'modules/shared/ui/Controls/Input'
@@ -11,7 +11,7 @@ import {
   CheckboxControl,
   CheckboxLabelWrap,
 } from 'modules/shared/ui/Controls/Checkbox'
-import { Container, Block, Button, ToastSuccess } from '@lidofinance/lido-ui'
+import { Container, Button, ToastSuccess } from '@lidofinance/lido-ui'
 import { Actions, DescriptionText, DescriptionTitle } from './StyledFormStyle'
 
 import { ContractVoting } from 'modules/blockChain/contracts'
@@ -40,7 +40,7 @@ export function SettingsForm() {
 
   const { formState, setValue, getValues } = formMethods
 
-  const handleSubmit = useCallback(
+  const saveSettings = useCallback(
     (formValues: FormValues) => {
       setSavedConfig({
         rpcUrls: {
@@ -49,9 +49,16 @@ export function SettingsForm() {
         etherscanApiKey: formValues.etherscanApiKey,
         useBundledAbi: formValues.useBundledAbi,
       })
-      ToastSuccess('Settings have been saved')
     },
     [chainId, setSavedConfig],
+  )
+
+  const handleSubmit = useCallback(
+    (formValues: FormValues) => {
+      saveSettings(formValues)
+      ToastSuccess('Settings have been saved')
+    },
+    [saveSettings],
   )
 
   const validateRpcUrl = useCallback(
@@ -97,13 +104,13 @@ export function SettingsForm() {
     setValue('rpcUrl', '')
     setValue('etherscanApiKey', '')
     setValue('useBundledAbi', true)
-    handleSubmit(getValues())
-  }, [setValue, getValues, handleSubmit])
+    saveSettings(getValues())
+    ToastSuccess('Settings have been reset')
+  }, [setValue, saveSettings, getValues])
 
   return (
     <Container as="main" size="tight">
-      <Title title="Settings" subtitle="Configure the app" />
-      <Block>
+      <Card>
         <Form formMethods={formMethods} onSubmit={handleSubmit}>
           <Fieldset>
             <InputControl
@@ -142,11 +149,11 @@ export function SettingsForm() {
             />
           </Actions>
         </Form>
-      </Block>
+      </Card>
 
       <br />
 
-      <Block>
+      <Card>
         <DescriptionText>
           <DescriptionTitle>What are these settings for?</DescriptionTitle>
           <p>
@@ -182,7 +189,7 @@ export function SettingsForm() {
             ABIs from Etherscan.
           </p>
         </DescriptionText>
-      </Block>
+      </Card>
     </Container>
   )
 }

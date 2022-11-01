@@ -10,6 +10,7 @@ import {
   ContractGovernanceToken,
 } from 'modules/blockChain/contracts'
 import { VoterState } from 'modules/votes/types'
+import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
 
 type Args = {
   voteId?: string
@@ -43,6 +44,12 @@ export function useFormVoteInfo({ voteId }: Args) {
           contractVoting.canExecute(_voteId),
         ])
 
+      const startEvent = await getEventStartVote(
+        contractVoting,
+        _voteId,
+        vote.snapshotBlock.toNumber(),
+      )
+
       const [canVote, voterState, votePower] = await (async () => {
         if (!_walletAddress) {
           return [false, null, 0] as const
@@ -66,6 +73,7 @@ export function useFormVoteInfo({ voteId }: Args) {
         canExecute,
         voterState,
         votePower,
+        startEvent,
       }
     },
     { onError: noop },
@@ -109,5 +117,6 @@ export function useFormVoteInfo({ voteId }: Args) {
     isLoading,
     isWalletConnected,
     doRevalidate,
+    startEvent: swrVote.data?.startEvent,
   }
 }

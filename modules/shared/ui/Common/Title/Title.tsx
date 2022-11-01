@@ -17,7 +17,7 @@ const Subtitle = styled(Text).attrs({
   size: 12,
   weight: 500,
 })`
-  margin-top: 8px;
+  margin-top: ${({ theme }) => theme.spaceMap.sm}px;
   opacity: 0.6;
   text-align: center;
 `

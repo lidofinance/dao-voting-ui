@@ -19,6 +19,7 @@ import {
 import { ConfigProvider } from 'modules/config/providers/configProvider'
 import { ModalProvider } from 'modules/modal/ModalProvider'
 import { NetworkSwitcher } from 'modules/blockChain/ui/NetworkSwitcher'
+import { VotePromptProvider } from 'modules/votes/providers/VotePrompt'
 
 import { parseEnvConfig } from 'modules/config/utils/parseEnvConfig'
 import { getAddressList } from 'modules/config/utils/getAddressList'
@@ -132,9 +133,11 @@ function App({ envConfig, ...appProps }: CustomAppProps) {
       <GlobalStyle />
       <ConfigProvider envConfig={envConfig}>
         <Web3ProviderWrap>
-          <ModalProvider>
-            <AppRootMemo {...appProps} />
-          </ModalProvider>
+          <VotePromptProvider>
+            <ModalProvider>
+              <AppRootMemo {...appProps} />
+            </ModalProvider>
+          </VotePromptProvider>
         </Web3ProviderWrap>
       </ConfigProvider>
     </ThemeProvider>

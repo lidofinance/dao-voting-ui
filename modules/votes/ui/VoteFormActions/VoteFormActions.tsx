@@ -1,12 +1,15 @@
 import { Button } from '@lidofinance/lido-ui'
-import { Actions, PhasesTooltip } from './VoteFormActionsStyle'
+import { Actions, ButtonVote } from './VoteFormActionsStyle'
+import CheckSVG from 'assets/check.com.svg.react'
+import CrossSVG from 'assets/cross.com.svg.react'
 
-import { VoteMode, VoteStatus } from '../../types'
+import { VoteMode, VoterState, VoteStatus } from '../../types'
 
 type Props = {
   status: VoteStatus
   canVote: boolean
   canEnact: boolean
+  voterState: VoterState
   isSubmitting: false | VoteMode
   onVote: (mode: VoteMode) => void
   onEnact: () => void
@@ -16,53 +19,61 @@ export function VoteFormActions({
   status,
   canVote,
   canEnact,
+  voterState,
   isSubmitting,
   onVote,
   onEnact,
 }: Props) {
-  const yayBtn = (
-    <Button
-      children="Yay"
-      loading={isSubmitting === 'yay'}
-      disabled={
-        (isSubmitting && isSubmitting !== 'yay') ||
-        status === VoteStatus.ActiveObjection
-      }
-      onClick={() => onVote('yay')}
-    />
-  )
+  if (!canVote && !canEnact) return null
 
   return (
-    <>
-      <Actions>
-        {canVote && (
-          <Button
-            children="Nay"
-            color="error"
+    <Actions>
+      {canVote && (
+        <>
+          <ButtonVote
             loading={isSubmitting === 'nay'}
-            disabled={isSubmitting && isSubmitting !== 'nay'}
+            color={voterState === VoterState.VotedNay ? 'error' : 'secondary'}
+            disabled={
+              (isSubmitting && isSubmitting !== 'nay') ||
+              voterState === VoterState.VotedNay
+            }
             onClick={() => onVote('nay')}
-          />
-        )}
-        {canVote && (
-          <>
-            {status === VoteStatus.ActiveObjection ? (
-              <PhasesTooltip position="top-right">{yayBtn}</PhasesTooltip>
-            ) : (
-              yayBtn
-            )}
-          </>
-        )}
-        {canEnact && (
-          <Button
-            color="success"
-            children="Enact"
-            loading={isSubmitting === 'enact'}
-            disabled={isSubmitting && isSubmitting !== 'enact'}
-            onClick={() => onEnact()}
-          />
-        )}
-      </Actions>
-    </>
+          >
+            <CrossSVG />{' '}
+            {voterState === VoterState.VotedNay
+              ? 'Voted No'
+              : voterState === VoterState.VotedYay
+              ? 'Change Vote to No'
+              : 'Vote No'}
+          </ButtonVote>
+          <ButtonVote
+            loading={isSubmitting === 'yay'}
+            color={voterState === VoterState.VotedYay ? 'success' : 'secondary'}
+            disabled={
+              (isSubmitting && isSubmitting !== 'yay') ||
+              status === VoteStatus.ActiveObjection ||
+              voterState === VoterState.VotedYay
+            }
+            onClick={() => onVote('yay')}
+          >
+            <CheckSVG />{' '}
+            {voterState === VoterState.VotedYay
+              ? 'Voted Yes'
+              : voterState === VoterState.VotedNay
+              ? 'Change Vote to Yes'
+              : 'Vote Yes'}
+          </ButtonVote>
+        </>
+      )}
+      {canEnact && (
+        <Button
+          color="success"
+          children="Enact"
+          loading={isSubmitting === 'enact'}
+          disabled={isSubmitting && isSubmitting !== 'enact'}
+          onClick={() => onEnact()}
+        />
+      )}
+    </Actions>
   )
 }
