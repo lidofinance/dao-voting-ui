@@ -3,8 +3,8 @@ import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useConfig } from 'modules/config/hooks/useConfig'
 
 import { Contract } from 'ethers'
-import { ABIProvider } from 'evm-script-decoder/lib/types'
-import { EVMScriptDecoder, abiProviders } from 'evm-script-decoder'
+import { ABIProvider } from '@lidofinance/evm-script-decoder/lib/types'
+import { EVMScriptDecoder, abiProviders } from '@lidofinance/evm-script-decoder'
 import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
 
 import {

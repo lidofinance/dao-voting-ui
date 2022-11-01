@@ -1,4 +1,7 @@
-import { ABIElement, EVMScriptDecoded } from 'evm-script-decoder/lib/types'
+import {
+  ABIElement,
+  EVMScriptDecoded,
+} from '@lidofinance/evm-script-decoder/lib/types'
 
 export const formatCallString = (
   id: number,

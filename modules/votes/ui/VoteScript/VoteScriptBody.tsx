@@ -8,7 +8,7 @@ import {
   NestedPadding,
 } from './VoteScriptStyle'
 
-import { EVMScriptDecoded } from 'evm-script-decoder/lib/types'
+import { EVMScriptDecoded } from '@lidofinance/evm-script-decoder/lib/types'
 import { getEtherscanAddressLink } from '@lido-sdk/helpers'
 import { formatCallString } from './utils'
 
@@ -44,7 +44,7 @@ export function VoteScriptBody({ binary, decoded, parentId }: Props) {
 
         return (
           <CallWrapper key={i}>
-            <CallTitle color="text" size="xxs">
+            <CallTitle size="xxs">
               {parentId !== undefined ? `${parentId}.${id}` : id}. On{' '}
               <Link href={getEtherscanAddressLink(chainId, address)}>
                 {address}

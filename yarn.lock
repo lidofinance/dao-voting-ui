@@ -2344,6 +2344,14 @@
     web3-ledgerhq-connector "^1.2.2"
     web3-ledgerhq-frame-connector "^1.0.1"
 
+"@lidofinance/evm-script-decoder@0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@lidofinance/evm-script-decoder/-/evm-script-decoder-0.2.2.tgz#202cbfc4f4229405d9e2a70e88347b20e726d3a2"
+  integrity sha512-Gk7gDus2QvOOCCg8NCSOgv43rNIdMFohfRtyc9PSWViIH0GLqNiOFXR71tfwkemrNpu2A0LlBakoB9vgCY+Yfw==
+  dependencies:
+    "@ethersproject/abi" "^5.0.7"
+    keccak256 "^1.0.3"
+
 "@lidofinance/icons@^2.20.0":
   version "2.20.0"
   resolved "https://registry.yarnpkg.com/@lidofinance/icons/-/icons-2.20.0.tgz#adb62ff761f783ea2446cf45bba9d327076a6c58"
@@ -5080,13 +5088,6 @@ events@^3.0.0, events@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/events/-/events-3.3.0.tgz#31a95ad0a924e2d2c419a813aeb2c4e878ea7400"
   integrity sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==
-
-"evm-script-decoder@git+https://github.com/lidofinance/evm-script-decoder#v0.2.2":
-  version "0.2.2"
-  resolved "git+https://github.com/lidofinance/evm-script-decoder#7bf9f89234e4504bf8246bdd3eb6cd43ad4c0709"
-  dependencies:
-    "@ethersproject/abi" "^5.0.7"
-    keccak256 "^1.0.3"
 
 evp_bytestokey@^1.0.3:
   version "1.0.3"
