@@ -1,11 +1,13 @@
 import { CHAINS } from '@lido-sdk/constants'
 
-export type EnvConfig = {
+export type EnvConfigRaw = {
   defaultChain: string
   supportedChains: string
+  ipfsMode: string
 }
 
-export type Config = {
+export type EnvConfigParsed = {
   defaultChain: CHAINS
   supportedChainIds: CHAINS[]
+  ipfsMode: boolean
 }

@@ -8,6 +8,7 @@ type Props = {
   position?: Position
   tooltip?: React.ReactNode
   maxWidth?: number
+  fitContent?: boolean
   className?: string
   children?: React.ReactNode
 }
@@ -16,11 +17,12 @@ export function Tooltip({
   position = 'top',
   tooltip,
   maxWidth,
+  fitContent,
   className,
   children,
 }: Props) {
   return (
-    <Wrap className={className}>
+    <Wrap fitContent={fitContent} className={className}>
       {children}
       <Body position={position} style={{ maxWidth }}>
         <Text

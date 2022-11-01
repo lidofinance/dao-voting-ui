@@ -1,19 +1,17 @@
 import { useVoteTimeCountdown } from 'modules/votes/hooks/useVoteTimeCountdown'
 
-import { DataTableRow } from '@lidofinance/lido-ui'
-
 type Props = {
-  title: React.ReactNode
   startDate: number
   voteTime: number
   isEndedBeforeTime: boolean
+  children?: (diff: string) => React.ReactNode
 }
 
 export function VoteDetailsCountdown({
-  title,
   startDate,
   voteTime,
   isEndedBeforeTime,
+  children,
 }: Props) {
   const timeDelta = useVoteTimeCountdown(startDate, voteTime)
 
@@ -21,5 +19,9 @@ export function VoteDetailsCountdown({
     return null
   }
 
-  return <DataTableRow title={title}>{timeDelta.diffFormatted}</DataTableRow>
+  return (
+    <>
+      {children ? children(timeDelta.diffFormatted) : timeDelta.diffFormatted}
+    </>
+  )
 }

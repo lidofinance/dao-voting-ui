@@ -1,8 +1,9 @@
+import get from 'lodash/get'
 import type { Theme } from '@lidofinance/lido-ui'
 import styled, { css } from 'styled-components'
 
 export type TextSize = 10 | 12 | 14 | 16 | 18 | 20 | 26 | 48
-export type TextWeight = 500 | 800
+export type TextWeight = 400 | 500 | 700 | 800
 export type TextColor = keyof Theme['colors'] | 'inherit'
 
 type Props = {
@@ -17,7 +18,7 @@ export const Text = styled.div<Props>`
   font-size: ${({ size }) => size}px;
   font-weight: ${({ weight }) => weight};
   color: ${({ color = 'text', theme }) =>
-    color === 'inherit' ? color : theme.colors[color]};
+    color === 'inherit' ? color : get(theme.colors, color)};
 
   ${({ isCentered }) =>
     isCentered &&

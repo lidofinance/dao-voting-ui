@@ -1,9 +1,8 @@
 import { useGlobalMemo } from 'modules/shared/hooks/useGlobalMemo'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-import { useLocalStorage } from '@lido-sdk/react'
+import { useConfig } from 'modules/config/hooks/useConfig'
 
 import { Contract } from 'ethers'
-import { getRpcUrl } from 'modules/blockChain/utils/getRpcUrls'
 import { ABIProvider } from '@lidofinance/evm-script-decoder/lib/types'
 import { EVMScriptDecoder, abiProviders } from '@lidofinance/evm-script-decoder'
 import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
@@ -28,11 +27,12 @@ import * as ADDR from 'modules/blockChain/contractAddresses'
 import { TreasuryAbi__factory } from 'generated/factories/TreasuryAbi__factory'
 import { VotingRepoAbi__factory } from 'generated/factories/VotingRepoAbi__factory'
 import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'
-import { STORAGE_SKIP_BUNDLED_ABIS } from 'modules/config'
 
 export function useEVMScriptDecoder(): EVMScriptDecoder {
   const { chainId } = useWeb3()
-  const [skipBundledAbi] = useLocalStorage(STORAGE_SKIP_BUNDLED_ABIS, false)
+  const { getRpcUrl, savedConfig } = useConfig()
+  const rpcUrl = getRpcUrl(chainId)
+  const { etherscanApiKey, useBundledAbi } = savedConfig
 
   return useGlobalMemo(() => {
     const localDecoder = new abiProviders.Local({
@@ -61,7 +61,16 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
     })
 
     const etherscanDecoder = new abiProviders.Base({
-      fetcher: async address => fetcherEtherscan(chainId, address),
+      fetcher: async address => {
+        const res = await fetcherEtherscan<string>({
+          chainId,
+          address,
+          module: 'contract',
+          action: 'getabi',
+          apiKey: etherscanApiKey,
+        })
+        return JSON.parse(res)
+      },
       middlewares: [
         abiProviders.middlewares.ProxyABIMiddleware({
           implMethodNames: [
@@ -73,7 +82,7 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
             const contract = new Contract(
               proxyAddress,
               [abiElement],
-              getStaticRpcBatchProvider(chainId, getRpcUrl(chainId)),
+              getStaticRpcBatchProvider(chainId, rpcUrl),
             )
             return contract[abiElement.name]()
           },
@@ -82,9 +91,9 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
     })
 
     return new EVMScriptDecoder(
-      ...([!skipBundledAbi && localDecoder, etherscanDecoder].filter(
+      ...([useBundledAbi && localDecoder, etherscanDecoder].filter(
         Boolean,
       ) as ABIProvider[]),
     )
-  }, `evm-script-decoder-${chainId}-${skipBundledAbi ? 'no-local' : 'with-local'}`)
+  }, `evm-script-decoder-${chainId}-${rpcUrl}-${useBundledAbi ? 'with-local' : 'no-local'}-${etherscanApiKey}`)
 }

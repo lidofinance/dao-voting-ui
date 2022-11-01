@@ -6,7 +6,7 @@ export const Hint = styled(Text).attrs({
   size: 12,
   weight: 500,
 })`
-  font-size: 14px;
+  font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
   margin-bottom: 10px;
   opacity: 0.8;
 `
@@ -20,7 +20,7 @@ type TxStatusProps = {
   status: TxStatusType
 }
 export const TxStatus = styled.span<TxStatusProps>`
-  margin-left: 4px;
+  margin-left: ${({ theme }) => theme.spaceMap.xs}px;
   font-weight: 800;
   cursor: pointer;
   color: ${({ status, theme }) =>

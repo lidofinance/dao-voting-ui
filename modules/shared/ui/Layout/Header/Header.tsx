@@ -6,12 +6,14 @@ import { useScrollLock } from 'modules/shared/hooks/useScrollLock'
 import Link from 'next/link'
 import { Text } from 'modules/shared/ui/Common/Text'
 import { HeaderWallet } from '../HeaderWallet'
+import { HeaderVoteInput } from 'modules/votes/ui/HeaderVoteInput'
 import {
   Wrap,
   Logo,
   Nav,
   NavItems,
   NavLink,
+  InputWrap,
   ActionsDesktop,
   Network,
   NetworkBulb,
@@ -22,71 +24,57 @@ import {
   MobileNavItems,
   MobileNetworkWrap,
   MobileSpacer,
+  HeaderSpacer,
+  NavBurger,
 } from './HeaderStyle'
-import ActiveMotionsSVG from './icons/active_motions.svg.react'
-import ArchiveSVG from './icons/archive.svg.react'
-// import InfoSVG from './icons/info.svg.react'
-import StartSVG from './icons/start.svg.react'
 
 import { getChainName } from 'modules/blockChain/chains'
 import { getChainColor } from '@lido-sdk/constants'
 import LidoLogoSvg from 'assets/logo.com.svg.react'
 import * as urls from 'modules/network/utils/urls'
 
-// function NavItem({
-//   link,
-//   icon,
-//   onClick,
-//   children,
-// }: {
-//   link: string
-//   icon: React.ReactNode
-//   onClick?: React.MouseEventHandler<HTMLElement>
-//   children: React.ReactNode
-// }) {
-//   const router = useRouter()
-//   return (
-//     <Link passHref href={link}>
-//       <NavLink isActive={router.pathname === link} onClick={onClick}>
-//         {icon}
-//         <div>{children}</div>
-//       </NavLink>
-//     </Link>
-//   )
-// }
+function NavItem({
+  link,
+  onClick,
+  children,
+}: {
+  link: string
+  onClick?: React.MouseEventHandler<HTMLElement>
+  children: React.ReactNode
+}) {
+  const router = useRouter()
+  return (
+    <Link passHref href={link}>
+      <NavLink isActive={router.pathname.startsWith(link)} onClick={onClick}>
+        <div>{children}</div>
+      </NavLink>
+    </Link>
+  )
+}
 
 export function Header() {
   const { chainId } = useWeb3()
   const [isBurgerOpened, setBurgerOpened] = useState(false)
-  // const handleCloseMobileMenu = useCallback(() => setBurgerOpened(false), [])
+  const handleCloseMobileMenu = useCallback(() => setBurgerOpened(false), [])
   useScrollLock(isBurgerOpened)
 
   return (
     <>
+      <HeaderSpacer />
       <Wrap>
         <Nav>
           <Logo>
             <LidoLogoSvg />
           </Logo>
           <NavItems>
-            {/* <NavItem
-              link={urls.home}
-              icon={<ActiveMotionsSVG />}
-              children="Active motions"
-            />
-            <NavItem
-              link={urls.archive}
-              icon={<ArchiveSVG />}
-              children="Archive"
-            />
-            <NavItem
-              link={urls.startMotion}
-              icon={<StartSVG />}
-              children="Start motion"
-            /> */}
-            {/* <NavItem link={urls.about} icon={<InfoSVG />} children="About" /> */}
+            <NavItem link={urls.voteIndex}>Vote</NavItem>
+            <NavItem link={urls.settings}>Settings</NavItem>
           </NavItems>
         </Nav>
+
+        <InputWrap>
+          <HeaderVoteInput />
+        </InputWrap>
 
         <ActionsDesktop>
           <Network>
@@ -98,38 +86,27 @@ export function Header() {
           <HeaderWallet />
         </ActionsDesktop>
 
-        <BurgerWrap
-          isOpened={isBurgerOpened}
-          onClick={() => setBurgerOpened(!isBurgerOpened)}
-        >
-          <BurgerLine />
-          <BurgerLine />
-          <BurgerLine />
-        </BurgerWrap>
+        <NavBurger>
+          <BurgerWrap
+            isOpened={isBurgerOpened}
+            onClick={() => setBurgerOpened(!isBurgerOpened)}
+          >
+            <BurgerLine />
+            <BurgerLine />
+            <BurgerLine />
+          </BurgerWrap>
+        </NavBurger>
 
         {isBurgerOpened && (
           <MobileMenu>
             <MobileMenuScroll>
               <MobileNavItems>
-                {/* <NavItem
-                  link={urls.home}
-                  icon={<ActiveMotionsSVG />}
-                  children="Active motions"
-                  onClick={handleCloseMobileMenu}
-                />
-                <NavItem
-                  link={urls.archive}
-                  icon={<ArchiveSVG />}
-                  children="Archive"
-                  onClick={handleCloseMobileMenu}
-                />
-                <NavItem
-                  link={urls.startMotion}
-                  icon={<StartSVG />}
-                  children="Start motion"
-                  onClick={handleCloseMobileMenu}
-                /> */}
-                {/* <NavItem link={urls.about} icon={<InfoSVG />} children="About" /> */}
+                <NavItem link={urls.voteIndex} onClick={handleCloseMobileMenu}>
+                  Vote
+                </NavItem>
+                <NavItem link={urls.settings} onClick={handleCloseMobileMenu}>
+                  Settings
+                </NavItem>
               </MobileNavItems>
               <MobileNetworkWrap>
                 <Network>
@@ -143,8 +120,8 @@ export function Header() {
             </MobileMenuScroll>
           </MobileMenu>
         )}
+        <MobileSpacer />
       </Wrap>
-      <MobileSpacer />
     </>
   )
 }

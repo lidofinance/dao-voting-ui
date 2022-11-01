@@ -8,7 +8,7 @@ export const formatCallString = (
   abi?: ABIElement,
   callData?: (string | EVMScriptDecoded)[],
 ) => {
-  let res = 'Code:\n'
+  let res = ''
 
   if (abi) {
     let inputsFormatted = abi.inputs
@@ -17,12 +17,12 @@ export const formatCallString = (
     if (inputsFormatted) inputsFormatted += '\n'
 
     res += `${abi.type} ${abi.name}(${inputsFormatted})`
+    res += '\n\nCall data:\n'
   } else {
-    res += '[abi not found]'
+    res += '[abi not found]\n'
   }
 
-  res += '\n\nCall data:\n'
-  if (callData) {
+  if (callData && callData.length) {
     res += callData
       .map((data, i) => {
         let callRes = `[${i + 1}] `
@@ -37,6 +37,8 @@ export const formatCallString = (
         return callRes
       })
       .join('\n')
+  } else if (callData && !callData.length) {
+    res += '[empty]'
   } else {
     res += '[call data not found]'
   }

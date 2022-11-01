@@ -4,7 +4,7 @@ export const Fieldset = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
 
   & > * {
     width: 100%;
