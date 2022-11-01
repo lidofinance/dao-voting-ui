@@ -40,7 +40,7 @@ export function SettingsForm() {
 
   const { formState, setValue, getValues } = formMethods
 
-  const handleSubmit = useCallback(
+  const saveSettings = useCallback(
     (formValues: FormValues) => {
       setSavedConfig({
         rpcUrls: {
@@ -49,9 +49,16 @@ export function SettingsForm() {
         etherscanApiKey: formValues.etherscanApiKey,
         useBundledAbi: formValues.useBundledAbi,
       })
-      ToastSuccess('Settings have been saved')
     },
     [chainId, setSavedConfig],
+  )
+
+  const handleSubmit = useCallback(
+    (formValues: FormValues) => {
+      saveSettings(formValues)
+      ToastSuccess('Settings have been saved')
+    },
+    [saveSettings],
   )
 
   const validateRpcUrl = useCallback(
@@ -97,8 +104,9 @@ export function SettingsForm() {
     setValue('rpcUrl', '')
     setValue('etherscanApiKey', '')
     setValue('useBundledAbi', true)
-    handleSubmit(getValues())
-  }, [setValue, getValues, handleSubmit])
+    saveSettings(getValues())
+    ToastSuccess('Settings have been reset')
+  }, [setValue, saveSettings, getValues])
 
   return (
     <Container as="main" size="tight">
