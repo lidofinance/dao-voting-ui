@@ -11,7 +11,7 @@ export const Desc = styled.div`
 `
 
 export const ErrorMessage = styled.div`
-  padding: ${({ theme }) => theme.spaceMap.lg};
+  padding: ${({ theme }) => theme.spaceMap.lg}px;
   color: #fff;
   background-color: ${({ theme }) => theme.colors.error};
   border-radius: ${({ theme }) => theme.borderRadiusesMap.xl}px;
