@@ -15,6 +15,7 @@ export const Tab = styled.div`
   font-weight: 400;
   color: ${({ theme }) => theme.colors.text};
   border: 1px solid ${({ theme }) => theme.colors.border};
+  border-bottom: none;
   cursor: pointer;
   z-index: 1;
 
