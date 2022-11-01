@@ -117,7 +117,7 @@ function Web3ProviderWrap({ children }: { children: React.ReactNode }) {
           // TODO:
           // Remove this default value when this invariant will be fixed:
           // https://github.com/lidofinance/lido-js-sdk/blob/ba2273d21a5ef64967267d5d4d21f61eb51fb500/packages/web3-react/src/context/web3.tsx#L42
-          // The problem is that it requires mainnet key even if app is not intendet to be used in mainnet.
+          // The problem is that it requires mainnet key even if app is not intended to be used in mainnet.
           [CHAINS.Mainnet]: getRpcUrl(CHAINS.Mainnet),
         },
       ),
