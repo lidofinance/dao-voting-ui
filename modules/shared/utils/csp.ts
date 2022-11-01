@@ -22,6 +22,8 @@ export const contentSecurityPolicy = {
       'wss://*.walletconnect.org',
       'https://*.walletconnect.org',
       'https://api.thegraph.com',
+      'https://*.infura.io',
+      'https://*.alchemyapi.io',
       ...trustedHosts,
     ],
     prefetchSrc: ["'self'", ...trustedHosts],
