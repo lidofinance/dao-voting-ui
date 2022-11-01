@@ -25,6 +25,7 @@ import { parseEnvConfig } from 'modules/config/utils/parseEnvConfig'
 import { getAddressList } from 'modules/config/utils/getAddressList'
 import { withCsp } from 'modules/shared/utils/csp'
 import { CustomAppProps } from 'modules/shared/utils/utilTypes'
+import { CHAINS } from '@lido-sdk/constants'
 
 const basePath = getConfig().publicRuntimeConfig.basePath || ''
 
@@ -112,7 +113,13 @@ function Web3ProviderWrap({ children }: { children: React.ReactNode }) {
     () =>
       supportedChainIds.reduce<Record<number, string>>(
         (res, curr) => ({ ...res, [curr]: getRpcUrl(curr) }),
-        {},
+        {
+          // TODO:
+          // Remove this default value when this invariant will be fixed:
+          // https://github.com/lidofinance/lido-js-sdk/blob/ba2273d21a5ef64967267d5d4d21f61eb51fb500/packages/web3-react/src/context/web3.tsx#L42
+          // The problem is that it requires mainnet key even if app is not intendet to be used in mainnet.
+          [CHAINS.Mainnet]: getRpcUrl(CHAINS.Mainnet),
+        },
       ),
     [supportedChainIds, getRpcUrl],
   )
