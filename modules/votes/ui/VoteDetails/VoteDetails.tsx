@@ -156,14 +156,14 @@ export function VoteDetails({
           </Text>
         </InfoRowFull>
 
-        <InfoRowFull title={`“Yes” voted`}>
+        <InfoRowFull title={`“No” voted`}>
           {formatNumber(nayNum, 4)}&nbsp; / {totalSupplyFormatted}&nbsp;
           <Text as="span" color="secondary" size="xxs">
             ({nayPctOfTotalSupply.toFixed(2)}%)
           </Text>
         </InfoRowFull>
 
-        <InfoRowFull title={`“No” voted`}>
+        <InfoRowFull title={`“Yes” voted`}>
           {formatNumber(yeaNum, 4)}&nbsp; / {totalSupplyFormatted}&nbsp;
           <Text as="span" color="secondary" size="xxs">
             ({yeaPctOfTotalSupply.toFixed(2)}%)
