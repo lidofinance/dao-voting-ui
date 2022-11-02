@@ -11,6 +11,8 @@ const esRules = {
   'default-case': 'error',
   'no-fallthrough': 'error',
   'prettier/prettier': ['error', { usePrettierrc: true }],
+  '@next/next/no-page-custom-font': 'off',
+  '@next/next/no-document-import-in-page': 'off',
 }
 
 // React
