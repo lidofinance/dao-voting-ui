@@ -1,5 +1,6 @@
 import { debounce } from 'lodash'
 import { useRouter } from 'next/router'
+import { usePrefixedReplace } from 'modules/network/hooks/usePrefixedHistory'
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 
 import { votePromptContext } from './votePromptContext'
@@ -11,7 +12,8 @@ type Props = {
 
 export function VotePromptProvider({ children }: Props) {
   const router = useRouter()
-  const { replace, asPath } = router
+  const { asPath } = router
+  const replace = usePrefixedReplace()
 
   // https://github.com/vercel/next.js/issues/18127
   const replaceRef = useRef(replace)
@@ -47,7 +49,7 @@ export function VotePromptProvider({ children }: Props) {
   }, [changeRouteInstantly])
 
   useEffect(() => {
-    if (asPath === urls.voteIndex && voteId) {
+    if (asPath.endsWith(urls.voteIndex) && voteId) {
       changeRouteDebounced(voteId)
     }
   }, [asPath, voteId, changeRouteDebounced])

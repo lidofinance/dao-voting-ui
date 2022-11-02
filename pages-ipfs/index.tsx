@@ -1,5 +1,6 @@
 import { useMemo, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { usePrefixedReplace } from 'modules/network/hooks/usePrefixedHistory'
 
 import { VoteForm } from 'modules/votes/ui/VoteForm'
 import { SettingsForm } from 'modules/config/ui/SettingsForm'
@@ -11,6 +12,7 @@ const ROUTABLE_PAGES = ['vote', 'settings']
 export default function HomePage() {
   const router = useRouter()
   const { asPath } = router
+  const replace = usePrefixedReplace()
 
   const parsedPath = useMemo(() => {
     const hashPath = asPath.split('#')[1]
@@ -20,9 +22,9 @@ export default function HomePage() {
 
   useEffect(() => {
     if (!parsedPath[0] || !ROUTABLE_PAGES.includes(parsedPath[0])) {
-      router.replace(urls.voteIndex)
+      replace(urls.voteIndex)
     }
-  }, [router, parsedPath])
+  }, [replace, parsedPath])
 
   switch (parsedPath[0]) {
     case 'vote':

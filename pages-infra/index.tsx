@@ -1,15 +1,15 @@
 import { useEffect } from 'react'
-import { useRouter } from 'next/router'
 import { useConfig } from 'modules/config/hooks/useConfig'
+import { usePrefixedReplace } from 'modules/network/hooks/usePrefixedHistory'
 import * as urls from 'modules/network/utils/urls'
 
 export default function HomePage() {
-  const router = useRouter()
   const { ipfsMode } = useConfig()
+  const replace = usePrefixedReplace()
 
   useEffect(() => {
-    router.replace(urls.voteIndex)
-  }, [router, ipfsMode])
+    replace(urls.voteIndex)
+  }, [replace, ipfsMode])
 
   return null
 }

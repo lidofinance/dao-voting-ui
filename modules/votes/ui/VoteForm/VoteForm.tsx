@@ -1,10 +1,10 @@
-import Link from 'next/link'
 import { useMemo, Fragment } from 'react'
 import { useFormVoteInfo } from './useFormVoteInfo'
 import { useFormVoteSubmit } from './useFormVoteSubmit'
 import { useVotePassedCallback } from '../../hooks/useVotePassedCallback'
 import { useVotePrompt } from 'modules/votes/providers/VotePrompt'
 
+import { Link } from 'modules/network/ui/Link'
 import { Text } from 'modules/shared/ui/Common/Text'
 import { Card } from 'modules/shared/ui/Common/Card'
 import { Container } from '@lidofinance/lido-ui'

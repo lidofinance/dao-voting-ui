@@ -26,6 +26,8 @@ if (process.env.NODE_ENV === 'development') {
 module.exports = {
   basePath,
   webpack5: true,
+  trailingSlash: true,
+  assetPrefix: ipfsMode ? './' : undefined,
   webpack(config) {
     config.module.rules.push({
       test: /\.svg.react$/i,

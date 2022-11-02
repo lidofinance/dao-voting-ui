@@ -26,8 +26,7 @@ import { getAddressList } from 'modules/config/utils/getAddressList'
 import { withCsp } from 'modules/shared/utils/csp'
 import { CustomAppProps } from 'modules/shared/utils/utilTypes'
 import { CHAINS } from '@lido-sdk/constants'
-
-const basePath = getConfig().publicRuntimeConfig.basePath || ''
+import { BASE_PATH_ASSET } from 'modules/config/constants'
 
 function AppRoot({ Component, pageProps }: AppProps) {
   const { chainId } = useWeb3()
@@ -55,40 +54,40 @@ function AppRoot({ Component, pageProps }: AppProps) {
         />
         <title>Lido DAO Voting UI</title>
 
-        <link rel="manifest" href={`${basePath}/manifest.json`} />
+        <link rel="manifest" href={`${BASE_PATH_ASSET}/manifest.json`} />
         <link
           rel="icon"
           type="image/svg+xml"
-          href={`${basePath}/favicon-1080x1080.svg`}
+          href={`${BASE_PATH_ASSET}/favicon-1080x1080.svg`}
         />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
-          href={`${basePath}/apple-touch-icon.png`}
+          href={`${BASE_PATH_ASSET}/apple-touch-icon.png`}
         />
         <link
           rel="icon"
           type="image/png"
           sizes="192x192"
-          href={`${basePath}/favicon-192x192.png`}
+          href={`${BASE_PATH_ASSET}/favicon-192x192.png`}
         />
         <link
           rel="icon"
           type="image/png"
           sizes="180x180"
-          href={`${basePath}/favicon-180x180.png`}
+          href={`${BASE_PATH_ASSET}/favicon-180x180.png`}
         />
         <link
           rel="icon"
           type="image/png"
           sizes="32x32"
-          href={`${basePath}/favicon-32x32.png`}
+          href={`${BASE_PATH_ASSET}/favicon-32x32.png`}
         />
         <link
           rel="icon"
           type="image/png"
           sizes="16x16"
-          href={`${basePath}/favicon-16x16.png`}
+          href={`${BASE_PATH_ASSET}/favicon-16x16.png`}
         />
 
         <meta name="currentChain" content={String(chainId)} />

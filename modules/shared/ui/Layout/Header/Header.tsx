@@ -2,8 +2,8 @@ import { useState, useCallback } from 'react'
 import { useRouter } from 'next/dist/client/router'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useScrollLock } from 'modules/shared/hooks/useScrollLock'
+import { usePrefixedPush } from 'modules/network/hooks/usePrefixedHistory'
 
-import Link from 'next/link'
 import { Text } from 'modules/shared/ui/Common/Text'
 import { HeaderWallet } from '../HeaderWallet'
 import { HeaderVoteInput } from 'modules/votes/ui/HeaderVoteInput'
@@ -30,6 +30,7 @@ import {
 
 import { getChainName } from 'modules/blockChain/chains'
 import { getChainColor } from '@lido-sdk/constants'
+// import { getIpfsBasePath } from 'modules/network/utils/getIpfsBasePath'
 import LidoLogoSvg from 'assets/logo.com.svg.react'
 import * as urls from 'modules/network/utils/urls'
 
@@ -43,12 +44,18 @@ function NavItem({
   children: React.ReactNode
 }) {
   const router = useRouter()
+  const push = usePrefixedPush()
+  const handleClick = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      push(link)
+      onClick?.(e)
+    },
+    [link, onClick, push],
+  )
   return (
-    <Link passHref href={link}>
-      <NavLink isActive={router.pathname.startsWith(link)} onClick={onClick}>
-        <div>{children}</div>
-      </NavLink>
-    </Link>
+    <NavLink isActive={router.asPath.includes(link)} onClick={handleClick}>
+      <div>{children}</div>
+    </NavLink>
   )
 }
 
