@@ -1,3 +1,39 @@
+# [0.6.0](https://github.com/lidofinance/dao-voting-ui/compare/0.5.0...0.6.0) (2022-11-02)
+
+
+### Bug Fixes
+
+* add etherscan.io to security policy ([fb479fc](https://github.com/lidofinance/dao-voting-ui/commit/fb479fc73e3cbcb8b1b1e30b358f2bae52128d53))
+* comment typo ([640d50e](https://github.com/lidofinance/dao-voting-ui/commit/640d50e028d644240e3f96887b37a483970d3130))
+* do not debounce enter hit in vote id input ([1e555ca](https://github.com/lidofinance/dao-voting-ui/commit/1e555ca6db771d272d4952b2ca6331243450bccb))
+* empty script call data ui improvement ([e857880](https://github.com/lidofinance/dao-voting-ui/commit/e8578800a50676e6c38fa23b432e68e01d3c41d8))
+* etherscan api key check ([15964bc](https://github.com/lidofinance/dao-voting-ui/commit/15964bca82c6e268851fc206bf9dfd220e97e67c))
+* format percents ([f447e48](https://github.com/lidofinance/dao-voting-ui/commit/f447e48eaf64c1d64a732fdcc1096dd24f67caa5))
+* header styles ([07a0603](https://github.com/lidofinance/dao-voting-ui/commit/07a060326682e0bf51f869caaa5360072117abbb))
+* metric histogram naming ([b12ed15](https://github.com/lidofinance/dao-voting-ui/commit/b12ed15f069bd54ab3e62f75d79579ce2cafad58))
+* provider sdk false invariant workaround ([7b01b5d](https://github.com/lidofinance/dao-voting-ui/commit/7b01b5d180ceb07ef3f670cbda8ed556f7ceeab1))
+* security policy ([82ce455](https://github.com/lidofinance/dao-voting-ui/commit/82ce455bdda692052a437b97a85109b8d4d1819f))
+* testnet deploy ([3e1b584](https://github.com/lidofinance/dao-voting-ui/commit/3e1b584f54de524b15a80a9f99a22968d837de3f))
+* vote details typo ([956115e](https://github.com/lidofinance/dao-voting-ui/commit/956115e1637030da4791ca220208def2f6ca9d4c))
+* vote form error message styles ([755f0fe](https://github.com/lidofinance/dao-voting-ui/commit/755f0fe86659be0e72fa6feeae9cca6a2cdefa6d))
+* vote routing ([385a172](https://github.com/lidofinance/dao-voting-ui/commit/385a17203c712f4fc3629a351afcb8088ac1a50f))
+* vote script tab style ([4130bf0](https://github.com/lidofinance/dao-voting-ui/commit/4130bf02c3376cd82fd51219a26cce98f6c039a9))
+
+
+### Features
+
+* address pop over ([88e8745](https://github.com/lidofinance/dao-voting-ui/commit/88e8745d5830ea284afa4bbfd62a294d55f63033))
+* clear search button ([1552db2](https://github.com/lidofinance/dao-voting-ui/commit/1552db2ea94585c4ecfa92a2dcbbc95ec4158fd7))
+* design update ([2fb0888](https://github.com/lidofinance/dao-voting-ui/commit/2fb0888e70b9e535e97baaa11d9f130f747f2dd7))
+* design update (work in progress) ([27dd605](https://github.com/lidofinance/dao-voting-ui/commit/27dd605d5bab234848d414b14cbb62c4d88983d8))
+* ipfs build mode ([80707d8](https://github.com/lidofinance/dao-voting-ui/commit/80707d80185ce0d2c4e410cf687ad9aadcb23226))
+* network settings ([14d503d](https://github.com/lidofinance/dao-voting-ui/commit/14d503dad34d1c85fadd61e2fc46536688c855af))
+* percents formatting ([8955262](https://github.com/lidofinance/dao-voting-ui/commit/8955262ce7e51147b2f0a5489714c2a3cd811bcc))
+* settings description ([b040ae2](https://github.com/lidofinance/dao-voting-ui/commit/b040ae27eb9e6c2ef5a650b669a06af960765972))
+* settings ux improvements ([4857e64](https://github.com/lidofinance/dao-voting-ui/commit/4857e64fe839d0cd904ca509c1323d31b00bcf33))
+
+
+
 # [0.5.0](https://github.com/lidofinance/dao-voting-ui/compare/0.4.0...0.5.0) (2022-07-14)
 
 
