@@ -84,14 +84,14 @@ export function SettingsForm() {
       try {
         // Doing a random request to check etherscan key is viable
         const address = ContractVoting.address[chainId] as string
-        const res = await fetcherEtherscan<string>({
+        await fetcherEtherscan<string>({
           chainId,
           address,
           module: 'contract',
           action: 'getabi',
           apiKey: etherscanApiKey,
+          useCache: false,
         })
-        if (res === 'Invalid API Key') return errMsg
         return true
       } catch (err) {
         return errMsg

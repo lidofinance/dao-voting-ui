@@ -15,6 +15,7 @@ type Args = {
   action: string
   address: string
   apiKey?: string
+  useCache?: boolean
 }
 
 export async function fetcherEtherscan<T>({
@@ -23,6 +24,7 @@ export async function fetcherEtherscan<T>({
   action,
   address,
   apiKey,
+  useCache = true,
 }: Args) {
   const isProxy = !Boolean(apiKey)
 
@@ -37,11 +39,25 @@ export async function fetcherEtherscan<T>({
   const urlBase = isProxy ? ETHERSCAN_API_URL : getEtherscanUrl(chainId)
   const url = `${urlBase}?${queryParams.join('&')}`
 
-  const cached = cache.get(url)
-  if (cached) return cached as T
-  const { result } = await fetcherStandard<{ result: T }>(url, {
+  if (useCache) {
+    const cached = cache.get(url)
+    if (cached) return cached as T
+  }
+
+  const { status, result } = await fetcherStandard<{
+    status: number
+    result: T
+  }>(url, {
     method: 'POST',
   })
-  cache.put(url, result, ETHERSCAN_CACHE_TTL)
+
+  if (Number(status) === 0) {
+    throw new Error(String(result))
+  }
+
+  if (useCache) {
+    cache.put(url, result, ETHERSCAN_CACHE_TTL)
+  }
+
   return result
 }
