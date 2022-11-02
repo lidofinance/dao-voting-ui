@@ -3,7 +3,7 @@ import { buildInfo } from './buildInfo'
 import { chainInfo } from './chainInfo'
 import { METRICS_PREFIX } from './constants'
 import { contractInfo } from './contractInfo'
-import { etherscanResponseTime, rpcResponseTime } from './responseTime'
+import { rpcResponseTime, etherscanResponseTime } from './responseTime'
 
 const registry = new Registry()
 

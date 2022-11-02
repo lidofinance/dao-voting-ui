@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react'
+import { memo, useMemo, useEffect } from 'react'
 import Head from 'next/head'
 import getConfig from 'next/config'
 import NextApp, { AppProps, AppContext } from 'next/app'
@@ -19,11 +19,13 @@ import {
 import { ConfigProvider } from 'modules/config/providers/configProvider'
 import { ModalProvider } from 'modules/modal/ModalProvider'
 import { NetworkSwitcher } from 'modules/blockChain/ui/NetworkSwitcher'
+import { VotePromptProvider } from 'modules/votes/providers/VotePrompt'
 
+import { parseEnvConfig } from 'modules/config/utils/parseEnvConfig'
 import { getAddressList } from 'modules/config/utils/getAddressList'
-import { backendRPC } from 'modules/blockChain/utils/getRpcUrls'
 import { withCsp } from 'modules/shared/utils/csp'
 import { CustomAppProps } from 'modules/shared/utils/utilTypes'
+import { CHAINS } from '@lido-sdk/constants'
 
 const basePath = getConfig().publicRuntimeConfig.basePath || ''
 
@@ -105,15 +107,30 @@ function AppRoot({ Component, pageProps }: AppProps) {
 const AppRootMemo = memo(AppRoot)
 
 function Web3ProviderWrap({ children }: { children: React.ReactNode }) {
-  const { supportedChainIds, defaultChain } = useConfig()
+  const { supportedChainIds, defaultChain, getRpcUrl } = useConfig()
+
+  const backendRPC = useMemo(
+    () =>
+      supportedChainIds.reduce<Record<number, string>>(
+        (res, curr) => ({ ...res, [curr]: getRpcUrl(curr) }),
+        {
+          // TODO:
+          // Remove this default value when this invariant will be fixed:
+          // https://github.com/lidofinance/lido-js-sdk/blob/ba2273d21a5ef64967267d5d4d21f61eb51fb500/packages/web3-react/src/context/web3.tsx#L42
+          // The problem is that it requires mainnet key even if app is not intended to be used in mainnet.
+          [CHAINS.Mainnet]: getRpcUrl(CHAINS.Mainnet),
+        },
+      ),
+    [supportedChainIds, getRpcUrl],
+  )
+
   return (
     <ProviderWeb3
       defaultChainId={defaultChain}
       supportedChainIds={supportedChainIds}
       rpc={backendRPC}
-    >
-      {children}
-    </ProviderWeb3>
+      children={children}
+    />
   )
 }
 
@@ -123,9 +140,11 @@ function App({ envConfig, ...appProps }: CustomAppProps) {
       <GlobalStyle />
       <ConfigProvider envConfig={envConfig}>
         <Web3ProviderWrap>
-          <ModalProvider>
-            <AppRootMemo {...appProps} />
-          </ModalProvider>
+          <VotePromptProvider>
+            <ModalProvider>
+              <AppRootMemo {...appProps} />
+            </ModalProvider>
+          </VotePromptProvider>
         </Web3ProviderWrap>
       </ConfigProvider>
     </ThemeProvider>
@@ -137,5 +156,8 @@ export default process.env.NODE_ENV === 'development' ? App : withCsp(App)
 App.getInitialProps = async (appContext: AppContext) => {
   const appProps = await NextApp.getInitialProps(appContext)
   const { publicRuntimeConfig } = getConfig()
-  return { ...appProps, envConfig: publicRuntimeConfig }
+  return {
+    ...appProps,
+    envConfig: parseEnvConfig(publicRuntimeConfig),
+  }
 }

@@ -1,5 +1,5 @@
 import { CHAINS } from '@lido-sdk/constants'
-import { EVMScriptDecoder } from 'evm-script-decoder'
+import { EVMScriptDecoder } from '@lidofinance/evm-script-decoder'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useSWR } from 'modules/network/hooks/useSwr'
 import { useEVMScriptDecoder } from './useEvmScriptDecoder'

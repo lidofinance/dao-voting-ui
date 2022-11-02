@@ -2,8 +2,8 @@ import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useWalletModal } from 'modules/wallet/ui/WalletModal'
 import { useConnectWalletModal } from 'modules/wallet/ui/ConnectWalletModal'
 
-import { Button } from '@lidofinance/lido-ui'
-import { Wrap, AddressBadge } from './HeaderWalletStyle'
+import { Button, Identicon, trimAddress } from '@lidofinance/lido-ui'
+import { Wrap, AddressBadge, AddressText } from './HeaderWalletStyle'
 
 export function HeaderWallet() {
   const { isWalletConnected, walletAddress } = useWeb3()
@@ -16,20 +16,20 @@ export function HeaderWallet() {
         <Button
           size="sm"
           onClick={openConnectWalletModal}
-          children="Connect"
           style={{ width: '100%' }}
-        />
+        >
+          Connect wallet
+        </Button>
       </Wrap>
     )
   }
 
   return (
     <Wrap>
-      <AddressBadge
-        symbols={3}
-        address={walletAddress!}
-        onClick={openWalletModal}
-      />
+      <AddressBadge onClick={openWalletModal}>
+        <Identicon address={walletAddress!} />
+        <AddressText>{trimAddress(walletAddress!, 3)}</AddressText>
+      </AddressBadge>
     </Wrap>
   )
 }

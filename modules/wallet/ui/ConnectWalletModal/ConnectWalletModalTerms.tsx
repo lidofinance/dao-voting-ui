@@ -1,7 +1,7 @@
 import { Checkbox, CheckboxProps, Link } from '@lidofinance/lido-ui'
 import { TermsStyle, TermsTextStyle } from './ConnectWalletModalTermsStyle'
 
-type Props = Pick<CheckboxProps, 'checked' | 'onChange' | 'children'>
+type Props = Pick<CheckboxProps, 'checked' | 'onChange'>
 
 export function ConnectWalletModalTerms(props: Props) {
   return (

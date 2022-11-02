@@ -7,6 +7,8 @@ export const ChainNames = {
   [CHAINS.Goerli]: 'Goerli',
   [CHAINS.Kovan]: 'Kovan',
   [CHAINS.Kintsugi]: 'Kintsugi',
+  [CHAINS.Kiln]: 'Kiln',
+  [CHAINS.Moonbeam]: 'Moonbeam',
   [CHAINS.Moonriver]: 'Moonriver',
   [CHAINS.Moonbase]: 'Moonbase',
 } as const

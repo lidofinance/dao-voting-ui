@@ -7,6 +7,8 @@ const PREFIXES = {
   [CHAINS.Goerli]: '?',
   [CHAINS.Kovan]: '?',
   [CHAINS.Kintsugi]: '?',
+  [CHAINS.Kiln]: '?',
+  [CHAINS.Moonbeam]: '?',
   [CHAINS.Moonriver]: '?',
   [CHAINS.Moonbase]: '?',
 } as const

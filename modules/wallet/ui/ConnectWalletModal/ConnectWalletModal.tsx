@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { useLocalStorage } from '@lido-sdk/react'
 import { Modal, ModalProps } from '@lidofinance/lido-ui'
 import { ConnectWalletModalTerms } from './ConnectWalletModalTerms'
 import {
@@ -9,7 +10,6 @@ import {
   // ConnectTrustButton,
   // ConnectImTokenButton,
 } from '../ConnectButton'
-import { useLocalStorage } from 'modules/shared/hooks/useLocalStorage'
 import { STORAGE_TERMS_KEY } from 'modules/config'
 
 type Props = ModalProps & {}
