@@ -6,10 +6,21 @@ import { VoteForm } from 'modules/votes/ui/VoteForm'
 import { SettingsForm } from 'modules/config/ui/SettingsForm'
 
 import * as urls from 'modules/network/utils/urls'
+import { IPFS_MODE } from 'modules/config'
+
+function HomePageInfra() {
+  const replace = usePrefixedReplace()
+
+  useEffect(() => {
+    replace(urls.voteIndex)
+  }, [replace])
+
+  return null
+}
 
 const ROUTABLE_PAGES = ['vote', 'settings']
 
-export default function HomePage() {
+function HomePageIpfs() {
   const router = useRouter()
   const { asPath } = router
   const replace = usePrefixedReplace()
@@ -26,6 +37,12 @@ export default function HomePage() {
     }
   }, [replace, parsedPath])
 
+  /**
+   * TODO:
+   * We can upgrade this routing with match function
+   * and router config if we will need better routing
+   * Example: https://v5.reactrouter.com/web/api/match
+   */
   switch (parsedPath[0]) {
     case 'vote':
       return <VoteForm voteId={parsedPath[1]} />
@@ -37,3 +54,16 @@ export default function HomePage() {
       return null
   }
 }
+
+const HomePage = IPFS_MODE ? HomePageIpfs : HomePageInfra
+
+export default HomePage
+
+// #!if IPFS_MODE !== "true"
+// eslint-disable-next-line @typescript-eslint/require-await
+export const getServerSideProps = async () => {
+  return {
+    props: {},
+  }
+}
+// #!endif

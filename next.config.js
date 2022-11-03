@@ -1,8 +1,3 @@
-const {
-  pagesAssemble,
-  pagesAssembleWatch,
-} = require('./build-utils/pages-assemble')
-
 const basePath = process.env.BASE_PATH || ''
 const infuraApiKey = process.env.INFURA_API_KEY
 const alchemyApiKey = process.env.ALCHEMY_API_KEY
@@ -17,17 +12,12 @@ const cspReportUri = process.env.CSP_REPORT_URI
 
 const ipfsMode = process.env.IPFS_MODE
 
-pagesAssemble()
-
-if (process.env.NODE_ENV === 'development') {
-  pagesAssembleWatch()
-}
-
 module.exports = {
   basePath,
   webpack5: true,
   trailingSlash: true,
   assetPrefix: ipfsMode ? './' : undefined,
+  exportPathMap: ipfsMode ? () => ({ '/': { page: '/' } }) : undefined,
   webpack(config) {
     config.module.rules.push({
       test: /\.svg.react$/i,
