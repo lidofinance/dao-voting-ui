@@ -1,3 +1,6 @@
+// Ipfs next.js configuration reference:
+// https://github.com/Velenir/nextjs-ipfs-example
+
 let insertIpfsBase: string = ''
 
 // #!if IPFS_MODE === "true"

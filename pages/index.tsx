@@ -39,8 +39,8 @@ function HomePageIpfs() {
 
   /**
    * TODO:
-   * We can upgrade this routing with match function
-   * and router config if we will need better routing
+   * We can upgrade this routing algorithm with a `match` method
+   * and router config if we will need more functionality
    * Example: https://v5.reactrouter.com/web/api/match
    */
   switch (parsedPath[0]) {

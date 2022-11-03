@@ -15,9 +15,16 @@ const ipfsMode = process.env.IPFS_MODE
 module.exports = {
   basePath,
   webpack5: true,
+
+  // Ipfs next.js configuration reference:
+  // https://github.com/Velenir/nextjs-ipfs-example
   trailingSlash: true,
   assetPrefix: ipfsMode ? './' : undefined,
+
+  // Ipfs version has hash-based routing
+  // so we provide only index.html in ipfs version
   exportPathMap: ipfsMode ? () => ({ '/': { page: '/' } }) : undefined,
+
   webpack(config) {
     config.module.rules.push({
       test: /\.svg.react$/i,
