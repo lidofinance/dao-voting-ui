@@ -30,7 +30,6 @@ import {
 
 import { getChainName } from 'modules/blockChain/chains'
 import { getChainColor } from '@lido-sdk/constants'
-// import { getIpfsBasePath } from 'modules/network/utils/getIpfsBasePath'
 import LidoLogoSvg from 'assets/logo.com.svg.react'
 import * as urls from 'modules/network/utils/urls'
 
