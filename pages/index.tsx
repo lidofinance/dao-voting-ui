@@ -18,7 +18,14 @@ function HomePageInfra() {
   return null
 }
 
-const ROUTABLE_PAGES = ['vote', 'settings']
+/**
+ * We are using single index.html endpoint
+ * with hash-based routing in ipfs build mode.
+ * It is necessary because ipfs infrastructure does not support
+ * redirects to make dynamic routes workable.
+ */
+
+const IPFS_ROUTABLE_PAGES = ['vote', 'settings']
 
 function HomePageIpfs() {
   const router = useRouter()
@@ -32,7 +39,7 @@ function HomePageIpfs() {
   }, [asPath])
 
   useEffect(() => {
-    if (!parsedPath[0] || !ROUTABLE_PAGES.includes(parsedPath[0])) {
+    if (!parsedPath[0] || !IPFS_ROUTABLE_PAGES.includes(parsedPath[0])) {
       replace(urls.voteIndex)
     }
   }, [replace, parsedPath])
