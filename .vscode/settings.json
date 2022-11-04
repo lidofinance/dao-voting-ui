@@ -14,6 +14,7 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
+    ".next": true,
     "generated": false,
     "abi": false
   }

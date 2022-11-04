@@ -4,6 +4,7 @@ import { CHAINS } from '@lido-sdk/constants'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useGlobalMemo } from 'modules/shared/hooks/useGlobalMemo'
 import { useContractSwr } from '../hooks/useContractSwr'
+import { useRpcUrl } from 'modules/config/hooks/useRpcUrl'
 
 import type { Signer, providers } from 'ethers'
 import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
@@ -12,7 +13,6 @@ import type {
   FilterAsyncMethods,
   UnpackedPromise,
 } from '@lido-sdk/react/dist/esm/hooks/types'
-import { useRpcUrl } from 'modules/config/hooks/useRpcUrl'
 
 type Library = Signer | providers.Provider
 
