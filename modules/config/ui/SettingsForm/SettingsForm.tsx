@@ -25,8 +25,8 @@ type FormValues = {
 }
 
 export function SettingsForm() {
-  const { savedConfig, setSavedConfig } = useConfig()
   const { chainId } = useWeb3()
+  const { savedConfig, setSavedConfig } = useConfig()
 
   const formMethods = useForm<FormValues>({
     mode: 'onChange',

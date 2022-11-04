@@ -1,9 +1,11 @@
 import memoize from 'lodash/memoize'
 
 export const getIpfsBasePath = memoize(() => {
-  return document.querySelector('base')?.href || ''
+  let baseHref = document.querySelector('base')?.href || '/'
+  if (baseHref[baseHref.length - 1] !== '/') baseHref += '/'
+  return baseHref
 })
 
 export const prefixUrl = (url: string) => {
-  return `${getIpfsBasePath()}/${url}`.replace(/([^:]\/)\/+/g, '$1')
+  return `${getIpfsBasePath().slice(0, -1)}${url}`
 }

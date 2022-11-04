@@ -6,6 +6,7 @@ import { useConfig } from 'modules/config/hooks/useConfig'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useErrorMessage } from 'modules/blockChain/hooks/useErrorMessage'
 import { useSupportedChains, ProviderWeb3 } from '@lido-sdk/web3-react'
+import { useGetRpcUrl } from 'modules/config/hooks/useRpcUrl'
 
 import { PageLayout } from 'modules/shared/ui/Layout/PageLayout'
 import { GlobalStyle } from 'modules/globalStyles'
@@ -106,7 +107,8 @@ function AppRoot({ Component, pageProps }: AppProps) {
 const AppRootMemo = memo(AppRoot)
 
 function Web3ProviderWrap({ children }: { children: React.ReactNode }) {
-  const { supportedChainIds, defaultChain, getRpcUrl } = useConfig()
+  const { supportedChainIds, defaultChain } = useConfig()
+  const getRpcUrl = useGetRpcUrl()
 
   const backendRPC = useMemo(
     () =>

@@ -6,5 +6,7 @@ export function parseEnvConfig(envConfig: EnvConfigRaw): EnvConfigParsed {
     defaultChain: parseChainId(envConfig.defaultChain),
     supportedChainIds: envConfig.supportedChains.split(',').map(parseChainId),
     ipfsMode: envConfig.ipfsMode === 'true',
+    settingsPrefillInfura: envConfig.settingsPrefillInfura,
+    settingsPrefillEtherscan: envConfig.settingsPrefillEtherscan,
   }
 }
