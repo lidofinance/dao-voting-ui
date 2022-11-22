@@ -6,7 +6,7 @@ import {
 
 import { ContractVoting } from 'modules/blockChain/contracts'
 import type { VoteMode } from '../../types'
-// import { estimateGasFallback } from 'modules/shared/utils/estimateGasFallback'
+import { estimateGasFallback } from 'modules/shared/utils/estimateGasFallback'
 
 type Args = {
   voteId?: string
@@ -71,9 +71,13 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
 
   const populateEnact = useCallback(
     async (args: { voteId: string }) => {
+      const gasLimit = await estimateGasFallback(
+        contractVoting.estimateGas.executeVote(args.voteId),
+        2000000,
+      )
       const tx = await contractVoting.populateTransaction.executeVote(
         args.voteId,
-        { gasLimit: 650000 },
+        { gasLimit },
       )
       return tx
     },
