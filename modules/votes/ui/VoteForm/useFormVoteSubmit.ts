@@ -31,11 +31,18 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
 
   const populateVote = useCallback(
     async (args: { voteId: string; mode: VoteMode }) => {
+      const gasLimit = await estimateGasFallback(
+        contractVoting.estimateGas.vote(
+          args.voteId,
+          args.mode === 'yay',
+          false,
+        ),
+      )
       const tx = await contractVoting.populateTransaction.vote(
         args.voteId,
         args.mode === 'yay',
         false,
-        { gasLimit: 650000 },
+        { gasLimit },
       )
       return tx
     },
@@ -52,14 +59,6 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
 
       try {
         setSubmitting(mode)
-        //
-        //       Gas amount can not be estimating for unknown reason
-        // TODO: Figure out why
-        //
-        // const gasLimit = await estimateGasFallback(
-        //   contractVoting.estimateGas.vote(voteId, mode === 'yay', false),
-        // )
-        //
         await txVote.send({ voteId, mode })
       } catch (err) {
         console.error(err)
