@@ -1,14 +1,15 @@
 import { useCallback } from 'react'
-import { useRouter } from 'next/router'
+import { useRouter, NextRouter } from 'next/router'
 
-import { prefixUrl } from '../utils/getIpfsBasePath'
+import { prefixIpfsUrl } from '../utils/getIpfsBasePath'
+
+type Args = Parameters<NextRouter['push']>
 
 export function usePrefixedPush() {
   const router = useRouter()
-  type Args = Parameters<typeof router.push>
   return useCallback(
-    (url: string, a1?: Args[1], a2?: Args[2]) => {
-      return router.push(prefixUrl(url), a1, a2)
+    (url: string, as?: Args[1], options?: Args[2]) => {
+      return router.push(prefixIpfsUrl(url), as, options)
     },
     [router],
   )
@@ -16,10 +17,9 @@ export function usePrefixedPush() {
 
 export function usePrefixedReplace() {
   const router = useRouter()
-  type Args = Parameters<typeof router.replace>
   return useCallback(
-    (url: string, a1?: Args[1], a2?: Args[2]) => {
-      return router.replace(prefixUrl(url), a1, a2)
+    (url: string, as?: Args[1], options?: Args[2]) => {
+      return router.replace(prefixIpfsUrl(url), as, options)
     },
     [router],
   )
