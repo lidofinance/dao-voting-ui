@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useConfig } from './useConfig'
 import { usePrefilledInfuraUrl } from './usePrefilledInfuraUrl'
@@ -24,5 +24,5 @@ export function useGetRpcUrl() {
 export function useRpcUrl() {
   const { chainId } = useWeb3()
   const getRpcUrl = useGetRpcUrl()
-  return useMemo(() => getRpcUrl(chainId), [getRpcUrl, chainId])
+  return getRpcUrl(chainId)
 }
