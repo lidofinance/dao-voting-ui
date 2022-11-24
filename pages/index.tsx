@@ -8,7 +8,7 @@ import { SettingsForm } from 'modules/config/ui/SettingsForm'
 import * as urls from 'modules/network/utils/urls'
 import { IPFS_MODE } from 'modules/config'
 
-function HomePageInfra() {
+function HomePageWithBackend() {
   const replace = usePrefixedReplace()
 
   useEffect(() => {
@@ -62,7 +62,7 @@ function HomePageIpfs() {
   }
 }
 
-const HomePage = IPFS_MODE ? HomePageIpfs : HomePageInfra
+const HomePage = IPFS_MODE ? HomePageIpfs : HomePageWithBackend
 
 export default HomePage
 
