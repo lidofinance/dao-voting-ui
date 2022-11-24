@@ -57,6 +57,7 @@ export const VoteScriptBodyWrap = styled.div`
 
 export const CallWrapper = styled.div`
   padding: ${({ theme }) => theme.spaceMap.lg}px;
+  word-break: break-all;
 
   &:not(:last-child) {
     border-bottom: 1px solid ${p => p.theme.colors.border};
@@ -89,7 +90,6 @@ export const ScriptBox = styled.div`
   font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
   color: ${({ theme }) => theme.colors.text};
   border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.2);
   word-break: break-all;
   white-space: pre-wrap;
 `
