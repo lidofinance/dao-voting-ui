@@ -6,6 +6,6 @@ export const getIpfsBasePath = memoize(() => {
   return baseHref
 })
 
-export const prefixUrl = (url: string) => {
+export const prefixIpfsUrl = (url: string) => {
   return `${getIpfsBasePath().slice(0, -1)}${url}`
 }
