@@ -23,7 +23,6 @@ import { Vote, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { formatFloatPct } from 'modules/shared/utils/formatFloatPct'
 import { formatNumber } from 'modules/shared/utils/formatNumber'
-import { ContractGovernanceToken } from 'modules/blockChain/contracts'
 
 function InfoRowFull({
   title,
@@ -59,12 +58,8 @@ export function VoteDetails({
   creator,
   isEnded,
 }: Props) {
-  const { data: totalSupplyWei } = ContractGovernanceToken.useSwrRpc(
-    'totalSupplyAt',
-    [vote.snapshotBlock],
-  )
-  const totalSupply = totalSupplyWei && weiToNum(totalSupplyWei)
-  const totalSupplyFormatted = totalSupply && formatNumber(totalSupply, 4)
+  const totalSupply = weiToNum(vote.votingPower)
+  const totalSupplyFormatted = formatNumber(totalSupply, 4)
   const nayNum = weiToNum(vote.nay)
   const yeaNum = weiToNum(vote.yea)
   const total = nayNum + yeaNum
@@ -73,13 +68,12 @@ export function VoteDetails({
   const yeaPct = total > 0 ? formatFloatPct(yeaNum / total) : 0
 
   const nayPctOfTotalSupply = totalSupply
-    ? formatFloatPct(nayNum / totalSupply)
+    ? formatFloatPct(nayNum / totalSupply, { floor: true }).toFixed(2)
     : 0
   const yeaPctOfTotalSupply = totalSupply
-    ? formatFloatPct(yeaNum / totalSupply)
+    ? formatFloatPct(yeaNum / totalSupply, { floor: true }).toFixed(2)
     : 0
 
-  const votingPower = weiToNum(vote.votingPower)
   const startDate = vote.startDate.toNumber()
   const endDate = startDate + voteTime
 
@@ -150,7 +144,7 @@ export function VoteDetails({
         </InfoRowFull>
 
         <InfoRowFull title="Approval %">
-          {formatFloatPct(yeaNum / votingPower, { floor: true })}%&nbsp;
+          {yeaPctOfTotalSupply}%&nbsp;
           <Text as="span" color="secondary" size="xxs">
             (&gt;{weiToNum(vote.minAcceptQuorum) * 100}% needed)
           </Text>
@@ -159,14 +153,14 @@ export function VoteDetails({
         <InfoRowFull title={`“No” voted`}>
           {formatNumber(nayNum, 4)}&nbsp; / {totalSupplyFormatted}&nbsp;
           <Text as="span" color="secondary" size="xxs">
-            ({nayPctOfTotalSupply.toFixed(2)}%)
+            ({nayPctOfTotalSupply}%)
           </Text>
         </InfoRowFull>
 
         <InfoRowFull title={`“Yes” voted`}>
           {formatNumber(yeaNum, 4)}&nbsp; / {totalSupplyFormatted}&nbsp;
           <Text as="span" color="secondary" size="xxs">
-            ({yeaPctOfTotalSupply.toFixed(2)}%)
+            ({yeaPctOfTotalSupply}%)
           </Text>
         </InfoRowFull>
       </DataTable>
@@ -178,7 +172,7 @@ export function VoteDetails({
               No —{' '}
             </Text>
             <Text as="span" size="xxs">
-              {nayPctOfTotalSupply.toFixed(2)}%
+              {nayPctOfTotalSupply}%
             </Text>
           </Text>
           <Text size="xxs" style={{ textAlign: 'right' }}>
@@ -186,7 +180,7 @@ export function VoteDetails({
               Yes —{' '}
             </Text>
             <Text as="span" size="xxs">
-              {yeaPctOfTotalSupply.toFixed(2)}%
+              {yeaPctOfTotalSupply}%
             </Text>
           </Text>
         </VotesTitleWrap>
