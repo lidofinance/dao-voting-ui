@@ -6,7 +6,7 @@ import {
 
 import { ContractVoting } from 'modules/blockChain/contracts'
 import type { VoteMode } from '../../types'
-// import { estimateGasFallback } from 'modules/shared/utils/estimateGasFallback'
+import { estimateGasFallback } from 'modules/shared/utils/estimateGasFallback'
 
 type Args = {
   voteId?: string
@@ -31,11 +31,18 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
 
   const populateVote = useCallback(
     async (args: { voteId: string; mode: VoteMode }) => {
+      const gasLimit = await estimateGasFallback(
+        contractVoting.estimateGas.vote(
+          args.voteId,
+          args.mode === 'yay',
+          false,
+        ),
+      )
       const tx = await contractVoting.populateTransaction.vote(
         args.voteId,
         args.mode === 'yay',
         false,
-        { gasLimit: 650000 },
+        { gasLimit },
       )
       return tx
     },
@@ -52,14 +59,6 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
 
       try {
         setSubmitting(mode)
-        //
-        //       Gas amount can not be estimating for unknown reason
-        // TODO: Figure out why
-        //
-        // const gasLimit = await estimateGasFallback(
-        //   contractVoting.estimateGas.vote(voteId, mode === 'yay', false),
-        // )
-        //
         await txVote.send({ voteId, mode })
       } catch (err) {
         console.error(err)
@@ -71,9 +70,13 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
 
   const populateEnact = useCallback(
     async (args: { voteId: string }) => {
+      const gasLimit = await estimateGasFallback(
+        contractVoting.estimateGas.executeVote(args.voteId),
+        2000000,
+      )
       const tx = await contractVoting.populateTransaction.executeVote(
         args.voteId,
-        { gasLimit: 650000 },
+        { gasLimit },
       )
       return tx
     },
