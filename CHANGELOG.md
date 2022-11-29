@@ -1,3 +1,14 @@
+## [0.6.1](https://github.com/lidofinance/dao-voting-ui/compare/0.6.0...0.6.1) (2022-11-29)
+
+
+### Bug Fixes
+
+* percents rounding formatting ([68ebf9e](https://github.com/lidofinance/dao-voting-ui/commit/68ebf9ed0457dd8f8cc129f1fabe5467eb7f29f5))
+* vote enactment gas limit calculation ([7a9165b](https://github.com/lidofinance/dao-voting-ui/commit/7a9165bf37dfd00eb4ef861bf5e5384ef4718df2))
+* vote script box styles ([ce51579](https://github.com/lidofinance/dao-voting-ui/commit/ce51579732f137bf1681c8d6d481eaaa1e1d9fdb))
+
+
+
 # [0.6.0](https://github.com/lidofinance/dao-voting-ui/compare/0.5.0...0.6.0) (2022-11-02)
 
 
