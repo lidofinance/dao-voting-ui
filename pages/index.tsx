@@ -1,7 +1,7 @@
 import { DashboardGrid } from 'modules/dashboard/ui/DashboardGrid'
 
 export default function AboutPage() {
-  return <DashboardGrid />
+  return <DashboardGrid currentPage={1} />
 }
 
 // #!if IPFS_MODE !== "true"

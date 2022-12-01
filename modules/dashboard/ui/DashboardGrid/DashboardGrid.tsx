@@ -1,6 +1,7 @@
 import range from 'lodash/range'
+import Router from 'next/router'
 
-import { useState } from 'react'
+import { useEffect } from 'react'
 import { useSWR } from 'modules/network/hooks/useSwr'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 
@@ -12,13 +13,21 @@ import { GridWrap, PaginationWrap } from './DashboardGridStyle'
 
 import { ContractVoting } from 'modules/blockChain/contracts'
 import { getVoteStatus } from 'modules/votes/utils/getVoteStatus'
+import * as urls from 'modules/network/utils/urls'
 
 const PAGE_SIZE = 20
 
-export function DashboardGrid() {
+type Props = {
+  currentPage: number
+}
+
+export function DashboardGrid({ currentPage }: Props) {
   const { chainId } = useWeb3()
-  const [currentPage, setCurrentPage] = useState(0)
   const contractVoting = ContractVoting.useRpc()
+
+  const handleChangePage = (nextPage: number) => {
+    Router.push(urls.dashboardPage(nextPage))
+  }
 
   const infoSwr = useSWR(`dashboard-general-info-${chainId}`, async () => {
     const [votesTotalBn, voteTime, objectionPhaseTime] = await Promise.all([
@@ -43,18 +52,18 @@ export function DashboardGrid() {
     async () => {
       if (!votesTotal) return null
 
-      const startId = votesTotal - 1 - currentPage * PAGE_SIZE
+      const startId = votesTotal - 1 - (currentPage - 1) * PAGE_SIZE
       const endId = Math.max(startId - PAGE_SIZE, 0)
       const ids = range(startId, endId, -1)
 
-      const requests = ids.map(id =>
+      const requests = ids.map(voteId =>
         (async () => {
           const [vote, canExecute] = await Promise.all([
-            contractVoting.getVote(id),
-            contractVoting.canExecute(id),
+            contractVoting.getVote(voteId),
+            contractVoting.canExecute(voteId),
           ])
           return {
-            id,
+            voteId,
             vote,
             canExecute,
             status: getVoteStatus(vote, canExecute),
@@ -67,11 +76,20 @@ export function DashboardGrid() {
       return votesList
     },
   )
-  const votesList = votesSwr.data
 
   const isLoading = infoSwr.initialLoading || votesSwr.initialLoading
+  const votesList = votesSwr.data
+  const pagesCount = votesTotal ? Math.ceil(votesTotal / PAGE_SIZE) : 1
 
-  console.log(infoSwr.initialLoading)
+  useEffect(() => {
+    if (!infoSwr.initialLoading && currentPage > pagesCount) {
+      Router.replace(urls.dashboardPage(pagesCount))
+    }
+  }, [currentPage, infoSwr.initialLoading, pagesCount])
+
+  if (!infoSwr.initialLoading && currentPage > pagesCount) {
+    return null
+  }
 
   const paginationEl = (
     <PaginationWrap>
@@ -79,9 +97,9 @@ export function DashboardGrid() {
         <SkeletonBar showOnBackground width={352} style={{ height: 32 }} />
       ) : (
         <Pagination
-          pagesCount={Math.ceil((votesTotal || 1) / PAGE_SIZE)}
-          activePage={currentPage + 1}
-          onItemClick={(idx: number) => setCurrentPage(idx - 1)}
+          pagesCount={pagesCount}
+          activePage={currentPage}
+          onItemClick={(idx: number) => handleChangePage(idx)}
           siblingCount={1}
         />
       )}
@@ -97,7 +115,7 @@ export function DashboardGrid() {
         {votesList?.map(voteData => (
           <DashboardVote
             {...voteData}
-            key={voteData.id}
+            key={voteData.voteId}
             status={voteData.status!}
             voteTime={voteTime!}
             objectionPhaseTime={objectionPhaseTime!}

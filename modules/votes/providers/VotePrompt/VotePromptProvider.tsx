@@ -1,6 +1,6 @@
 import { debounce } from 'lodash'
-import { useRouter } from 'next/router'
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
+import Router, { useRouter } from 'next/router'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 
 import { votePromptContext } from './votePromptContext'
 import * as urls from 'modules/network/utils/urls'
@@ -11,18 +11,14 @@ type Props = {
 
 export function VotePromptProvider({ children }: Props) {
   const router = useRouter()
-  const { replace, asPath } = router
-
-  // https://github.com/vercel/next.js/issues/18127
-  const replaceRef = useRef(replace)
-  if (replaceRef.current !== replace) replaceRef.current = replace
+  const { asPath } = router
 
   const { voteId: urlVoteIdArr = [] } = router.query
   const [urlVoteId] = urlVoteIdArr as string[]
   const [voteId, setVoteIdState] = useState(urlVoteId || '')
 
   const changeRouteInstantly = useCallback((value: string) => {
-    replaceRef.current(urls.vote(value), undefined, {
+    Router.push(urls.vote(value), undefined, {
       scroll: false,
       shallow: true,
     })
@@ -35,22 +31,58 @@ export function VotePromptProvider({ children }: Props) {
 
   const setVoteId = useCallback(
     (value: string) => {
-      setVoteIdState(value)
-      changeRouteDebounced(value)
+      if (value) {
+        setVoteIdState(value)
+        changeRouteDebounced(value)
+      } else {
+        setVoteIdState(value)
+        Router.push(urls.home)
+      }
     },
     [setVoteIdState, changeRouteDebounced],
   )
 
   const clearVoteId = useCallback(() => {
-    setVoteIdState('')
-    changeRouteInstantly('')
-  }, [changeRouteInstantly])
+    Router.push(urls.home)
+  }, [])
 
   useEffect(() => {
     if (asPath === urls.voteIndex && voteId) {
       changeRouteDebounced(voteId)
     }
   }, [asPath, voteId, changeRouteDebounced])
+
+  useEffect(() => {
+    let prevUrl: string = ''
+
+    const handleRouteChangeStart = () => {
+      prevUrl = Router.asPath
+    }
+
+    const handleRouteChangeComplete = (nextUrl: string) => {
+      const isPrevUrlVotePage = prevUrl.startsWith(urls.voteIndex)
+      const isNextUrlVotePage = nextUrl.startsWith(urls.voteIndex)
+      if (!isPrevUrlVotePage && isNextUrlVotePage && Router.query.voteId) {
+        setVoteIdState(Router.query.voteId[0])
+      } else if (isPrevUrlVotePage && !isNextUrlVotePage) {
+        setVoteIdState('')
+      } else if (
+        isPrevUrlVotePage &&
+        isNextUrlVotePage &&
+        Router.query.voteId
+      ) {
+        setVoteIdState(Router.query.voteId[0])
+      }
+    }
+
+    Router.events.on('routeChangeStart', handleRouteChangeStart)
+    Router.events.on('routeChangeComplete', handleRouteChangeComplete)
+
+    return () => {
+      Router.events.off('routeChangeStart', handleRouteChangeStart)
+      Router.events.off('routeChangeComplete', handleRouteChangeComplete)
+    }
+  }, [])
 
   return (
     <votePromptContext.Provider

@@ -1,18 +1,17 @@
-import { Vote, VoteStatus } from 'modules/votes/types'
-
 import Link from 'next/link'
 import { VoteStatusBanner } from 'modules/votes/ui/VoteStatusBanner'
 import { VoteYesNoBar } from 'modules/votes/ui/VoteYesNoBar'
 import { InfoRowFull } from 'modules/shared/ui/Common/InfoRow'
 import { Wrap, VoteTitle, VotesBarWrap, Footer } from './DashboardVoteStyle'
 
+import { Vote, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
 import { formatFloatPct } from 'modules/shared/utils/formatFloatPct'
 import * as urls from 'modules/network/utils/urls'
 
 type Props = {
-  id: number
+  voteId: number
   vote: Vote
   status: VoteStatus
   voteTime: number
@@ -20,7 +19,7 @@ type Props = {
 }
 
 export function DashboardVote({
-  id,
+  voteId,
   vote,
   status,
   voteTime,
@@ -45,7 +44,7 @@ export function DashboardVote({
     status === VoteStatus.Rejected || status === VoteStatus.Executed
 
   return (
-    <Link passHref href={urls.vote(id)}>
+    <Link passHref href={urls.vote(voteId)}>
       <Wrap>
         <VoteStatusBanner
           startDate={startDate}
@@ -57,7 +56,7 @@ export function DashboardVote({
           size="small"
         />
 
-        <VoteTitle>Vote #{id}</VoteTitle>
+        <VoteTitle>Vote #{voteId}</VoteTitle>
 
         <Footer>
           <VotesBarWrap>
