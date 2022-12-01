@@ -10,6 +10,7 @@ import {
   ContractGovernanceToken,
 } from 'modules/blockChain/contracts'
 import { VoterState } from 'modules/votes/types'
+import { getVoteStatus } from 'modules/votes/utils/getVoteStatus'
 import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
 
 type Args = {
@@ -74,6 +75,7 @@ export function useFormVoteInfo({ voteId }: Args) {
         voterState,
         votePower,
         startEvent,
+        status: getVoteStatus(vote, canExecute),
       }
     },
     { onError: noop },
@@ -118,5 +120,6 @@ export function useFormVoteInfo({ voteId }: Args) {
     isWalletConnected,
     doRevalidate,
     startEvent: swrVote.data?.startEvent,
+    status: swrVote.data?.status,
   }
 }

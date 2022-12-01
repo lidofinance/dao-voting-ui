@@ -7,12 +7,12 @@ import {
   BadgeOngoing,
 } from './VoteStatusBannerStyle'
 import { FormattedDate } from 'modules/shared/ui/Utils/FormattedDate'
-import { VotePhasesTooltip } from '../VotePhasesTooltip'
 import { VoteDetailsCountdown } from '../VoteDetailsCountdown'
 import ClearIconSVG from 'assets/clear.com.svg.react'
 import DoneIconSVG from 'assets/done.com.svg.react'
 
 import { VoteStatus } from 'modules/votes/types'
+import { VoteStatusBannerSize } from './types'
 
 type Props = {
   startDate: number
@@ -20,6 +20,7 @@ type Props = {
   voteTime: number
   objectionPhaseTime: number
   isEnded: boolean
+  size?: VoteStatusBannerSize
   status: VoteStatus
 }
 
@@ -29,85 +30,84 @@ export function VoteStatusBanner({
   voteTime,
   objectionPhaseTime,
   isEnded,
+  size,
   status,
 }: Props) {
-  const renderEndDate = () => (
+  const endDateEl = (
     <InfoText>
       <FormattedDate date={endDate} format="DD MMM YYYY, hh:mm a" />
     </InfoText>
   )
 
   return (
-    <VotePhasesTooltip position="bottom-left">
-      <Wrap status={status}>
-        {status === VoteStatus.ActiveMain && (
-          <>
-            <BadgeOngoing>1</BadgeOngoing>
-            <BannerText>Main phase ends in</BannerText>
-            <InfoText>
-              <VoteDetailsCountdown
-                startDate={startDate}
-                voteTime={voteTime - objectionPhaseTime}
-                isEndedBeforeTime={isEnded}
-              />
-            </InfoText>
-          </>
-        )}
+    <Wrap size={size} status={status}>
+      {status === VoteStatus.ActiveMain && (
+        <>
+          <BadgeOngoing>1</BadgeOngoing>
+          <BannerText>Main phase ends in</BannerText>
+          <InfoText>
+            <VoteDetailsCountdown
+              startDate={startDate}
+              voteTime={voteTime - objectionPhaseTime}
+              isEndedBeforeTime={isEnded}
+            />
+          </InfoText>
+        </>
+      )}
 
-        {status === VoteStatus.ActiveObjection && (
-          <>
-            <BadgeOngoing>2</BadgeOngoing>
-            <BannerText>Objection phase ends in</BannerText>
-            <InfoText>
-              <VoteDetailsCountdown
-                startDate={startDate}
-                voteTime={voteTime}
-                isEndedBeforeTime={isEnded}
-              />
-            </InfoText>
-          </>
-        )}
+      {status === VoteStatus.ActiveObjection && (
+        <>
+          <BadgeOngoing>2</BadgeOngoing>
+          <BannerText>Objection phase ends in</BannerText>
+          <InfoText>
+            <VoteDetailsCountdown
+              startDate={startDate}
+              voteTime={voteTime}
+              isEndedBeforeTime={isEnded}
+            />
+          </InfoText>
+        </>
+      )}
 
-        {status === VoteStatus.Pending && (
-          <>
-            <BadgePassed>
-              <DoneIconSVG />
-            </BadgePassed>
-            <BannerText>Passed (pending)</BannerText>
-            {renderEndDate()}
-          </>
-        )}
+      {status === VoteStatus.Pending && (
+        <>
+          <BadgePassed>
+            <DoneIconSVG />
+          </BadgePassed>
+          <BannerText>Passed (pending)</BannerText>
+          {endDateEl}
+        </>
+      )}
 
-        {status === VoteStatus.Passed && (
-          <>
-            <BadgePassed>
-              <DoneIconSVG />
-            </BadgePassed>
-            <BannerText>Passed</BannerText>
-            {renderEndDate()}
-          </>
-        )}
+      {status === VoteStatus.Passed && (
+        <>
+          <BadgePassed>
+            <DoneIconSVG />
+          </BadgePassed>
+          <BannerText>Passed</BannerText>
+          {endDateEl}
+        </>
+      )}
 
-        {status === VoteStatus.Executed && (
-          <>
-            <BadgePassed>
-              <DoneIconSVG />
-            </BadgePassed>
-            <BannerText>Passed (enacted)</BannerText>
-            {renderEndDate()}
-          </>
-        )}
+      {status === VoteStatus.Executed && (
+        <>
+          <BadgePassed>
+            <DoneIconSVG />
+          </BadgePassed>
+          <BannerText>Passed (enacted)</BannerText>
+          {endDateEl}
+        </>
+      )}
 
-        {status === VoteStatus.Rejected && (
-          <>
-            <BadgeFailed>
-              <ClearIconSVG />
-            </BadgeFailed>
-            <BannerText>Rejected</BannerText>
-            {renderEndDate()}
-          </>
-        )}
-      </Wrap>
-    </VotePhasesTooltip>
+      {status === VoteStatus.Rejected && (
+        <>
+          <BadgeFailed>
+            <ClearIconSVG />
+          </BadgeFailed>
+          <BannerText>Rejected</BannerText>
+          {endDateEl}
+        </>
+      )}
+    </Wrap>
   )
 }

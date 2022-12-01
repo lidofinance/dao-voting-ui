@@ -1,10 +1,8 @@
 import styled, { css } from 'styled-components'
 import { VoteStatus } from 'modules/votes/types'
+import { VoteStatusBannerSize } from './types'
 
-export const BannerText = styled.div`
-  font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
-  font-weight: 400;
-`
+export const BannerText = styled.div``
 
 export const InfoText = styled(BannerText)`
   margin-right: 0;
@@ -48,13 +46,23 @@ export const BadgeOngoing = styled(Badge)`
   background-color: ${({ theme }) => theme.colors.primary};
 `
 
-type WrapProps = { status?: VoteStatus }
+type WrapProps = { status?: VoteStatus; size?: VoteStatusBannerSize }
 export const Wrap = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
   padding: 10px;
+  font-weight: 400;
   border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
+
+  ${({ size }: WrapProps) =>
+    size === 'small'
+      ? css`
+          font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
+        `
+      : css`
+          font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
+        `}
 
   ${({ status }: WrapProps) =>
     (status === VoteStatus.ActiveMain ||

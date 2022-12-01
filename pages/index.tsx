@@ -1,15 +1,7 @@
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
-import * as urls from 'modules/network/utils/urls'
+import { DashboardGrid } from 'modules/dashboard/ui/DashboardGrid'
 
-export default function HomePage() {
-  const router = useRouter()
-
-  useEffect(() => {
-    router.replace(urls.voteIndex)
-  }, [router])
-
-  return null
+export default function AboutPage() {
+  return <DashboardGrid />
 }
 
 // #!if IPFS_MODE !== "true"
