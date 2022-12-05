@@ -10,10 +10,9 @@ type Props = {
 }
 
 export function VotePromptProvider({ children }: Props) {
-  const router = useRouter()
-  const { asPath } = router
+  const { asPath, query } = useRouter()
 
-  const { voteId: urlVoteIdArr = [] } = router.query
+  const { voteId: urlVoteIdArr = [] } = query
   const [urlVoteId] = urlVoteIdArr as string[]
   const [voteId, setVoteIdState] = useState(urlVoteId || '')
 

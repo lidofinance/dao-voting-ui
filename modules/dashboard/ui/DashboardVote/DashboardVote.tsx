@@ -1,3 +1,6 @@
+import { useCallback } from 'react'
+import { useVotePassedCallback } from 'modules/votes/hooks/useVotePassedCallback'
+
 import Link from 'next/link'
 import { VoteStatusBanner } from 'modules/votes/ui/VoteStatusBanner'
 import { VoteYesNoBar } from 'modules/votes/ui/VoteYesNoBar'
@@ -16,6 +19,7 @@ type Props = {
   status: VoteStatus
   voteTime: number
   objectionPhaseTime: number
+  onPass: () => void
 }
 
 export function DashboardVote({
@@ -24,6 +28,7 @@ export function DashboardVote({
   status,
   voteTime,
   objectionPhaseTime,
+  onPass,
 }: Props) {
   const {
     nayPct,
@@ -34,6 +39,24 @@ export function DashboardVote({
     startDate,
     endDate,
   } = getVoteDetailsFormatted({ vote, voteTime })
+
+  const handlePass = useCallback(() => {
+    // Immediate revalidation glitches sometimes
+    // That's why there is timeout
+    setTimeout(() => onPass(), 1200)
+  }, [onPass])
+
+  useVotePassedCallback({
+    startDate,
+    voteTime,
+    onPass: handlePass,
+  })
+
+  useVotePassedCallback({
+    startDate,
+    voteTime: voteTime && objectionPhaseTime && voteTime - objectionPhaseTime,
+    onPass: handlePass,
+  })
 
   const neededToQuorum = weiToNum(vote.minAcceptQuorum) - yeaPctOfTotalSupply
   const neededToQuorumFormatted = formatFloatPct(neededToQuorum, {

@@ -45,10 +45,8 @@ export function DashboardGrid({ currentPage }: Props) {
 
   const { voteTime, votesTotal, objectionPhaseTime } = infoSwr.data || {}
 
-  const votesSwr = useSWR(
-    votesTotal
-      ? `dashboard-page-${currentPage}-of-${votesTotal}-${chainId}`
-      : null,
+  const swrVotes = useSWR(
+    votesTotal ? `dashboard-page-${currentPage}-${chainId}` : null,
     async () => {
       if (!votesTotal) return null
 
@@ -77,8 +75,11 @@ export function DashboardGrid({ currentPage }: Props) {
     },
   )
 
-  const isLoading = infoSwr.initialLoading || votesSwr.initialLoading
-  const votesList = votesSwr.data
+  const revalidateInfo = infoSwr.mutate
+  const revalidateVotes = swrVotes.mutate
+
+  const isLoading = infoSwr.initialLoading || swrVotes.initialLoading
+  const votesList = swrVotes.data
   const pagesCount = votesTotal ? Math.ceil(votesTotal / PAGE_SIZE) : 1
 
   useEffect(() => {
@@ -87,28 +88,24 @@ export function DashboardGrid({ currentPage }: Props) {
     }
   }, [currentPage, infoSwr.initialLoading, pagesCount])
 
+  useEffect(() => {
+    if (currentPage !== 1) return
+    const handleNewVote = async () => {
+      await revalidateInfo()
+      await revalidateVotes()
+    }
+    contractVoting.on('StartVote', handleNewVote)
+    return () => {
+      contractVoting.off('StartVote', handleNewVote)
+    }
+  }, [contractVoting, revalidateInfo, revalidateVotes, currentPage])
+
   if (!infoSwr.initialLoading && currentPage > pagesCount) {
     return null
   }
 
-  const paginationEl = (
-    <PaginationWrap>
-      {infoSwr.initialLoading ? (
-        <SkeletonBar showOnBackground width={352} style={{ height: 32 }} />
-      ) : (
-        <Pagination
-          pagesCount={pagesCount}
-          activePage={currentPage}
-          onItemClick={(idx: number) => handleChangePage(idx)}
-          siblingCount={1}
-        />
-      )}
-    </PaginationWrap>
-  )
-
   return (
     <Container as="main" size="full">
-      {paginationEl}
       <GridWrap>
         {isLoading &&
           range(0, PAGE_SIZE).map(i => <DashboardVoteSkeleton key={i} />)}
@@ -119,10 +116,22 @@ export function DashboardGrid({ currentPage }: Props) {
             status={voteData.status!}
             voteTime={voteTime!}
             objectionPhaseTime={objectionPhaseTime!}
+            onPass={revalidateVotes}
           />
         ))}
       </GridWrap>
-      {paginationEl}
+      <PaginationWrap>
+        {infoSwr.initialLoading ? (
+          <SkeletonBar showOnBackground width={352} style={{ height: 32 }} />
+        ) : (
+          <Pagination
+            pagesCount={pagesCount}
+            activePage={currentPage}
+            onItemClick={(idx: number) => handleChangePage(idx)}
+            siblingCount={1}
+          />
+        )}
+      </PaginationWrap>
     </Container>
   )
 }
