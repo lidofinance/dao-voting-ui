@@ -11,6 +11,7 @@ import {
 } from 'modules/blockChain/contracts'
 import { VoterState } from 'modules/votes/types'
 import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
+import { getEventsVoted } from 'modules/votes/utils/getEventsVoted'
 
 type Args = {
   voteId?: string
@@ -44,26 +45,27 @@ export function useFormVoteInfo({ voteId }: Args) {
           contractVoting.canExecute(_voteId),
         ])
 
-      const startEvent = await getEventStartVote(
-        contractVoting,
-        _voteId,
-        vote.snapshotBlock.toNumber(),
-      )
+      const snapshotBlock = vote.snapshotBlock.toNumber()
 
-      const [canVote, voterState, votePower] = await (async () => {
-        if (!_walletAddress) {
-          return [false, null, 0] as const
-        }
+      const [eventStart, eventsVoted, [canVote, voterState, votePower]] =
+        await Promise.all([
+          getEventStartVote(contractVoting, _voteId, snapshotBlock),
+          getEventsVoted(contractVoting, _voteId, snapshotBlock),
+          (async () => {
+            if (!_walletAddress) {
+              return [false, null, 0] as const
+            }
 
-        const [_canVote, _voterState, balanceAt] = await Promise.all([
-          contractVoting.canVote(_voteId, _walletAddress),
-          contractVoting.getVoterState(_voteId, _walletAddress),
-          contractToken.balanceOfAt(_walletAddress, vote.snapshotBlock),
+            const [_canVote, _voterState, balanceAt] = await Promise.all([
+              contractVoting.canVote(_voteId, _walletAddress),
+              contractVoting.getVoterState(_voteId, _walletAddress),
+              contractToken.balanceOfAt(_walletAddress, vote.snapshotBlock),
+            ])
+            const _votePower = Number(formatEther(balanceAt))
+
+            return [_canVote, _voterState, _votePower] as const
+          })(),
         ])
-        const _votePower = Number(formatEther(balanceAt))
-
-        return [_canVote, _voterState, _votePower] as const
-      })()
 
       return {
         voteTime,
@@ -73,7 +75,8 @@ export function useFormVoteInfo({ voteId }: Args) {
         canExecute,
         voterState,
         votePower,
-        startEvent,
+        eventStart,
+        eventsVoted,
       }
     },
     { onError: noop },
@@ -117,6 +120,7 @@ export function useFormVoteInfo({ voteId }: Args) {
     isLoading,
     isWalletConnected,
     doRevalidate,
-    startEvent: swrVote.data?.startEvent,
+    eventStart: swrVote.data?.eventStart,
+    eventsVoted: swrVote.data?.eventsVoted,
   }
 }

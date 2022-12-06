@@ -77,23 +77,3 @@ export const CreatorBadge = styled.div`
 export const DataTable = styled(DataTableOriginal)`
   margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
 `
-
-export const InfoRow = styled.div`
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: space-between;
-`
-
-export const InfoLabel = styled.div`
-  display: flex;
-  font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
-  font-weight: 400;
-  color: ${({ theme }) => theme.colors.textSecondary};
-`
-
-export const InfoValue = styled.div`
-  display: flex;
-  font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
-  font-weight: 400;
-  color: ${({ theme }) => theme.colors.text};
-`

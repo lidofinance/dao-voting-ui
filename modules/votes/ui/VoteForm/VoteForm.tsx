@@ -14,6 +14,7 @@ import { TxRow } from 'modules/blockChain/ui/TxRow'
 import { VoteFormActions } from '../VoteFormActions'
 import { VoteFormMustConnect } from '../VoteFormMustConnect'
 import { VoteFormVoterState } from '../VoteFormVoterState'
+import { VoteVotersList } from '../VoteVotersList'
 import { Desc, ErrorMessage, ClearButton } from './VoteFormStyle'
 
 import { VoteStatus } from 'modules/votes/types'
@@ -38,7 +39,8 @@ export function VoteForm({ voteId }: Props) {
     isWalletConnected,
     voterState,
     doRevalidate,
-    startEvent,
+    eventStart,
+    eventsVoted,
   } = useFormVoteInfo({ voteId })
   const { clearVoteId } = useVotePrompt()
 
@@ -141,7 +143,7 @@ export function VoteForm({ voteId }: Props) {
               voteTime={voteTime!}
               objectionPhaseTime={objectionPhaseTime!}
               isEnded={isEnded}
-              creator={startEvent?.creator}
+              creator={eventStart?.creator}
             />
 
             {!isWalletConnected && <VoteFormMustConnect />}
@@ -183,6 +185,10 @@ export function VoteForm({ voteId }: Props) {
                   </>
                 )}
               </>
+            )}
+
+            {eventsVoted && eventsVoted.length > 0 && (
+              <VoteVotersList eventsVoted={eventsVoted} />
             )}
           </Fragment>
         </Card>

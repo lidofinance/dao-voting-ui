@@ -10,34 +10,17 @@ import {
   VotesTitleWrap,
   Box,
   BoxVotes,
-  InfoRow,
-  InfoLabel,
-  InfoValue,
   VoteTitle,
   CreatorBadge,
   DataTable,
 } from './VoteDetailsStyle'
 import { AddressPop } from 'modules/shared/ui/Common/AddressPop'
+import { InfoRowFull } from 'modules/shared/ui/Common/InfoRow'
 
 import { Vote, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { formatFloatPct } from 'modules/shared/utils/formatFloatPct'
 import { formatNumber } from 'modules/shared/utils/formatNumber'
-
-function InfoRowFull({
-  title,
-  children,
-}: {
-  title: React.ReactNode
-  children?: React.ReactNode
-}) {
-  return (
-    <InfoRow>
-      <InfoLabel>{title}</InfoLabel>
-      {children && <InfoValue>{children}</InfoValue>}
-    </InfoRow>
-  )
-}
 
 type Props = {
   vote: Vote
