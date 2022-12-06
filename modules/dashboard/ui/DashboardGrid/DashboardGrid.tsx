@@ -82,11 +82,16 @@ export function DashboardGrid({ currentPage }: Props) {
   const votesList = swrVotes.data
   const pagesCount = votesTotal ? Math.ceil(votesTotal / PAGE_SIZE) : 1
 
+  const isPageBoundedMore = !infoSwr.initialLoading && currentPage > pagesCount
+  const isPageBoundedLess = currentPage < 1
+
   useEffect(() => {
-    if (!infoSwr.initialLoading && currentPage > pagesCount) {
+    if (isPageBoundedMore) {
       Router.replace(urls.dashboardPage(pagesCount))
+    } else if (isPageBoundedLess) {
+      Router.replace(urls.dashboardIndex)
     }
-  }, [currentPage, infoSwr.initialLoading, pagesCount])
+  }, [isPageBoundedLess, isPageBoundedMore, pagesCount])
 
   useEffect(() => {
     if (currentPage !== 1) return
@@ -100,7 +105,7 @@ export function DashboardGrid({ currentPage }: Props) {
     }
   }, [contractVoting, revalidateInfo, revalidateVotes, currentPage])
 
-  if (!infoSwr.initialLoading && currentPage > pagesCount) {
+  if (isPageBoundedMore || isPageBoundedLess) {
     return null
   }
 

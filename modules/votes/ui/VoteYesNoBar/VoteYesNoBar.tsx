@@ -7,8 +7,8 @@ import {
 } from './VoteYesNoBarStyle'
 
 type Props = {
-  yeaPct: React.ReactNode
-  nayPct: React.ReactNode
+  yeaPct: number
+  nayPct: number
   yeaPctOfTotalSupply: React.ReactNode
   nayPctOfTotalSupply: React.ReactNode
   showOnForeground?: boolean

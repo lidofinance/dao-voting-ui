@@ -1,13 +1,11 @@
 import styled from 'styled-components'
 import { Text as TextLocal } from 'modules/shared/ui/Common/Text'
 
-export const DASHBOARD_VOTE_ITEM_HEIGHT = 210
-
 export const Wrap = styled.a`
   display: flex;
   flex-direction: column;
   padding: ${({ theme }) => theme.spaceMap.lg}px;
-  height: ${DASHBOARD_VOTE_ITEM_HEIGHT}px;
+  height: 210px;
   word-break: break-all;
   background-color: ${({ theme }) => theme.colors.foreground};
   border-radius: ${({ theme }) => theme.borderRadiusesMap.xl}px;
