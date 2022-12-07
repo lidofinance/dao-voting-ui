@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components'
 import { VoteStatus } from 'modules/votes/types'
-import { VoteStatusBannerSize } from './types'
+import { VoteStatusFontSize } from './types'
 
 export const BannerText = styled.div``
 
@@ -46,25 +46,17 @@ export const BadgeOngoing = styled(Badge)`
   background-color: ${({ theme }) => theme.colors.primary};
 `
 
-type WrapProps = { status?: VoteStatus; size?: VoteStatusBannerSize }
-export const Wrap = styled.div`
+type WrapProps = { status?: VoteStatus; fontSize: VoteStatusFontSize }
+export const Wrap = styled.div<WrapProps>`
   display: flex;
   align-items: center;
   margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
   padding: 10px;
   font-weight: 400;
   border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
+  font-size: ${({ fontSize, theme }) => theme.fontSizesMap[fontSize]}px;
 
-  ${({ size }: WrapProps) =>
-    size === 'small'
-      ? css`
-          font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
-        `
-      : css`
-          font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
-        `}
-
-  ${({ status }: WrapProps) =>
+  ${({ status }) =>
     (status === VoteStatus.ActiveMain ||
       status === VoteStatus.ActiveObjection) &&
     css`
@@ -75,7 +67,7 @@ export const Wrap = styled.div`
       }
     `}
 
-  ${({ status }: WrapProps) =>
+  ${({ status }) =>
     (status === VoteStatus.Pending ||
       status === VoteStatus.Executed ||
       status === VoteStatus.Passed) &&
@@ -87,7 +79,7 @@ export const Wrap = styled.div`
       }
     `}
 
-  ${({ status }: WrapProps) =>
+  ${({ status }) =>
     status === VoteStatus.Rejected &&
     css`
       background-color: rgba(225, 77, 77, 0.1);

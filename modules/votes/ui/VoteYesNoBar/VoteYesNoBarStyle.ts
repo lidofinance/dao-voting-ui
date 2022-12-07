@@ -7,12 +7,12 @@ export const VotesTitleWrap = styled.div`
 `
 
 type VotesBarWrapProps = { showOnForeground?: boolean }
-export const VotesBarWrap = styled.div`
+export const VotesBarWrap = styled.div<VotesBarWrapProps>`
   display: flex;
   height: 6px;
   border-radius: ${({ theme }) => theme.borderRadiusesMap.sm}px;
   overflow: hidden;
-  ${({ showOnForeground }: VotesBarWrapProps) =>
+  ${({ showOnForeground }) =>
     showOnForeground
       ? css`
           background-color: ${({ theme }) => theme.colors.background};

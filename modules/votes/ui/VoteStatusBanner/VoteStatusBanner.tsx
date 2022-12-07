@@ -12,7 +12,7 @@ import ClearIconSVG from 'assets/clear.com.svg.react'
 import DoneIconSVG from 'assets/done.com.svg.react'
 
 import { VoteStatus } from 'modules/votes/types'
-import { VoteStatusBannerSize } from './types'
+import { VoteStatusFontSize } from './types'
 
 type Props = {
   startDate: number
@@ -20,7 +20,7 @@ type Props = {
   voteTime: number
   objectionPhaseTime: number
   isEnded: boolean
-  size?: VoteStatusBannerSize
+  fontSize: VoteStatusFontSize
   status: VoteStatus
 }
 
@@ -30,7 +30,7 @@ export function VoteStatusBanner({
   voteTime,
   objectionPhaseTime,
   isEnded,
-  size,
+  fontSize,
   status,
 }: Props) {
   const endDateEl = (
@@ -40,7 +40,7 @@ export function VoteStatusBanner({
   )
 
   return (
-    <Wrap size={size} status={status}>
+    <Wrap fontSize={fontSize} status={status}>
       {status === VoteStatus.ActiveMain && (
         <>
           <BadgeOngoing>1</BadgeOngoing>

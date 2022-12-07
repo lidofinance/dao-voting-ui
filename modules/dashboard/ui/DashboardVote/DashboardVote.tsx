@@ -76,7 +76,7 @@ export function DashboardVote({
           objectionPhaseTime={objectionPhaseTime}
           status={status}
           isEnded={isEnded}
-          size="small"
+          fontSize="xxs"
         />
 
         <VoteTitle>Vote #{voteId}</VoteTitle>

@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 const barPulse = keyframes`
   0% {
@@ -13,18 +13,13 @@ const barPulse = keyframes`
 `
 
 type BarProps = { showOnBackground?: boolean }
-export const Bar = styled.div`
+export const Bar = styled.div<BarProps>`
   position: relative;
   width: 100%;
   height: 100%;
   border-radius: 2px;
   border-radius: ${({ theme }) => theme.borderRadiusesMap.xs}px;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme, showOnBackground }) =>
+    showOnBackground ? theme.colors.foreground : theme.colors.background};
   animation: ${barPulse} 1s ease 0s infinite;
-
-  ${({ showOnBackground }: BarProps) =>
-    showOnBackground &&
-    css`
-      background-color ${({ theme }) => theme.colors.foreground};
-    `}
 `

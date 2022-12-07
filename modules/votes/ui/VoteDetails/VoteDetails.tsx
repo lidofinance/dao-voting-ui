@@ -61,6 +61,7 @@ export function VoteDetails({
           objectionPhaseTime={objectionPhaseTime}
           status={status}
           isEnded={isEnded}
+          fontSize="xs"
         />
       </VotePhasesTooltip>
 
