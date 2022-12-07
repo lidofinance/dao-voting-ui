@@ -92,7 +92,8 @@ export function DashboardGrid({ currentPage }: Props) {
   }, [isOutOfPageBoundy])
 
   useEffect(() => {
-    if (currentPage !== 1) return
+    const notNeedToRevalidate = currentPage !== 1
+    if (notNeedToRevalidate) return
     const handleNewVote = async () => {
       await revalidateInfo()
       await revalidateVotes()
