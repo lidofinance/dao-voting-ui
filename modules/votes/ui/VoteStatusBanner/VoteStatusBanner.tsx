@@ -1,5 +1,6 @@
 import {
   Wrap,
+  BannerText,
   InfoText,
   BadgePassed,
   BadgeFailed,
@@ -43,7 +44,7 @@ export function VoteStatusBanner({
       {status === VoteStatus.ActiveMain && (
         <>
           <BadgeOngoing>1</BadgeOngoing>
-          <div>Main phase ends in</div>
+          <BannerText>Main phase ends in</BannerText>
           <InfoText>
             <VoteDetailsCountdown
               startDate={startDate}
@@ -57,7 +58,7 @@ export function VoteStatusBanner({
       {status === VoteStatus.ActiveObjection && (
         <>
           <BadgeOngoing>2</BadgeOngoing>
-          <div>Objection phase ends in</div>
+          <BannerText>Objection phase ends in</BannerText>
           <InfoText>
             <VoteDetailsCountdown
               startDate={startDate}
@@ -73,7 +74,7 @@ export function VoteStatusBanner({
           <BadgePassed>
             <DoneIconSVG />
           </BadgePassed>
-          <div>Passed (pending)</div>
+          <BannerText>Passed (pending)</BannerText>
           {endDateEl}
         </>
       )}
@@ -83,7 +84,7 @@ export function VoteStatusBanner({
           <BadgePassed>
             <DoneIconSVG />
           </BadgePassed>
-          <div>Passed</div>
+          <BannerText>Passed</BannerText>
           {endDateEl}
         </>
       )}
@@ -93,7 +94,7 @@ export function VoteStatusBanner({
           <BadgePassed>
             <DoneIconSVG />
           </BadgePassed>
-          <div>Passed (enacted)</div>
+          <BannerText>Passed (enacted)</BannerText>
           {endDateEl}
         </>
       )}
@@ -103,7 +104,7 @@ export function VoteStatusBanner({
           <BadgeFailed>
             <ClearIconSVG />
           </BadgeFailed>
-          <div>Rejected</div>
+          <BannerText>Rejected</BannerText>
           {endDateEl}
         </>
       )}

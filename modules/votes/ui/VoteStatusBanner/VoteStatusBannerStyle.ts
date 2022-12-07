@@ -2,7 +2,9 @@ import styled, { css } from 'styled-components'
 import { VoteStatus } from 'modules/votes/types'
 import { VoteStatusFontSize } from './types'
 
-export const InfoText = styled.div`
+export const BannerText = styled.div``
+
+export const InfoText = styled(BannerText)`
   margin-right: 0;
   margin-left: auto;
 `
