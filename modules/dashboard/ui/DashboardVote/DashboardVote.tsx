@@ -41,7 +41,10 @@ export function DashboardVote({
   } = getVoteDetailsFormatted({ vote, voteTime })
 
   const handlePass = useCallback(() => {
-    // Immediate revalidation glitches sometimes
+    // TODO:
+    // Immediate revalidation glitches sometimes:
+    // It appears accidentally when we fetch data that was changed immediately after the change. It returns it's old version from chain.
+    // Small timeout is a fix for this glitch.
     // That's why there is timeout
     setTimeout(() => onPass(), 1200)
   }, [onPass])
