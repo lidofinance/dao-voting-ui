@@ -12,7 +12,7 @@ import ClearIconSVG from 'assets/clear.com.svg.react'
 import DoneIconSVG from 'assets/done.com.svg.react'
 
 import { VoteStatus } from 'modules/votes/types'
-import { VoteStatusFontSize } from './types'
+import { convertStatusToStyledVariant, VoteStatusFontSize } from './types'
 
 type Props = {
   startDate: number
@@ -33,19 +33,21 @@ export function VoteStatusBanner({
   fontSize,
   status,
 }: Props) {
+  const variant = convertStatusToStyledVariant(status)
+
   const endDateEl = (
-    <InfoText>
+    <InfoText variant={variant}>
       <FormattedDate date={endDate} format="DD MMM YYYY, hh:mm a" />
     </InfoText>
   )
 
   return (
-    <Wrap fontSize={fontSize} status={status}>
+    <Wrap fontSize={fontSize} variant={variant}>
       {status === VoteStatus.ActiveMain && (
         <>
           <BadgeOngoing>1</BadgeOngoing>
-          <BannerText>Main phase ends in</BannerText>
-          <InfoText>
+          <BannerText variant={variant}>Main phase ends in</BannerText>
+          <InfoText variant={variant}>
             <VoteDetailsCountdown
               startDate={startDate}
               voteTime={voteTime - objectionPhaseTime}
@@ -58,8 +60,8 @@ export function VoteStatusBanner({
       {status === VoteStatus.ActiveObjection && (
         <>
           <BadgeOngoing>2</BadgeOngoing>
-          <BannerText>Objection phase ends in</BannerText>
-          <InfoText>
+          <BannerText variant={variant}>Objection phase ends in</BannerText>
+          <InfoText variant={variant}>
             <VoteDetailsCountdown
               startDate={startDate}
               voteTime={voteTime}
@@ -74,7 +76,7 @@ export function VoteStatusBanner({
           <BadgePassed>
             <DoneIconSVG />
           </BadgePassed>
-          <BannerText>Passed (pending)</BannerText>
+          <BannerText variant={variant}>Passed (pending)</BannerText>
           {endDateEl}
         </>
       )}
@@ -84,7 +86,7 @@ export function VoteStatusBanner({
           <BadgePassed>
             <DoneIconSVG />
           </BadgePassed>
-          <BannerText>Passed</BannerText>
+          <BannerText variant={variant}>Passed</BannerText>
           {endDateEl}
         </>
       )}
@@ -94,7 +96,7 @@ export function VoteStatusBanner({
           <BadgePassed>
             <DoneIconSVG />
           </BadgePassed>
-          <BannerText>Passed (enacted)</BannerText>
+          <BannerText variant={variant}>Passed (enacted)</BannerText>
           {endDateEl}
         </>
       )}
@@ -104,7 +106,7 @@ export function VoteStatusBanner({
           <BadgeFailed>
             <ClearIconSVG />
           </BadgeFailed>
-          <BannerText>Rejected</BannerText>
+          <BannerText variant={variant}>Rejected</BannerText>
           {endDateEl}
         </>
       )}
