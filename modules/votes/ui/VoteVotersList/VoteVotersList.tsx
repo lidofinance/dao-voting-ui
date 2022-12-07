@@ -1,3 +1,5 @@
+import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
+
 import { InfoRowFull } from 'modules/shared/ui/Common/InfoRow'
 import { AddressPop } from 'modules/shared/ui/Common/AddressPop'
 import {
@@ -18,6 +20,8 @@ type Props = {
 }
 
 export function VoteVotersList({ eventsVoted }: Props) {
+  const { data: govSymbol } = useGovernanceSymbol()
+
   return (
     <Wrap>
       <InfoRowFull title="Voted" />
@@ -33,7 +37,9 @@ export function VoteVotersList({ eventsVoted }: Props) {
               </AddressPop>
             </ListRowCell>
             <ListRowCell>{event.supports ? 'Yes' : 'No'}</ListRowCell>
-            <ListRowCell>{formatNumber(weiToNum(event.stake), 6)}</ListRowCell>
+            <ListRowCell>
+              {formatNumber(weiToNum(event.stake), 6)} {govSymbol}
+            </ListRowCell>
           </ListRow>
         ))}
       </div>
