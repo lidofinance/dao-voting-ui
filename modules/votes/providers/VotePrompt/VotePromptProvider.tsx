@@ -52,36 +52,8 @@ export function VotePromptProvider({ children }: Props) {
   }, [asPath, voteId, changeRouteDebounced])
 
   useEffect(() => {
-    let prevUrl: string = ''
-
-    const handleRouteChangeStart = () => {
-      prevUrl = Router.asPath
-    }
-
-    const handleRouteChangeComplete = (nextUrl: string) => {
-      const isPrevUrlVotePage = prevUrl.startsWith(urls.voteIndex)
-      const isNextUrlVotePage = nextUrl.startsWith(urls.voteIndex)
-      if (!isPrevUrlVotePage && isNextUrlVotePage && Router.query.voteId) {
-        setVoteIdState(Router.query.voteId[0])
-      } else if (isPrevUrlVotePage && !isNextUrlVotePage) {
-        setVoteIdState('')
-      } else if (
-        isPrevUrlVotePage &&
-        isNextUrlVotePage &&
-        Router.query.voteId
-      ) {
-        setVoteIdState(Router.query.voteId[0])
-      }
-    }
-
-    Router.events.on('routeChangeStart', handleRouteChangeStart)
-    Router.events.on('routeChangeComplete', handleRouteChangeComplete)
-
-    return () => {
-      Router.events.off('routeChangeStart', handleRouteChangeStart)
-      Router.events.off('routeChangeComplete', handleRouteChangeComplete)
-    }
-  }, [])
+    setVoteIdState(urlVoteId || '')
+  }, [urlVoteId])
 
   return (
     <votePromptContext.Provider
