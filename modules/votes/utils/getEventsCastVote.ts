@@ -18,7 +18,7 @@ export function unifyEventsVotedWithLast(events: CastVoteEventObject[]) {
   ).res
 }
 
-export async function getEventsVoted(
+export async function getEventsCastVote(
   contractVoting: VotingAbi,
   voteId: string | number,
   block?: string | number,

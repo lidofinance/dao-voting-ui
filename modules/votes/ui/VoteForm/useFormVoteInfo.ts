@@ -11,7 +11,7 @@ import {
 } from 'modules/blockChain/contracts'
 import { VoterState } from 'modules/votes/types'
 import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
-import { getEventsVoted } from 'modules/votes/utils/getEventsVoted'
+import { getEventsCastVote } from 'modules/votes/utils/getEventsCastVote'
 
 type Args = {
   voteId?: string
@@ -50,7 +50,7 @@ export function useFormVoteInfo({ voteId }: Args) {
       const [eventStart, eventsVoted, [canVote, voterState, votePower]] =
         await Promise.all([
           getEventStartVote(contractVoting, _voteId, snapshotBlock),
-          getEventsVoted(contractVoting, _voteId, snapshotBlock),
+          getEventsCastVote(contractVoting, _voteId, snapshotBlock),
           (async () => {
             if (!_walletAddress) {
               return [false, null, 0] as const
