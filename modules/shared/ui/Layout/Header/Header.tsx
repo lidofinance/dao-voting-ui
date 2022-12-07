@@ -125,7 +125,11 @@ export function Header() {
               <MobileNavItems>
                 <NavItem
                   link={urls.home}
-                  activeOn={[{ url: urls.home, exact: true }, urls.voteIndex]}
+                  activeOn={[
+                    { url: urls.home, exact: true },
+                    urls.voteIndex,
+                    urls.dashboardIndex,
+                  ]}
                   onClick={handleCloseMobileMenu}
                 >
                   Vote
