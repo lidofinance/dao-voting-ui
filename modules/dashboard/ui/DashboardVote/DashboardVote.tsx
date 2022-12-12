@@ -96,7 +96,9 @@ export function DashboardVote({
           </VotesBarWrap>
 
           <InfoRowFull title="Needed to quorum">
-            {neededToQuorum > 0 ? `${neededToQuorumFormatted}%` : '-'}
+            {neededToQuorum > 0 && !isEnded
+              ? `${neededToQuorumFormatted}%`
+              : '-'}
           </InfoRowFull>
         </Footer>
       </Wrap>
