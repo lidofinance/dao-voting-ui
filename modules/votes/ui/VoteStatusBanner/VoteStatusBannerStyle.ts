@@ -6,9 +6,7 @@ export const BannerText = styled.div<BannerTextProps>`
   color: ${({ theme, variant }) =>
     variant === StyledStatusVariant.Active
       ? theme.colors.primary
-      : variant === StyledStatusVariant.Success
-      ? theme.colors.success
-      : theme.colors.error};
+      : theme.colors.textSecondary};
 `
 
 type InfoTextProps = { variant: StyledStatusVariant }
@@ -18,9 +16,7 @@ export const InfoText = styled.div<InfoTextProps>`
   color: ${({ theme, variant }) =>
     variant === StyledStatusVariant.Active
       ? theme.colors.primary
-      : variant === StyledStatusVariant.Success
-      ? theme.colors.success
-      : theme.colors.error};
+      : theme.colors.textSecondary};
 `
 
 const Badge = styled.div`
@@ -72,7 +68,5 @@ export const Wrap = styled.div<WrapProps>`
   background-color: ${({ variant }) =>
     variant === StyledStatusVariant.Active
       ? 'rgba(0, 163, 255, 0.1)'
-      : variant === StyledStatusVariant.Success
-      ? 'rgba(83, 186, 149, 0.1)'
-      : 'rgba(225, 77, 77, 0.1)'};
+      : '#EFF2F6'};
 `
