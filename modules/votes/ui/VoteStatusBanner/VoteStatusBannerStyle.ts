@@ -65,8 +65,8 @@ export const Wrap = styled.div<WrapProps>`
   font-weight: 400;
   border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
   font-size: ${({ fontSize, theme }) => theme.fontSizesMap[fontSize]}px;
-  background-color: ${({ variant }) =>
+  background-color: ${({ variant, theme }) =>
     variant === StyledStatusVariant.Active
       ? 'rgba(0, 163, 255, 0.1)'
-      : '#EFF2F6'};
+      : theme.colors.background};
 `
