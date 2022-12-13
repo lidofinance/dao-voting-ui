@@ -1,3 +1,25 @@
+# [0.7.0](https://github.com/lidofinance/dao-voting-ui/compare/0.6.1...0.7.0) (2022-12-13)
+
+
+### Bug Fixes
+
+* add active flag to menu link in mobile version ([a740586](https://github.com/lidofinance/dao-voting-ui/commit/a7405868d953fdb009de33d1b6d33de080da9e92))
+* do not display "needed to quorum" if vote ended ([b6fdee5](https://github.com/lidofinance/dao-voting-ui/commit/b6fdee52250f3b4947da7c918c27145bd3866cd5))
+* status badge colors according design ([941cd26](https://github.com/lidofinance/dao-voting-ui/commit/941cd265fd5ecddf2d716d376f1bb04e2b5a6b5d))
+
+
+### Features
+
+* dashboard page ([42e9146](https://github.com/lidofinance/dao-voting-ui/commit/42e9146e98a47a4b51522204f89c9444b9ccaae3))
+* router handlers for dashboard pages and header input ([247da8e](https://github.com/lidofinance/dao-voting-ui/commit/247da8eb8f0c972e74154a551a91c775602c6b43))
+
+
+### Reverts
+
+* Revert "refactor: remove unused styled component" ([7a0abbe](https://github.com/lidofinance/dao-voting-ui/commit/7a0abbe35ba66d74e20765e884ebc508f030ac25))
+
+
+
 ## [0.6.1](https://github.com/lidofinance/dao-voting-ui/compare/0.6.0...0.6.1) (2022-11-29)
 
 
