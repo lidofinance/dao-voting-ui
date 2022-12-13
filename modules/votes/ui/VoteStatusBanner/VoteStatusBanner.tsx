@@ -38,7 +38,7 @@ export function VoteStatusBanner({
   )
 
   return (
-    <VotePhasesTooltip position="bottom-left">
+    <VotePhasesTooltip placement="bottomLeft">
       <Wrap status={status}>
         {status === VoteStatus.ActiveMain && (
           <>

@@ -1,28 +1,30 @@
-import { Tooltip, Position } from 'modules/shared/ui/Common/Tooltip'
+import { Text } from 'modules/shared/ui/Common/Text'
+import { Tooltip, PopoverPlacements } from '@lidofinance/lido-ui'
 
 type Props = {
-  position: Position
-  className?: string
+  placement: PopoverPlacements
   children: React.ReactNode
 }
 
-export function VotePhasesTooltip({ position, className, children }: Props) {
+export function VotePhasesTooltip({
+  placement = 'bottomLeft',
+  children,
+}: Props) {
   return (
     <Tooltip
-      position={position}
-      maxWidth={360}
-      className={className}
-      tooltip={
-        <>
+      placement={placement}
+      title={
+        <Text size={12} color="contrast" weight={400}>
           Each voting comes in two phases.
           <br />
           In the first phase (or&nbsp;Main&nbsp;phase), participants can either
           vote pro or contra, whereas in the second phase only objections can be
           submitted.
-        </>
+        </Text>
       }
     >
-      {children}
+      {/* Wrapped with div to make tooltip work properly with any children */}
+      <div>{children}</div>
     </Tooltip>
   )
 }
