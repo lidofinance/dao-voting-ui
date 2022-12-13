@@ -35,17 +35,30 @@ import * as urls from 'modules/network/utils/urls'
 
 function NavItem({
   link,
+  activeOn,
   onClick,
   children,
 }: {
   link: string
+  activeOn?: (string | { url: string; exact: boolean })[]
   onClick?: React.MouseEventHandler<HTMLElement>
   children: React.ReactNode
 }) {
-  const router = useRouter()
+  const { asPath } = useRouter()
+
+  const isActive = activeOn
+    ? activeOn.some(v => {
+        if (typeof v === 'object' && v.exact) {
+          return asPath === v.url
+        }
+        const testUrl = typeof v === 'object' ? v.url : v
+        return asPath.startsWith(testUrl)
+      })
+    : asPath.startsWith(link)
+
   return (
     <Link passHref href={link}>
-      <NavLink isActive={router.pathname.startsWith(link)} onClick={onClick}>
+      <NavLink isActive={isActive} onClick={onClick}>
         <div>{children}</div>
       </NavLink>
     </Link>
@@ -67,7 +80,16 @@ export function Header() {
             <LidoLogoSvg />
           </Logo>
           <NavItems>
-            <NavItem link={urls.voteIndex}>Vote</NavItem>
+            <NavItem
+              link={urls.home}
+              activeOn={[
+                { url: urls.home, exact: true },
+                urls.voteIndex,
+                urls.dashboardIndex,
+              ]}
+            >
+              Vote
+            </NavItem>
             <NavItem link={urls.settings}>Settings</NavItem>
           </NavItems>
         </Nav>
@@ -101,7 +123,15 @@ export function Header() {
           <MobileMenu>
             <MobileMenuScroll>
               <MobileNavItems>
-                <NavItem link={urls.voteIndex} onClick={handleCloseMobileMenu}>
+                <NavItem
+                  link={urls.home}
+                  activeOn={[
+                    { url: urls.home, exact: true },
+                    urls.voteIndex,
+                    urls.dashboardIndex,
+                  ]}
+                  onClick={handleCloseMobileMenu}
+                >
                   Vote
                 </NavItem>
                 <NavItem link={urls.settings} onClick={handleCloseMobileMenu}>

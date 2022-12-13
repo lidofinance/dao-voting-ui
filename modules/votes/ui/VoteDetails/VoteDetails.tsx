@@ -3,41 +3,22 @@ import { FormattedDate } from 'modules/shared/ui/Utils/FormattedDate'
 import { VoteScript } from '../VoteScript'
 import { VoteDetailsCountdown } from '../VoteDetailsCountdown'
 import { VoteStatusBanner } from '../VoteStatusBanner'
+import { VotePhasesTooltip } from '../VotePhasesTooltip'
+import { VoteYesNoBar } from '../VoteYesNoBar'
 import {
-  VotesBarNay,
-  VotesBarWrap,
-  VotesBarYea,
-  VotesTitleWrap,
-  Box,
   BoxVotes,
-  InfoRow,
-  InfoLabel,
-  InfoValue,
   VoteTitle,
   CreatorBadge,
   DataTable,
 } from './VoteDetailsStyle'
 import { AddressPop } from 'modules/shared/ui/Common/AddressPop'
+import { ContentHighlightBox } from 'modules/shared/ui/Common/ContentHighlightBox'
+import { InfoRowFull } from 'modules/shared/ui/Common/InfoRow'
 
 import { Vote, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
-import { formatFloatPct } from 'modules/shared/utils/formatFloatPct'
 import { formatNumber } from 'modules/shared/utils/formatNumber'
-
-function InfoRowFull({
-  title,
-  children,
-}: {
-  title: React.ReactNode
-  children?: React.ReactNode
-}) {
-  return (
-    <InfoRow>
-      <InfoLabel>{title}</InfoLabel>
-      {children && <InfoValue>{children}</InfoValue>}
-    </InfoRow>
-  )
-}
+import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
 
 type Props = {
   vote: Vote
@@ -58,35 +39,31 @@ export function VoteDetails({
   creator,
   isEnded,
 }: Props) {
-  const totalSupply = weiToNum(vote.votingPower)
-  const totalSupplyFormatted = formatNumber(totalSupply, 4)
-  const nayNum = weiToNum(vote.nay)
-  const yeaNum = weiToNum(vote.yea)
-  const total = nayNum + yeaNum
-
-  const nayPct = total > 0 ? formatFloatPct(nayNum / total) : 0
-  const yeaPct = total > 0 ? formatFloatPct(yeaNum / total) : 0
-
-  const nayPctOfTotalSupply = totalSupply
-    ? formatFloatPct(nayNum / totalSupply, { floor: true }).toFixed(2)
-    : 0
-  const yeaPctOfTotalSupply = totalSupply
-    ? formatFloatPct(yeaNum / totalSupply, { floor: true }).toFixed(2)
-    : 0
-
-  const startDate = vote.startDate.toNumber()
-  const endDate = startDate + voteTime
+  const {
+    totalSupplyFormatted,
+    nayNum,
+    yeaNum,
+    nayPct,
+    yeaPct,
+    nayPctOfTotalSupplyFormatted,
+    yeaPctOfTotalSupplyFormatted,
+    startDate,
+    endDate,
+  } = getVoteDetailsFormatted({ vote, voteTime })
 
   return (
     <>
-      <VoteStatusBanner
-        startDate={startDate}
-        endDate={endDate}
-        voteTime={voteTime}
-        objectionPhaseTime={objectionPhaseTime}
-        status={status}
-        isEnded={isEnded}
-      />
+      <VotePhasesTooltip position="bottom-left">
+        <VoteStatusBanner
+          startDate={startDate}
+          endDate={endDate}
+          voteTime={voteTime}
+          objectionPhaseTime={objectionPhaseTime}
+          status={status}
+          isEnded={isEnded}
+          fontSize="xs"
+        />
+      </VotePhasesTooltip>
 
       <VoteTitle>Vote #{voteId}</VoteTitle>
 
@@ -144,7 +121,7 @@ export function VoteDetails({
         </InfoRowFull>
 
         <InfoRowFull title="Approval %">
-          {yeaPctOfTotalSupply}%&nbsp;
+          {yeaPctOfTotalSupplyFormatted}%&nbsp;
           <Text as="span" color="secondary" size="xxs">
             (&gt;{weiToNum(vote.minAcceptQuorum) * 100}% needed)
           </Text>
@@ -153,48 +130,31 @@ export function VoteDetails({
         <InfoRowFull title={`“No” voted`}>
           {formatNumber(nayNum, 4)}&nbsp; / {totalSupplyFormatted}&nbsp;
           <Text as="span" color="secondary" size="xxs">
-            ({nayPctOfTotalSupply}%)
+            ({nayPctOfTotalSupplyFormatted}%)
           </Text>
         </InfoRowFull>
 
         <InfoRowFull title={`“Yes” voted`}>
           {formatNumber(yeaNum, 4)}&nbsp; / {totalSupplyFormatted}&nbsp;
           <Text as="span" color="secondary" size="xxs">
-            ({yeaPctOfTotalSupply}%)
+            ({yeaPctOfTotalSupplyFormatted}%)
           </Text>
         </InfoRowFull>
       </DataTable>
 
       <BoxVotes>
-        <VotesTitleWrap>
-          <Text size="xxs">
-            <Text as="span" color="secondary" size="xxs">
-              No —{' '}
-            </Text>
-            <Text as="span" size="xxs">
-              {nayPctOfTotalSupply}%
-            </Text>
-          </Text>
-          <Text size="xxs" style={{ textAlign: 'right' }}>
-            <Text as="span" color="secondary" size="xxs">
-              Yes —{' '}
-            </Text>
-            <Text as="span" size="xxs">
-              {yeaPctOfTotalSupply}%
-            </Text>
-          </Text>
-        </VotesTitleWrap>
-
-        <VotesBarWrap>
-          <VotesBarNay style={{ width: `${nayPct}%` }} />
-          <VotesBarYea style={{ width: `${yeaPct}%` }} />
-        </VotesBarWrap>
+        <VoteYesNoBar
+          yeaPct={yeaPct}
+          nayPct={nayPct}
+          yeaPctOfTotalSupply={yeaPctOfTotalSupplyFormatted}
+          nayPctOfTotalSupply={nayPctOfTotalSupplyFormatted}
+        />
       </BoxVotes>
 
-      <Box isCentered>
+      <ContentHighlightBox isCentered>
         Voting {isEnded ? 'ended at' : 'ends'}{' '}
         <FormattedDate date={endDate} format="MMMM DD, YYYY at hh:mm A" />
-      </Box>
+      </ContentHighlightBox>
 
       <InfoRowFull title="Script" />
       <VoteScript script={vote.script} />
