@@ -8,6 +8,10 @@
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
   "files.exclude": {
+    "**/__pycache__": true,
+    "**/.pytest_cache": true,
+    "**/tmp": true,
+
     "**/.git": true,
     "**/.svn": true,
     "**/.hg": true,
@@ -17,5 +21,11 @@
     ".next": true,
     "generated": false,
     "abi": false
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/tmp/**": true
   }
 }

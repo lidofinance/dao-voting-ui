@@ -7,7 +7,7 @@ export const Tabs = styled.div`
 `
 
 type TabProps = { isActive?: boolean }
-export const Tab = styled.div`
+export const Tab = styled.div<TabProps>`
   position: relative;
   padding: ${({ theme }) => theme.spaceMap.sm}px
     ${({ theme }) => theme.spaceMap.lg}px;
@@ -35,7 +35,7 @@ export const Tab = styled.div`
     border-radius: 10px 10px 0 0;
   }
 
-  ${({ isActive }: TabProps) =>
+  ${({ isActive }) =>
     isActive &&
     css`
       border-bottom: none;

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { useMemo, Fragment } from 'react'
+import { Fragment } from 'react'
 import { useFormVoteInfo } from './useFormVoteInfo'
 import { useFormVoteSubmit } from './useFormVoteSubmit'
 import { useVotePassedCallback } from '../../hooks/useVotePassedCallback'
@@ -17,7 +17,6 @@ import { VoteFormVoterState } from '../VoteFormVoterState'
 import { Desc, ErrorMessage, ClearButton } from './VoteFormStyle'
 
 import { VoteStatus } from 'modules/votes/types'
-import { isVoteEnactable } from 'modules/votes/utils/isVoteEnactable'
 import * as urls from 'modules/network/utils/urls'
 
 type Props = {
@@ -40,6 +39,7 @@ export function VoteForm({ voteId }: Props) {
     doRevalidate,
     eventStart,
     eventExecuteVote,
+    status,
   } = useFormVoteInfo({ voteId })
   const { clearVoteId } = useVotePrompt()
 
@@ -60,25 +60,6 @@ export function VoteForm({ voteId }: Props) {
     voteTime: voteTime && objectionPhaseTime && voteTime - objectionPhaseTime,
     onPass: doRevalidate,
   })
-
-  const { open, executed, phase } = vote || {}
-
-  const status = useMemo(() => {
-    if (!vote) return null
-
-    if (!open) {
-      if (executed) return VoteStatus.Executed
-      if (canExecute && !isVoteEnactable(vote)) return VoteStatus.Passed
-      if (canExecute && isVoteEnactable(vote)) return VoteStatus.Pending
-      return VoteStatus.Rejected
-    }
-
-    if (!executed && phase === 1) {
-      return VoteStatus.ActiveObjection
-    }
-
-    return VoteStatus.ActiveMain
-  }, [vote, open, executed, phase, canExecute])
 
   const isEnded =
     status === VoteStatus.Rejected || status === VoteStatus.Executed
