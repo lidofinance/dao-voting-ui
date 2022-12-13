@@ -47,6 +47,7 @@ type Props = {
   objectionPhaseTime: number
   creator?: string
   isEnded: boolean
+  executedTxHash?: string
 }
 
 export function VoteDetails({
@@ -57,6 +58,7 @@ export function VoteDetails({
   objectionPhaseTime,
   creator,
   isEnded,
+  executedTxHash,
 }: Props) {
   const totalSupply = weiToNum(vote.votingPower)
   const totalSupplyFormatted = formatNumber(totalSupply, 4)
@@ -86,6 +88,7 @@ export function VoteDetails({
         objectionPhaseTime={objectionPhaseTime}
         status={status}
         isEnded={isEnded}
+        executedTxHash={executedTxHash}
       />
 
       <VoteTitle>Vote #{voteId}</VoteTitle>

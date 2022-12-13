@@ -1,15 +1,22 @@
+import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
+
 import { Text } from 'modules/shared/ui/Common/Text'
-import { Tooltip, PopoverPlacements } from '@lidofinance/lido-ui'
+import { Tooltip, PopoverPlacements, Link } from '@lidofinance/lido-ui'
+
+import { getEtherscanTxLink } from '@lido-sdk/helpers'
 
 type Props = {
   placement: PopoverPlacements
   children: React.ReactNode
+  executedTxHash?: string
 }
 
 export function VotePhasesTooltip({
   placement = 'bottomLeft',
+  executedTxHash,
   children,
 }: Props) {
+  const { chainId } = useWeb3()
   return (
     <Tooltip
       placement={placement}
@@ -20,6 +27,14 @@ export function VotePhasesTooltip({
           In the first phase (or&nbsp;Main&nbsp;phase), participants can either
           vote pro or contra, whereas in the second phase only objections can be
           submitted.
+          {executedTxHash && (
+            <>
+              <br />
+              <Link href={getEtherscanTxLink(chainId, executedTxHash)}>
+                Executed
+              </Link>
+            </>
+          )}
         </Text>
       }
     >

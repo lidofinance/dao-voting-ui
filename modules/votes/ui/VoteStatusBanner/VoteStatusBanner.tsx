@@ -21,6 +21,7 @@ type Props = {
   objectionPhaseTime: number
   isEnded: boolean
   status: VoteStatus
+  executedTxHash?: string
 }
 
 export function VoteStatusBanner({
@@ -30,6 +31,7 @@ export function VoteStatusBanner({
   objectionPhaseTime,
   isEnded,
   status,
+  executedTxHash,
 }: Props) {
   const renderEndDate = () => (
     <InfoText>
@@ -38,7 +40,7 @@ export function VoteStatusBanner({
   )
 
   return (
-    <VotePhasesTooltip placement="bottomLeft">
+    <VotePhasesTooltip placement="bottomLeft" executedTxHash={executedTxHash}>
       <Wrap status={status}>
         {status === VoteStatus.ActiveMain && (
           <>
