@@ -1,48 +1,9 @@
 import styled from 'styled-components'
 import { Text as TextLocal } from 'modules/shared/ui/Common/Text'
 import { DataTable as DataTableOriginal } from '@lidofinance/lido-ui'
+import { ContentHighlightBox } from 'modules/shared/ui/Common/ContentHighlightBox'
 
-export const VotesTitleWrap = styled.div`
-  margin-bottom: ${({ theme }) => theme.spaceMap.sm}px;
-  display: flex;
-  justify-content: space-between;
-`
-
-export const VotesBarWrap = styled.div`
-  display: flex;
-  height: 6px;
-  border-radius: ${({ theme }) => theme.borderRadiusesMap.sm}px;
-  overflow: hidden;
-  border: 1px solid ${({ theme }) => theme.colors.foreground};
-  background-color: ${({ theme }) => theme.colors.foreground};
-`
-
-const VotesBar = styled.div`
-  height: 100%;
-  overflow: hidden;
-`
-
-export const VotesBarNay = styled(VotesBar)`
-  background-color: ${({ theme }) => theme.colors.error};
-`
-
-export const VotesBarYea = styled(VotesBar)`
-  background-color: ${({ theme }) => theme.colors.success};
-`
-
-type BoxProps = { isCentered?: boolean }
-export const Box = styled.div`
-  margin-bottom: 10px;
-  padding: 10px;
-  color: ${({ theme }) => theme.colors.text};
-  font-size: ${({ theme }) => theme.fontSizesMap.xxs};
-  font-weight: 400;
-  border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
-  text-align: ${({ isCentered }: BoxProps) => (isCentered ? 'center' : 'left')};
-  background-color: ${({ theme }) => theme.colors.background};
-`
-
-export const BoxVotes = styled(Box)`
+export const BoxVotes = styled(ContentHighlightBox)`
   padding: ${({ theme }) => theme.spaceMap.lg}px;
 `
 

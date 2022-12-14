@@ -1,14 +1,22 @@
-import styled, { css } from 'styled-components'
-import { VoteStatus } from 'modules/votes/types'
+import styled from 'styled-components'
+import { VoteStatusFontSize, StyledStatusVariant } from './types'
 
-export const BannerText = styled.div`
-  font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
-  font-weight: 400;
+type BannerTextProps = { variant: StyledStatusVariant }
+export const BannerText = styled.div<BannerTextProps>`
+  color: ${({ theme, variant }) =>
+    variant === StyledStatusVariant.Active
+      ? theme.colors.primary
+      : theme.colors.textSecondary};
 `
 
-export const InfoText = styled(BannerText)`
+type InfoTextProps = { variant: StyledStatusVariant }
+export const InfoText = styled.div<InfoTextProps>`
   margin-right: 0;
   margin-left: auto;
+  color: ${({ theme, variant }) =>
+    variant === StyledStatusVariant.Active
+      ? theme.colors.primary
+      : theme.colors.textSecondary};
 `
 
 const Badge = styled.div`
@@ -48,44 +56,17 @@ export const BadgeOngoing = styled(Badge)`
   background-color: ${({ theme }) => theme.colors.primary};
 `
 
-type WrapProps = { status?: VoteStatus }
-export const Wrap = styled.div`
+type WrapProps = { variant: StyledStatusVariant; fontSize: VoteStatusFontSize }
+export const Wrap = styled.div<WrapProps>`
   display: flex;
   align-items: center;
   margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
   padding: 10px;
+  font-weight: 400;
   border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
-
-  ${({ status }: WrapProps) =>
-    (status === VoteStatus.ActiveMain ||
-      status === VoteStatus.ActiveObjection) &&
-    css`
-      background-color: rgba(0, 163, 255, 0.1);
-
-      & ${BannerText} {
-        color: #00a3ff;
-      }
-    `}
-
-  ${({ status }: WrapProps) =>
-    (status === VoteStatus.Pending ||
-      status === VoteStatus.Executed ||
-      status === VoteStatus.Passed) &&
-    css`
-      background-color: rgba(83, 186, 149, 0.1);
-
-      & ${BannerText} {
-        color: ${({ theme }) => theme.colors.success};
-      }
-    `}
-
-  ${({ status }: WrapProps) =>
-    status === VoteStatus.Rejected &&
-    css`
-      background-color: rgba(225, 77, 77, 0.1);
-
-      & ${BannerText} {
-        color: ${({ theme }) => theme.colors.error};
-      }
-    `}
+  font-size: ${({ fontSize, theme }) => theme.fontSizesMap[fontSize]}px;
+  background-color: ${({ variant, theme }) =>
+    variant === StyledStatusVariant.Active
+      ? 'rgba(0, 163, 255, 0.1)'
+      : theme.colors.background};
 `

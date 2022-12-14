@@ -10,6 +10,7 @@ import {
   ContractGovernanceToken,
 } from 'modules/blockChain/contracts'
 import { VoterState } from 'modules/votes/types'
+import { getVoteStatus } from 'modules/votes/utils/getVoteStatus'
 import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
 import { getEventsCastVote } from 'modules/votes/utils/getEventsCastVote'
 
@@ -77,6 +78,7 @@ export function useFormVoteInfo({ voteId }: Args) {
         votePower,
         eventStart,
         eventsVoted,
+        status: getVoteStatus(vote, canExecute),
       }
     },
     { onError: noop },
@@ -102,7 +104,10 @@ export function useFormVoteInfo({ voteId }: Args) {
 
   const mutateFn = swrVote.mutate
   const doRevalidate = useCallback(() => {
-    // Immediate revalidation glitches sometimes
+    // TODO:
+    // Immediate revalidation glitches sometimes:
+    // It appears accidentally when we fetch data that was changed immediately after the change. It returns it's old version from chain.
+    // Small timeout is a fix for this glitch.
     // That's why there is timeout
     setTimeout(() => mutateFn(), 1200)
   }, [mutateFn])
@@ -130,5 +135,6 @@ export function useFormVoteInfo({ voteId }: Args) {
     doRevalidate,
     eventStart: swrVote.data?.eventStart,
     eventsVoted: swrVote.data?.eventsVoted,
+    status: swrVote.data?.status,
   }
 }
