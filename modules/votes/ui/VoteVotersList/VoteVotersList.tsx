@@ -56,7 +56,6 @@ export function VoteVotersList({ eventsVoted }: Props) {
                   {formatAmount(event.stake)} {govSymbol}
                 </div>
               </Tooltip>
-              {/* {formatNumber(weiToNum(event.stake), 6)} {govSymbol} */}
             </ListRowCell>
           </ListRow>
         ))}
