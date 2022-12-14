@@ -1,3 +1,5 @@
+import type { BigNumber } from 'ethers'
+
 import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
 
 import { InfoRowFull } from 'modules/shared/ui/Common/InfoRow'
@@ -9,14 +11,22 @@ import {
   AddressWrap,
   Identicon,
 } from './VoteVotersListStyle'
+import { Tooltip, trimAddress } from '@lidofinance/lido-ui'
 
-import { trimAddress } from '@lidofinance/lido-ui'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { formatNumber } from 'modules/shared/utils/formatNumber'
 import type { CastVoteEventObject } from 'generated/VotingAbi'
 
 type Props = {
   eventsVoted: CastVoteEventObject[]
+}
+
+const formatter = Intl.NumberFormat('en', {
+  notation: 'compact',
+  maximumSignificantDigits: 3,
+})
+const formatAmount = (amount: BigNumber) => {
+  return formatter.format(weiToNum(amount))
 }
 
 export function VoteVotersList({ eventsVoted }: Props) {
@@ -38,7 +48,15 @@ export function VoteVotersList({ eventsVoted }: Props) {
             </ListRowCell>
             <ListRowCell>{event.supports ? 'Yes' : 'No'}</ListRowCell>
             <ListRowCell>
-              {formatNumber(weiToNum(event.stake), 6)} {govSymbol}
+              <Tooltip
+                placement="top"
+                title={formatNumber(weiToNum(event.stake), 6)}
+              >
+                <div>
+                  {formatAmount(event.stake)} {govSymbol}
+                </div>
+              </Tooltip>
+              {/* {formatNumber(weiToNum(event.stake), 6)} {govSymbol} */}
             </ListRowCell>
           </ListRow>
         ))}
