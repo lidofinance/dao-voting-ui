@@ -41,16 +41,16 @@ export const ListRowCell = styled.div`
   align-items: center;
 
   &:nth-child(1) {
-    width: 45%;
+    flex: 2;
   }
 
   &:nth-child(2) {
-    width: 20%;
+    flex: 1;
     justify-content: center;
   }
 
   &:nth-child(3) {
-    width: 35%;
+    flex: 2;
     justify-content: flex-end;
   }
 `
