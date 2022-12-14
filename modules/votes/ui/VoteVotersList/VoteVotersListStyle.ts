@@ -5,6 +5,11 @@ export const Wrap = styled.div`
   margin-top: ${({ theme }) => theme.spaceMap.lg}px;
 `
 
+export const TitleWrap = styled.div`
+  display: flex;
+  margin-bottom: 10px;
+`
+
 export const ListRow = styled.div`
   padding: 0 ${({ theme }) => theme.spaceMap.lg}px;
   display: flex;
@@ -58,4 +63,13 @@ export const AddressWrap = styled.div`
 export const Identicon = styled(IdenticonOriginal)`
   flex: 0 0 auto;
   margin-right: ${({ theme }) => theme.spaceMap.sm}px;
+`
+
+export const CounterBadge = styled.div`
+  margin-left: ${({ theme }) => theme.spaceMap.sm}px;
+  padding: 0 ${({ theme }) => theme.spaceMap.sm}px;
+  width: fit-content;
+  color: ${({ theme }) => theme.colors.text};
+  border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
+  background-color: ${({ theme }) => theme.colors.background};
 `

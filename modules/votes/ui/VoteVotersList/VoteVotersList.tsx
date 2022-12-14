@@ -5,14 +5,16 @@ import { useSWR } from 'modules/network/hooks/useSwr'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
 
-import { InfoRowFull } from 'modules/shared/ui/Common/InfoRow'
+import { InfoLabel } from 'modules/shared/ui/Common/InfoRow'
 import { AddressPop } from 'modules/shared/ui/Common/AddressPop'
 import {
   Wrap,
+  TitleWrap,
   ListRow,
   ListRowCell,
   AddressWrap,
   Identicon,
+  CounterBadge,
 } from './VoteVotersListStyle'
 import { Tooltip, trimAddress } from '@lidofinance/lido-ui'
 
@@ -46,7 +48,10 @@ export function VoteVotersList({ eventsVoted }: Props) {
 
   return (
     <Wrap>
-      <InfoRowFull title="Voted" />
+      <TitleWrap>
+        <InfoLabel>Voted</InfoLabel>
+        <CounterBadge>{eventsVoted.length}</CounterBadge>
+      </TitleWrap>
       <div>
         {eventsVoted.map((event, i) => (
           <ListRow key={`${event.voter}-${i}}`}>
