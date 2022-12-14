@@ -1,5 +1,8 @@
 import type { BigNumber } from 'ethers'
 
+import { useMemo } from 'react'
+import { useSWR } from 'modules/network/hooks/useSwr'
+import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
 
 import { InfoRowFull } from 'modules/shared/ui/Common/InfoRow'
@@ -30,7 +33,16 @@ const formatAmount = (amount: BigNumber) => {
 }
 
 export function VoteVotersList({ eventsVoted }: Props) {
+  const { library } = useWeb3()
   const { data: govSymbol } = useGovernanceSymbol()
+  const addresses = useMemo(() => eventsVoted.map(e => e.voter), [eventsVoted])
+
+  const { data: ensNames } = useSWR(addresses, async () => {
+    const res = await Promise.all(
+      eventsVoted.map(e => library.lookupAddress(e.voter)),
+    )
+    return res
+  })
 
   return (
     <Wrap>
@@ -42,7 +54,7 @@ export function VoteVotersList({ eventsVoted }: Props) {
               <AddressPop address={event.voter}>
                 <AddressWrap>
                   <Identicon address={event.voter} diameter={20} />
-                  {trimAddress(event.voter, 4)}
+                  {(ensNames && ensNames[i]) || trimAddress(event.voter, 4)}
                 </AddressWrap>
               </AddressPop>
             </ListRowCell>
