@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-import { useConnectorStorage, useDisconnect } from '@lido-sdk/web3-react'
+import { useDisconnect, useConnectorInfo } from '@lido-sdk/web3-react'
 import { useGovernanceBalance } from 'modules/tokens/hooks/useGovernanceBalance'
 import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
 import { useConfig } from 'modules/config/hooks/useConfig'
@@ -58,7 +58,7 @@ function WalletModalContent() {
 
 export function WalletModal(props: ModalProps) {
   const { onClose } = props
-  const [connector] = useConnectorStorage()
+  const { providerName } = useConnectorInfo()
   const { disconnect } = useDisconnect()
   const { chainId } = useWeb3()
   const { supportedChainIds } = useConfig()
@@ -76,7 +76,7 @@ export function WalletModal(props: ModalProps) {
     <Modal title="Account" {...props}>
       <Content>
         <Connected>
-          <Connector>Connected with {connector}</Connector>
+          <Connector>Connected with {providerName}</Connector>
           <Disconnect size="xs" variant="outlined" onClick={handleDisconnect}>
             Disconnect
           </Disconnect>
