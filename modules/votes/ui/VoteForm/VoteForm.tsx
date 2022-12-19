@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { Fragment } from 'react'
 import { useFormVoteInfo } from './useFormVoteInfo'
 import { useFormVoteSubmit } from './useFormVoteSubmit'
 import { useVotePassedCallback } from '../../hooks/useVotePassedCallback'
