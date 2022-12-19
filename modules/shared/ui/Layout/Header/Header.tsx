@@ -6,6 +6,7 @@ import { useScrollLock } from 'modules/shared/hooks/useScrollLock'
 import Link from 'next/link'
 import { Text } from 'modules/shared/ui/Common/Text'
 import { HeaderWallet } from '../HeaderWallet'
+import { ThemeToggler } from '@lidofinance/lido-ui'
 import { HeaderVoteInput } from 'modules/votes/ui/HeaderVoteInput'
 import {
   Wrap,
@@ -26,6 +27,7 @@ import {
   MobileSpacer,
   HeaderSpacer,
   NavBurger,
+  ThemeTogglerWrap,
 } from './HeaderStyle'
 
 import { getChainName } from 'modules/blockChain/chains'
@@ -106,6 +108,9 @@ export function Header() {
             </Text>
           </Network>
           <HeaderWallet />
+          <ThemeTogglerWrap>
+            <ThemeToggler />
+          </ThemeTogglerWrap>
         </ActionsDesktop>
 
         <NavBurger>

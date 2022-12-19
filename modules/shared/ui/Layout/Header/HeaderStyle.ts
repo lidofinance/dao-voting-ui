@@ -224,3 +224,19 @@ export const HeaderSpacer = styled.div`
   height: 76px;
   margin-bottom: 30px;
 `
+
+export const ThemeTogglerWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: ${({ theme }) => theme.spaceMap.sm}px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--lido-color-border);
+  border-radius: ${({ theme }) => theme.borderRadiusesMap.sm}px;
+  overflow: hidden;
+
+  & > * {
+    margin: 0;
+  }
+`
