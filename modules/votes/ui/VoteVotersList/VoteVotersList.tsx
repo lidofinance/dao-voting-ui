@@ -1,6 +1,6 @@
 import type { BigNumber } from 'ethers'
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useSWR } from 'modules/network/hooks/useSwr'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
@@ -15,6 +15,7 @@ import {
   AddressWrap,
   Identicon,
   CounterBadge,
+  ShowMoreBtn,
 } from './VoteVotersListStyle'
 import { Tooltip, trimAddress } from '@lidofinance/lido-ui'
 
@@ -34,6 +35,8 @@ const formatAmount = (amount: BigNumber) => {
   return formatter.format(weiToNum(amount))
 }
 
+const PAGE_SIZE = 10
+
 export function VoteVotersList({ eventsVoted }: Props) {
   const { library } = useWeb3()
   const { data: govSymbol } = useGovernanceSymbol()
@@ -46,6 +49,9 @@ export function VoteVotersList({ eventsVoted }: Props) {
     return res
   })
 
+  const [page, setPage] = useState(1)
+  const handleShowMore = () => setPage(page + 1)
+
   return (
     <Wrap>
       <TitleWrap>
@@ -53,7 +59,7 @@ export function VoteVotersList({ eventsVoted }: Props) {
         <CounterBadge>{eventsVoted.length}</CounterBadge>
       </TitleWrap>
       <div>
-        {eventsVoted.map((event, i) => (
+        {eventsVoted.slice(0, page * PAGE_SIZE).map((event, i) => (
           <ListRow key={`${event.voter}-${i}}`}>
             <ListRowCell>
               <AddressPop address={event.voter}>
@@ -76,6 +82,9 @@ export function VoteVotersList({ eventsVoted }: Props) {
             </ListRowCell>
           </ListRow>
         ))}
+        {eventsVoted.length > page * PAGE_SIZE && (
+          <ShowMoreBtn onClick={handleShowMore}>Show more</ShowMoreBtn>
+        )}
       </div>
     </Wrap>
   )

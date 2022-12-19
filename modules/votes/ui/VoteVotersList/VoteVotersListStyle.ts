@@ -73,3 +73,11 @@ export const CounterBadge = styled.div`
   border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
   background-color: ${({ theme }) => theme.colors.background};
 `
+
+export const ShowMoreBtn = styled(ListRow)`
+  justify-content: center;
+  font-weight: 700;
+  font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
+  color: ${({ theme }) => theme.colors.primary};
+  cursor: pointer;
+`
