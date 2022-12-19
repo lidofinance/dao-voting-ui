@@ -144,13 +144,16 @@ export function Header() {
                 </NavItem>
               </MobileNavItems>
               <MobileNetworkWrap>
+                <ThemeTogglerWrap>
+                  <ThemeToggler />
+                </ThemeTogglerWrap>
+                <HeaderWallet />
                 <Network>
-                  <NetworkBulb color={getChainColor(chainId)} />
                   <Text size={14} weight={500}>
                     {getChainName(chainId)}
                   </Text>
+                  <NetworkBulb color={getChainColor(chainId)} />
                 </Network>
-                <HeaderWallet />
               </MobileNetworkWrap>
             </MobileMenuScroll>
           </MobileMenu>
