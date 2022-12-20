@@ -15,6 +15,7 @@ import { Container, Button, ToastSuccess } from '@lidofinance/lido-ui'
 import { Actions, DescriptionText, DescriptionTitle } from './StyledFormStyle'
 
 import { ethers } from 'ethers'
+import { ChainNames } from 'modules/blockChain/chains'
 import { ContractVoting } from 'modules/blockChain/contracts'
 import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'
 import { isUrl } from 'modules/shared/utils/isUrl'
@@ -71,7 +72,7 @@ export function SettingsForm() {
         const rpcProvider = new ethers.providers.JsonRpcProvider(rpcUrl)
         const network = await rpcProvider.getNetwork()
         if (network.chainId !== chainId) {
-          return 'Url is working, but network does not match'
+          return `Url is working, but network does not match to ${ChainNames[chainId]}`
         }
 
         // Doing a random request to check rpc url is fetchable
