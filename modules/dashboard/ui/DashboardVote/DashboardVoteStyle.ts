@@ -9,7 +9,7 @@ export const Wrap = styled.a`
   word-break: break-all;
   background-color: ${({ theme }) => theme.colors.foreground};
   border-radius: ${({ theme }) => theme.borderRadiusesMap.xl}px;
-  box-shadow: 0px 4px 32px #e0e4eb;
+  box-shadow: 0px 4px 32px var(--lido-color-shadowLight);
   color: inherit;
   text-decoration: none;
 `

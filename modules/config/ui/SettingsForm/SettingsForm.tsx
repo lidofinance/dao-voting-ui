@@ -14,6 +14,7 @@ import {
 import { Container, Button, ToastSuccess } from '@lidofinance/lido-ui'
 import { Actions, DescriptionText, DescriptionTitle } from './StyledFormStyle'
 
+import { ethers } from 'ethers'
 import { ContractVoting } from 'modules/blockChain/contracts'
 import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'
 import { isUrl } from 'modules/shared/utils/isUrl'
@@ -66,9 +67,18 @@ export function SettingsForm() {
       if (!rpcUrl) return true
       if (!isUrl(rpcUrl)) return 'Given string is not valid url'
       try {
+        // Check chain id
+        const rpcProvider = new ethers.providers.JsonRpcProvider(rpcUrl)
+        const network = await rpcProvider.getNetwork()
+        if (network.chainId !== chainId) {
+          return 'Url is working, but network does not match'
+        }
+
         // Doing a random request to check rpc url is fetchable
         const voting = ContractVoting.connectRpc({ chainId, rpcUrl })
         await voting.voteTime()
+
+        // All fine
         return true
       } catch (err) {
         return 'Given url is not working'

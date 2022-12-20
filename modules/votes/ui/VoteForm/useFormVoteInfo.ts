@@ -1,6 +1,6 @@
 import { noop } from 'lodash'
 import { formatEther } from 'ethers/lib/utils'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useSWR } from 'modules/network/hooks/useSwr'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useConfig } from 'modules/config/hooks/useConfig'
@@ -13,6 +13,7 @@ import { VoterState } from 'modules/votes/types'
 import { getEventExecuteVote } from 'modules/votes/utils/getEventExecuteVote'
 import { getVoteStatus } from 'modules/votes/utils/getVoteStatus'
 import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
+import { getEventsCastVote } from 'modules/votes/utils/getEventsCastVote'
 
 type Args = {
   voteId?: string
@@ -22,6 +23,7 @@ export function useFormVoteInfo({ voteId }: Args) {
   const { getRpcUrl } = useConfig()
   const { chainId, walletAddress, isWalletConnected } = useWeb3()
   const rpcUrl = getRpcUrl(chainId)
+  const contractVoting = ContractVoting.useRpc()
 
   const swrVote = useSWR(
     voteId ? [`vote-info`, voteId, chainId, walletAddress, rpcUrl] : null,
@@ -35,7 +37,6 @@ export function useFormVoteInfo({ voteId }: Args) {
       if (!_voteId) return null
 
       const connectArg = { chainId: _chainId, rpcUrl: _rpcUrl }
-      const contractVoting = ContractVoting.connectRpc(connectArg)
       const contractToken = ContractGovernanceToken.connectRpc(connectArg)
 
       const [voteTime, objectionPhaseTime, vote, canExecute] =
@@ -47,20 +48,27 @@ export function useFormVoteInfo({ voteId }: Args) {
         ])
 
       const snapshotBlock = vote.snapshotBlock.toNumber()
-      const [eventStart, eventExecuteVote, canVote, voterState, votePowerWei] =
-        await Promise.all([
-          getEventStartVote(contractVoting, _voteId, snapshotBlock),
-          getEventExecuteVote(contractVoting, _voteId, snapshotBlock),
-          _walletAddress
-            ? contractVoting.canVote(_voteId, _walletAddress)
-            : false,
-          _walletAddress
-            ? contractVoting.getVoterState(_voteId, _walletAddress)
-            : null,
-          _walletAddress
-            ? contractToken.balanceOfAt(_walletAddress, vote.snapshotBlock)
-            : null,
-        ])
+      const [
+        eventStart,
+        eventsVoted,
+        eventExecuteVote,
+        canVote,
+        voterState,
+        votePowerWei,
+      ] = await Promise.all([
+        getEventStartVote(contractVoting, _voteId, snapshotBlock),
+        getEventsCastVote(contractVoting, _voteId, snapshotBlock),
+        getEventExecuteVote(contractVoting, _voteId, snapshotBlock),
+        _walletAddress
+          ? contractVoting.canVote(_voteId, _walletAddress)
+          : false,
+        _walletAddress
+          ? contractVoting.getVoterState(_voteId, _walletAddress)
+          : null,
+        _walletAddress
+          ? contractToken.balanceOfAt(_walletAddress, vote.snapshotBlock)
+          : null,
+      ])
 
       const votePower = votePowerWei ? Number(formatEther(votePowerWei)) : 0
 
@@ -73,6 +81,7 @@ export function useFormVoteInfo({ voteId }: Args) {
         voterState,
         votePower,
         eventStart,
+        eventsVoted,
         eventExecuteVote,
         status: getVoteStatus(vote, canExecute),
       }
@@ -108,6 +117,14 @@ export function useFormVoteInfo({ voteId }: Args) {
     setTimeout(() => mutateFn(), 1200)
   }, [mutateFn])
 
+  useEffect(() => {
+    const eventFilter = contractVoting.filters.CastVote(Number(voteId))
+    contractVoting.on(eventFilter, doRevalidate)
+    return () => {
+      contractVoting.off(eventFilter, doRevalidate)
+    }
+  }, [doRevalidate, contractVoting, voteId])
+
   return {
     swrVote,
     vote,
@@ -122,6 +139,7 @@ export function useFormVoteInfo({ voteId }: Args) {
     isWalletConnected,
     doRevalidate,
     eventStart: swrVote.data?.eventStart,
+    eventsVoted: swrVote.data?.eventsVoted,
     eventExecuteVote: swrVote.data?.eventExecuteVote,
     status: swrVote.data?.status,
   }

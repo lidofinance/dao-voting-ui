@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { Fragment } from 'react'
 import { useFormVoteInfo } from './useFormVoteInfo'
 import { useFormVoteSubmit } from './useFormVoteSubmit'
 import { useVotePassedCallback } from '../../hooks/useVotePassedCallback'
@@ -14,6 +13,7 @@ import { TxRow } from 'modules/blockChain/ui/TxRow'
 import { VoteFormActions } from '../VoteFormActions'
 import { VoteFormMustConnect } from '../VoteFormMustConnect'
 import { VoteFormVoterState } from '../VoteFormVoterState'
+import { VoteVotersList } from '../VoteVotersList'
 import { Desc, ErrorMessage, ClearButton } from './VoteFormStyle'
 
 import { VoteStatus } from 'modules/votes/types'
@@ -38,6 +38,7 @@ export function VoteForm({ voteId }: Props) {
     voterState,
     doRevalidate,
     eventStart,
+    eventsVoted,
     eventExecuteVote,
     status,
   } = useFormVoteInfo({ voteId })
@@ -70,7 +71,7 @@ export function VoteForm({ voteId }: Props) {
   const isFound = !isEmpty && !isNotFound && !isLoading && vote && status
 
   return (
-    <Container as="main" size="tight">
+    <Container as="main" size="tight" key={voteId}>
       {isEmpty && (
         <Desc>
           <Text as="p" size={16} weight={700}>
@@ -115,59 +116,61 @@ export function VoteForm({ voteId }: Props) {
 
       {isFound && (
         <Card>
-          <Fragment key={voteId}>
-            <VoteDetails
-              vote={vote}
-              voteId={voteId}
-              status={status}
-              voteTime={voteTime!}
-              objectionPhaseTime={objectionPhaseTime!}
-              isEnded={isEnded}
-              creator={eventStart?.creator}
-              executedTxHash={eventExecuteVote?.event.transactionHash}
-            />
+          <VoteDetails
+            vote={vote}
+            voteId={voteId}
+            status={status}
+            voteTime={voteTime!}
+            objectionPhaseTime={objectionPhaseTime!}
+            isEnded={isEnded}
+            creator={eventStart?.creator}
+            executedTxHash={eventExecuteVote?.event.transactionHash}
+          />
 
-            {!isWalletConnected && <VoteFormMustConnect />}
+          {!isWalletConnected && <VoteFormMustConnect />}
 
-            {isWalletConnected && (
-              <>
-                <VoteFormActions
-                  status={status}
-                  canVote={canVote}
-                  canEnact={canEnact}
-                  voterState={voterState!}
-                  isSubmitting={isSubmitting}
-                  onVote={handleVote}
-                  onEnact={handleEnact}
-                />
+          {isWalletConnected && (
+            <>
+              <VoteFormActions
+                status={status}
+                canVote={canVote}
+                canEnact={canEnact}
+                voterState={voterState!}
+                isSubmitting={isSubmitting}
+                onVote={handleVote}
+                onEnact={handleEnact}
+              />
 
-                <VoteFormVoterState
-                  status={status}
-                  votePower={votePower!}
-                  voterState={voterState!}
-                  canVote={canVote}
-                  canEnact={canEnact}
-                  snapshotBlock={vote.snapshotBlock.toNumber()}
-                  startDate={startDate!}
-                  isEnded={isEnded}
-                />
+              <VoteFormVoterState
+                status={status}
+                votePower={votePower!}
+                voterState={voterState!}
+                canVote={canVote}
+                canEnact={canEnact}
+                snapshotBlock={vote.snapshotBlock.toNumber()}
+                startDate={startDate!}
+                isEnded={isEnded}
+              />
 
-                {!txVote.isEmpty && (
-                  <>
-                    <br />
-                    <TxRow label="Vote transaction" tx={txVote} />
-                  </>
-                )}
+              {!txVote.isEmpty && (
+                <>
+                  <br />
+                  <TxRow label="Vote transaction" tx={txVote} />
+                </>
+              )}
 
-                {!txEnact.isEmpty && (
-                  <>
-                    <br />
-                    <TxRow label="Vote enact" tx={txEnact} />
-                  </>
-                )}
-              </>
-            )}
-          </Fragment>
+              {!txEnact.isEmpty && (
+                <>
+                  <br />
+                  <TxRow label="Vote enact" tx={txEnact} />
+                </>
+              )}
+            </>
+          )}
+
+          {eventsVoted && eventsVoted.length > 0 && (
+            <VoteVotersList eventsVoted={eventsVoted} />
+          )}
         </Card>
       )}
     </Container>

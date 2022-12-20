@@ -1,11 +1,5 @@
-import type { BigNumber } from 'ethers'
 import type { VotingAbi } from 'generated'
-
-type StartVoteEvent = [BigNumber, string, string] & {
-  voteId: BigNumber
-  creator: string
-  metadata: string
-}
+import type { StartVoteEventObject } from 'generated/VotingAbi'
 
 export async function getEventStartVote(
   contractVoting: VotingAbi,
@@ -23,5 +17,5 @@ export async function getEventStartVote(
     throw new Error('Start vote event parsing error')
   }
   const decoded = event.decode(event.data, event.topics)
-  return decoded as StartVoteEvent
+  return decoded as StartVoteEventObject
 }
