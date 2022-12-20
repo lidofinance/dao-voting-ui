@@ -22,7 +22,7 @@ export const AddressBadge = styled.div`
   padding: 0 ${({ theme }) => theme.spaceMap.sm}px;
   height: 44px;
   font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
-  border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
+  border-radius: ${({ theme }) => theme.borderRadiusesMap.sm}px;
   border: 1px solid ${({ theme }) => theme.colors.border};
   background-color: ${({ theme }) => theme.colors.foreground};
   user-select: none;

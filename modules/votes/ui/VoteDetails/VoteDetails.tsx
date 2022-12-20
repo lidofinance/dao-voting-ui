@@ -28,6 +28,7 @@ type Props = {
   objectionPhaseTime: number
   creator?: string
   isEnded: boolean
+  executedTxHash?: string
 }
 
 export function VoteDetails({
@@ -38,6 +39,7 @@ export function VoteDetails({
   objectionPhaseTime,
   creator,
   isEnded,
+  executedTxHash,
 }: Props) {
   const {
     totalSupplyFormatted,
@@ -53,7 +55,7 @@ export function VoteDetails({
 
   return (
     <>
-      <VotePhasesTooltip position="bottom-left">
+      <VotePhasesTooltip placement="bottomLeft" executedTxHash={executedTxHash}>
         <VoteStatusBanner
           startDate={startDate}
           endDate={endDate}
