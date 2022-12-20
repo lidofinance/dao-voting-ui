@@ -39,6 +39,7 @@ export function VoteForm({ voteId }: Props) {
     doRevalidate,
     eventStart,
     eventsVoted,
+    eventExecuteVote,
     status,
   } = useFormVoteInfo({ voteId })
   const { clearVoteId } = useVotePrompt()
@@ -123,6 +124,7 @@ export function VoteForm({ voteId }: Props) {
             objectionPhaseTime={objectionPhaseTime!}
             isEnded={isEnded}
             creator={eventStart?.creator}
+            executedTxHash={eventExecuteVote?.event.transactionHash}
           />
 
           {!isWalletConnected && <VoteFormMustConnect />}

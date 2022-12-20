@@ -10,6 +10,7 @@ import {
   ContractGovernanceToken,
 } from 'modules/blockChain/contracts'
 import { VoterState } from 'modules/votes/types'
+import { getEventExecuteVote } from 'modules/votes/utils/getEventExecuteVote'
 import { getVoteStatus } from 'modules/votes/utils/getVoteStatus'
 import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
 import { getEventsCastVote } from 'modules/votes/utils/getEventsCastVote'
@@ -47,26 +48,29 @@ export function useFormVoteInfo({ voteId }: Args) {
         ])
 
       const snapshotBlock = vote.snapshotBlock.toNumber()
+      const [
+        eventStart,
+        eventsVoted,
+        eventExecuteVote,
+        canVote,
+        voterState,
+        votePowerWei,
+      ] = await Promise.all([
+        getEventStartVote(contractVoting, _voteId, snapshotBlock),
+        getEventsCastVote(contractVoting, _voteId, snapshotBlock),
+        getEventExecuteVote(contractVoting, _voteId, snapshotBlock),
+        _walletAddress
+          ? contractVoting.canVote(_voteId, _walletAddress)
+          : false,
+        _walletAddress
+          ? contractVoting.getVoterState(_voteId, _walletAddress)
+          : null,
+        _walletAddress
+          ? contractToken.balanceOfAt(_walletAddress, vote.snapshotBlock)
+          : null,
+      ])
 
-      const [eventStart, eventsVoted, [canVote, voterState, votePower]] =
-        await Promise.all([
-          getEventStartVote(contractVoting, _voteId, snapshotBlock),
-          getEventsCastVote(contractVoting, _voteId, snapshotBlock),
-          (async () => {
-            if (!_walletAddress) {
-              return [false, null, 0] as const
-            }
-
-            const [_canVote, _voterState, balanceAt] = await Promise.all([
-              contractVoting.canVote(_voteId, _walletAddress),
-              contractVoting.getVoterState(_voteId, _walletAddress),
-              contractToken.balanceOfAt(_walletAddress, vote.snapshotBlock),
-            ])
-            const _votePower = Number(formatEther(balanceAt))
-
-            return [_canVote, _voterState, _votePower] as const
-          })(),
-        ])
+      const votePower = votePowerWei ? Number(formatEther(votePowerWei)) : 0
 
       return {
         voteTime,
@@ -78,6 +82,7 @@ export function useFormVoteInfo({ voteId }: Args) {
         votePower,
         eventStart,
         eventsVoted,
+        eventExecuteVote,
         status: getVoteStatus(vote, canExecute),
       }
     },
@@ -135,6 +140,7 @@ export function useFormVoteInfo({ voteId }: Args) {
     doRevalidate,
     eventStart: swrVote.data?.eventStart,
     eventsVoted: swrVote.data?.eventsVoted,
+    eventExecuteVote: swrVote.data?.eventExecuteVote,
     status: swrVote.data?.status,
   }
 }
