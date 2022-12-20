@@ -97,10 +97,18 @@ export const ActionsDesktop = styled.div`
 
 export const InputWrap = styled.div`
   width: 300px;
+
+  @media (max-width: 900px) {
+    width: 220px;
+  }
+
+  @media (max-width: 810px) {
+    width: 200px;
+  }
 `
 
 export const Network = styled.div`
-  margin-right: 10px;
+  margin-right: ${({ theme }) => theme.spaceMap.sm}px;
   display: flex;
   align-items: center;
 `
@@ -109,11 +117,28 @@ type NetworkBulbProps = { color: string }
 export const NetworkBulb = styled.div<NetworkBulbProps>`
   position: relative;
   top: 1px;
-  margin-right: 6px;
+  margin-right: ${({ theme }) => theme.spaceMap.xs}px;
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background-color: ${({ color }) => color};
+`
+
+export const ThemeTogglerWrap = styled.div`
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: ${({ theme }) => theme.spaceMap.sm}px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--lido-color-border);
+  border-radius: ${({ theme }) => theme.borderRadiusesMap.sm}px;
+  overflow: hidden;
+
+  & > * {
+    margin: 0;
+  }
 `
 
 export const BurgerLine = styled.div`
@@ -206,9 +231,22 @@ export const MobileNavItems = styled.div`
 
 export const MobileNetworkWrap = styled.div`
   display: flex;
-  justify-content: space-between;
+  align-items: center;
   margin-top: auto;
   margin-bottom: 40px;
+
+  & ${ThemeTogglerWrap} {
+    margin-left: 0;
+    margin-right: ${({ theme }) => theme.spaceMap.sm}px;
+  }
+
+  & ${Network} {
+    margin-left: ${({ theme }) => theme.spaceMap.sm}px;
+  }
+
+  & ${NetworkBulb} {
+    margin-left: ${({ theme }) => theme.spaceMap.xs}px;
+  }
 `
 
 export const MobileSpacer = styled.div`
