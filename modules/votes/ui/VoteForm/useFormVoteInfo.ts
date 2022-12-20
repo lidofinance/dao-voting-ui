@@ -1,6 +1,6 @@
 import { noop } from 'lodash'
 import { formatEther } from 'ethers/lib/utils'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useSWR } from 'modules/network/hooks/useSwr'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useConfig } from 'modules/config/hooks/useConfig'
@@ -12,6 +12,7 @@ import {
 import { VoterState } from 'modules/votes/types'
 import { getVoteStatus } from 'modules/votes/utils/getVoteStatus'
 import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
+import { getEventsCastVote } from 'modules/votes/utils/getEventsCastVote'
 
 type Args = {
   voteId?: string
@@ -21,6 +22,7 @@ export function useFormVoteInfo({ voteId }: Args) {
   const { getRpcUrl } = useConfig()
   const { chainId, walletAddress, isWalletConnected } = useWeb3()
   const rpcUrl = getRpcUrl(chainId)
+  const contractVoting = ContractVoting.useRpc()
 
   const swrVote = useSWR(
     voteId ? [`vote-info`, voteId, chainId, walletAddress, rpcUrl] : null,
@@ -34,7 +36,6 @@ export function useFormVoteInfo({ voteId }: Args) {
       if (!_voteId) return null
 
       const connectArg = { chainId: _chainId, rpcUrl: _rpcUrl }
-      const contractVoting = ContractVoting.connectRpc(connectArg)
       const contractToken = ContractGovernanceToken.connectRpc(connectArg)
 
       const [voteTime, objectionPhaseTime, vote, canExecute] =
@@ -45,26 +46,27 @@ export function useFormVoteInfo({ voteId }: Args) {
           contractVoting.canExecute(_voteId),
         ])
 
-      const startEvent = await getEventStartVote(
-        contractVoting,
-        _voteId,
-        vote.snapshotBlock.toNumber(),
-      )
+      const snapshotBlock = vote.snapshotBlock.toNumber()
 
-      const [canVote, voterState, votePower] = await (async () => {
-        if (!_walletAddress) {
-          return [false, null, 0] as const
-        }
+      const [eventStart, eventsVoted, [canVote, voterState, votePower]] =
+        await Promise.all([
+          getEventStartVote(contractVoting, _voteId, snapshotBlock),
+          getEventsCastVote(contractVoting, _voteId, snapshotBlock),
+          (async () => {
+            if (!_walletAddress) {
+              return [false, null, 0] as const
+            }
 
-        const [_canVote, _voterState, balanceAt] = await Promise.all([
-          contractVoting.canVote(_voteId, _walletAddress),
-          contractVoting.getVoterState(_voteId, _walletAddress),
-          contractToken.balanceOfAt(_walletAddress, vote.snapshotBlock),
+            const [_canVote, _voterState, balanceAt] = await Promise.all([
+              contractVoting.canVote(_voteId, _walletAddress),
+              contractVoting.getVoterState(_voteId, _walletAddress),
+              contractToken.balanceOfAt(_walletAddress, vote.snapshotBlock),
+            ])
+            const _votePower = Number(formatEther(balanceAt))
+
+            return [_canVote, _voterState, _votePower] as const
+          })(),
         ])
-        const _votePower = Number(formatEther(balanceAt))
-
-        return [_canVote, _voterState, _votePower] as const
-      })()
 
       return {
         voteTime,
@@ -74,7 +76,8 @@ export function useFormVoteInfo({ voteId }: Args) {
         canExecute,
         voterState,
         votePower,
-        startEvent,
+        eventStart,
+        eventsVoted,
         status: getVoteStatus(vote, canExecute),
       }
     },
@@ -109,6 +112,14 @@ export function useFormVoteInfo({ voteId }: Args) {
     setTimeout(() => mutateFn(), 1200)
   }, [mutateFn])
 
+  useEffect(() => {
+    const eventFilter = contractVoting.filters.CastVote(Number(voteId))
+    contractVoting.on(eventFilter, doRevalidate)
+    return () => {
+      contractVoting.off(eventFilter, doRevalidate)
+    }
+  }, [doRevalidate, contractVoting, voteId])
+
   return {
     swrVote,
     vote,
@@ -122,7 +133,8 @@ export function useFormVoteInfo({ voteId }: Args) {
     isLoading,
     isWalletConnected,
     doRevalidate,
-    startEvent: swrVote.data?.startEvent,
+    eventStart: swrVote.data?.eventStart,
+    eventsVoted: swrVote.data?.eventsVoted,
     status: swrVote.data?.status,
   }
 }
