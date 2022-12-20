@@ -1,3 +1,26 @@
+# [0.8.0](https://github.com/lidofinance/dao-voting-ui/compare/0.7.0...0.8.0) (2022-12-20)
+
+
+### Bug Fixes
+
+* connector name in wallet modal ([98fece6](https://github.com/lidofinance/dao-voting-ui/commit/98fece600034852b1fb134dfb99a9ff10d5b4fac))
+
+
+### Features
+
+* dark theme ([e4b83c8](https://github.com/lidofinance/dao-voting-ui/commit/e4b83c89d38f65ab3712c89fcbe486f7599dc501))
+* display rpc url network mismatch error in settings ([65451ac](https://github.com/lidofinance/dao-voting-ui/commit/65451ace45cbfbc2dc46b7c61686dce754c02eb5))
+* ens names for voters list ([c7a2ce9](https://github.com/lidofinance/dao-voting-ui/commit/c7a2ce9cc82d03dd0c55c2293ab87edf670fe275))
+* more informative network mismatch message ([daaaf8a](https://github.com/lidofinance/dao-voting-ui/commit/daaaf8afded2939833b7f56237b0f9224e2d4de1))
+* show gov symbol in voters list ([1ab688f](https://github.com/lidofinance/dao-voting-ui/commit/1ab688fa0b52a6e1f2c3bfed4e7a66a8b20e384c))
+* theme toggler mobile adaptivity ([3b11973](https://github.com/lidofinance/dao-voting-ui/commit/3b11973ddd7a99d17005cb1eed065e64c4578cf6))
+* vote execute transaction link ([b8863eb](https://github.com/lidofinance/dao-voting-ui/commit/b8863ebe8ba58f1dac357dbd36295376036b4efa))
+* voters counter badge ([68fa178](https://github.com/lidofinance/dao-voting-ui/commit/68fa1781253b62cf90c1a28bef38428ffbeb46bf))
+* voters list show more button ([04a02b2](https://github.com/lidofinance/dao-voting-ui/commit/04a02b28e2fe114a64afd890d1ae9429ff8a6797))
+* votes number formatting ([6185d0c](https://github.com/lidofinance/dao-voting-ui/commit/6185d0ca09f3fd45a17f9fbd034e7c3666a071b1))
+
+
+
 # [0.7.0](https://github.com/lidofinance/dao-voting-ui/compare/0.6.1...0.7.0) (2022-12-13)
 
 
