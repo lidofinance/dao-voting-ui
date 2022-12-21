@@ -7,7 +7,7 @@ export const Tabs = styled.div`
 `
 
 type TabProps = { isActive?: boolean }
-export const Tab = styled.div`
+export const Tab = styled.div<TabProps>`
   position: relative;
   padding: ${({ theme }) => theme.spaceMap.sm}px
     ${({ theme }) => theme.spaceMap.lg}px;
@@ -35,7 +35,7 @@ export const Tab = styled.div`
     border-radius: 10px 10px 0 0;
   }
 
-  ${({ isActive }: TabProps) =>
+  ${({ isActive }) =>
     isActive &&
     css`
       border-bottom: none;
@@ -57,6 +57,7 @@ export const VoteScriptBodyWrap = styled.div`
 
 export const CallWrapper = styled.div`
   padding: ${({ theme }) => theme.spaceMap.lg}px;
+  word-break: break-all;
 
   &:not(:last-child) {
     border-bottom: 1px solid ${p => p.theme.colors.border};
@@ -89,7 +90,6 @@ export const ScriptBox = styled.div`
   font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
   color: ${({ theme }) => theme.colors.text};
   border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.2);
   word-break: break-all;
   white-space: pre-wrap;
 `

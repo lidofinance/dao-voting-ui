@@ -1,4 +1,4 @@
-import { useMemo, Fragment } from 'react'
+import { Fragment } from 'react'
 import { useFormVoteInfo } from './useFormVoteInfo'
 import { useFormVoteSubmit } from './useFormVoteSubmit'
 import { useVotePassedCallback } from '../../hooks/useVotePassedCallback'
@@ -14,10 +14,10 @@ import { TxRow } from 'modules/blockChain/ui/TxRow'
 import { VoteFormActions } from '../VoteFormActions'
 import { VoteFormMustConnect } from '../VoteFormMustConnect'
 import { VoteFormVoterState } from '../VoteFormVoterState'
+import { VoteVotersList } from '../VoteVotersList'
 import { Desc, ErrorMessage, ClearButton } from './VoteFormStyle'
 
 import { VoteStatus } from 'modules/votes/types'
-import { isVoteEnactable } from 'modules/votes/utils/isVoteEnactable'
 import * as urls from 'modules/network/utils/urls'
 
 type Props = {
@@ -38,7 +38,10 @@ export function VoteForm({ voteId }: Props) {
     isWalletConnected,
     voterState,
     doRevalidate,
-    startEvent,
+    eventStart,
+    eventsVoted,
+    eventExecuteVote,
+    status,
   } = useFormVoteInfo({ voteId })
   const { clearVoteId } = useVotePrompt()
 
@@ -60,25 +63,6 @@ export function VoteForm({ voteId }: Props) {
     onPass: doRevalidate,
   })
 
-  const { open, executed, phase } = vote || {}
-
-  const status = useMemo(() => {
-    if (!vote) return null
-
-    if (!open) {
-      if (executed) return VoteStatus.Executed
-      if (canExecute && !isVoteEnactable(vote)) return VoteStatus.Passed
-      if (canExecute && isVoteEnactable(vote)) return VoteStatus.Pending
-      return VoteStatus.Rejected
-    }
-
-    if (!executed && phase === 1) {
-      return VoteStatus.ActiveObjection
-    }
-
-    return VoteStatus.ActiveMain
-  }, [vote, open, executed, phase, canExecute])
-
   const isEnded =
     status === VoteStatus.Rejected || status === VoteStatus.Executed
   const canEnact = Boolean(canExecute) && status === VoteStatus.Pending
@@ -88,7 +72,7 @@ export function VoteForm({ voteId }: Props) {
   const isFound = !isEmpty && !isNotFound && !isLoading && vote && status
 
   return (
-    <Container as="main" size="tight">
+    <Container as="main" size="tight" key={voteId}>
       {isEmpty && (
         <Desc>
           <Text as="p" size={16} weight={700}>
@@ -133,58 +117,61 @@ export function VoteForm({ voteId }: Props) {
 
       {isFound && (
         <Card>
-          <Fragment key={voteId}>
-            <VoteDetails
-              vote={vote}
-              voteId={voteId}
-              status={status}
-              voteTime={voteTime!}
-              objectionPhaseTime={objectionPhaseTime!}
-              isEnded={isEnded}
-              creator={startEvent?.creator}
-            />
+          <VoteDetails
+            vote={vote}
+            voteId={voteId}
+            status={status}
+            voteTime={voteTime!}
+            objectionPhaseTime={objectionPhaseTime!}
+            isEnded={isEnded}
+            creator={eventStart?.creator}
+            executedTxHash={eventExecuteVote?.event.transactionHash}
+          />
 
-            {!isWalletConnected && <VoteFormMustConnect />}
+          {!isWalletConnected && <VoteFormMustConnect />}
 
-            {isWalletConnected && (
-              <>
-                <VoteFormActions
-                  status={status}
-                  canVote={canVote}
-                  canEnact={canEnact}
-                  voterState={voterState!}
-                  isSubmitting={isSubmitting}
-                  onVote={handleVote}
-                  onEnact={handleEnact}
-                />
+          {isWalletConnected && (
+            <>
+              <VoteFormActions
+                status={status}
+                canVote={canVote}
+                canEnact={canEnact}
+                voterState={voterState!}
+                isSubmitting={isSubmitting}
+                onVote={handleVote}
+                onEnact={handleEnact}
+              />
 
-                <VoteFormVoterState
-                  status={status}
-                  votePower={votePower!}
-                  voterState={voterState!}
-                  canVote={canVote}
-                  canEnact={canEnact}
-                  snapshotBlock={vote.snapshotBlock.toNumber()}
-                  startDate={startDate!}
-                  isEnded={isEnded}
-                />
+              <VoteFormVoterState
+                status={status}
+                votePower={votePower!}
+                voterState={voterState!}
+                canVote={canVote}
+                canEnact={canEnact}
+                snapshotBlock={vote.snapshotBlock.toNumber()}
+                startDate={startDate!}
+                isEnded={isEnded}
+              />
 
-                {!txVote.isEmpty && (
-                  <>
-                    <br />
-                    <TxRow label="Vote transaction" tx={txVote} />
-                  </>
-                )}
+              {!txVote.isEmpty && (
+                <>
+                  <br />
+                  <TxRow label="Vote transaction" tx={txVote} />
+                </>
+              )}
 
-                {!txEnact.isEmpty && (
-                  <>
-                    <br />
-                    <TxRow label="Vote enact" tx={txEnact} />
-                  </>
-                )}
-              </>
-            )}
-          </Fragment>
+              {!txEnact.isEmpty && (
+                <>
+                  <br />
+                  <TxRow label="Vote enact" tx={txEnact} />
+                </>
+              )}
+            </>
+          )}
+
+          {eventsVoted && eventsVoted.length > 0 && (
+            <VoteVotersList eventsVoted={eventsVoted} />
+          )}
         </Card>
       )}
     </Container>

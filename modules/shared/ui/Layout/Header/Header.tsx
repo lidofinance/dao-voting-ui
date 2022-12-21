@@ -6,6 +6,7 @@ import { usePrefixedPush } from 'modules/network/hooks/usePrefixedHistory'
 
 import { Text } from 'modules/shared/ui/Common/Text'
 import { HeaderWallet } from '../HeaderWallet'
+import { ThemeToggler } from '@lidofinance/lido-ui'
 import { HeaderVoteInput } from 'modules/votes/ui/HeaderVoteInput'
 import {
   Wrap,
@@ -26,6 +27,7 @@ import {
   MobileSpacer,
   HeaderSpacer,
   NavBurger,
+  ThemeTogglerWrap,
 } from './HeaderStyle'
 
 import { getChainName } from 'modules/blockChain/chains'
@@ -35,15 +37,18 @@ import * as urls from 'modules/network/utils/urls'
 
 function NavItem({
   link,
+  activeOn,
   onClick,
   children,
 }: {
   link: string
+  activeOn?: (string | { url: string; exact: boolean })[]
   onClick?: React.MouseEventHandler<HTMLElement>
   children: React.ReactNode
 }) {
-  const router = useRouter()
+  const { asPath } = useRouter()
   const push = usePrefixedPush()
+
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLElement>) => {
       push(link)
@@ -51,8 +56,19 @@ function NavItem({
     },
     [link, onClick, push],
   )
+
+  const isActive = activeOn
+    ? activeOn.some(v => {
+        if (typeof v === 'object' && v.exact) {
+          return asPath === v.url
+        }
+        const testUrl = typeof v === 'object' ? v.url : v
+        return asPath.startsWith(testUrl)
+      })
+    : asPath.startsWith(link)
+
   return (
-    <NavLink isActive={router.asPath.includes(link)} onClick={handleClick}>
+    <NavLink isActive={isActive} onClick={handleClick}>
       <div>{children}</div>
     </NavLink>
   )
@@ -73,7 +89,16 @@ export function Header() {
             <LidoLogoSvg />
           </Logo>
           <NavItems>
-            <NavItem link={urls.voteIndex}>Vote</NavItem>
+            <NavItem
+              link={urls.home}
+              activeOn={[
+                { url: urls.home, exact: true },
+                urls.voteIndex,
+                urls.dashboardIndex,
+              ]}
+            >
+              Vote
+            </NavItem>
             <NavItem link={urls.settings}>Settings</NavItem>
           </NavItems>
         </Nav>
@@ -90,6 +115,9 @@ export function Header() {
             </Text>
           </Network>
           <HeaderWallet />
+          <ThemeTogglerWrap>
+            <ThemeToggler />
+          </ThemeTogglerWrap>
         </ActionsDesktop>
 
         <NavBurger>
@@ -107,7 +135,15 @@ export function Header() {
           <MobileMenu>
             <MobileMenuScroll>
               <MobileNavItems>
-                <NavItem link={urls.voteIndex} onClick={handleCloseMobileMenu}>
+                <NavItem
+                  link={urls.home}
+                  activeOn={[
+                    { url: urls.home, exact: true },
+                    urls.voteIndex,
+                    urls.dashboardIndex,
+                  ]}
+                  onClick={handleCloseMobileMenu}
+                >
                   Vote
                 </NavItem>
                 <NavItem link={urls.settings} onClick={handleCloseMobileMenu}>
@@ -115,13 +151,16 @@ export function Header() {
                 </NavItem>
               </MobileNavItems>
               <MobileNetworkWrap>
+                <ThemeTogglerWrap>
+                  <ThemeToggler />
+                </ThemeTogglerWrap>
+                <HeaderWallet />
                 <Network>
-                  <NetworkBulb color={getChainColor(chainId)} />
                   <Text size={14} weight={500}>
                     {getChainName(chainId)}
                   </Text>
+                  <NetworkBulb color={getChainColor(chainId)} />
                 </Network>
-                <HeaderWallet />
               </MobileNetworkWrap>
             </MobileMenuScroll>
           </MobileMenu>

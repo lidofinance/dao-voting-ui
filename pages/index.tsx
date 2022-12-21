@@ -4,18 +4,13 @@ import { usePrefixedReplace } from 'modules/network/hooks/usePrefixedHistory'
 
 import { VoteForm } from 'modules/votes/ui/VoteForm'
 import { SettingsForm } from 'modules/config/ui/SettingsForm'
+import { DashboardGrid } from 'modules/dashboard/ui/DashboardGrid'
 
 import * as urls from 'modules/network/utils/urls'
 import { IPFS_MODE } from 'modules/config'
 
 function HomePageWithBackend() {
-  const replace = usePrefixedReplace()
-
-  useEffect(() => {
-    replace(urls.voteIndex)
-  }, [replace])
-
-  return null
+  return <DashboardGrid currentPage={1} />
 }
 
 /**
@@ -25,7 +20,7 @@ function HomePageWithBackend() {
  * redirects to make dynamic routes workable.
  */
 
-const IPFS_ROUTABLE_PAGES = ['vote', 'settings']
+const IPFS_ROUTABLE_PAGES = ['dashboard', 'vote', 'settings']
 
 function HomePageIpfs() {
   const router = useRouter()
@@ -39,8 +34,8 @@ function HomePageIpfs() {
   }, [asPath])
 
   useEffect(() => {
-    if (!parsedPath[0] || !IPFS_ROUTABLE_PAGES.includes(parsedPath[0])) {
-      replace(urls.voteIndex)
+    if (parsedPath[0] && !IPFS_ROUTABLE_PAGES.includes(parsedPath[0])) {
+      replace(urls.home)
     }
   }, [replace, parsedPath])
 
@@ -51,14 +46,25 @@ function HomePageIpfs() {
    * Example: https://v5.reactrouter.com/web/api/match
    */
   switch (parsedPath[0]) {
-    case 'vote':
+    case 'dashboard': {
+      return (
+        <DashboardGrid
+          currentPage={parsedPath[1] ? Number(parsedPath[1]) : 1}
+        />
+      )
+    }
+
+    case 'vote': {
       return <VoteForm voteId={parsedPath[1]} />
+    }
 
-    case 'settings':
+    case 'settings': {
       return <SettingsForm />
+    }
 
-    default:
-      return null
+    default: {
+      return <DashboardGrid currentPage={1} />
+    }
   }
 }
 

@@ -12,8 +12,7 @@ import { PageLayout } from 'modules/shared/ui/Layout/PageLayout'
 import { GlobalStyle } from 'modules/globalStyles'
 import {
   toast,
-  ThemeProvider,
-  themeDefault,
+  CookieThemeProvider,
   ToastContainer,
   ToastError,
 } from '@lidofinance/lido-ui'
@@ -137,7 +136,7 @@ function Web3ProviderWrap({ children }: { children: React.ReactNode }) {
 
 function App({ envConfig, ...appProps }: CustomAppProps) {
   return (
-    <ThemeProvider theme={themeDefault}>
+    <CookieThemeProvider>
       <GlobalStyle />
       <ConfigProvider envConfig={envConfig}>
         <Web3ProviderWrap>
@@ -148,7 +147,7 @@ function App({ envConfig, ...appProps }: CustomAppProps) {
           </VotePromptProvider>
         </Web3ProviderWrap>
       </ConfigProvider>
-    </ThemeProvider>
+    </CookieThemeProvider>
   )
 }
 
