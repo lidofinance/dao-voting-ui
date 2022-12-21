@@ -20,11 +20,15 @@ import { ModalProvider } from 'modules/modal/ModalProvider'
 import { NetworkSwitcher } from 'modules/blockChain/ui/NetworkSwitcher'
 import { VotePromptProvider } from 'modules/votes/providers/VotePrompt'
 
+import { nprogress } from 'modules/shared/utils/nprogress'
 import { parseEnvConfig } from 'modules/config/utils/parseEnvConfig'
 import { getAddressList } from 'modules/config/utils/getAddressList'
 import { withCsp } from 'modules/shared/utils/csp'
 import { CustomAppProps } from 'modules/shared/utils/utilTypes'
 import { CHAINS } from '@lido-sdk/constants'
+
+// Visualize route changes
+nprogress()
 
 const basePath = getConfig().publicRuntimeConfig.basePath || ''
 
