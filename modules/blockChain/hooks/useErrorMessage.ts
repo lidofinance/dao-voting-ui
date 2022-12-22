@@ -15,8 +15,7 @@ export function useErrorMessage() {
   }, [supportedChainIds])
 
   if (isUnsupported) {
-    return `Unsupported chain. You will not be able to make a vote. Please switch
-    to ${chains} in your wallet.`
+    return `Unsupported chain. You will not be able to make a vote. Please switch to ${chains} in your wallet.`
   }
 
   return error?.message
