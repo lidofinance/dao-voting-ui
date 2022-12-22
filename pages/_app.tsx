@@ -96,7 +96,8 @@ function AppRoot({ Component, pageProps }: AppProps) {
         ))}
       </Head>
       <PageLayout>
-        {!isUnsupported ? <Component {...pageProps} /> : <NetworkSwitcher />}
+        {isUnsupported && <NetworkSwitcher />}
+        <Component {...pageProps} />
       </PageLayout>
       <ToastContainer />
     </>
