@@ -1,3 +1,20 @@
+# [0.9.0](https://github.com/lidofinance/dao-voting-ui/compare/0.8.0...0.9.0) (2022-12-22)
+
+
+### Bug Fixes
+
+* unsupported chain message ([6affaca](https://github.com/lidofinance/dao-voting-ui/commit/6affacafdad54f219352013c124b40a7eac79d93))
+* unsupported chain status ([70ccdde](https://github.com/lidofinance/dao-voting-ui/commit/70ccdde7889ec4c0223567bb578de83914fc25d0))
+* voted wallets list console error when wallet is not connected ([a76b15f](https://github.com/lidofinance/dao-voting-ui/commit/a76b15ff220f41abc710aee14983371ec28d254e))
+
+
+### Features
+
+* add nprogress to visualize page transition ([447c23e](https://github.com/lidofinance/dao-voting-ui/commit/447c23e2727a1df0b42e52d06aee3f916b7d828d))
+* no-blocking wrong network banner ([b873608](https://github.com/lidofinance/dao-voting-ui/commit/b8736080f16ea47b0bea35af7f35cb3279d624cd))
+
+
+
 # [0.8.0](https://github.com/lidofinance/dao-voting-ui/compare/0.7.0...0.8.0) (2022-12-20)
 
 
