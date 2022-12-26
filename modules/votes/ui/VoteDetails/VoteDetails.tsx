@@ -106,12 +106,12 @@ export function VoteDetails({
         </VoteDetailsCountdown>
 
         <InfoRowFull title="Start date">
-          <FormattedDate date={startDate} format="MMM DD, YYYY / hh:mm a" />
+          <FormattedDate date={startDate} format="MMM DD, YYYY / HH:mm" />
         </InfoRowFull>
 
         {!isEnded && (
           <InfoRowFull title="End date">
-            <FormattedDate date={endDate} format="MMM DD, YYYY / hh:mm a" />
+            <FormattedDate date={endDate} format="MMM DD, YYYY / HH:mm" />
           </InfoRowFull>
         )}
 
@@ -155,7 +155,7 @@ export function VoteDetails({
 
       <ContentHighlightBox isCentered>
         Voting {isEnded ? 'ended at' : 'ends'}{' '}
-        <FormattedDate date={endDate} format="MMMM DD, YYYY at hh:mm A" />
+        <FormattedDate date={endDate} format="MMMM DD, YYYY at HH:mm" />
       </ContentHighlightBox>
 
       <InfoRowFull title="Script" />
