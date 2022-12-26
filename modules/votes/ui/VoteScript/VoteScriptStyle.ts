@@ -40,7 +40,7 @@ export const Tab = styled.div<TabProps>`
     css`
       border-bottom: none;
       color: ${({ theme }) => theme.colors.textSecondary};
-      background-color: ${({ theme }) => theme.colors.background};
+      background-color: ${({ theme }) => theme.colors.backgroundSecondary};
     `}
 `
 
@@ -52,7 +52,7 @@ export const VoteScriptBodyWrap = styled.div`
     ${({ theme }) => theme.borderRadiusesMap.lg}px
     ${({ theme }) => theme.borderRadiusesMap.lg}px;
   border: 1px solid ${({ theme }) => theme.colors.border};
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.backgroundSecondary};
 `
 
 export const CallWrapper = styled.div`

@@ -5,8 +5,8 @@ export const Wrap = styled.div`
   font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
   font-weight: 400;
   line-height: ${({ theme }) => theme.fontSizesMap.lg}px;
-  color: #273852;
-  background-color: #fffae0;
+  color: ${({ theme }) => theme.colors.textDark};
+  background-color: ${({ theme }) => theme.colors.warningBackground};
   border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
 
   b {

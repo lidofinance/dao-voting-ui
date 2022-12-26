@@ -28,7 +28,7 @@ export const CreatorBadge = styled.div`
   height: ${({ theme }) => theme.spaceMap.lg}px;
   width: fit-content;
   border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.backgroundSecondary};
 
   & > div:nth-child(1) {
     margin-right: 4px;

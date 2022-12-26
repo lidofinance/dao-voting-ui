@@ -16,7 +16,7 @@ export const GlobalStyle = createGlobalStyle`
     height: 100%;
     font-size: ${({ theme }) => theme.fontSizesMap.sm}px;
     line-height: 1.25;
-    background-color: ${({ theme }) => theme.colors.background};
+    background-color: ${({ theme }) => theme.colors.backgroundSecondary};
   }
 
   body {

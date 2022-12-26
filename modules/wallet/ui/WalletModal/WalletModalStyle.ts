@@ -2,7 +2,7 @@ import { Button } from '@lidofinance/lido-ui'
 import styled from 'styled-components'
 
 export const Content = styled.div`
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.backgroundSecondary};
   border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
   padding: ${({ theme }) => theme.spaceMap.lg}px;
 `
