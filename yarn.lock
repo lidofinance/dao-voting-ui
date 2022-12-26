@@ -2552,10 +2552,10 @@
   resolved "https://registry.yarnpkg.com/@lidofinance/icons/-/icons-2.20.0.tgz#adb62ff761f783ea2446cf45bba9d327076a6c58"
   integrity sha512-knnw7RjxvKJiyK/1kP3dV3nMLFOjJ3S4SrUzyCSYw4h02MDtaw6JWXoY4fEp9hrD6y5hyH48+M+9b+Ambb74YA==
 
-"@lidofinance/lido-ui@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/lido-ui/-/lido-ui-3.0.0.tgz#f4ccf599954a445a71f3af788fea205d96f3dc61"
-  integrity sha512-EcnUD0kbX0ScE3xCjw83SP5x1nFI9rmHKt88KBT6SeX63m+JtKDO0wxK4asfwXQwIi0JAu5z1TqaxZeUfr18fg==
+"@lidofinance/lido-ui@3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/lido-ui/-/lido-ui-3.1.0.tgz#b180221356c8eb36c0882e6e5307f9a10999e3eb"
+  integrity sha512-i70O0bwDPBE35gVg1xrwsHmvTYE4Rgdmi+lqnOzT2xA1KOtaWMnUyuURLn6UxvpfppNOoXxZLZJpv1DU6qr4MA==
   dependencies:
     "@styled-system/should-forward-prop" "5.1.5"
     "@swc/helpers" "^0.4.11"

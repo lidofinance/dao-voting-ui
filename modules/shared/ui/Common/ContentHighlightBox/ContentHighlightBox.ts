@@ -12,5 +12,5 @@ export const ContentHighlightBox = styled.div<BoxProps>`
   font-weight: 400;
   border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
   text-align: ${({ isCentered }) => (isCentered ? 'center' : 'left')};
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.backgroundSecondary};
 `

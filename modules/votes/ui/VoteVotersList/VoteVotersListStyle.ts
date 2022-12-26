@@ -71,7 +71,7 @@ export const CounterBadge = styled.div`
   width: fit-content;
   color: ${({ theme }) => theme.colors.text};
   border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.backgroundSecondary};
 `
 
 export const ShowMoreBtn = styled(ListRow)`

@@ -5,7 +5,7 @@ export const Input = styled(InputNumber)`
   padding: 0 44px;
   width: 100%;
   height: 44px;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.backgroundSecondary};
 
   & > span {
     padding: 12px 0;
