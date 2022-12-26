@@ -20,6 +20,8 @@ export const Bar = styled.div<BarProps>`
   border-radius: 2px;
   border-radius: ${({ theme }) => theme.borderRadiusesMap.xs}px;
   background-color: ${({ theme, showOnBackground }) =>
-    showOnBackground ? theme.colors.foreground : theme.colors.background};
+    showOnBackground
+      ? theme.colors.foreground
+      : theme.colors.backgroundSecondary};
   animation: ${barPulse} 1s ease 0s infinite;
 `

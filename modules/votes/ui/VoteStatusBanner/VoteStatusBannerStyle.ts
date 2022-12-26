@@ -68,5 +68,5 @@ export const Wrap = styled.div<WrapProps>`
   background-color: ${({ variant, theme }) =>
     variant === StyledStatusVariant.Active
       ? 'rgba(0, 163, 255, 0.1)'
-      : theme.colors.background};
+      : theme.colors.backgroundSecondary};
 `

@@ -15,7 +15,7 @@ export const VotesBarWrap = styled.div<VotesBarWrapProps>`
   ${({ showOnForeground }) =>
     showOnForeground
       ? css`
-          background-color: ${({ theme }) => theme.colors.background};
+          background-color: ${({ theme }) => theme.colors.backgroundSecondary};
         `
       : css`
           border: 1px solid ${({ theme }) => theme.colors.foreground};

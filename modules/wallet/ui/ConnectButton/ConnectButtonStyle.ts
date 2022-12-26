@@ -16,7 +16,7 @@ export const Wrap = styled(Button).attrs({
   font-weight: 400;
   font-size: ${({ theme }) => theme.fontSizesMap.sm}px;
   color: ${({ theme }) => theme.colors.text};
-  background: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) => theme.colors.backgroundSecondary};
 
   > span {
     display: flex;
