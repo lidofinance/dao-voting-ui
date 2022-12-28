@@ -22,11 +22,6 @@
       "prettier --write"
     ]
   },
-  "commintlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
-  },
   "config": {
     "commitizen": {
       "path": "@commitlint/prompt"
