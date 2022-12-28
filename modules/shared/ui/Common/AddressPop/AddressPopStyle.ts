@@ -22,7 +22,7 @@ export const Pop = styled.div<PopProps>`
   padding: ${({ theme }) => theme.spaceMap.sm}px;
   position: fixed;
   border-radius: ${({ theme }) => theme.borderRadiusesMap.xl}px;
-  background-color: ${({ theme }) => theme.colors.foreground};
+  background-color: var(--lido-color-foreground);
   box-shadow: ${({ theme }) => theme.boxShadows.sm}
     var(--lido-color-shadowLight);
   z-index: 999;

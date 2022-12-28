@@ -31,7 +31,7 @@ export const ButtonVote = styled(Button)`
   ${({ color }: ButtonVoteProps) => {
     if (color === 'success') {
       return css`
-        background-color: ${({ theme }) => theme.colors.success};
+        background-color: var(--lido-color-success);
       `
     }
   }}

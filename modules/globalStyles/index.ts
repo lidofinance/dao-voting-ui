@@ -16,14 +16,14 @@ export const GlobalStyle = createGlobalStyle`
     height: 100%;
     font-size: ${({ theme }) => theme.fontSizesMap.sm}px;
     line-height: 1.25;
-    background-color: ${({ theme }) => theme.colors.backgroundSecondary};
+    background-color: var(--lido-color-backgroundSecondary);
   }
 
   body {
     position: relative;
     width: 100%;
     height: 100%;
-    color: ${({ theme }) => theme.colors.text};
+    color: var(--lido-color-text);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

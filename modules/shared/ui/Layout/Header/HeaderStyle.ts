@@ -15,8 +15,8 @@ export const Wrap = styled(Container).attrs({
   height: 76px;
   align-items: center;
   justify-content: space-between;
-  background-color: ${({ theme }) => theme.colors.foreground};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  background-color: var(--lido-color-foreground);
+  border-bottom: 1px solid var(--lido-color-border);
   z-index: 99;
 `
 
@@ -51,7 +51,7 @@ export const NavLink = styled.a<NavLinkProps>`
   font-weight: 800;
   text-decoration: none;
   text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.text};
+  color: var(--lido-color-text);
   transition: color ease ${({ theme }) => theme.duration.norm};
 
   &:hover {
@@ -68,10 +68,10 @@ export const NavLink = styled.a<NavLinkProps>`
     fill: currentColor;
   }
 
-  ${({ isActive, theme }) =>
+  ${({ isActive }) =>
     isActive &&
     css`
-      color: ${theme.colors.primary};
+      color: var(--lido-color-primary);
     `}
 
   @media (max-width: ${BREAKPOINT_MOBILE}) {
@@ -144,7 +144,7 @@ export const ThemeTogglerWrap = styled.div`
 export const BurgerLine = styled.div`
   width: 25px;
   height: 2px;
-  background-color: ${({ theme }) => theme.colors.text};
+  background-color: var(--lido-color-text);
   transition: transform ease ${({ theme }) => theme.duration.norm},
     opacity ease ${({ theme }) => theme.duration.norm};
 

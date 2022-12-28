@@ -13,7 +13,7 @@ export const Desc = styled.div`
 export const ErrorMessage = styled.div`
   padding: ${({ theme }) => theme.spaceMap.lg}px;
   color: #fff;
-  background-color: ${({ theme }) => theme.colors.error};
+  background-color: var(--lido-color-error);
   border-radius: ${({ theme }) => theme.borderRadiusesMap.xl}px;
 
   & a {

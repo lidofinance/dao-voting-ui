@@ -19,9 +19,9 @@ export const Bar = styled.div<BarProps>`
   height: 100%;
   border-radius: 2px;
   border-radius: ${({ theme }) => theme.borderRadiusesMap.xs}px;
-  background-color: ${({ theme, showOnBackground }) =>
+  background-color: ${({ showOnBackground }) =>
     showOnBackground
-      ? theme.colors.foreground
-      : theme.colors.backgroundSecondary};
+      ? 'var(--lido-color-foreground)'
+      : 'var(--lido-color-backgroundSecondary)'};
   animation: ${barPulse} 1s ease 0s infinite;
 `
