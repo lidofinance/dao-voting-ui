@@ -1,4 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
+import { LidoUIHead } from '@lidofinance/lido-ui'
 import { ServerStyleSheet } from 'styled-components'
 
 export default class MyDocument extends Document {
@@ -36,6 +37,7 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap"
             rel="stylesheet"
           />
+          <LidoUIHead />
         </Head>
         <body>
           <Main />
