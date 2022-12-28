@@ -24,9 +24,9 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
   try {
     const chainId = parseChainId(String(req.query.chainId))
     const urls = [
-      getAlchemyRPCUrl(chainId, alchemyApiKey),
-      getInfuraRPCUrl(chainId, infuraApiKey),
-    ]
+      alchemyApiKey ? getAlchemyRPCUrl(chainId, alchemyApiKey) : '',
+      infuraApiKey ? getInfuraRPCUrl(chainId, infuraApiKey) : '',
+    ].filter(Boolean)
 
     const requested = await fetchWithFallback(urls, chainId, {
       method: 'POST',
