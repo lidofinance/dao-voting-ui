@@ -14,6 +14,24 @@
     "typechain": "typechain --target=ethers-v5 --out-dir ./generated './abi/*.json'",
     "postinstall": "husky install && yarn typechain || true"
   },
+  "lint-staged": {
+    "./**/*.{ts,tsx}": [
+      "eslint --ignore-path .gitignore --max-warnings=0"
+    ],
+    "./**/*.{ts,tsx,css,md,json}": [
+      "prettier --write"
+    ]
+  },
+  "commintlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/prompt"
+    }
+  },
   "resolutions": {
     "@walletconnect/core": "1.6.6",
     "@walletconnect/types": "1.6.6",
@@ -35,9 +53,9 @@
     "@lido-sdk/providers": "1.4.4",
     "@lido-sdk/react": "1.18.1",
     "@lido-sdk/web3-react": "1.27.3",
+    "@lidofinance/evm-script-decoder": "0.2.2",
     "@lidofinance/icons": "2.20.0",
     "@lidofinance/lido-ui": "3.1.0",
-    "@lidofinance/evm-script-decoder": "0.2.2",
     "@typechain/ethers-v5": "10.0.0",
     "@types/lodash": "4.14.180",
     "copy-to-clipboard": "3.3.1",
@@ -66,6 +84,9 @@
     "winston": "3.6.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "17.3.0",
+    "@commitlint/config-conventional": "17.3.0",
+    "@commitlint/prompt": "17.3.0",
     "@svgr/webpack": "6.2.1",
     "@types/cors": "2.8.12",
     "@types/memory-cache": "0.2.2",
@@ -77,6 +98,7 @@
     "@types/styled-components": "5.1.24",
     "@typescript-eslint/eslint-plugin": "5.17.0",
     "@typescript-eslint/parser": "5.17.0",
+    "commitizen": "4.2.6",
     "cross-env": "^7.0.3",
     "dockerfilelint": "1.8.0",
     "eslint": "8.12.0",
@@ -84,7 +106,8 @@
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.25.4",
     "eslint-plugin-prettier": "4.0.0",
-    "husky": "7.0.4",
+    "husky": "8.0.2",
+    "lint-staged": "13.1.0",
     "prettier": "2.6.1",
     "type-fest": "2.12.1",
     "typescript": "4.4.3",
