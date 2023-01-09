@@ -15,11 +15,11 @@ export const VotesBarWrap = styled.div<VotesBarWrapProps>`
   ${({ showOnForeground }) =>
     showOnForeground
       ? css`
-          background-color: ${({ theme }) => theme.colors.backgroundSecondary};
+          background-color: var(--lido-color-backgroundSecondary);
         `
       : css`
-          border: 1px solid ${({ theme }) => theme.colors.foreground};
-          background-color: ${({ theme }) => theme.colors.foreground};
+          border: 1px solid var(--lido-color-foreground);
+          background-color: var(--lido-color-foreground);
         `}
 `
 
@@ -29,9 +29,9 @@ const VotesBar = styled.div`
 `
 
 export const VotesBarNay = styled(VotesBar)`
-  background-color: ${({ theme }) => theme.colors.error};
+  background-color: var(--lido-color-error);
 `
 
 export const VotesBarYea = styled(VotesBar)`
-  background-color: ${({ theme }) => theme.colors.success};
+  background-color: var(--lido-color-success);
 `

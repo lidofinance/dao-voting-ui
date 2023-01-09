@@ -18,8 +18,8 @@ export const ListRow = styled.div`
   height: 44px;
   font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
   font-weight: 400;
-  color: ${({ theme }) => theme.colors.text};
-  border: 1px solid ${({ theme }) => theme.colors.border};
+  color: var(--lido-color-text);
+  border: 1px solid var(--lido-color-border);
 
   &:not(:last-child) {
     border-bottom: none;
@@ -69,15 +69,15 @@ export const CounterBadge = styled.div`
   margin-left: ${({ theme }) => theme.spaceMap.sm}px;
   padding: 0 ${({ theme }) => theme.spaceMap.sm}px;
   width: fit-content;
-  color: ${({ theme }) => theme.colors.text};
+  color: var(--lido-color-text);
   border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
-  background-color: ${({ theme }) => theme.colors.backgroundSecondary};
+  background-color: var(--lido-color-backgroundSecondary);
 `
 
 export const ShowMoreBtn = styled(ListRow)`
   justify-content: center;
   font-weight: 700;
   font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
-  color: ${({ theme }) => theme.colors.primary};
+  color: var(--lido-color-primary);
   cursor: pointer;
 `
