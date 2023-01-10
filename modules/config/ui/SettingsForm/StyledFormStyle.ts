@@ -20,7 +20,7 @@ export const DescriptionText = styled.div`
 
   & a {
     text-decoration: none;
-    color: ${({ theme }) => theme.colors.primary};
+    color: var(--lido-color-primary);
   }
 `
 
@@ -29,7 +29,7 @@ export const DescriptionTitle = styled.div`
   font-size: ${({ theme }) => theme.fontSizesMap.sm}px;
   font-weight: 800;
   line-height: 1.5;
-  color: ${({ theme }) => theme.colors.text};
+  color: var(--lido-color-text);
 
   &:not(:first-child) {
     margin-top: ${({ theme }) => theme.spaceMap.md}px;

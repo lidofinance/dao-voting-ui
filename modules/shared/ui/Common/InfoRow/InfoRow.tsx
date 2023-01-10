@@ -13,14 +13,14 @@ export const InfoLabel = styled.div`
   display: flex;
   font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
   font-weight: 400;
-  color: ${({ theme }) => theme.colors.textSecondary};
+  color: var(--lido-color-textSecondary);
 `
 
 export const InfoValue = styled.div`
   display: flex;
   font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
   font-weight: 400;
-  color: ${({ theme }) => theme.colors.text};
+  color: var(--lido-color-text);
 `
 
 export function InfoRowFull({

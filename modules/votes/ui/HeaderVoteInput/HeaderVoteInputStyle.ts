@@ -5,7 +5,7 @@ export const Input = styled(InputNumber)`
   padding: 0 44px;
   width: 100%;
   height: 44px;
-  background-color: ${({ theme }) => theme.colors.backgroundSecondary};
+  background-color: var(--lido-color-backgroundSecondary);
 
   & > span {
     padding: 12px 0;
@@ -29,7 +29,7 @@ const IconWrapCSS = css`
 
   & svg {
     display: block;
-    fill: ${({ theme }) => theme.colors.textSecondary};
+    fill: var(--lido-color-textSecondary);
   }
 `
 
@@ -58,7 +58,7 @@ export const ClearIconWrap = styled.div`
 
   &:hover {
     svg {
-      fill: ${({ theme }) => theme.colors.text};
+      fill: var(--lido-color-text);
       transition-duration: ${({ theme }) => theme.duration.fast};
     }
   }

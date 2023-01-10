@@ -23,10 +23,10 @@ export const TxStatus = styled.span<TxStatusProps>`
   margin-left: ${({ theme }) => theme.spaceMap.xs}px;
   font-weight: 800;
   cursor: pointer;
-  color: ${({ status, theme }) =>
+  color: ${({ status }) =>
     status === 'pending'
-      ? theme.colors.primary
+      ? 'var(--lido-color-primary)'
       : status === 'success'
-      ? theme.colors.success
-      : theme.colors.error};
+      ? 'var(--lido-color-success)'
+      : 'var(--lido-color-error)'};
 `

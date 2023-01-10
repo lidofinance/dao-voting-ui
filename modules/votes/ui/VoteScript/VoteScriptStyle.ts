@@ -13,8 +13,8 @@ export const Tab = styled.div<TabProps>`
     ${({ theme }) => theme.spaceMap.lg}px;
   font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
   font-weight: 400;
-  color: ${({ theme }) => theme.colors.text};
-  border: 1px solid ${({ theme }) => theme.colors.border};
+  color: var(--lido-color-text);
+  border: 1px solid var(--lido-color-border);
   border-bottom: none;
   cursor: pointer;
   z-index: 1;
@@ -39,8 +39,8 @@ export const Tab = styled.div<TabProps>`
     isActive &&
     css`
       border-bottom: none;
-      color: ${({ theme }) => theme.colors.textSecondary};
-      background-color: ${({ theme }) => theme.colors.backgroundSecondary};
+      color: var(--lido-color-textSecondary);
+      background-color: var(--lido-color-backgroundSecondary);
     `}
 `
 
@@ -51,8 +51,8 @@ export const VoteScriptBodyWrap = styled.div`
   border-radius: 0 ${({ theme }) => theme.borderRadiusesMap.lg}px
     ${({ theme }) => theme.borderRadiusesMap.lg}px
     ${({ theme }) => theme.borderRadiusesMap.lg}px;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  background-color: ${({ theme }) => theme.colors.backgroundSecondary};
+  border: 1px solid var(--lido-color-border);
+  background-color: var(--lido-color-backgroundSecondary);
 `
 
 export const CallWrapper = styled.div`
@@ -60,7 +60,7 @@ export const CallWrapper = styled.div`
   word-break: break-all;
 
   &:not(:last-child) {
-    border-bottom: 1px solid ${p => p.theme.colors.border};
+    border-bottom: 1px solid var(--lido-color-border);
   }
 `
 
@@ -73,7 +73,7 @@ export const CallTitle = styled(Text)`
 
 export const NestedPadding = styled.div`
   margin-top: 10px;
-  border-left: 2px solid ${p => p.theme.colors.borderLight};
+  border-left: 2px solid var(--lido-color-borderLight);
 
   & > ${CallWrapper} {
     padding-top: 0;
@@ -88,7 +88,7 @@ export const ScriptBox = styled.div`
   font-family: SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono,
     Courier New, monospace !important;
   font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
-  color: ${({ theme }) => theme.colors.text};
+  color: var(--lido-color-text);
   border-radius: 8px;
   word-break: break-all;
   white-space: pre-wrap;
@@ -108,7 +108,7 @@ export const ScriptLoaderWrap = styled.div`
     content: '';
     display: block;
     opacity: 0.6;
-    background-color: ${({ theme }) => theme.colors.foreground};
+    background-color: var(--lido-color-foreground);
   }
 
   & > * {
