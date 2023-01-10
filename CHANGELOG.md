@@ -1,3 +1,13 @@
+## [0.9.2](https://github.com/lidofinance/dao-voting-ui/compare/0.9.1...0.9.2) (2023-01-10)
+
+
+### Bug Fixes
+
+* add missed lido-ui theme integration ([a09930f](https://github.com/lidofinance/dao-voting-ui/commit/a09930fff901ffe03d556469250eeeac2497ba7a))
+* handle api key missing ([7e0643f](https://github.com/lidofinance/dao-voting-ui/commit/7e0643f3f2ec89113dfcad35a4b13e3e8e5e8a73))
+
+
+
 ## [0.9.1](https://github.com/lidofinance/dao-voting-ui/compare/0.9.0...0.9.1) (2022-12-26)
 
 
@@ -167,23 +177,6 @@
 ### Features
 
 * Make release flow up-to date ([bd17ae4](https://github.com/lidofinance/dao-voting-ui/commit/bd17ae498c773dacd8f84daba1a104d93db12b28))
-
-
-
-# [0.2.0](https://github.com/lidofinance/dao-voting-ui/compare/0.1.0...0.2.0) (2022-05-30)
-
-
-### Bug Fixes
-
-* Release flow for the last time ([e08558c](https://github.com/lidofinance/dao-voting-ui/commit/e08558c5d426b01d2ea2a83e62f3fb15aa9b9738))
-* Release flow secrets passing ([66cd9dd](https://github.com/lidofinance/dao-voting-ui/commit/66cd9dd98d8c3baa03dd168772263559cbf466a6))
-* vote number formatting ([ead4e86](https://github.com/lidofinance/dao-voting-ui/commit/ead4e8635827794e57a30017219ac1fb6d1936f3))
-
-
-### Features
-
-* **common:** added .github codeowners ([a494933](https://github.com/lidofinance/dao-voting-ui/commit/a494933bd4f2c323b448406fc84b2604e4fbf4fd))
-* vote value numbers formatting ([a325ad0](https://github.com/lidofinance/dao-voting-ui/commit/a325ad0c04116dc738e6004998ee21e4d6b83f10))
 
 
 
