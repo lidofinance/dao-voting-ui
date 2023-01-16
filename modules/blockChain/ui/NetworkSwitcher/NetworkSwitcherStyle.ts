@@ -5,16 +5,16 @@ export const Wrap = styled.div`
   align-items: center;
   margin-bottom: ${({ theme }) => theme.spaceMap.xxl}px;
   padding: ${({ theme }) => theme.spaceMap.lg}px;
-  color: ${({ theme }) => theme.colors.textDark};
+  color: var(--lido-color-textDark);
   font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
   font-weight: 400;
-  background-color: ${({ theme }) => theme.colors.warningBackground};
+  background-color: var(--lido-color-warningBackground);
   border-radius: ${({ theme }) => theme.borderRadiusesMap.md}px;
 
   & svg {
     display: block;
     flex: 0 0 auto;
     margin-right: ${({ theme }) => theme.spaceMap.sm}px;
-    fill: ${({ theme }) => theme.colors.textDark};
+    fill: var(--lido-color-textDark);
   }
 `

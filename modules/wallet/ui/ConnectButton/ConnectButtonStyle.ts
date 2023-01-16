@@ -15,8 +15,8 @@ export const Wrap = styled(Button).attrs({
   text-align: left;
   font-weight: 400;
   font-size: ${({ theme }) => theme.fontSizesMap.sm}px;
-  color: ${({ theme }) => theme.colors.text};
-  background: ${({ theme }) => theme.colors.backgroundSecondary};
+  color: var(--lido-color-text);
+  background: var(--lido-color-backgroundSecondary);
 
   > span {
     display: flex;

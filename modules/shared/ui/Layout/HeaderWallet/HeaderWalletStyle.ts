@@ -23,14 +23,14 @@ export const AddressBadge = styled.div`
   height: 44px;
   font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
   border-radius: ${({ theme }) => theme.borderRadiusesMap.sm}px;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  background-color: ${({ theme }) => theme.colors.foreground};
+  border: 1px solid var(--lido-color-border);
+  background-color: var(--lido-color-foreground);
   user-select: none;
   cursor: pointer;
 `
 
 export const AddressText = styled.div`
   margin-left: ${({ theme }) => theme.spaceMap.xs}px;
-  color: ${({ theme }) => theme.colors.textSecondary};
+  color: var(--lido-color-textSecondary);
   font-size: ${({ theme }) => theme.fontSizesMap.sm};
 `

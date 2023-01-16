@@ -2,7 +2,7 @@ import { Button } from '@lidofinance/lido-ui'
 import styled from 'styled-components'
 
 export const Content = styled.div`
-  background-color: ${({ theme }) => theme.colors.backgroundSecondary};
+  background-color: var(--lido-color-backgroundSecondary);
   border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
   padding: ${({ theme }) => theme.spaceMap.lg}px;
 `
@@ -14,7 +14,7 @@ export const Connected = styled.div`
 `
 
 export const Connector = styled.div`
-  color: ${({ theme }) => theme.colors.textSecondary};
+  color: var(--lido-color-textSecondary);
   font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
   line-height: 1.4em;
   flex-grow: 1;

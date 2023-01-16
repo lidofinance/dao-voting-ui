@@ -7,7 +7,7 @@ export const TermsStyle = styled.label`
   padding: ${({ theme }) => theme.spaceMap.lg}px;
   margin-bottom: ${({ theme }) => theme.spaceMap.md}px;
   border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
-  background: ${({ theme }) => theme.colors.backgroundSecondary};
+  background: var(--lido-color-backgroundSecondary);
   cursor: pointer;
 `
 
