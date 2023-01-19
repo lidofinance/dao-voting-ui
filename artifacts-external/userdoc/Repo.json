@@ -1,0 +1,13 @@
+{
+  "methods": {
+    "initialize()": {
+      "notice": "Initialize this Repo"
+    },
+    "newVersion(uint16[3],address,bytes)": {
+      "notice": "Create new version with contract `_contractAddress` and content `@fromHex(_contentURI)`"
+    },
+    "transferToVault(address)": {
+      "notice": "Send funds to recovery Vault. This contract should never receive funds,        but in case it does, this function allows one to recover them."
+    }
+  }
+}

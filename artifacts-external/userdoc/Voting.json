@@ -1,0 +1,31 @@
+{
+  "methods": {
+    "changeMinAcceptQuorumPct(uint64)": {
+      "notice": "Change minimum acceptance quorum to `@formatPct(_minAcceptQuorumPct)`%"
+    },
+    "changeSupportRequiredPct(uint64)": {
+      "notice": "Change required support to `@formatPct(_supportRequiredPct)`%"
+    },
+    "executeVote(uint256)": {
+      "notice": "Execute vote #`_voteId`"
+    },
+    "forward(bytes)": {
+      "notice": "Creates a vote to execute the desired action, and casts a support vote if possible"
+    },
+    "initialize(address,uint64,uint64,uint64)": {
+      "notice": "Initialize Voting app with `_token.symbol(): string` for governance, minimum support of `@formatPct(_supportRequiredPct)`%, minimum acceptance quorum of `@formatPct(_minAcceptQuorumPct)`%, and a voting duration of `@transformTime(_voteTime)`"
+    },
+    "newVote(bytes,string)": {
+      "notice": "Create a new vote about \"`_metadata`\""
+    },
+    "newVote(bytes,string,bool,bool)": {
+      "notice": "Create a new vote about \"`_metadata`\""
+    },
+    "transferToVault(address)": {
+      "notice": "Send funds to recovery Vault. This contract should never receive funds,        but in case it does, this function allows one to recover them."
+    },
+    "vote(uint256,bool,bool)": {
+      "notice": "Vote `_supports ? 'yes' : 'no'` in vote #`_voteId`"
+    }
+  }
+}

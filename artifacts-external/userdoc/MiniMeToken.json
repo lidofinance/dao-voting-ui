@@ -1,0 +1,40 @@
+{
+  "methods": {
+    "approve(address,uint256)": {
+      "notice": "`msg.sender` approves `_spender` to spend `_amount` tokens on  its behalf. This is a modified version of the ERC20 approve function  to be a little bit safer"
+    },
+    "approveAndCall(address,uint256,bytes)": {
+      "notice": "`msg.sender` approves `_spender` to send `_amount` tokens on  its behalf, and then a function is triggered in the contract that is  being approved, `_spender`. This allows users to use their tokens to  interact with contracts in one function call instead of two"
+    },
+    "balanceOfAt(address,uint256)": {
+      "notice": "/////////////"
+    },
+    "changeController(address)": {
+      "notice": "Changes the controller of the contract"
+    },
+    "claimTokens(address)": {
+      "notice": "///////This method can be used by the controller to extract mistakenly  sent tokens to this contract."
+    },
+    "createCloneToken(string,uint8,string,uint256,bool)": {
+      "notice": "/////////////Creates a new clone token with the initial distribution being  this token at `_snapshotBlock`"
+    },
+    "destroyTokens(address,uint256)": {
+      "notice": "Burns `_amount` tokens from `_owner`"
+    },
+    "enableTransfers(bool)": {
+      "notice": "/////////////Enables token holders to transfer their tokens freely if true"
+    },
+    "generateTokens(address,uint256)": {
+      "notice": "/////////////Generates `_amount` tokens that are assigned to `_owner`"
+    },
+    "totalSupplyAt(uint256)": {
+      "notice": "Total amount of tokens at a specific `_blockNumber`."
+    },
+    "transfer(address,uint256)": {
+      "notice": "////////////////Send `_amount` tokens to `_to` from `msg.sender`"
+    },
+    "transferFrom(address,address,uint256)": {
+      "notice": "Send `_amount` tokens to `_to` from `_from` on the condition it  is approved by `_from`"
+    }
+  }
+}

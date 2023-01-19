@@ -1,0 +1,32 @@
+{
+  "events": {
+    "CallbackAdded(address,uint256)": {
+      "notice": "Callback added event"
+    },
+    "CallbackRemoved(address,uint256)": {
+      "notice": "Callback removed event"
+    }
+  },
+  "kind": "user",
+  "methods": {
+    "addCallback(address)": {
+      "notice": "Add a `_callback` to the back of array"
+    },
+    "callbacks(uint256)": {
+      "notice": "Get callback at position"
+    },
+    "callbacksLength()": {
+      "notice": "Callback length"
+    },
+    "insertCallback(address,uint256)": {
+      "notice": "Insert a `_callback` at the given `_atIndex` position"
+    },
+    "processLidoOracleReport(uint256,uint256,uint256)": {
+      "notice": "Callback to be called by the oracle contract upon the quorum is reached"
+    },
+    "removeCallback(uint256)": {
+      "notice": "Remove a callback at the given `_atIndex` position"
+    }
+  },
+  "version": 1
+}

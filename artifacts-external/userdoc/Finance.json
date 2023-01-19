@@ -1,0 +1,43 @@
+{
+  "methods": {
+    "deposit(address,uint256,string)": {
+      "notice": "Deposit `@tokenAmount(_token, _amount)`"
+    },
+    "executePayment(uint256)": {
+      "notice": "Execute pending payment #`_paymentId`"
+    },
+    "initialize(address,uint64)": {
+      "notice": "Initialize Finance app for Vault at `_vault` with period length of `@transformTime(_periodDuration)`"
+    },
+    "newImmediatePayment(address,address,uint256,string)": {
+      "notice": "Create a new payment of `@tokenAmount(_token, _amount)` to `_receiver` for '`_reference`'"
+    },
+    "newScheduledPayment(address,address,uint256,uint64,uint64,uint64,string)": {
+      "notice": "Create a new payment of `@tokenAmount(_token, _amount)` to `_receiver` for `_reference`, executing `_maxExecutions` times at intervals of `@transformTime(_interval)`"
+    },
+    "receiverExecutePayment(uint256)": {
+      "notice": "Execute pending payment #`_paymentId`"
+    },
+    "recoverToVault(address)": {
+      "notice": "Send tokens held in this contract to the Vault"
+    },
+    "removeBudget(address)": {
+      "notice": "Remove spending limit for `_token.symbol(): string`, effective immediately"
+    },
+    "setBudget(address,uint256)": {
+      "notice": "Set budget for `_token.symbol(): string` to `@tokenAmount(_token, _amount, false)`, effective immediately"
+    },
+    "setPaymentStatus(uint256,bool)": {
+      "notice": "`_active ? 'Activate' : 'Disable'` payment #`_paymentId`"
+    },
+    "setPeriodDuration(uint64)": {
+      "notice": "Change period duration to `@transformTime(_periodDuration)`, effective for next accounting period"
+    },
+    "transferToVault(address)": {
+      "notice": "Send funds to recovery Vault. This contract should never receive funds,        but in case it does, this function allows one to recover them."
+    },
+    "tryTransitionAccountingPeriod(uint64)": {
+      "notice": "Transition accounting period if needed"
+    }
+  }
+}

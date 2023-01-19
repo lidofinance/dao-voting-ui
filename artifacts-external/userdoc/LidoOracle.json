@@ -1,0 +1,85 @@
+{
+  "methods": {
+    "addOracleMember(address)": {
+      "notice": "Add `_member` to the oracle member committee list"
+    },
+    "finalizeUpgrade_v3()": {
+      "notice": "A function to finalize upgrade to v3 (from v1). Can be called only once"
+    },
+    "getAllowedBeaconBalanceAnnualRelativeIncrease()": {
+      "notice": "Return the upper bound of the reported balance possible increase in APR"
+    },
+    "getAllowedBeaconBalanceRelativeDecrease()": {
+      "notice": "Return the lower bound of the reported balance possible decrease"
+    },
+    "getBeaconReportReceiver()": {
+      "notice": "Return the receiver contract address to be called when the report is pushed to Lido"
+    },
+    "getBeaconSpec()": {
+      "notice": "Return beacon specification data"
+    },
+    "getCurrentEpochId()": {
+      "notice": "Return the epoch calculated from current timestamp"
+    },
+    "getCurrentFrame()": {
+      "notice": "Return currently reportable epoch (the first epoch of the current frame) as well as its start and end times in seconds"
+    },
+    "getCurrentOraclesReportStatus()": {
+      "notice": "Return the current reporting bitmap, representing oracles who have already pushed their version of report during the expected epoch"
+    },
+    "getCurrentReportVariant(uint256)": {
+      "notice": "Return the current reporting array element with index `_index`"
+    },
+    "getCurrentReportVariantsSize()": {
+      "notice": "Return the current reporting variants array size"
+    },
+    "getExpectedEpochId()": {
+      "notice": "Returns epoch that can be reported by oracles"
+    },
+    "getLastCompletedEpochId()": {
+      "notice": "Return last completed epoch"
+    },
+    "getLastCompletedReportDelta()": {
+      "notice": "Report beacon balance and its change during the last frame"
+    },
+    "getLido()": {
+      "notice": "Return the Lido contract address"
+    },
+    "getOracleMembers()": {
+      "notice": "Return the current oracle member committee list"
+    },
+    "getQuorum()": {
+      "notice": "Return the number of exactly the same reports needed to finalize the epoch"
+    },
+    "getVersion()": {
+      "notice": "Return the initialized version of this contract starting from 0"
+    },
+    "initialize(address,uint64,uint64,uint64,uint64,uint256,uint256)": {
+      "notice": "Initialize the contract (version 3 for now) from scratch"
+    },
+    "removeOracleMember(address)": {
+      "notice": "Remove '_member` from the oracle member committee list"
+    },
+    "reportBeacon(uint256,uint64,uint32)": {
+      "notice": "Accept oracle committee member reports from the ETH 2.0 side"
+    },
+    "setAllowedBeaconBalanceAnnualRelativeIncrease(uint256)": {
+      "notice": "Set the upper bound of the reported balance possible increase in APR to `_value`"
+    },
+    "setAllowedBeaconBalanceRelativeDecrease(uint256)": {
+      "notice": "Set the lower bound of the reported balance possible decrease to `_value`"
+    },
+    "setBeaconReportReceiver(address)": {
+      "notice": "Set the receiver contract address to `_addr` to be called when the report is pushed"
+    },
+    "setBeaconSpec(uint64,uint64,uint64,uint64)": {
+      "notice": "Update beacon specification data"
+    },
+    "setQuorum(uint256)": {
+      "notice": "Set the number of exactly the same reports needed to finalize the epoch to `_quorum`"
+    },
+    "transferToVault(address)": {
+      "notice": "Send funds to recovery Vault. This contract should never receive funds,        but in case it does, this function allows one to recover them."
+    }
+  }
+}

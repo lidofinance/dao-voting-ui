@@ -1,0 +1,40 @@
+{
+  "methods": {
+    "burnPermissionManager(address,bytes32)": {
+      "notice": "Burn `_role` in `_app`, so no modification can be made to it (grant, revoke, permission manager)"
+    },
+    "createBurnedPermission(address,bytes32)": {
+      "notice": "Burn non-existent `_role` in `_app`, so no modification can be made to it (grant, revoke, permission manager)"
+    },
+    "createPermission(address,address,bytes32,address)": {
+      "notice": "Create a new permission granting `_entity` the ability to perform actions requiring `_role` on `_app`, setting `_manager` as the permission's manager"
+    },
+    "getPermissionParam(address,address,bytes32,uint256)": {
+      "notice": "Get parameter for permission"
+    },
+    "getPermissionParamsLength(address,address,bytes32)": {
+      "notice": "Get parameters for permission array length"
+    },
+    "grantPermission(address,address,bytes32)": {
+      "notice": "Grant `_entity` the ability to perform actions requiring `_role` on `_app`"
+    },
+    "grantPermissionP(address,address,bytes32,uint256[])": {
+      "notice": "Grant `_entity` the ability to perform actions requiring `_role` on `_app`"
+    },
+    "initialize(address)": {
+      "notice": "Initialize an ACL instance and set `_permissionsCreator` as the entity that can create other permissions"
+    },
+    "removePermissionManager(address,bytes32)": {
+      "notice": "Remove the manager of `_role` in `_app`"
+    },
+    "revokePermission(address,address,bytes32)": {
+      "notice": "Revoke from `_entity` the ability to perform actions requiring `_role` on `_app`"
+    },
+    "setPermissionManager(address,address,bytes32)": {
+      "notice": "Set `_newManager` as the manager of `_role` in `_app`"
+    },
+    "transferToVault(address)": {
+      "notice": "Send funds to recovery Vault. This contract should never receive funds,        but in case it does, this function allows one to recover them."
+    }
+  }
+}

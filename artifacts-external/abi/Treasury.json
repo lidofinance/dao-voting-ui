@@ -1,0 +1,49 @@
+{
+  "methods": {
+    "addProtectedToken(address)": {
+      "notice": "Add `_token.symbol(): string` to the list of protected tokens"
+    },
+    "canForward(address,bytes)": {
+      "notice": "Tells whether `_sender` can forward actions or not"
+    },
+    "deposit(address,uint256)": {
+      "notice": "Deposit `_value` `_token` to the vault"
+    },
+    "execute(address,uint256,bytes)": {
+      "notice": "Execute '`@radspec(_target, _data)`' on `_target``_ethValue == 0 ? '' : ' (Sending ' + @tokenAmount(0x0000000000000000000000000000000000000000, _ethValue) + ')'`"
+    },
+    "forward(bytes)": {
+      "notice": "Execute the script as the Agent app"
+    },
+    "initialize()": {
+      "notice": "Initialize Vault app"
+    },
+    "isForwarder()": {
+      "notice": "Tells whether the Agent app is a forwarder or not"
+    },
+    "isValidSignature(bytes32,bytes)": {
+      "notice": "Tells whether a signature is seen as valid by this contract through ERC-1271"
+    },
+    "presignHash(bytes32)": {
+      "notice": "Pre-sign hash `_hash`"
+    },
+    "removeProtectedToken(address)": {
+      "notice": "Remove `_token.symbol(): string` from the list of protected tokens"
+    },
+    "safeExecute(address,bytes)": {
+      "notice": "Execute '`@radspec(_target, _data)`' on `_target`, ensuring that protected tokens can't be spent"
+    },
+    "setDesignatedSigner(address)": {
+      "notice": "Set `_designatedSigner` as the designated signer of the app, which will be able to sign messages on behalf of the app"
+    },
+    "supportsInterface(bytes4)": {
+      "notice": "Tells whether this contract supports a given ERC-165 interface"
+    },
+    "transfer(address,address,uint256)": {
+      "notice": "Transfer `_value` `_token` from the Vault to `_to`"
+    },
+    "transferToVault(address)": {
+      "notice": "Send funds to recovery Vault. This contract should never receive funds,        but in case it does, this function allows one to recover them."
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "kind": "user",
+  "methods": {
+    "addGuardian(address,uint256)": {
+      "notice": "Adds a guardian address and sets a new quorum value. Reverts if the address is already a guardian. Only callable by the owner."
+    },
+    "addGuardians(address[],uint256)": {
+      "notice": "Adds a set of guardian addresses and sets a new quorum value. Reverts any of them is already a guardian. Only callable by the owner."
+    },
+    "canDeposit()": {
+      "notice": "Returns whether depositBufferedEther can be called, given that the caller will provide guardian attestations of non-stale deposit root and `keysOpIndex`, and the number of such attestations will be enough to reach quorum."
+    },
+    "depositBufferedEther(bytes32,uint256,uint256,bytes32,(bytes32,bytes32)[])": {
+      "notice": "Calls Lido.depositBufferedEther(maxDepositsPerBlock). Reverts if any of the following is true:   1. IDepositContract.get_deposit_root() != depositRoot.   2. INodeOperatorsRegistry.getKeysOpIndex() != keysOpIndex.   3. The number of guardian signatures is less than getGuardianQuorum().   4. An invalid or non-guardian signature received.   5. block.number - getLastDepositBlock() < minDepositBlockDistance.   6. blockhash(blockNumber) != blockHash. Signatures must be sorted in ascending order by index of the guardian. Each signature must be produced for keccak256 hash of the following message (each component taking 32 bytes): | ATTEST_MESSAGE_PREFIX | depositRoot | keysOpIndex | blockNumber | blockHash |"
+    },
+    "getGuardianIndex(address)": {
+      "notice": "Returns index of the guardian, or -1 if the address is not a guardian."
+    },
+    "getGuardianQuorum()": {
+      "notice": "Returns number of valid guardian signatures required to vet (depositRoot, keysOpIndex) pair."
+    },
+    "getGuardians()": {
+      "notice": "Returns guardian committee member list."
+    },
+    "getLastDepositBlock()": {
+      "notice": "Returns the last block that contains a deposit performed via this security module."
+    },
+    "getMaxDeposits()": {
+      "notice": "Returns `maxDepositsPerBlock` (see `depositBufferedEther`)."
+    },
+    "getMinDepositBlockDistance()": {
+      "notice": "Returns `minDepositBlockDistance`  (see `depositBufferedEther`)."
+    },
+    "getNodeOperatorsRegistry()": {
+      "notice": "Returns NodeOperatorsRegistry contract address."
+    },
+    "getOwner()": {
+      "notice": "Returns the owner address."
+    },
+    "getPauseIntentValidityPeriodBlocks()": {
+      "notice": "Returns current `pauseIntentValidityPeriodBlocks` contract parameter (see `pauseDeposits`)."
+    },
+    "isGuardian(address)": {
+      "notice": "Checks whether the given address is a guardian."
+    },
+    "isPaused()": {
+      "notice": "Returns whether deposits were paused."
+    },
+    "pauseDeposits(uint256,(bytes32,bytes32))": {
+      "notice": "Pauses deposits given that both conditions are satisfied (reverts otherwise):   1. The function is called by the guardian with index guardianIndex OR sig      is a valid signature by the guardian with index guardianIndex of the data      defined below.   2. block.number - blockNumber <= pauseIntentValidityPeriodBlocks The signature, if present, must be produced for keccak256 hash of the following message (each component taking 32 bytes): | PAUSE_MESSAGE_PREFIX | blockNumber"
+    },
+    "removeGuardian(address,uint256)": {
+      "notice": "Removes a guardian with the given address and sets a new quorum value. Only callable by the owner."
+    },
+    "setLastDepositBlock(uint256)": {
+      "notice": "Sets `lastDepositBlock`. Only callable by the owner."
+    },
+    "setMaxDeposits(uint256)": {
+      "notice": "Sets `maxDepositsPerBlock`. Only callable by the owner."
+    },
+    "setMinDepositBlockDistance(uint256)": {
+      "notice": "Sets `minDepositBlockDistance`. Only callable by the owner."
+    },
+    "setNodeOperatorsRegistry(address)": {
+      "notice": "Sets NodeOperatorsRegistry contract address. Only callable by the owner."
+    },
+    "setOwner(address)": {
+      "notice": "Sets new owner. Only callable by the current owner."
+    },
+    "setPauseIntentValidityPeriodBlocks(uint256)": {
+      "notice": "Sets `pauseIntentValidityPeriodBlocks`. Only callable by the owner."
+    },
+    "unpauseDeposits()": {
+      "notice": "Unpauses deposits. Only callable by the owner."
+    }
+  },
+  "version": 1
+}

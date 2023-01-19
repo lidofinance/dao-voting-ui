@@ -11,7 +11,7 @@
     "lint": "next lint",
     "lint:dockerfile": "dockerfilelint Dockerfile",
     "lint:fix": "yarn lint --fix",
-    "typechain": "typechain --target=ethers-v5 --out-dir ./generated './abi/*.json'",
+    "typechain": "typechain --target=ethers-v5 --out-dir ./generated './artifacts-external/abi/*.json'",
     "postinstall": "husky install && yarn typechain || true"
   },
   "lint-staged": {

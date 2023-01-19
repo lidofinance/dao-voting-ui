@@ -65,7 +65,10 @@ const importRules = {
     'never',
     {
       ignorePackages: true,
-      svg: 'always',
+      pattern: {
+        svg: 'always',
+        json: 'always',
+      },
     },
   ],
   'import/export': 'error',

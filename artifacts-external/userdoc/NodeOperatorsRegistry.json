@@ -1,0 +1,73 @@
+{
+  "methods": {
+    "addNodeOperator(string,address)": {
+      "notice": "Add node operator named `_name` with reward address `_rewardAddress` and staking limit = 0"
+    },
+    "addSigningKeys(uint256,uint256,bytes,bytes)": {
+      "notice": "Add `_quantity` validator signing keys of operator #`_id` to the set of usable keys. Concatenated keys are: `_pubkeys`. Can be done by the DAO in question by using the designated rewards address."
+    },
+    "addSigningKeysOperatorBH(uint256,uint256,bytes,bytes)": {
+      "notice": "Add `_quantity` validator signing keys of operator #`_id` to the set of usable keys. Concatenated keys are: `_pubkeys`. Can be done by node operator in question by using the designated rewards address."
+    },
+    "assignNextSigningKeys(uint256)": {
+      "notice": "Selects and returns at most `_numKeys` signing keys (as well as the corresponding        signatures) from the set of active keys and marks the selected keys as used.        May only be called by the Lido contract."
+    },
+    "getActiveNodeOperatorsCount()": {
+      "notice": "Returns number of active node operators"
+    },
+    "getKeysOpIndex()": {
+      "notice": "Returns a monotonically increasing counter that gets incremented when any of the following happens:  1. a node operator's key(s) is added;  2. a node operator's key(s) is removed;  3. a node operator's approved keys limit is changed.  4. a node operator was activated/deactivated. Activation or deactivation of node operator     might lead to usage of unvalidated keys in the assignNextSigningKeys method."
+    },
+    "getNodeOperator(uint256,bool)": {
+      "notice": "Returns the n-th node operator"
+    },
+    "getNodeOperatorsCount()": {
+      "notice": "Returns total number of node operators"
+    },
+    "getRewardsDistribution(uint256)": {
+      "notice": "Returns the rewards distribution proportional to the effective stake for each node operator."
+    },
+    "getSigningKey(uint256,uint256)": {
+      "notice": "Returns n-th signing key of the node operator #`_operator_id`"
+    },
+    "getTotalSigningKeyCount(uint256)": {
+      "notice": "Returns total number of signing keys of the node operator #`_operator_id`"
+    },
+    "getUnusedSigningKeyCount(uint256)": {
+      "notice": "Returns number of usable signing keys of the node operator #`_operator_id`"
+    },
+    "removeSigningKey(uint256,uint256)": {
+      "notice": "Removes a validator signing key #`_index` of operator #`_id` from the set of usable keys. Executed on behalf of DAO."
+    },
+    "removeSigningKeyOperatorBH(uint256,uint256)": {
+      "notice": "Removes a validator signing key #`_index` of operator #`_id` from the set of usable keys. Executed on behalf of Node Operator."
+    },
+    "removeSigningKeys(uint256,uint256,uint256)": {
+      "notice": "Removes an #`_amount` of validator signing keys starting from #`_index` of operator #`_id` usable keys. Executed on behalf of DAO."
+    },
+    "removeSigningKeysOperatorBH(uint256,uint256,uint256)": {
+      "notice": "Removes an #`_amount` of validator signing keys starting from #`_index` of operator #`_id` usable keys. Executed on behalf of Node Operator."
+    },
+    "reportStoppedValidators(uint256,uint64)": {
+      "notice": "Report `_stoppedIncrement` more stopped validators of the node operator #`_id`"
+    },
+    "setNodeOperatorActive(uint256,bool)": {
+      "notice": "`_active ? 'Enable' : 'Disable'` the node operator #`_id`"
+    },
+    "setNodeOperatorName(uint256,string)": {
+      "notice": "Change human-readable name of the node operator #`_id` to `_name`"
+    },
+    "setNodeOperatorRewardAddress(uint256,address)": {
+      "notice": "Change reward address of the node operator #`_id` to `_rewardAddress`"
+    },
+    "setNodeOperatorStakingLimit(uint256,uint64)": {
+      "notice": "Set the maximum number of validators to stake for the node operator #`_id` to `_stakingLimit`"
+    },
+    "transferToVault(address)": {
+      "notice": "Send funds to recovery Vault. This contract should never receive funds,        but in case it does, this function allows one to recover them."
+    },
+    "trimUnusedKeys()": {
+      "notice": "Remove unused signing keys"
+    }
+  }
+}
