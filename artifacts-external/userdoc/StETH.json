@@ -6,8 +6,101 @@
     "decreaseAllowance(address,uint256)": {
       "notice": "Atomically decreases the allowance granted to `_spender` by the caller by `_subtractedValue`.     * This is an alternative to `approve` that can be used as a mitigation for problems described in: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/IERC20.sol#L42 Emits an `Approval` event indicating the updated allowance.     * Requirements:     * - `_spender` cannot be the zero address. - `_spender` must have allowance for the caller of at least `_subtractedValue`. - the contract must not be paused."
     },
+    "depositBufferedEther()": {
+      "notice": "Deposits buffered ethers to the official DepositContract."
+    },
+    "depositBufferedEther(uint256)": {
+      "notice": "Deposits buffered ethers to the official DepositContract, making no more than `_maxDeposits` deposit calls."
+    },
+    "getBeaconStat()": {
+      "notice": "Returns the key values related to Beacon-side"
+    },
+    "getBufferedEther()": {
+      "notice": "Get the amount of Ether temporary buffered on this contract balance"
+    },
+    "getCurrentStakeLimit()": {
+      "notice": "Returns how much Ether can be staked in the current block"
+    },
+    "getDepositContract()": {
+      "notice": "Gets deposit contract handle"
+    },
+    "getELRewardsVault()": {
+      "notice": "Returns address of the contract set as LidoExecutionLayerRewardsVault"
+    },
+    "getELRewardsWithdrawalLimit()": {
+      "notice": "Get limit in basis points to amount of ETH to withdraw per LidoOracle report"
+    },
+    "getFee()": {
+      "notice": "Returns staking rewards fee rate"
+    },
+    "getFeeDistribution()": {
+      "notice": "Returns fee distribution proportion"
+    },
+    "getInsuranceFund()": {
+      "notice": "Returns the insurance fund address"
+    },
+    "getOperators()": {
+      "notice": "Gets node operators registry interface handle"
+    },
+    "getOracle()": {
+      "notice": "Gets authorized oracle address"
+    },
+    "getStakeLimitFullInfo()": {
+      "notice": "Returns full info about current stake limit params and state"
+    },
+    "getTotalELRewardsCollected()": {
+      "notice": "Get total amount of execution layer rewards collected to Lido contract"
+    },
+    "getTreasury()": {
+      "notice": "Returns the treasury address"
+    },
+    "getWithdrawalCredentials()": {
+      "notice": "Returns current credentials to withdraw ETH on ETH 2.0 side after the phase 2 is launched"
+    },
+    "handleOracleReport(uint256,uint256)": {
+      "notice": "Updates beacon stats, collects rewards from LidoExecutionLayerRewardsVault and distributes all rewards if beacon balance increased"
+    },
     "increaseAllowance(address,uint256)": {
       "notice": "Atomically increases the allowance granted to `_spender` by the caller by `_addedValue`.     * This is an alternative to `approve` that can be used as a mitigation for problems described in: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/IERC20.sol#L42 Emits an `Approval` event indicating the updated allowance.     * Requirements:     * - `_spender` cannot be the the zero address. - the contract must not be paused."
+    },
+    "isStakingPaused()": {
+      "notice": "Check staking state: whether it's paused or not"
+    },
+    "pauseStaking()": {
+      "notice": "Stops accepting new Ether to the protocol"
+    },
+    "receiveELRewards()": {
+      "notice": "A payable function for execution layer rewards. Can be called only by ExecutionLayerRewardsVault contract"
+    },
+    "removeStakingLimit()": {
+      "notice": "Removes the staking rate limit    * Emits `StakingLimitRemoved` event"
+    },
+    "resume()": {
+      "notice": "Resume pool routine operations"
+    },
+    "resumeStaking()": {
+      "notice": "Resumes accepting new Ether to the protocol (if `pauseStaking` was called previously) NB: Staking could be rate-limited by imposing a limit on the stake amount at each moment in time, see `setStakingLimit()` and `removeStakingLimit()`"
+    },
+    "setFee(uint16)": {
+      "notice": "Set fee rate to `_feeBasisPoints` basis points. The fees are accrued when: - oracles report staking results (beacon chain balance increase) - validators gain execution layer rewards (priority fees and MEV)"
+    },
+    "setFeeDistribution(uint16,uint16,uint16)": {
+      "notice": "Set fee distribution"
+    },
+    "setProtocolContracts(address,address,address)": {
+      "notice": "Set Lido protocol contracts (oracle, treasury, insurance fund)."
+    },
+    "setStakingLimit(uint256,uint256)": {
+      "notice": "Sets the staking rate limit    * ▲ Stake limit │.....  .....   ........ ...            ....     ... Stake limit = max │      .       .        .   .   .      .    . . . │     .       .              . .  . . .      . . │            .                .  . . . │──────────────────────────────────────────────────> Time │     ^      ^          ^   ^^^  ^ ^ ^     ^^^ ^     Stake events"
+    },
+    "setWithdrawalCredentials(bytes32)": {
+      "notice": "Set credentials to withdraw ETH on ETH 2.0 side after the phase 2 is launched to `_withdrawalCredentials`"
+    },
+    "stop()": {
+      "notice": "Stop pool routine operations"
+    },
+    "submit(address)": {
+      "notice": "Send funds to the pool with optional _referral parameter"
     },
     "transfer(address,uint256)": {
       "notice": "Moves `_amount` tokens from the caller's account to the `_recipient` account."
@@ -17,6 +110,9 @@
     },
     "transferShares(address,uint256)": {
       "notice": "Moves `_sharesAmount` token shares from the caller's account to the `_recipient` account."
+    },
+    "transferToVault(address)": {
+      "notice": "Send funds to recovery Vault. Overrides default AragonApp behaviour"
     }
   }
 }
