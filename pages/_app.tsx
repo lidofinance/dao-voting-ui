@@ -22,7 +22,7 @@ import { VotePromptProvider } from 'modules/votes/providers/VotePrompt'
 
 import { nprogress } from 'modules/shared/utils/nprogress'
 import { parseEnvConfig } from 'modules/config/utils/parseEnvConfig'
-import { getAddressList } from 'modules/config/utils/getAddressList'
+import { getContractAddressList } from 'modules/contracts/utils/getContractAddressList'
 import { withCsp } from 'modules/shared/utils/csp'
 import { CustomAppProps } from 'modules/shared/utils/utilTypes'
 import { CHAINS } from '@lido-sdk/constants'
@@ -95,7 +95,7 @@ function AppRoot({ Component, pageProps }: AppProps) {
         />
 
         <meta name="currentChain" content={String(chainId)} />
-        {getAddressList(chainId).map(({ contractName, address }) => (
+        {getContractAddressList(chainId).map(({ contractName, address }) => (
           <meta key={contractName} name={contractName} content={address} />
         ))}
       </Head>

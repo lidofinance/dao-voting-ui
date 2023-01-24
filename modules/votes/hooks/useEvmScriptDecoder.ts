@@ -23,7 +23,7 @@ import {
   CompositePostRebaseBeaconReceiverAbi__factory,
   DepositSecurityModuleAbi__factory,
 } from 'generated'
-import * as ADDR from 'modules/blockChain/contractAddresses'
+import { CONTRACT_ADDRESSES as ADDR } from 'modules/contracts/contractAddresses'
 import { TreasuryAbi__factory } from 'generated/factories/TreasuryAbi__factory'
 import { VotingRepoAbi__factory } from 'generated/factories/VotingRepoAbi__factory'
 import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'

@@ -4,7 +4,7 @@ import {
   FinishHandler,
 } from 'modules/blockChain/hooks/useTransactionSender'
 
-import { ContractVoting } from 'modules/blockChain/contracts'
+import { ContractVoting } from 'modules/contracts/contractHelpers'
 import type { VoteMode } from '../../types'
 import { estimateGasFallback } from 'modules/shared/utils/estimateGasFallback'
 

@@ -1,5 +1,5 @@
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-import { ContractGovernanceToken } from 'modules/blockChain/contracts'
+import { ContractGovernanceToken } from 'modules/contracts/contractHelpers'
 
 export function useGovernanceBalance() {
   const { walletAddress } = useWeb3()

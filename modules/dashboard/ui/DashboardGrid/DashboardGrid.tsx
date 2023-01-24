@@ -11,7 +11,7 @@ import { DashboardVoteSkeleton } from '../DashboardVoteSkeleton'
 import { SkeletonBar } from 'modules/shared/ui/Skeletons/SkeletonBar'
 import { GridWrap, PaginationWrap } from './DashboardGridStyle'
 
-import { ContractVoting } from 'modules/blockChain/contracts'
+import { ContractVoting } from 'modules/contracts/contractHelpers'
 import { getVoteStatus } from 'modules/votes/utils/getVoteStatus'
 import * as urls from 'modules/network/utils/urls'
 

@@ -1,4 +1,4 @@
-import { ContractGovernanceToken } from 'modules/blockChain/contracts'
+import { ContractGovernanceToken } from 'modules/contracts/contractHelpers'
 
 export function useGovernanceTotalSupply() {
   return ContractGovernanceToken.useSwrRpc('totalSupply', [])

@@ -1,6 +1,6 @@
 import { createContractHelpers } from './utils/createContractHelpers'
 import { MiniMeTokenAbi__factory, VotingAbi__factory } from 'generated'
-import * as CONTRACT_ADDRESSES from './contractAddresses'
+import { CONTRACT_ADDRESSES } from './contractAddresses'
 
 export const ContractVoting = createContractHelpers({
   factory: VotingAbi__factory,

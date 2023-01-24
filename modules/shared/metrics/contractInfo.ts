@@ -1,7 +1,7 @@
 import { Gauge } from 'prom-client'
 import { METRICS_PREFIX } from './constants'
 import getConfig from 'next/config'
-import { getAddressList } from 'modules/config/utils/getAddressList'
+import { getContractAddressList } from 'modules/contracts/utils/getContractAddressList'
 import { CHAINS } from '@lido-sdk/constants'
 
 const { publicRuntimeConfig } = getConfig()
@@ -9,7 +9,7 @@ const { defaultChain, supportedChains } = publicRuntimeConfig
 
 const defaultChainId = +defaultChain as CHAINS
 
-const contractNames = getAddressList(defaultChainId).map(
+const contractNames = getContractAddressList(defaultChainId).map(
   ({ contractName }) => contractName,
 )
 
@@ -22,12 +22,12 @@ export const contractInfo = new Gauge({
 
 if (typeof supportedChains === 'string') {
   supportedChains.split(',').forEach(chainId => {
-    const addressList = getAddressList(+chainId as CHAINS)
+    const addressList = getContractAddressList(+chainId as CHAINS)
     const contractAddrs = addressList.map(({ address }) => address)
     contractInfo.labels(chainId, ...contractAddrs).set(1)
   })
 } else {
-  const addressList = getAddressList(defaultChainId)
+  const addressList = getContractAddressList(defaultChainId)
   const contractAddrs = addressList.map(({ address }) => address)
   contractInfo.labels(defaultChain, ...contractAddrs).set(1)
 }

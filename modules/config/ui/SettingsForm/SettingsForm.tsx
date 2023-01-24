@@ -16,7 +16,7 @@ import { Actions, DescriptionText, DescriptionTitle } from './StyledFormStyle'
 
 import { ethers } from 'ethers'
 import { ChainNames } from 'modules/blockChain/chains'
-import { ContractVoting } from 'modules/blockChain/contracts'
+import { ContractVoting } from 'modules/contracts/contractHelpers'
 import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'
 import { isUrl } from 'modules/shared/utils/isUrl'
 

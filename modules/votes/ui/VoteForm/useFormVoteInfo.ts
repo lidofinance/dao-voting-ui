@@ -8,7 +8,7 @@ import { useConfig } from 'modules/config/hooks/useConfig'
 import {
   ContractVoting,
   ContractGovernanceToken,
-} from 'modules/blockChain/contracts'
+} from 'modules/contracts/contractHelpers'
 import { VoterState } from 'modules/votes/types'
 import { getEventExecuteVote } from 'modules/votes/utils/getEventExecuteVote'
 import { getVoteStatus } from 'modules/votes/utils/getVoteStatus'
