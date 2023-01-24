@@ -22,6 +22,7 @@ import {
   VotingAbi__factory,
   CompositePostRebaseBeaconReceiverAbi__factory,
   DepositSecurityModuleAbi__factory,
+  MEVBoostRelayAllowedListAbi__factory,
 } from 'generated'
 import { CONTRACT_ADDRESSES as ADDR } from 'modules/contracts/contractAddresses'
 import { TreasuryAbi__factory } from 'generated/factories/TreasuryAbi__factory'
@@ -58,6 +59,8 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
         CompositePostRebaseBeaconReceiverAbi__factory.abi,
       [ADDR.DepositSecurityModule[chainId]!]:
         DepositSecurityModuleAbi__factory.abi,
+      [ADDR.MEVBoostRelayAllowedList[chainId]!]:
+        MEVBoostRelayAllowedListAbi__factory.abi,
     })
 
     const etherscanDecoder = new abiProviders.Base({
