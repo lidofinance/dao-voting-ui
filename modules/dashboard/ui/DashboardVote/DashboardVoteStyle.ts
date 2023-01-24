@@ -5,7 +5,7 @@ export const Wrap = styled.a`
   display: flex;
   flex-direction: column;
   padding: ${({ theme }) => theme.spaceMap.lg}px;
-  height: 210px;
+  height: 280px;
   word-break: break-all;
   background-color: var(--lido-color-foreground);
   border-radius: ${({ theme }) => theme.borderRadiusesMap.xl}px;
@@ -19,11 +19,21 @@ export const Footer = styled.div`
   margin-bottom: 0;
 `
 
-export const VoteTitle = styled(TextLocal).attrs({
+export const DescriptionWrap = styled(TextLocal).attrs({
   size: 14,
-  weight: 700,
+  weight: 400,
 })`
   margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
+  line-height: 24px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+
+  & b {
+    font-weight: 700;
+  }
 `
 
 export const VotesBarWrap = styled.div`

@@ -4,9 +4,16 @@ import { useVotePassedCallback } from 'modules/votes/hooks/useVotePassedCallback
 import Link from 'next/link'
 import { VoteStatusBanner } from 'modules/votes/ui/VoteStatusBanner'
 import { VoteYesNoBar } from 'modules/votes/ui/VoteYesNoBar'
+import { EvmScriptDescription } from 'modules/evmScriptDescription/ui/EvmScriptDescription'
 import { InfoRowFull } from 'modules/shared/ui/Common/InfoRow'
-import { Wrap, VoteTitle, VotesBarWrap, Footer } from './DashboardVoteStyle'
+import {
+  Wrap,
+  DescriptionWrap,
+  VotesBarWrap,
+  Footer,
+} from './DashboardVoteStyle'
 
+import type { StartVoteEventObject } from 'generated/VotingAbi'
 import { Vote, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
@@ -16,6 +23,7 @@ import * as urls from 'modules/network/utils/urls'
 type Props = {
   voteId: number
   vote: Vote
+  eventStart: StartVoteEventObject
   status: VoteStatus
   voteTime: number
   objectionPhaseTime: number
@@ -25,6 +33,7 @@ type Props = {
 export function DashboardVote({
   voteId,
   vote,
+  eventStart,
   status,
   voteTime,
   objectionPhaseTime,
@@ -82,7 +91,10 @@ export function DashboardVote({
           fontSize="xxs"
         />
 
-        <VoteTitle>Vote #{voteId}</VoteTitle>
+        <DescriptionWrap>
+          <b>Vote #{voteId}</b>
+          <EvmScriptDescription vote={vote} metadata={eventStart.metadata} />
+        </DescriptionWrap>
 
         <Footer>
           <VotesBarWrap>

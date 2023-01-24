@@ -13,6 +13,7 @@ import { GridWrap, PaginationWrap } from './DashboardGridStyle'
 
 import { ContractVoting } from 'modules/contracts/contractHelpers'
 import { getVoteStatus } from 'modules/votes/utils/getVoteStatus'
+import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
 import * as urls from 'modules/network/utils/urls'
 
 const PAGE_SIZE = 20
@@ -71,7 +72,23 @@ export function DashboardGrid({ currentPage }: Props) {
 
       const votesList = await Promise.all(requests)
 
-      return votesList
+      const eventsPromises = votesList.map(dataItem =>
+        (async () => {
+          const eventStart = await getEventStartVote(
+            contractVoting,
+            dataItem.voteId,
+            dataItem.vote.snapshotBlock.toNumber(),
+          )
+          return {
+            ...dataItem,
+            eventStart,
+          }
+        })(),
+      )
+
+      const votesWithEvents = await Promise.all(eventsPromises)
+
+      return votesWithEvents
     },
   )
 
