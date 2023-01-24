@@ -7,7 +7,7 @@ export const getContractAddressList = memoize((chainId: CHAINS) => {
   return CONTRACT_NAMES_LIST.map(contractName => {
     return {
       contractName,
-      address: CONTRACT_ADDRESSES[contractName][chainId],
+      address: CONTRACT_ADDRESSES[contractName][chainId] as string,
     }
   })
 })
