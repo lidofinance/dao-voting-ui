@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 import { useConfig } from 'modules/config/hooks/useConfig'
-import { useSupportedChains, useWeb3 } from '@reef-knot/web3-react'
+import { useSupportedChains, useConnectorError } from '@reef-knot/web3-react'
 
 import { getChainName } from 'modules/blockChain/chains'
 
 export function useErrorMessage() {
-  const { error } = useWeb3()
+  const error = useConnectorError()
   const { isUnsupported } = useSupportedChains()
   const { supportedChainIds } = useConfig()
 
