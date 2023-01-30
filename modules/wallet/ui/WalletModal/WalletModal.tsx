@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-import { useDisconnect, useConnectorInfo } from '@lido-sdk/web3-react'
+import { useDisconnect, useConnectorInfo } from '@reef-knot/web3-react'
 import { useGovernanceBalance } from 'modules/tokens/hooks/useGovernanceBalance'
 import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
 import { useConfig } from 'modules/config/hooks/useConfig'

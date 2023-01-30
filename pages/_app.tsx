@@ -5,7 +5,7 @@ import NextApp, { AppProps, AppContext } from 'next/app'
 import { useConfig } from 'modules/config/hooks/useConfig'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useErrorMessage } from 'modules/blockChain/hooks/useErrorMessage'
-import { useSupportedChains, ProviderWeb3 } from '@lido-sdk/web3-react'
+import { useSupportedChains, ProviderWeb3 } from '@reef-knot/web3-react'
 
 import { PageLayout } from 'modules/shared/ui/Layout/PageLayout'
 import { GlobalStyle } from 'modules/globalStyles'

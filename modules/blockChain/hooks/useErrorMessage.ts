@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useConfig } from 'modules/config/hooks/useConfig'
-import { useSupportedChains, useWeb3 } from '@lido-sdk/web3-react'
+import { useSupportedChains, useWeb3 } from '@reef-knot/web3-react'
 
 import { getChainName } from 'modules/blockChain/chains'
 
