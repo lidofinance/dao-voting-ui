@@ -2,8 +2,8 @@ import { useState, useCallback } from 'react'
 import { useRouter } from 'next/dist/client/router'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useScrollLock } from 'modules/shared/hooks/useScrollLock'
+import { usePrefixedPush } from 'modules/network/hooks/usePrefixedHistory'
 
-import Link from 'next/link'
 import { Text } from 'modules/shared/ui/Common/Text'
 import { HeaderWallet } from '../HeaderWallet'
 import { ThemeToggler } from '@lidofinance/lido-ui'
@@ -47,6 +47,15 @@ function NavItem({
   children: React.ReactNode
 }) {
   const { asPath } = useRouter()
+  const push = usePrefixedPush()
+
+  const handleClick = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      push(link)
+      onClick?.(e)
+    },
+    [link, onClick, push],
+  )
 
   const isActive = activeOn
     ? activeOn.some(v => {
@@ -59,11 +68,9 @@ function NavItem({
     : asPath.startsWith(link)
 
   return (
-    <Link passHref href={link}>
-      <NavLink isActive={isActive} onClick={onClick}>
-        <div>{children}</div>
-      </NavLink>
-    </Link>
+    <NavLink isActive={isActive} onClick={handleClick}>
+      <div>{children}</div>
+    </NavLink>
   )
 }
 

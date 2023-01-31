@@ -10,11 +10,25 @@ const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS
 const cspReportOnly = process.env.CSP_REPORT_ONLY
 const cspReportUri = process.env.CSP_REPORT_URI
 
+const settingsPrefillInfura = process.env.PUBLIC_UNSAFE_SETTINGS_PREFILL_INFURA
+const settingsPrefillEtherscan =
+  process.env.PUBLIC_UNSAFE_SETTINGS_PREFILL_ETHERSCAN
+
 const ipfsMode = process.env.IPFS_MODE
 
 module.exports = {
   basePath,
   webpack5: true,
+
+  // Ipfs next.js configuration reference:
+  // https://github.com/Velenir/nextjs-ipfs-example
+  trailingSlash: true,
+  assetPrefix: ipfsMode ? './' : undefined,
+
+  // Ipfs version has hash-based routing
+  // so we provide only index.html in ipfs version
+  exportPathMap: ipfsMode ? () => ({ '/': { page: '/' } }) : undefined,
+
   webpack(config) {
     config.module.rules.push({
       test: /\.svg.react$/i,
@@ -112,5 +126,7 @@ module.exports = {
     defaultChain,
     supportedChains,
     ipfsMode,
+    settingsPrefillInfura,
+    settingsPrefillEtherscan,
   },
 }

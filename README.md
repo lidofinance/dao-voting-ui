@@ -68,6 +68,20 @@ git commit -m "feat: dark theme"
 yarn build && yarn start
 ```
 
+## IPFS mode
+
+The project supports a build mode purposed to produce specific version of the app to be deployed to ipfs. It differs from the default by returning static output files with the single `index.html` as the browser endpoint. The routing of the app in this mode is also differs. It is done completely on client-side and based on the hash part of the browser url. It is designed this way because ipfs infrastructure does not provide neither back-end nor nginx-like routing to redirect browser's requests.
+
+```bash
+yarn build-ipfs
+```
+
+There is the command to start development mode with ipfs features.
+
+```bash
+yarn dev-ipfs
+```
+
 ## Notable dependencies
 
 - [Next.js](https://nextjs.org/docs)
@@ -89,4 +103,4 @@ To create new release:
 1. When action execution is finished, navigate to Repo => Pull requests
 1. Find pull request named "chore(release): X.X.X" review and merge it with "Rebase and merge" (or "Squash and merge")
 1. After merge release action will be triggered automatically
-1. Navigate to Repo => Actions and see last actions logs for further details 
+1. Navigate to Repo => Actions and see last actions logs for further details

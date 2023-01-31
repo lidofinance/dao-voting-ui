@@ -3,7 +3,6 @@ import { useState, useCallback, createContext } from 'react'
 
 import { CHAINS } from '@lido-sdk/constants'
 import { EnvConfigParsed } from '../types'
-import { getRpcUrlDefault } from '../network'
 import { STORAGE_KEY_SAVED_SETTINGS } from 'modules/config/storage'
 
 type SavedConfig = {
@@ -13,7 +12,6 @@ type SavedConfig = {
 }
 
 type ConfigContext = EnvConfigParsed & {
-  getRpcUrl: (chainId: CHAINS) => string
   savedConfig: SavedConfig
   setSavedConfig: React.Dispatch<React.SetStateAction<SavedConfig>>
 }
@@ -47,18 +45,10 @@ export function ConfigProvider({ children, envConfig }: Props) {
     [setLocalStorage],
   )
 
-  const getRpcUrl = useCallback(
-    (chainId: CHAINS) => {
-      return savedConfig.rpcUrls[chainId] || getRpcUrlDefault(chainId)
-    },
-    [savedConfig.rpcUrls],
-  )
-
   return (
     <configContext.Provider
       value={{
         ...envConfig,
-        getRpcUrl,
         savedConfig,
         setSavedConfig: setSavedConfigAndRemember,
       }}

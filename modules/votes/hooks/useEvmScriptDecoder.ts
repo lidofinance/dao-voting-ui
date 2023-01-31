@@ -1,6 +1,7 @@
 import { useGlobalMemo } from 'modules/shared/hooks/useGlobalMemo'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useConfig } from 'modules/config/hooks/useConfig'
+import { useRpcUrl } from 'modules/config/hooks/useRpcUrl'
 
 import { Contract } from 'ethers'
 import { ABIProvider } from '@lidofinance/evm-script-decoder/lib/types'
@@ -30,8 +31,8 @@ import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'
 
 export function useEVMScriptDecoder(): EVMScriptDecoder {
   const { chainId } = useWeb3()
-  const { getRpcUrl, savedConfig } = useConfig()
-  const rpcUrl = getRpcUrl(chainId)
+  const { savedConfig } = useConfig()
+  const rpcUrl = useRpcUrl()
   const { etherscanApiKey, useBundledAbi } = savedConfig
 
   return useGlobalMemo(() => {

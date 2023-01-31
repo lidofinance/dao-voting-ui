@@ -52,6 +52,7 @@ export const NavLink = styled.a<NavLinkProps>`
   text-decoration: none;
   text-transform: uppercase;
   color: var(--lido-color-text);
+  cursor: pointer;
   transition: color ease ${({ theme }) => theme.duration.norm};
 
   &:hover {

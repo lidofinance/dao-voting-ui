@@ -1,9 +1,10 @@
 import { noop } from 'lodash'
 import { formatEther } from 'ethers/lib/utils'
+
 import { useCallback, useEffect } from 'react'
 import { useSWR } from 'modules/network/hooks/useSwr'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-import { useConfig } from 'modules/config/hooks/useConfig'
+import { useRpcUrl } from 'modules/config/hooks/useRpcUrl'
 
 import {
   ContractVoting,
@@ -20,9 +21,8 @@ type Args = {
 }
 
 export function useFormVoteInfo({ voteId }: Args) {
-  const { getRpcUrl } = useConfig()
   const { chainId, walletAddress, isWalletConnected } = useWeb3()
-  const rpcUrl = getRpcUrl(chainId)
+  const rpcUrl = useRpcUrl()
   const contractVoting = ContractVoting.useRpc()
 
   const swrVote = useSWR(

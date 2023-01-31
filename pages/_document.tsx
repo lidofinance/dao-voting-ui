@@ -1,6 +1,7 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { LidoUIHead } from '@lidofinance/lido-ui'
 import { ServerStyleSheet } from 'styled-components'
+import { ScriptInsertIpfsBase } from 'modules/network/ui/ScriptInsertIpfsBase'
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: any) {
@@ -38,6 +39,7 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
           <LidoUIHead />
+          <ScriptInsertIpfsBase />
         </Head>
         <body>
           <Main />

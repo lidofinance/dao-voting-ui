@@ -1,6 +1,7 @@
 import { debounce } from 'lodash'
-import Router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { usePrefixedPush } from 'modules/network/hooks/usePrefixedHistory'
 
 import { votePromptContext } from './votePromptContext'
 import * as urls from 'modules/network/utils/urls'
@@ -10,18 +11,22 @@ type Props = {
 }
 
 export function VotePromptProvider({ children }: Props) {
+  const push = usePrefixedPush()
   const { asPath, query } = useRouter()
 
   const { voteId: urlVoteIdArr = [] } = query
   const [urlVoteId] = urlVoteIdArr as string[]
   const [voteId, setVoteIdState] = useState(urlVoteId || '')
 
-  const changeRouteInstantly = useCallback((value: string) => {
-    Router.push(urls.vote(value), undefined, {
-      scroll: false,
-      shallow: true,
-    })
-  }, [])
+  const changeRouteInstantly = useCallback(
+    (value: string) => {
+      push(urls.vote(value), undefined, {
+        scroll: false,
+        shallow: true,
+      })
+    },
+    [push],
+  )
 
   const changeRouteDebounced = useMemo(
     () => debounce(changeRouteInstantly, 500),
@@ -35,18 +40,18 @@ export function VotePromptProvider({ children }: Props) {
         changeRouteDebounced(value)
       } else {
         setVoteIdState(value)
-        Router.push(urls.home)
+        push(urls.home)
       }
     },
-    [setVoteIdState, changeRouteDebounced],
+    [setVoteIdState, changeRouteDebounced, push],
   )
 
   const clearVoteId = useCallback(() => {
-    Router.push(urls.home)
-  }, [])
+    push(urls.home)
+  }, [push])
 
   useEffect(() => {
-    if (asPath === urls.voteIndex && voteId) {
+    if (asPath.endsWith(urls.voteIndex) && voteId) {
       changeRouteDebounced(voteId)
     }
   }, [asPath, voteId, changeRouteDebounced])

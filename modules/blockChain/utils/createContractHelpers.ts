@@ -4,7 +4,7 @@ import { CHAINS } from '@lido-sdk/constants'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useGlobalMemo } from 'modules/shared/hooks/useGlobalMemo'
 import { useContractSwr } from '../hooks/useContractSwr'
-import { useConfig } from 'modules/config/hooks/useConfig'
+import { useRpcUrl } from 'modules/config/hooks/useRpcUrl'
 
 import type { Signer, providers } from 'ethers'
 import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
@@ -63,8 +63,7 @@ export function createContractHelpers<F extends Factory>({
 
   function useInstanceRpc() {
     const { chainId } = useWeb3()
-    const { getRpcUrl } = useConfig()
-    const rpcUrl = getRpcUrl(chainId)
+    const rpcUrl = useRpcUrl()
 
     return useGlobalMemo(
       () => connectRpc({ chainId, rpcUrl }),
