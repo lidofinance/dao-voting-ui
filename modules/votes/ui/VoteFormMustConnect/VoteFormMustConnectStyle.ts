@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const Connect = styled.span`
-  color: ${({ theme }) => theme.colors.primary};
+  color: var(--lido-color-primary);
   cursor: pointer;
 
   &:hover {

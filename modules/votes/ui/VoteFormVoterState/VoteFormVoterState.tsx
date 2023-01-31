@@ -37,7 +37,7 @@ export function VoteFormVoterState({
   const elStartBlockDate = (
     <>
       (block {snapshotBlock} minted at{' '}
-      <FormattedDate date={startDate} format="hh:mm A on DD of MMMM YYYY" />
+      <FormattedDate date={startDate} format="HH:mm on DD of MMMM YYYY" />
       ).
     </>
   )

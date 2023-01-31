@@ -1,7 +1,20 @@
 import styled from 'styled-components'
 
-export const NetworksBox = styled.div`
+export const Wrap = styled.div`
   display: flex;
-  justify-content: center;
-  gap: 10px;
+  align-items: center;
+  margin-bottom: ${({ theme }) => theme.spaceMap.xxl}px;
+  padding: ${({ theme }) => theme.spaceMap.lg}px;
+  color: var(--lido-color-textDark);
+  font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
+  font-weight: 400;
+  background-color: var(--lido-color-warningBackground);
+  border-radius: ${({ theme }) => theme.borderRadiusesMap.md}px;
+
+  & svg {
+    display: block;
+    flex: 0 0 auto;
+    margin-right: ${({ theme }) => theme.spaceMap.sm}px;
+    fill: var(--lido-color-textDark);
+  }
 `

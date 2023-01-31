@@ -1,4 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
+import { LidoUIHead } from '@lidofinance/lido-ui'
 import { ServerStyleSheet } from 'styled-components'
 import { ScriptInsertIpfsBase } from 'modules/network/ui/ScriptInsertIpfsBase'
 
@@ -37,6 +38,7 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap"
             rel="stylesheet"
           />
+          <LidoUIHead />
           <ScriptInsertIpfsBase />
         </Head>
         <body>

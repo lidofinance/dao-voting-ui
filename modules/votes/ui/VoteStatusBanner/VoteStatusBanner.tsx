@@ -37,7 +37,7 @@ export function VoteStatusBanner({
 
   const endDateEl = (
     <InfoText variant={variant}>
-      <FormattedDate date={endDate} format="DD MMM YYYY, hh:mm a" />
+      <FormattedDate date={endDate} format="DD MMM YYYY, HH:mm" />
     </InfoText>
   )
 

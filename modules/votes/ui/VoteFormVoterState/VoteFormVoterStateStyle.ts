@@ -5,9 +5,8 @@ export const Wrap = styled.div`
   font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
   font-weight: 400;
   line-height: ${({ theme }) => theme.fontSizesMap.lg}px;
-  color: ${({ theme }) => theme.colors.text};
-  background-color: ${({ theme }) =>
-    theme.name === 'light' ? '#fffae0' : theme.colors.warning};
+  color: var(--lido-color-textDark);
+  background-color: var(--lido-color-warningBackground);
   border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
 
   b {

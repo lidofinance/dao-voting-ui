@@ -16,16 +16,14 @@ export const GlobalStyle = createGlobalStyle`
     height: 100%;
     font-size: ${({ theme }) => theme.fontSizesMap.sm}px;
     line-height: 1.25;
-    background-color: ${({ theme }) => theme.colors.background};
-    /* background: radial-gradient(64.53% 117.87% at 48.94% 89.78%, #C8C3FF 0%, #E2E3F8 73.28%, #E9E9F2 96.75%);
-    background-attachment: fixed; */
+    background-color: var(--lido-color-backgroundSecondary);
   }
 
   body {
     position: relative;
     width: 100%;
     height: 100%;
-    color: ${({ theme }) => theme.colors.text};
+    color: var(--lido-color-text);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

@@ -3,6 +3,7 @@ import type { BigNumber } from 'ethers'
 import { useMemo, useState } from 'react'
 import { useSWR } from 'modules/network/hooks/useSwr'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
+import { useConfig } from 'modules/config/hooks/useConfig'
 import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
 
 import { InfoLabel } from 'modules/shared/ui/Common/InfoRow'
@@ -19,6 +20,7 @@ import {
 } from './VoteVotersListStyle'
 import { Tooltip, trimAddress } from '@lidofinance/lido-ui'
 
+import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { formatNumber } from 'modules/shared/utils/formatNumber'
 import type { CastVoteEventObject } from 'generated/VotingAbi'
@@ -38,13 +40,17 @@ const formatAmount = (amount: BigNumber) => {
 const PAGE_SIZE = 10
 
 export function VoteVotersList({ eventsVoted }: Props) {
-  const { library } = useWeb3()
+  const { chainId } = useWeb3()
+  const { getRpcUrl } = useConfig()
   const { data: govSymbol } = useGovernanceSymbol()
+
   const addresses = useMemo(() => eventsVoted.map(e => e.voter), [eventsVoted])
 
-  const { data: ensNames } = useSWR(addresses, async () => {
+  const { data: ensNames } = useSWR([...addresses, chainId], async () => {
+    const rpcUrl = getRpcUrl(chainId)
+    const provider = getStaticRpcBatchProvider(chainId, rpcUrl)
     const res = await Promise.all(
-      eventsVoted.map(e => library.lookupAddress(e.voter)),
+      eventsVoted.map(e => provider.lookupAddress(e.voter)),
     )
     return res
   })

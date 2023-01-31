@@ -21,12 +21,16 @@ import { ModalProvider } from 'modules/modal/ModalProvider'
 import { NetworkSwitcher } from 'modules/blockChain/ui/NetworkSwitcher'
 import { VotePromptProvider } from 'modules/votes/providers/VotePrompt'
 
+import { nprogress } from 'modules/shared/utils/nprogress'
 import { parseEnvConfig } from 'modules/config/utils/parseEnvConfig'
 import { getAddressList } from 'modules/config/utils/getAddressList'
 import { withCsp } from 'modules/shared/utils/csp'
 import { CustomAppProps } from 'modules/shared/utils/utilTypes'
 import { CHAINS } from '@lido-sdk/constants'
 import { BASE_PATH_ASSET } from 'modules/config/constants'
+
+// Visualize route changes
+nprogress()
 
 function AppRoot({ Component, pageProps }: AppProps) {
   const { chainId } = useWeb3()
@@ -96,7 +100,8 @@ function AppRoot({ Component, pageProps }: AppProps) {
         ))}
       </Head>
       <PageLayout>
-        {!isUnsupported ? <Component {...pageProps} /> : <NetworkSwitcher />}
+        {isUnsupported && <NetworkSwitcher />}
+        <Component {...pageProps} />
       </PageLayout>
       <ToastContainer />
     </>
