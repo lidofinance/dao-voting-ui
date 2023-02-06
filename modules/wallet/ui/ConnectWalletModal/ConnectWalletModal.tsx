@@ -1,41 +1,37 @@
-import { useCallback } from 'react'
-import { useLocalStorage } from '@lido-sdk/react'
-import { Modal, ModalProps } from '@lidofinance/lido-ui'
-import { ConnectWalletModalTerms } from './ConnectWalletModalTerms'
-import {
-  ConnectMetamaskButton,
-  ConnectWalletConnectButton,
-  ConnectLedgerButton,
-  // ConnectCoinbaseButton,
-  // ConnectTrustButton,
-  // ConnectImTokenButton,
-} from '../ConnectButton'
-import { STORAGE_TERMS_KEY } from 'modules/config'
+import { useThemeToggle } from '@lidofinance/lido-ui'
 
-type Props = ModalProps & {}
+import { WalletsModalForEth } from '@reef-knot/connect-wallet-modal'
+
+type WalletModalForEthProps = React.ComponentProps<typeof WalletsModalForEth>
+
+const HIDDEN_WALLETS: WalletModalForEthProps['hiddenWallets'] = [
+  'Coinbase',
+  'Trust',
+  'ImToken',
+  'Coin98',
+  'MathWallet',
+  'Tally',
+  'Ambire',
+  'Blockchain.com Wallet',
+  'ZenGo',
+  'Brave Wallet',
+  'Opera Wallet',
+  'Exodus',
+  'Gamestop',
+  'Xdefi',
+  'Zerion',
+]
+
+type Props = WalletModalForEthProps & {}
 
 export function ConnectWalletModal(props: Props) {
-  const { onClose } = props
-  const [checked, setChecked] = useLocalStorage(STORAGE_TERMS_KEY, false)
-
-  const handleChange = useCallback(() => {
-    setChecked(currentValue => !currentValue)
-  }, [setChecked])
-
-  const common = {
-    disabled: !checked,
-    onConnect: onClose,
-  }
+  const { themeName } = useThemeToggle()
 
   return (
-    <Modal {...props} title="Connect wallet">
-      <ConnectWalletModalTerms onChange={handleChange} checked={checked} />
-      <ConnectMetamaskButton {...common} />
-      <ConnectWalletConnectButton {...common} />
-      <ConnectLedgerButton {...common} />
-      {/* <ConnectCoinbaseButton {...common} /> */}
-      {/* <ConnectTrustButton {...common} /> */}
-      {/* <ConnectImTokenButton {...common} /> */}
-    </Modal>
+    <WalletsModalForEth
+      {...props}
+      hiddenWallets={HIDDEN_WALLETS}
+      shouldInvertWalletIcon={themeName === 'dark'}
+    />
   )
 }

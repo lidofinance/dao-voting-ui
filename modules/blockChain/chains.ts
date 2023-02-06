@@ -1,3 +1,4 @@
+import get from 'lodash/get'
 import { CHAINS } from '@lido-sdk/constants'
 
 export const ChainNames = {
@@ -18,4 +19,4 @@ export const parseChainId = (chainId: number | string) => {
 }
 
 export const getChainName = (chainId: number) =>
-  ChainNames[parseChainId(chainId)]
+  get(ChainNames, parseChainId(chainId))
