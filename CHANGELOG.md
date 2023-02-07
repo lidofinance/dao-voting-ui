@@ -1,3 +1,21 @@
+# [0.10.0](https://github.com/lidofinance/dao-voting-ui/compare/0.9.2...0.10.0) (2023-02-07)
+
+
+### Bug Fixes
+
+* chain name getter ([a63260a](https://github.com/lidofinance/dao-voting-ui/commit/a63260a1f08932fd28f4281458620ab98fa16932))
+* chain type ([0cdf7ad](https://github.com/lidofinance/dao-voting-ui/commit/0cdf7adce07576d32810363853373c31ad7a44e1))
+* file rights ([6eaee05](https://github.com/lidofinance/dao-voting-ui/commit/6eaee0580e1f81ff1b08468caa99ca4c489f7d62))
+* fix react types ([89bad20](https://github.com/lidofinance/dao-voting-ui/commit/89bad2011fa019c1a9fffcade6a53542d65ae719))
+* remove duplicated config ([ae48f7b](https://github.com/lidofinance/dao-voting-ui/commit/ae48f7be35fcbf78043b0901b0caa5bc09e0650b))
+
+
+### Features
+
+* add eth-ui, qa codeowners ([105828b](https://github.com/lidofinance/dao-voting-ui/commit/105828b64a8df4b0a5fcefdb9a256f880cf17462))
+
+
+
 ## [0.9.2](https://github.com/lidofinance/dao-voting-ui/compare/0.9.1...0.9.2) (2023-01-10)
 
 
@@ -168,15 +186,6 @@
 * phases info tooltip ([12ef108](https://github.com/lidofinance/dao-voting-ui/commit/12ef108eacf57c4cd198aca24897ffc5e61470cf))
 * ui improvements ([11a207f](https://github.com/lidofinance/dao-voting-ui/commit/11a207fb146c4e13d600c45dd4abd0d55cd4a25e))
 * vote phases support ([8b61bc9](https://github.com/lidofinance/dao-voting-ui/commit/8b61bc9c81baf6ed73c6dd1cd45821b85c0466c7))
-
-
-
-# [0.3.0](https://github.com/lidofinance/dao-voting-ui/compare/0.2.0...0.3.0) (2022-06-21)
-
-
-### Features
-
-* Make release flow up-to date ([bd17ae4](https://github.com/lidofinance/dao-voting-ui/commit/bd17ae498c773dacd8f84daba1a104d93db12b28))
 
 
 
