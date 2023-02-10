@@ -100,7 +100,7 @@
     "lint-staged": "13.1.0",
     "prettier": "2.6.1",
     "type-fest": "2.12.1",
-    "typescript": "4.4.3",
+    "typescript": "^4.9.4",
     "url-loader": "4.1.1",
     "utility-types": "3.10.0",
     "webpack-preprocessor-loader": "^1.2.0"
