@@ -9,10 +9,11 @@ import { useConfig } from 'modules/config/hooks/useConfig'
 import type { Signer, providers } from 'ethers'
 import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
 import { getChainName } from 'modules/blockChain/chains'
-import type {
-  FilterAsyncMethods,
-  UnpackedPromise,
-} from '@lido-sdk/react/dist/esm/hooks/types'
+import type { FilterAsyncMethods } from '@lido-sdk/react/dist/esm/hooks/types'
+import {
+  AsyncMethodReturns,
+  AsyncMethodParameters,
+} from 'modules/types/filter-async-methods'
 
 type Library = Signer | providers.Provider
 
@@ -95,10 +96,10 @@ export function createContractHelpers<F extends Factory>({
   const getUseSwr = function (type: 'web3' | 'rpc') {
     return function <
       M extends FilterAsyncMethods<Instance>,
-      Data extends UnpackedPromise<ReturnType<Instance[M]>>,
+      Data extends AsyncMethodReturns<Instance, M>,
     >(
       method: M | null | false,
-      params: Parameters<Instance[M]>,
+      params: AsyncMethodParameters<Instance, M>,
       config?: SWRConfiguration<Data>,
     ) {
       const contractInstance =

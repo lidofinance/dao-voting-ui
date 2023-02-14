@@ -2,6 +2,7 @@
 
 # generated
 /generated
+tsconfig.tsbuildinfo
 
 # dependencies
 /node_modules
