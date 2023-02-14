@@ -1,3 +1,12 @@
+# [0.11.0](https://github.com/lidofinance/dao-voting-ui/compare/0.10.0...0.11.0) (2023-02-14)
+
+
+### Features
+
+* updated ts to ^4.9.4 & fixed issues ([336842e](https://github.com/lidofinance/dao-voting-ui/commit/336842e29dc81ac7e902d1e5a40c2a0ffc3860f6))
+
+
+
 # [0.10.0](https://github.com/lidofinance/dao-voting-ui/compare/0.9.2...0.10.0) (2023-02-07)
 
 
@@ -161,31 +170,6 @@
 * etherscan requests caching ([a32bc4b](https://github.com/lidofinance/dao-voting-ui/commit/a32bc4b43900a0de759d81f3281dfc1af4365abc))
 * fetch abi from etherscan ([068947e](https://github.com/lidofinance/dao-voting-ui/commit/068947e06963a61150b0975b72c155a8dd2d55c7))
 * tracking response time ([0fa5cd9](https://github.com/lidofinance/dao-voting-ui/commit/0fa5cd942f04266221a5731b07df35d11e47fc6f))
-
-
-
-# [0.4.0](https://github.com/lidofinance/dao-voting-ui/compare/0.3.0...0.4.0) (2022-06-24)
-
-
-### Bug Fixes
-
-* docker file curl version ([20266ea](https://github.com/lidofinance/dao-voting-ui/commit/20266eaa053428b835e219d10817ba060037f715))
-* dockerfile ([dad91f0](https://github.com/lidofinance/dao-voting-ui/commit/dad91f03816f44f90cde2787a15cfbed65d8b81f))
-* dockerfile curl version ([0401ea4](https://github.com/lidofinance/dao-voting-ui/commit/0401ea44608152bac40acfbd338e47ecac90834d))
-* InputNumber console warning ([e8c868c](https://github.com/lidofinance/dao-voting-ui/commit/e8c868c57acc23514d5086afef0d7469fa141774))
-* unlock action button when transaction fails ([7e558b0](https://github.com/lidofinance/dao-voting-ui/commit/7e558b0956d4cdad838e1bf2b2afd190414ae426))
-* vote fetch when wallet is not connected ([64d09a1](https://github.com/lidofinance/dao-voting-ui/commit/64d09a144603559c9b663caae5a7a6235eed147f))
-* vote status calculation ([8c5372f](https://github.com/lidofinance/dao-voting-ui/commit/8c5372fa40ab4d0514d8bdbd209ac65787da94a6))
-* voting phases and manual enactment ([5dc98c7](https://github.com/lidofinance/dao-voting-ui/commit/5dc98c7a21d2cc598dd3f97ec2cbceed817d39fb))
-
-
-### Features
-
-* nested evm scripts decoding ([088f59f](https://github.com/lidofinance/dao-voting-ui/commit/088f59f5169e6fb73b30773c4d0c2e0f485aad69))
-* passed (pending) status ([7c969cd](https://github.com/lidofinance/dao-voting-ui/commit/7c969cd4cc9ab58c7d5a70eea1ecafed1534ee0b))
-* phases info tooltip ([12ef108](https://github.com/lidofinance/dao-voting-ui/commit/12ef108eacf57c4cd198aca24897ffc5e61470cf))
-* ui improvements ([11a207f](https://github.com/lidofinance/dao-voting-ui/commit/11a207fb146c4e13d600c45dd4abd0d55cd4a25e))
-* vote phases support ([8b61bc9](https://github.com/lidofinance/dao-voting-ui/commit/8b61bc9c81baf6ed73c6dd1cd45821b85c0466c7))
 
 
 
