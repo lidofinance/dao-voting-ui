@@ -1,3 +1,12 @@
+# [0.12.0](https://github.com/lidofinance/dao-voting-ui/compare/0.11.0...0.12.0) (2023-03-01)
+
+
+### Features
+
+* add buttonsfullwidth to reef-knot modal ([9913c88](https://github.com/lidofinance/dao-voting-ui/commit/9913c885ed1a8ffa55ab0eb0b47cdf3e17b1b5aa))
+
+
+
 # [0.11.0](https://github.com/lidofinance/dao-voting-ui/compare/0.10.0...0.11.0) (2023-02-14)
 
 
@@ -151,25 +160,6 @@
 * percents formatting ([8955262](https://github.com/lidofinance/dao-voting-ui/commit/8955262ce7e51147b2f0a5489714c2a3cd811bcc))
 * settings description ([b040ae2](https://github.com/lidofinance/dao-voting-ui/commit/b040ae27eb9e6c2ef5a650b669a06af960765972))
 * settings ux improvements ([4857e64](https://github.com/lidofinance/dao-voting-ui/commit/4857e64fe839d0cd904ca509c1323d31b00bcf33))
-
-
-
-# [0.5.0](https://github.com/lidofinance/dao-voting-ui/compare/0.4.0...0.5.0) (2022-07-14)
-
-
-### Bug Fixes
-
-* metric labels ([432bebc](https://github.com/lidofinance/dao-voting-ui/commit/432bebced9c2fe740d6964b58868a6e128fc38e1))
-* metrics histogram naming ([237c55f](https://github.com/lidofinance/dao-voting-ui/commit/237c55f2f888f05d3205e26f27f6862e03dac77d))
-* metrics label ([c4847a9](https://github.com/lidofinance/dao-voting-ui/commit/c4847a987c50ed70dba0d2b85ab1eae4560d890d))
-
-
-### Features
-
-* abort etherscan request by timeout ([bb055b0](https://github.com/lidofinance/dao-voting-ui/commit/bb055b05cc9b449004513abd6aa3edf18afe5c54))
-* etherscan requests caching ([a32bc4b](https://github.com/lidofinance/dao-voting-ui/commit/a32bc4b43900a0de759d81f3281dfc1af4365abc))
-* fetch abi from etherscan ([068947e](https://github.com/lidofinance/dao-voting-ui/commit/068947e06963a61150b0975b72c155a8dd2d55c7))
-* tracking response time ([0fa5cd9](https://github.com/lidofinance/dao-voting-ui/commit/0fa5cd942f04266221a5731b07df35d11e47fc6f))
 
 
 
