@@ -30,6 +30,7 @@ export function ConnectWalletModal(props: Props) {
   return (
     <WalletsModalForEth
       {...props}
+      buttonsFullWidth
       hiddenWallets={HIDDEN_WALLETS}
       shouldInvertWalletIcon={themeName === 'dark'}
     />
