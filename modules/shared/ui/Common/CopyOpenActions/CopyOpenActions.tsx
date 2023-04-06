@@ -1,11 +1,10 @@
 import { useEtherscanOpen } from '@lido-sdk/react'
+import type { EtherscanEntities } from '@lido-sdk/helpers'
 import { useCopyToClipboard } from 'modules/shared/hooks/useCopyToClipboard'
 
 import { ButtonIcon, Copy } from '@lidofinance/lido-ui'
 import { Wrap } from './CopyOpenActionsStyle'
 import { ButtonExternalView } from 'modules/shared/ui/Common/ButtonExternalView'
-
-import type { EtherscanEntities } from '@lido-sdk/helpers'
 
 type Props = {
   value: string | null | undefined
