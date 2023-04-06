@@ -1,8 +1,6 @@
-import { useCallback } from 'react'
-import { getEtherscanLink, openWindow } from '@lido-sdk/helpers'
+import { useEtherscanOpen } from '@lido-sdk/react'
 import type { EtherscanEntities } from '@lido-sdk/helpers'
 import { useCopyToClipboard } from 'modules/shared/hooks/useCopyToClipboard'
-import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 
 import { ButtonIcon, Copy } from '@lidofinance/lido-ui'
 import { Wrap } from './CopyOpenActionsStyle'
@@ -14,13 +12,8 @@ type Props = {
 }
 
 export function CopyOpenActions({ value, entity }: Props) {
-  const { chainId } = useWeb3()
   const handleCopy = useCopyToClipboard(value ?? '')
-
-  const handleEtherscan = useCallback(() => {
-    const link = getEtherscanLink(chainId, value ?? '', entity)
-    openWindow(link)
-  }, [chainId, entity, value])
+  const handleEtherscan = useEtherscanOpen(value ?? '', entity)
 
   const copyText =
     entity === 'address' ? 'address' : entity === 'tx' ? 'hash' : 'token'
