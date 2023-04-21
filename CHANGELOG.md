@@ -1,3 +1,7 @@
+# This file is no longer used by semantic-release
+For the latest release notes, please see the [GitHub releases page](https://github.com/lidofinance/dao-voting-ui/releases).
+
+
 # [0.3.0](https://github.com/lidofinance/dao-voting-ui/compare/0.2.0...0.3.0) (2022-06-21)
 
 
