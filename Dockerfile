@@ -17,7 +17,7 @@ ENV BASE_PATH=$BASE_PATH
 ENV NEXT_TELEMETRY_DISABLED=1
 
 WORKDIR /app
-RUN apk add --no-cache curl=~7
+RUN apk add --no-cache curl=~8
 COPY --from=build /app /app
 
 RUN mkdir -p /app/.next/cache/images && chown -R node:node /app/.next/cache/images
