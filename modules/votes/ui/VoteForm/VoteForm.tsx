@@ -124,6 +124,7 @@ export function VoteForm({ voteId }: Props) {
             objectionPhaseTime={objectionPhaseTime!}
             isEnded={isEnded}
             creator={eventStart?.creator}
+            metadata={eventStart?.metadata}
             executedTxHash={eventExecuteVote?.event.transactionHash}
           />
 

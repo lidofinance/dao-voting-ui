@@ -1,4 +1,4 @@
-import { Text, Identicon, trimAddress } from '@lidofinance/lido-ui'
+import { Text } from '@lidofinance/lido-ui'
 import { FormattedDate } from 'modules/shared/ui/Utils/FormattedDate'
 import { VoteScript } from '../VoteScript'
 import { VoteDetailsCountdown } from '../VoteDetailsCountdown'
@@ -10,10 +10,12 @@ import {
   VoteTitle,
   CreatorBadge,
   DataTable,
+  DetailsBoxWrap,
+  DescriptionWrap,
 } from './VoteDetailsStyle'
-import { AddressPop } from 'modules/shared/ui/Common/AddressPop'
 import { ContentHighlightBox } from 'modules/shared/ui/Common/ContentHighlightBox'
 import { InfoRowFull } from 'modules/shared/ui/Common/InfoRow'
+import { VoteMetadataDescription } from '../VoteMetadataDescription'
 
 import { Vote, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
@@ -27,6 +29,7 @@ type Props = {
   voteTime: number
   objectionPhaseTime: number
   creator?: string
+  metadata?: string
   isEnded: boolean
   executedTxHash?: string
 }
@@ -38,6 +41,7 @@ export function VoteDetails({
   voteTime,
   objectionPhaseTime,
   creator,
+  metadata,
   isEnded,
   executedTxHash,
 }: Props) {
@@ -75,14 +79,7 @@ export function VoteDetails({
         </InfoRowFull>
 
         <InfoRowFull title="Created by">
-          {creator && (
-            <AddressPop address={creator}>
-              <CreatorBadge>
-                <Identicon diameter={16} address={creator} />
-                <div>{trimAddress(creator, 4)}</div>
-              </CreatorBadge>
-            </AddressPop>
-          )}
+          {creator && <CreatorBadge address={creator} />}
         </InfoRowFull>
 
         <VoteDetailsCountdown
@@ -144,22 +141,37 @@ export function VoteDetails({
         </InfoRowFull>
       </DataTable>
 
-      <BoxVotes>
-        <VoteYesNoBar
-          yeaPct={yeaPct}
-          nayPct={nayPct}
-          yeaPctOfTotalSupply={yeaPctOfTotalSupplyFormatted}
-          nayPctOfTotalSupply={nayPctOfTotalSupplyFormatted}
-        />
-      </BoxVotes>
+      <DetailsBoxWrap>
+        <BoxVotes>
+          <VoteYesNoBar
+            yeaPct={yeaPct}
+            nayPct={nayPct}
+            yeaPctOfTotalSupply={yeaPctOfTotalSupplyFormatted}
+            nayPctOfTotalSupply={nayPctOfTotalSupplyFormatted}
+          />
+        </BoxVotes>
+      </DetailsBoxWrap>
 
-      <ContentHighlightBox isCentered>
-        Voting {isEnded ? 'ended at' : 'ends'}{' '}
-        <FormattedDate date={endDate} format="MMMM DD, YYYY at HH:mm" />
-      </ContentHighlightBox>
+      <DetailsBoxWrap>
+        <ContentHighlightBox isCentered>
+          Voting {isEnded ? 'ended at' : 'ends'}{' '}
+          <FormattedDate date={endDate} format="MMMM DD, YYYY at HH:mm" />
+        </ContentHighlightBox>
+      </DetailsBoxWrap>
 
-      <InfoRowFull title="Script" />
-      <VoteScript script={vote.script} />
+      {metadata && (
+        <DetailsBoxWrap>
+          <InfoRowFull title="Description" />
+          <DescriptionWrap>
+            <VoteMetadataDescription metadata={metadata} />
+          </DescriptionWrap>
+        </DetailsBoxWrap>
+      )}
+
+      <DetailsBoxWrap>
+        <InfoRowFull title="Script" />
+        <VoteScript script={vote.script} />
+      </DetailsBoxWrap>
     </>
   )
 }

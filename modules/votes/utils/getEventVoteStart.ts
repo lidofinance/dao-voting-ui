@@ -1,8 +1,8 @@
-import type { VotingAbi } from 'generated'
-import type { StartVoteEventObject } from 'generated/VotingAbi'
+import type { AragonVotingAbi } from 'generated'
+import type { StartVoteEventObject } from 'generated/AragonVotingAbi'
 
 export async function getEventStartVote(
-  contractVoting: VotingAbi,
+  contractVoting: AragonVotingAbi,
   voteId: string | number,
   block?: string | number,
 ) {
