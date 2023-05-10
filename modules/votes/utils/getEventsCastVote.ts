@@ -1,5 +1,5 @@
-import type { VotingAbi } from 'generated'
-import type { CastVoteEventObject } from 'generated/VotingAbi'
+import type { AragonVotingAbi } from 'generated'
+import type { CastVoteEventObject } from 'generated/AragonVotingAbi'
 
 export function unifyEventsVotedWithLast(events: CastVoteEventObject[]) {
   return events.reverse().reduce(
@@ -19,7 +19,7 @@ export function unifyEventsVotedWithLast(events: CastVoteEventObject[]) {
 }
 
 export async function getEventsCastVote(
-  contractVoting: VotingAbi,
+  contractVoting: AragonVotingAbi,
   voteId: string | number,
   block?: string | number,
 ) {
