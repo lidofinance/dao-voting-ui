@@ -142,6 +142,10 @@ export function VoteDetails({
       </DataTable>
 
       <DetailsBoxWrap>
+        <ContentHighlightBox isCentered>
+          Voting {isEnded ? 'ended at' : 'ends'}{' '}
+          <FormattedDate date={endDate} format="MMMM DD, YYYY at HH:mm" />
+        </ContentHighlightBox>
         <BoxVotes>
           <VoteYesNoBar
             yeaPct={yeaPct}
@@ -150,13 +154,6 @@ export function VoteDetails({
             nayPctOfTotalSupply={nayPctOfTotalSupplyFormatted}
           />
         </BoxVotes>
-      </DetailsBoxWrap>
-
-      <DetailsBoxWrap>
-        <ContentHighlightBox isCentered>
-          Voting {isEnded ? 'ended at' : 'ends'}{' '}
-          <FormattedDate date={endDate} format="MMMM DD, YYYY at HH:mm" />
-        </ContentHighlightBox>
       </DetailsBoxWrap>
 
       {metadata && (
