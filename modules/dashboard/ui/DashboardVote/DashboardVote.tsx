@@ -15,7 +15,7 @@ import {
   Footer,
 } from './DashboardVoteStyle'
 
-import type { StartVoteEventObject } from 'generated/VotingAbi'
+import type { StartVoteEventObject } from 'generated/AragonVotingAbi'
 import { Vote, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
