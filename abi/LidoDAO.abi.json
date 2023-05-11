@@ -2,6 +2,80 @@
   {
     "constant": true,
     "inputs": [],
+    "name": "proxyType",
+    "outputs": [{ "name": "proxyTypeId", "type": "uint256" }],
+    "payable": false,
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      { "name": "", "type": "bytes32" },
+      { "name": "", "type": "bytes32" }
+    ],
+    "name": "apps",
+    "outputs": [{ "name": "", "type": "address" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "isDepositable",
+    "outputs": [{ "name": "", "type": "bool" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "implementation",
+    "outputs": [{ "name": "", "type": "address" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "recoveryVaultAppId",
+    "outputs": [{ "name": "", "type": "bytes32" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "name": "_kernelImpl", "type": "address" }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  { "payable": true, "stateMutability": "payable", "type": "fallback" },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "name": "sender", "type": "address" },
+      { "indexed": false, "name": "value", "type": "uint256" }
+    ],
+    "name": "ProxyDeposit",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "name": "namespace", "type": "bytes32" },
+      { "indexed": true, "name": "appId", "type": "bytes32" },
+      { "indexed": false, "name": "app", "type": "address" }
+    ],
+    "name": "SetApp",
+    "type": "event"
+  },
+  {
+    "constant": true,
+    "inputs": [],
     "name": "hasInitialized",
     "outputs": [{ "name": "", "type": "bool" }],
     "payable": false,
@@ -50,18 +124,6 @@
     "type": "function"
   },
   {
-    "constant": true,
-    "inputs": [
-      { "name": "", "type": "bytes32" },
-      { "name": "", "type": "bytes32" }
-    ],
-    "name": "apps",
-    "outputs": [{ "name": "", "type": "address" }],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "constant": false,
     "inputs": [
       { "name": "_baseAcl", "type": "address" },
@@ -101,15 +163,6 @@
     "outputs": [{ "name": "appProxy", "type": "address" }],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "recoveryVaultAppId",
-    "outputs": [{ "name": "", "type": "bytes32" }],
-    "payable": false,
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -323,16 +376,6 @@
       { "indexed": false, "name": "amount", "type": "uint256" }
     ],
     "name": "RecoverToVault",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      { "indexed": true, "name": "namespace", "type": "bytes32" },
-      { "indexed": true, "name": "appId", "type": "bytes32" },
-      { "indexed": false, "name": "app", "type": "address" }
-    ],
-    "name": "SetApp",
     "type": "event"
   }
 ]

@@ -1,7 +1,7 @@
-import { VotingAbi } from 'generated'
+import { AragonVotingAbi } from 'generated'
 import { UnwrapPromise } from 'next/dist/lib/coalesced-function'
 
-export type Vote = UnwrapPromise<ReturnType<VotingAbi['getVote']>>
+export type Vote = UnwrapPromise<ReturnType<AragonVotingAbi['getVote']>>
 
 export type VoteMode = 'yay' | 'nay' | 'enact'
 

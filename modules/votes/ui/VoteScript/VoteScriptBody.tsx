@@ -10,6 +10,7 @@ import {
 
 import { EVMScriptDecoded } from '@lidofinance/evm-script-decoder/lib/types'
 import { getEtherscanAddressLink } from '@lido-sdk/helpers'
+import { getContractName } from 'modules/config/utils/getContractName'
 import { formatCallString } from './utils'
 
 type Props = {
@@ -41,11 +42,18 @@ export function VoteScriptBody({ binary, decoded, parentId }: Props) {
         )
         const showNestedScripts =
           nestedScriptsIdxs && nestedScriptsIdxs.length > 0
+        const contractNameListed = getContractName(chainId, address)
 
         return (
           <CallWrapper key={i}>
             <CallTitle size="xxs">
               {parentId !== undefined ? `${parentId}.${id}` : id}. On{' '}
+              {contractNameListed && (
+                <>
+                  [{contractNameListed}]
+                  <br />
+                </>
+              )}
               <Link href={getEtherscanAddressLink(chainId, address)}>
                 {address}
               </Link>
