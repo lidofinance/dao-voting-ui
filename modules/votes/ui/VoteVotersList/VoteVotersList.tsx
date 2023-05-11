@@ -23,7 +23,7 @@ import { Tooltip, trimAddress } from '@lidofinance/lido-ui'
 import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { formatNumber } from 'modules/shared/utils/formatNumber'
-import type { CastVoteEventObject } from 'generated/VotingAbi'
+import type { CastVoteEventObject } from 'generated/AragonVotingAbi'
 
 type Props = {
   eventsVoted: CastVoteEventObject[]

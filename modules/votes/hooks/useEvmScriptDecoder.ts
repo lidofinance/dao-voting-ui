@@ -7,25 +7,8 @@ import { ABIProvider } from '@lidofinance/evm-script-decoder/lib/types'
 import { EVMScriptDecoder, abiProviders } from '@lidofinance/evm-script-decoder'
 import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
 
-import {
-  ACLAbi__factory,
-  EasyTrackAbi__factory,
-  FinanceAbi__factory,
-  LidoDAOAbi__factory,
-  MiniMeTokenAbi__factory,
-  NodeOperatorsRegistryAbi__factory,
-  OracleAbi__factory,
-  RepoAbi__factory,
-  StethAbi__factory,
-  TokenManagerAbi__factory,
-  TokenRecovererForManagerContractsAbi__factory,
-  VotingAbi__factory,
-  CompositePostRebaseBeaconReceiverAbi__factory,
-  DepositSecurityModuleAbi__factory,
-} from 'generated'
+import * as abis from 'generated'
 import * as ADDR from 'modules/blockChain/contractAddresses'
-import { TreasuryAbi__factory } from 'generated/factories/TreasuryAbi__factory'
-import { VotingRepoAbi__factory } from 'generated/factories/VotingRepoAbi__factory'
 import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'
 
 export function useEVMScriptDecoder(): EVMScriptDecoder {
@@ -35,29 +18,57 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
   const { etherscanApiKey, useBundledAbi } = savedConfig
 
   return useGlobalMemo(() => {
+    const KEYS = Object.keys(ADDR).reduce(
+      (keys, contractName: keyof typeof ADDR) => ({
+        ...keys,
+        [contractName]: ADDR[contractName][chainId]!,
+      }),
+      {} as Record<keyof typeof ADDR, string>,
+    )
+
     const localDecoder = new abiProviders.Local({
-      [ADDR.Voting[chainId]!]: VotingAbi__factory.abi as any,
-      [ADDR.GovernanceToken[chainId]!]: MiniMeTokenAbi__factory.abi as any,
-      [ADDR.TokenManager[chainId]!]: TokenManagerAbi__factory.abi,
-      [ADDR.Finance[chainId]!]: FinanceAbi__factory.abi,
-      [ADDR.NodeOperatorsRegistry[chainId]!]:
-        NodeOperatorsRegistryAbi__factory.abi,
-      [ADDR.Treasury[chainId]!]: TreasuryAbi__factory.abi,
-      [ADDR.ACL[chainId]!]: ACLAbi__factory.abi,
-      [ADDR.VotingRepo[chainId]!]: VotingRepoAbi__factory.abi,
-      [ADDR.LidoDAO[chainId]!]: LidoDAOAbi__factory.abi,
-      [ADDR.EasyTrack[chainId]!]: EasyTrackAbi__factory.abi,
-      [ADDR.TokenRecovererForManagerContracts[chainId]!]:
-        TokenRecovererForManagerContractsAbi__factory.abi,
-      [ADDR.LidoAppRepo[chainId]!]: RepoAbi__factory.abi,
-      [ADDR.NodeOperatorsRegistryRepo[chainId]!]: RepoAbi__factory.abi,
-      [ADDR.Steth[chainId]!]: StethAbi__factory.abi,
-      [ADDR.OracleRepo[chainId]!]: RepoAbi__factory.abi,
-      [ADDR.Oracle[chainId]!]: OracleAbi__factory.abi,
-      [ADDR.CompositePostRebaseBeaconReceiver[chainId]!]:
-        CompositePostRebaseBeaconReceiverAbi__factory.abi,
-      [ADDR.DepositSecurityModule[chainId]!]:
-        DepositSecurityModuleAbi__factory.abi,
+      [KEYS.AragonVoting]: abis.AragonVotingAbi__factory.abi as any,
+      [KEYS.GovernanceToken]: abis.MiniMeTokenAbi__factory.abi as any,
+      [KEYS.TokenManager]: abis.TokenManagerAbi__factory.abi,
+      [KEYS.AragonFinance]: abis.AragonFinanceAbi__factory.abi,
+      [KEYS.NodeOperatorsRegistry]: abis.NodeOperatorsRegistryAbi__factory.abi,
+      [KEYS.AragonAgent]: abis.AragonAgentAbi__factory.abi,
+      [KEYS.AragonACL]: abis.AragonACLAbi__factory.abi,
+      [KEYS.VotingRepo]: abis.VotingRepoAbi__factory.abi,
+      [KEYS.LidoDAO]: abis.LidoDAOAbi__factory.abi,
+      [KEYS.EasyTrack]: abis.EasyTrackAbi__factory.abi,
+      [KEYS.TokenRecovererForManagerContracts]:
+        abis.TokenRecovererForManagerContractsAbi__factory.abi,
+      [KEYS.LidoAppRepo]: abis.RepoAbi__factory.abi,
+      [KEYS.NodeOperatorsRegistryRepo]: abis.RepoAbi__factory.abi,
+      [KEYS.Steth]: abis.StethAbi__factory.abi,
+      [KEYS.OracleRepo]: abis.RepoAbi__factory.abi,
+      [KEYS.LegacyOracle]: abis.LegacyOracleAbi__factory.abi,
+      [KEYS.CompositePostRebaseBeaconReceiver]:
+        abis.CompositePostRebaseBeaconReceiverAbi__factory.abi,
+      [KEYS.DepositSecurityModule]: abis.DepositSecurityModuleAbi__factory.abi,
+      [KEYS.WithdrawalVault]: abis.WithdrawalVaultAbi__factory.abi,
+      [KEYS.ShapellaUpgradeTemplate]:
+        abis.ShapellaUpgradeTemplateAbi__factory.abi,
+      [KEYS.StakingRouter]: abis.StakingRouterAbi__factory.abi,
+      [KEYS.LidoLocator]: abis.LidoLocatorAbi__factory.abi,
+      [KEYS.WithdrawalQueueERC721]: abis.WithdrawalQueueERC721Abi__factory.abi,
+      [KEYS.OracleReportSanityChecker]:
+        abis.OracleReportSanityCheckerAbi__factory.abi,
+      [KEYS.HashConsensusAccountingOracle]: abis.HashConsensusAbi__factory.abi,
+      [KEYS.HashConsensusValidatorsExitBus]: abis.HashConsensusAbi__factory.abi,
+      [KEYS.AccountingOracle]: abis.AccountingOracleAbi__factory.abi,
+      [KEYS.ValidatorsExitBusOracle]:
+        abis.ValidatorsExitBusOracleAbi__factory.abi,
+      [KEYS.WithdrawalQueueEarlyCommitment]:
+        abis.WithdrawalQueueERC721Abi__factory.abi,
+      [KEYS.MEVBoostRelayAllowedList]:
+        abis.MEVBoostRelayAllowedListAbi__factory.abi,
+      [KEYS.OracleDaemonConfig]: abis.OracleDaemonConfigAbi__factory.abi,
+      [KEYS.TRPVestingEscrowFactory]:
+        abis.TRPVestingEscrowFactoryAbi__factory.abi,
+      [KEYS.ExecutionLayerRewardsVault]:
+        abis.ExecutionLayerRewardsVaultAbi__factory.abi,
     })
 
     const etherscanDecoder = new abiProviders.Base({

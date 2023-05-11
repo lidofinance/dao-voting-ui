@@ -5,8 +5,17 @@ import Link from 'next/link'
 import { VoteStatusBanner } from 'modules/votes/ui/VoteStatusBanner'
 import { VoteYesNoBar } from 'modules/votes/ui/VoteYesNoBar'
 import { InfoRowFull } from 'modules/shared/ui/Common/InfoRow'
-import { Wrap, VoteTitle, VotesBarWrap, Footer } from './DashboardVoteStyle'
+import { VoteMetadataDescription } from 'modules/votes/ui/VoteMetadataDescription'
+import {
+  Wrap,
+  VoteBody,
+  VoteTitle,
+  VoteDescription,
+  VotesBarWrap,
+  Footer,
+} from './DashboardVoteStyle'
 
+import type { StartVoteEventObject } from 'generated/AragonVotingAbi'
 import { Vote, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
@@ -16,6 +25,7 @@ import * as urls from 'modules/network/utils/urls'
 type Props = {
   voteId: number
   vote: Vote
+  eventStart: StartVoteEventObject
   status: VoteStatus
   voteTime: number
   objectionPhaseTime: number
@@ -25,6 +35,7 @@ type Props = {
 export function DashboardVote({
   voteId,
   vote,
+  eventStart,
   status,
   voteTime,
   objectionPhaseTime,
@@ -69,6 +80,8 @@ export function DashboardVote({
   const isEnded =
     status === VoteStatus.Rejected || status === VoteStatus.Executed
 
+  const { metadata } = eventStart
+
   return (
     <Link passHref href={urls.vote(voteId)}>
       <Wrap>
@@ -82,7 +95,14 @@ export function DashboardVote({
           fontSize="xxs"
         />
 
-        <VoteTitle>Vote #{voteId}</VoteTitle>
+        <VoteBody>
+          <VoteTitle>Vote #{voteId}</VoteTitle>
+          {metadata && (
+            <VoteDescription>
+              <VoteMetadataDescription metadata={metadata} />
+            </VoteDescription>
+          )}
+        </VoteBody>
 
         <Footer>
           <VotesBarWrap>

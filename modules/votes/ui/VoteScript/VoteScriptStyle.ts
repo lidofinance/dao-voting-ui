@@ -47,7 +47,6 @@ export const Tab = styled.div<TabProps>`
 export const VoteScriptBodyWrap = styled.div`
   position: relative;
   margin-top: -1px;
-  margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
   border-radius: 0 ${({ theme }) => theme.borderRadiusesMap.lg}px
     ${({ theme }) => theme.borderRadiusesMap.lg}px
     ${({ theme }) => theme.borderRadiusesMap.lg}px;
@@ -78,6 +77,7 @@ export const NestedPadding = styled.div`
   & > ${CallWrapper} {
     padding-top: 0;
     padding-bottom: 0;
+    padding-right: 0;
   }
 `
 
