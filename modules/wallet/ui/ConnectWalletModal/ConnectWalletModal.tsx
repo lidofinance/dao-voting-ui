@@ -1,6 +1,5 @@
 import { useThemeToggle } from '@lidofinance/lido-ui'
-
-import { WalletsModalForEth } from '@reef-knot/connect-wallet-modal'
+import { WalletsModalForEth } from 'reef-knot/connect-wallet-modal'
 
 type WalletModalForEthProps = React.ComponentProps<typeof WalletsModalForEth>
 

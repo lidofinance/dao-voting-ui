@@ -55,7 +55,7 @@ const tsRules = {
 
 // Import
 const importRules = {
-  'import/no-unresolved': ['error', { ignore: ['.svg'] }],
+  'import/no-unresolved': ['error', { ignore: ['.svg', 'reef-knot'] }],
   'import/no-dynamic-require': 'error',
   'import/no-self-import': 'error',
   'import/no-useless-path-segments': ['error', { noUselessIndex: true }],
