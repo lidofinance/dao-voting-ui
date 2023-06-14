@@ -10,11 +10,10 @@ const { publicRuntimeConfig } = getConfig()
 
 let supportedChainIds: number[] = []
 if (publicRuntimeConfig.supportedChains != null) {
-  supportedChainIds =
-    publicRuntimeConfig.supportedChains
-      .split(',')
-      .map((chainId: string) => parseInt(chainId))
-      .filter((chainId: number) => !Number.isNaN(chainId)) ?? []
+  supportedChainIds = publicRuntimeConfig.supportedChains
+    .split(',')
+    .map((chainId: string) => parseInt(chainId))
+    .filter((chainId: number) => !Number.isNaN(chainId))
 } else if (publicRuntimeConfig.defaultChain != null) {
   supportedChainIds = [parseInt(publicRuntimeConfig.defaultChain)]
 }
