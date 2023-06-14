@@ -13,7 +13,7 @@ const cspReportUri = process.env.CSP_REPORT_URI
 const ipfsMode = process.env.IPFS_MODE
 const walletconnectProjectId = process.env.WALLETCONNECT_PROJECT_ID
 
-module.exports = {
+export default {
   basePath,
   webpack5: true,
   experimental: {
