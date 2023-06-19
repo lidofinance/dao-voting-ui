@@ -1,3 +1,4 @@
+import { CHAINS } from '@lido-sdk/constants'
 import { useConfig } from 'modules/config/hooks/useConfig'
 import getConfig from 'next/config'
 import { useMemo } from 'react'
@@ -12,7 +13,10 @@ export function AppProviderWeb3({ children }: { children: React.ReactNode }) {
     () =>
       supportedChainIds.reduce<Record<number, string>>(
         (res, curr) => ({ ...res, [curr]: getRpcUrl(curr) }),
-        {},
+        {
+          // Required by reef-knot
+          [CHAINS.Mainnet]: getRpcUrl(CHAINS.Mainnet),
+        },
       ),
     [supportedChainIds, getRpcUrl],
   )
