@@ -5,6 +5,7 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { getConnectors } from 'reef-knot/core-react'
 import getConfig from 'next/config'
 import { getRpcUrlDefault } from 'modules/config'
+import { CHAINS } from '@lido-sdk/constants'
 
 const { publicRuntimeConfig } = getConfig()
 
@@ -24,7 +25,10 @@ const supportedChains = Object.values(wagmiChains).filter(chain =>
 
 const backendRPC = supportedChainIds.reduce<Record<number, string>>(
   (res, curr) => ({ ...res, [curr]: getRpcUrlDefault(curr) }),
-  {},
+  {
+    // Required by reef-knot
+    [CHAINS.Mainnet]: getRpcUrlDefault(CHAINS.Mainnet),
+  },
 )
 
 const connectors = getConnectors({
