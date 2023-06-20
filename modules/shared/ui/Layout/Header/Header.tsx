@@ -5,6 +5,7 @@ import { useScrollLock } from 'modules/shared/hooks/useScrollLock'
 
 import Link from 'next/link'
 import { Text } from 'modules/shared/ui/Common/Text'
+import { NoSSRWrapper } from 'modules/shared/ui/Utils/NoSSRWrapper'
 import { HeaderWallet } from '../HeaderWallet'
 import { ThemeToggler } from '@lidofinance/lido-ui'
 import { HeaderVoteInput } from 'modules/votes/ui/HeaderVoteInput'
@@ -107,7 +108,9 @@ export function Header() {
               {getChainName(chainId)}
             </Text>
           </Network>
-          <HeaderWallet />
+          <NoSSRWrapper>
+            <HeaderWallet />
+          </NoSSRWrapper>
           <ThemeTogglerWrap>
             <ThemeToggler />
           </ThemeTogglerWrap>
