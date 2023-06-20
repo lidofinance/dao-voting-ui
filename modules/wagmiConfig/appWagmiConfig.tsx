@@ -19,8 +19,12 @@ if (publicRuntimeConfig.supportedChains != null) {
   supportedChainIds = [parseInt(publicRuntimeConfig.defaultChain)]
 }
 
-const supportedChains = Object.values(wagmiChains).filter(chain =>
+const wagmiChainsArray = Object.values(wagmiChains)
+const supportedChains = wagmiChainsArray.filter(chain =>
   supportedChainIds.includes(chain.id),
+)
+const defaultChain = wagmiChainsArray.find(
+  chain => chain.id === parseInt(publicRuntimeConfig.defaultChain),
 )
 
 const backendRPC = supportedChainIds.reduce<Record<number, string>>(
@@ -31,18 +35,23 @@ const backendRPC = supportedChainIds.reduce<Record<number, string>>(
   },
 )
 
+const { chains, provider, webSocketProvider } = configureChains(
+  supportedChains,
+  [
+    jsonRpcProvider({
+      rpc: chain => ({
+        http: backendRPC[chain.id],
+      }),
+    }),
+  ],
+)
+
 const connectors = getConnectors({
+  chains,
+  defaultChain,
   rpc: backendRPC,
   walletconnectProjectId: publicRuntimeConfig.walletconnectProjectId,
 })
-
-const { provider, webSocketProvider } = configureChains(supportedChains, [
-  jsonRpcProvider({
-    rpc: chain => ({
-      http: backendRPC[chain.id],
-    }),
-  }),
-])
 
 const client = createClient({
   connectors,
