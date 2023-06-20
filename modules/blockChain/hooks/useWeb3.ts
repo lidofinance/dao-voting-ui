@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3 as useWeb3ReefKnot } from 'reef-knot/web3-react'
 import { useConfig } from 'modules/config/hooks/useConfig'
 import { parseChainId } from '../chains'
 
 export function useWeb3() {
-  const web3 = useWeb3React()
+  const web3 = useWeb3ReefKnot()
   const { defaultChain } = useConfig()
   const { chainId } = web3
 
