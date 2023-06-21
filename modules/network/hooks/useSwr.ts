@@ -11,6 +11,7 @@ import {
   SWRInfiniteConfiguration,
   SWRInfiniteKeyLoader,
 } from 'swr/infinite'
+import { getErrorMessage } from 'modules/shared/utils/getErrorMessage'
 
 export type SWRResponse<Data, Error = any> = SWRResponseSource<Data, Error> & {
   initialLoading: boolean
@@ -19,7 +20,7 @@ export type SWRResponse<Data, Error = any> = SWRResponseSource<Data, Error> & {
 const defaultConfig = {
   onError: (error: any) => {
     console.error(error)
-    ToastError(error, {})
+    ToastError(getErrorMessage(error), {})
   },
   errorRetryInterval: 100_000,
   focusThrottleInterval: 10_000,
