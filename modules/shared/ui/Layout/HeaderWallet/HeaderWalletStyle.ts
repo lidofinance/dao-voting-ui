@@ -24,9 +24,9 @@ export const AddressBadge = styled.div`
   font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
   border-radius: ${({ theme }) => theme.borderRadiusesMap.sm}px;
   border: 1px solid var(--lido-color-border);
-  background-color: var(--lido-color-foreground);
   user-select: none;
   cursor: pointer;
+  width: 100%;
 `
 
 export const AddressText = styled.div`
