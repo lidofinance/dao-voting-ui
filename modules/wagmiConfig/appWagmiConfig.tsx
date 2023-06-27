@@ -20,8 +20,10 @@ if (publicRuntimeConfig.supportedChains != null) {
 }
 
 const wagmiChainsArray = Object.values(wagmiChains)
-const supportedChains = wagmiChainsArray.filter(chain =>
-  supportedChainIds.includes(chain.id),
+const supportedChains = wagmiChainsArray.filter(
+  chain =>
+    // Temporary wagmi fix, need to hardcode it to not affect non-wagmi wallets
+    supportedChainIds.includes(chain.id) || chain.id === 80001,
 )
 const defaultChain = wagmiChainsArray.find(
   chain => chain.id === parseInt(publicRuntimeConfig.defaultChain),
