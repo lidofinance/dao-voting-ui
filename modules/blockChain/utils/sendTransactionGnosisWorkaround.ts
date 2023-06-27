@@ -1,7 +1,6 @@
 import { PopulatedTransaction } from '@ethersproject/contracts'
 import { ToastInfo, toast } from '@lidofinance/lido-ui'
 import { ResultTx } from '../types'
-import { checkConnectedToSafe } from './checkConnectedToSafe'
 import type { Signer } from '@ethersproject/abstract-signer'
 import type { JsonRpcSigner } from '@ethersproject/providers'
 
@@ -11,15 +10,13 @@ import type { JsonRpcSigner } from '@ethersproject/providers'
 export async function sendTransactionGnosisWorkaround(
   signer: Signer | JsonRpcSigner | undefined,
   transaction: PopulatedTransaction,
+  isMultisig: boolean,
 ): Promise<ResultTx> {
   if (!signer) throw Error('signer is required')
 
-  const provider = (signer.provider as any)?.provider
-  const isGnosisSafe = checkConnectedToSafe(provider)
-
   const pendingToastId = ToastInfo(`Confirm transaction in your wallet`, {})
 
-  if (isGnosisSafe) {
+  if (isMultisig) {
     const hash: string = await (signer as any).sendUncheckedTransaction(
       transaction,
     )
