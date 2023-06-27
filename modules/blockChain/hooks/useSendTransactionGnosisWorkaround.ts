@@ -7,7 +7,7 @@ export function useSendTransactionGnosisWorkaround() {
   const { library } = useWeb3()
   return useCallback(
     (tx: PopulatedTransaction) =>
-      sendTransactionGnosisWorkaround(library.getSigner(), tx),
+      sendTransactionGnosisWorkaround(library?.getSigner(), tx),
     [library],
   )
 }
