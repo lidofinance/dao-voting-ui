@@ -25,7 +25,9 @@
   },
   "resolutions": {
     "@types/react": "17.0.2",
-    "@types/react-dom": "17.0.2"
+    "@types/react-dom": "17.0.2",
+    "@walletconnect/core": "^2.8.3",
+    "@walletconnect/ethereum-provider": "^2.8.3"
   },
   "dependencies": {
     "@lido-sdk/constants": "^1.9.0",
@@ -58,11 +60,11 @@
     "react-dom": "17.0.2",
     "react-hook-form": "7.28.1",
     "react-use": "17.3.2",
-    "reef-knot": "^1.4.0",
+    "reef-knot": "^1.4.3",
     "styled-components": "5.3.5",
     "swr": "1.2.2",
     "typechain": "8.0.0",
-    "wagmi": "0.12.16",
+    "wagmi": "0.12.17",
     "winston": "3.6.0"
   },
   "devDependencies": {
