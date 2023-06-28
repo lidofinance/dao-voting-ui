@@ -1,22 +1,22 @@
-import { Signer } from '@ethersproject/abstract-signer'
 import { PopulatedTransaction } from '@ethersproject/contracts'
 import { ToastInfo, toast } from '@lidofinance/lido-ui'
 import { ResultTx } from '../types'
-import { checkConnectedToSafe } from './checkConnectedToSafe'
+import type { Signer } from '@ethersproject/abstract-signer'
+import type { JsonRpcSigner } from '@ethersproject/providers'
 
 // This workaround exists because gnosis safe return making regular `sendTransaction` endlessly waiting
 // https://github.com/ethers-io/ethers.js/blob/7274cd06cf3f6f31c6df3fd6636706d8536b7ee2/packages/providers/src.ts/json-rpc-provider.ts#L226-L246
 
 export async function sendTransactionGnosisWorkaround(
-  signer: Signer,
+  signer: Signer | JsonRpcSigner | undefined,
   transaction: PopulatedTransaction,
+  isMultisig: boolean,
 ): Promise<ResultTx> {
-  const provider = (signer.provider as any)?.provider
-  const isGnosisSafe = checkConnectedToSafe(provider)
+  if (!signer) throw Error('signer is required')
 
   const pendingToastId = ToastInfo(`Confirm transaction in your wallet`, {})
 
-  if (isGnosisSafe) {
+  if (isMultisig) {
     const hash: string = await (signer as any).sendUncheckedTransaction(
       transaction,
     )
