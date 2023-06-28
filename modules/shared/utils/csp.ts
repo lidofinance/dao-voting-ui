@@ -21,6 +21,8 @@ export const contentSecurityPolicy = {
       "'self'",
       'wss://*.walletconnect.org',
       'https://*.walletconnect.org',
+      'wss://*.walletconnect.com',
+      'https://*.walletconnect.com',
       'https://api.thegraph.com',
       'https://*.infura.io',
       'https://*.alchemyapi.io',
