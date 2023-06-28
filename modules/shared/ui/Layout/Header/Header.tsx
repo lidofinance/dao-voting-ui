@@ -2,9 +2,9 @@ import { useState, useCallback } from 'react'
 import { useRouter } from 'next/dist/client/router'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useScrollLock } from 'modules/shared/hooks/useScrollLock'
-
 import Link from 'next/link'
 import { Text } from 'modules/shared/ui/Common/Text'
+import { NoSSRWrapper } from 'modules/shared/ui/Utils/NoSSRWrapper'
 import { HeaderWallet } from '../HeaderWallet'
 import { ThemeToggler } from '@lidofinance/lido-ui'
 import { HeaderVoteInput } from 'modules/votes/ui/HeaderVoteInput'
@@ -25,7 +25,6 @@ import {
   MobileNavItems,
   MobileNetworkWrap,
   MobileSpacer,
-  HeaderSpacer,
   NavBurger,
   ThemeTogglerWrap,
 } from './HeaderStyle'
@@ -75,7 +74,6 @@ export function Header() {
 
   return (
     <>
-      <HeaderSpacer />
       <Wrap>
         <Nav>
           <Logo>
@@ -107,7 +105,9 @@ export function Header() {
               {getChainName(chainId)}
             </Text>
           </Network>
-          <HeaderWallet />
+          <NoSSRWrapper>
+            <HeaderWallet />
+          </NoSSRWrapper>
           <ThemeTogglerWrap>
             <ThemeToggler />
           </ThemeTogglerWrap>
@@ -125,38 +125,41 @@ export function Header() {
         </NavBurger>
 
         {isBurgerOpened && (
-          <MobileMenu>
-            <MobileMenuScroll>
-              <MobileNavItems>
-                <NavItem
-                  link={urls.home}
-                  activeOn={[
-                    { url: urls.home, exact: true },
-                    urls.voteIndex,
-                    urls.dashboardIndex,
-                  ]}
-                  onClick={handleCloseMobileMenu}
-                >
-                  Vote
-                </NavItem>
-                <NavItem link={urls.settings} onClick={handleCloseMobileMenu}>
-                  Settings
-                </NavItem>
-              </MobileNavItems>
-              <MobileNetworkWrap>
-                <ThemeTogglerWrap>
-                  <ThemeToggler />
-                </ThemeTogglerWrap>
-                <HeaderWallet />
-                <Network>
-                  <Text size={14} weight={500}>
-                    {getChainName(chainId)}
-                  </Text>
-                  <NetworkBulb color={getChainColor(chainId)} />
-                </Network>
-              </MobileNetworkWrap>
-            </MobileMenuScroll>
-          </MobileMenu>
+          <>
+            <MobileNavItems>
+              <NavItem
+                link={urls.home}
+                activeOn={[
+                  { url: urls.home, exact: true },
+                  urls.voteIndex,
+                  urls.dashboardIndex,
+                ]}
+                onClick={handleCloseMobileMenu}
+              >
+                Vote
+              </NavItem>
+              <NavItem link={urls.settings} onClick={handleCloseMobileMenu}>
+                Settings
+              </NavItem>
+            </MobileNavItems>
+
+            <MobileMenu>
+              <MobileMenuScroll>
+                <MobileNetworkWrap>
+                  <ThemeTogglerWrap>
+                    <ThemeToggler />
+                  </ThemeTogglerWrap>
+                  <HeaderWallet />
+                  <Network>
+                    <Text size={14} weight={500}>
+                      {getChainName(chainId)}
+                    </Text>
+                    <NetworkBulb color={getChainColor(chainId)} />
+                  </Network>
+                </MobileNetworkWrap>
+              </MobileMenuScroll>
+            </MobileMenu>
+          </>
         )}
         <MobileSpacer />
       </Wrap>

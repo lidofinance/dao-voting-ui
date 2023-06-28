@@ -7,6 +7,7 @@ import { useContractSwr } from '../hooks/useContractSwr'
 import { useConfig } from 'modules/config/hooks/useConfig'
 
 import type { Signer, providers } from 'ethers'
+import type { JsonRpcSigner } from '@ethersproject/providers'
 import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
 import { getChainName } from 'modules/blockChain/chains'
 import type { FilterAsyncMethods } from '@lido-sdk/react/dist/esm/hooks/types'
@@ -15,7 +16,7 @@ import {
   AsyncMethodParameters,
 } from 'modules/types/filter-async-methods'
 
-type Library = Signer | providers.Provider
+type Library = JsonRpcSigner | Signer | providers.Provider
 
 interface Factory {
   name: string
@@ -81,11 +82,13 @@ export function createContractHelpers<F extends Factory>({
       () =>
         connect({
           chainId,
-          library: library?.getSigner(),
+          // TODO: find a way to remove ! here
+          library: library?.getSigner()!,
         }),
       [
         'contract-web3-',
         active ? 'active' : 'inactive',
+        library ? 'with-signer' : 'no-signer',
         chainId,
         address[chainId],
         account,

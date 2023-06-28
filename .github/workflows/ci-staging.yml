@@ -25,5 +25,5 @@ jobs:
           APP_ID: ${{ secrets.APP_ID }}
           APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
           TARGET_REPO: "lidofinance/infra-mainnet"
-          TARGET_WORKFLOW: "deploy_staging_mainnet_dao_voting_ui.yaml"
+          TARGET_WORKFLOW: "deploy_staging_critical_dao_voting_ui.yaml"
           TARGET: "main"
