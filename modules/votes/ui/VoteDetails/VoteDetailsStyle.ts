@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import { Text as TextLocal } from 'modules/shared/ui/Common/Text'
-import { DataTable as DataTableOriginal } from '@lidofinance/lido-ui'
+
+import { Text, DataTable as DataTableOriginal } from '@lidofinance/lido-ui'
 import { ContentHighlightBox } from 'modules/shared/ui/Common/ContentHighlightBox'
 import { AddressBadge } from 'modules/shared/ui/Common/AddressBadge'
 
@@ -8,8 +8,8 @@ export const BoxVotes = styled(ContentHighlightBox)`
   padding: ${({ theme }) => theme.spaceMap.lg}px;
 `
 
-export const VoteTitle = styled(TextLocal).attrs({
-  size: 20,
+export const VoteTitle = styled(Text).attrs({
+  size: 'lg',
   weight: 700,
 })`
   margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;

@@ -1916,10 +1916,10 @@
     "@ethersproject/abi" "^5.0.7"
     keccak256 "^1.0.3"
 
-"@lidofinance/lido-ui@3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/lido-ui/-/lido-ui-3.2.0.tgz#f46f5103268e3324a48589f6ffc9edee04cb6cf7"
-  integrity sha512-tNeePz3CyxIqLrRs2n++Dt9pBcCzsdSieUTuqAe1Tan8Oe5pzNUcqSodP2i+X8ohUbelcccEI5SkyoD9tKPuHg==
+"@lidofinance/lido-ui@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@lidofinance/lido-ui/-/lido-ui-3.8.0.tgz#d0eed289eccfe76522e01b17f91e6341553ef8f1"
+  integrity sha512-p1X0LLLxiHQRflK7s50I2fa3lBfRTxu8qMNXbU0MU0FtyRt4vp4Lw1BGccC5TZXS9ZQsnC1J/LEv5VCRS0RyBg==
   dependencies:
     "@styled-system/should-forward-prop" "5.1.5"
     "@swc/helpers" "^0.4.11"
@@ -1929,7 +1929,7 @@
     react-toastify "7.0.4"
     react-transition-group "4"
     styled-system "5.1.5"
-    ua-parser-js "^1.0.2"
+    ua-parser-js "^1.0.35"
     use-callback-ref "1.2.5"
 
 "@lit-labs/ssr-dom-shim@^1.0.0", "@lit-labs/ssr-dom-shim@^1.1.0":
@@ -8286,10 +8286,10 @@ typical@^5.2.0:
   resolved "https://registry.yarnpkg.com/typical/-/typical-5.2.0.tgz#4daaac4f2b5315460804f0acf6cb69c52bb93066"
   integrity sha512-dvdQgNDNJo+8B2uBQoqdb11eUCE1JQXhvjC/CZtgvZseVd5TYMXnq0+vuUemXbd/Se29cTaUuPX3YIc2xgbvIg==
 
-ua-parser-js@^1.0.2:
-  version "1.0.33"
-  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-1.0.33.tgz#f21f01233e90e7ed0f059ceab46eb190ff17f8f4"
-  integrity sha512-RqshF7TPTE0XLYAqmjlu5cLLuGdKrNu9O1KLA/qp39QtbZwuzwv1dT46DZSopoUMsYgXpB3Cv8a03FI8b74oFQ==
+ua-parser-js@^1.0.35:
+  version "1.0.35"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-1.0.35.tgz#c4ef44343bc3db0a3cbefdf21822f1b1fc1ab011"
+  integrity sha512-fKnGuqmTBnIE+/KXSzCn4db8RTigUzw1AN0DmdU6hJovUTbYJKyqj+8Mt1c4VfRDnOVJnENmfYkIPZ946UrSAA==
 
 uint8arrays@^3.0.0, uint8arrays@^3.1.0:
   version "3.1.1"

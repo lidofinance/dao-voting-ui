@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Text } from 'modules/shared/ui/Common/Text'
+import { Text } from '@lidofinance/lido-ui'
 
 export const Desc = styled.div`
   padding: ${({ theme }) => theme.spaceMap.lg}px 0;
@@ -22,7 +22,7 @@ export const ErrorMessage = styled.div`
 `
 
 export const ClearButton = styled(Text).attrs({
-  size: 14,
+  size: 'xs',
   weight: 700,
   color: 'primary',
 })`
