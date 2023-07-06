@@ -1,12 +1,13 @@
 import { useRouter } from 'next/dist/client/router'
-
 import { VoteForm } from 'modules/votes/ui/VoteForm'
 
 export default function VotePage() {
   const router = useRouter()
-  const { voteId: urlVoteId = [] } = router.query
-  const [voteId] = urlVoteId as string[]
-
+  const { voteId } = router.query
+  if (!voteId || typeof voteId !== 'string') {
+    router.replace('/')
+    return null
+  }
   return <VoteForm voteId={voteId} />
 }
 
