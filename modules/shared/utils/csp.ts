@@ -40,7 +40,12 @@ export const contentSecurityPolicy = {
     frameAncestors: ['*'],
     manifestSrc: ["'self'", ...trustedHosts],
     mediaSrc: ["'self'", ...trustedHosts],
-    childSrc: ["'self'", ...trustedHosts],
+    childSrc: [
+      "'self'",
+      'https://*.walletconnect.org',
+      'https://*.walletconnect.com',
+      ...trustedHosts,
+    ],
     objectSrc: ["'self'", ...trustedHosts],
     defaultSrc: ["'self'", ...trustedHosts],
     baseUri: ["'none'"],
