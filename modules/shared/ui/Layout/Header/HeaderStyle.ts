@@ -6,7 +6,7 @@ export const Wrap = styled(Container).attrs({
   as: 'header',
   size: 'full',
 })`
-  position: fixed;
+  position: sticky;
   left: 0;
   top: 0;
   right: 0;
@@ -18,6 +18,11 @@ export const Wrap = styled(Container).attrs({
   background-color: var(--lido-color-foreground);
   border-bottom: 1px solid var(--lido-color-border);
   z-index: 99;
+  margin-bottom: ${({ theme }) => theme.spaceMap.xxl}px;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
+  }
 `
 
 export const Nav = styled.div`

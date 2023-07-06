@@ -2,7 +2,6 @@ import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { useConfig } from 'modules/config/hooks/useConfig'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-
 import { Card } from 'modules/shared/ui/Common/Card'
 import { Fieldset } from 'modules/shared/ui/Common/Fieldset'
 import { Form } from 'modules/shared/ui/Controls/Form'
@@ -11,9 +10,8 @@ import {
   CheckboxControl,
   CheckboxLabelWrap,
 } from 'modules/shared/ui/Controls/Checkbox'
-import { Container, Button, ToastSuccess } from '@lidofinance/lido-ui'
+import { Button, Container, ToastSuccess } from '@lidofinance/lido-ui'
 import { Actions, DescriptionText, DescriptionTitle } from './StyledFormStyle'
-
 import { ethers } from 'ethers'
 import { getChainName } from 'modules/blockChain/chains'
 import { ContractVoting } from 'modules/blockChain/contracts'

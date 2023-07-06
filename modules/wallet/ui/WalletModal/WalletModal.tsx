@@ -1,13 +1,17 @@
 import { useCallback, useMemo } from 'react'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-import { useDisconnect, useConnectorInfo } from '@reef-knot/web3-react'
+import { useDisconnect, useConnectorInfo } from 'reef-knot/web3-react'
 import { useGovernanceBalance } from 'modules/tokens/hooks/useGovernanceBalance'
 import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
 import { useConfig } from 'modules/config/hooks/useConfig'
-
-import { Text } from 'modules/shared/ui/Common/Text'
 import { CopyOpenActions } from 'modules/shared/ui/Common/CopyOpenActions'
-import { Modal, ModalProps, Identicon, trimAddress } from '@lidofinance/lido-ui'
+import {
+  Text,
+  Modal,
+  ModalProps,
+  Identicon,
+  trimAddress,
+} from '@lidofinance/lido-ui'
 import {
   Content,
   Connected,
@@ -16,8 +20,8 @@ import {
   Row,
   Address,
 } from './WalletModalStyle'
-
 import { formatToken } from 'modules/tokens/utils/formatToken'
+import { useDisconnect as useDisconnectWagmi } from 'wagmi'
 
 function WalletModalContent() {
   const { walletAddress } = useWeb3()
@@ -32,11 +36,11 @@ function WalletModalContent() {
     <>
       <Row>
         <Text
-          size={12}
+          size="xxs"
           weight={500}
           children={`${governanceSymbol} Balance:`}
         />
-        <Text size={12} weight={500}>
+        <Text size="xxs" weight={500}>
           &nbsp;
           {governanceBalance.initialLoading || !governanceBalance.data
             ? 'Loading...'
@@ -60,6 +64,7 @@ export function WalletModal(props: ModalProps) {
   const { onClose } = props
   const { providerName } = useConnectorInfo()
   const { disconnect } = useDisconnect()
+  const { disconnect: wagmiDisconnect } = useDisconnectWagmi()
   const { chainId } = useWeb3()
   const { supportedChainIds } = useConfig()
   const isChainSupported = useMemo(
@@ -69,8 +74,9 @@ export function WalletModal(props: ModalProps) {
 
   const handleDisconnect = useCallback(() => {
     disconnect?.()
+    wagmiDisconnect()
     onClose?.()
-  }, [disconnect, onClose])
+  }, [disconnect, wagmiDisconnect, onClose])
 
   return (
     <Modal title="Account" {...props}>

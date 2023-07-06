@@ -2,9 +2,8 @@ import { useState, useCallback } from 'react'
 import { useRouter } from 'next/dist/client/router'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useScrollLock } from 'modules/shared/hooks/useScrollLock'
-
 import Link from 'next/link'
-import { Text } from 'modules/shared/ui/Common/Text'
+import { NoSSRWrapper } from 'modules/shared/ui/Utils/NoSSRWrapper'
 import { HeaderWallet } from '../HeaderWallet'
 import {
   ThemeName,
@@ -12,6 +11,7 @@ import {
   Dark,
   Light,
   useThemeToggle,
+  Text,
 } from '@lidofinance/lido-ui'
 import { HeaderVoteInput } from 'modules/votes/ui/HeaderVoteInput'
 import {
@@ -33,7 +33,6 @@ import {
   MobileNavItems,
   MobileNetworkWrap,
   MobileSpacer,
-  HeaderSpacer,
   NavBurger,
   ThemeTogglerWrap,
   MobileNetworkLabel,
@@ -94,7 +93,6 @@ export function Header() {
 
   return (
     <>
-      <HeaderSpacer />
       <Wrap>
         <Nav>
           <Logo>
@@ -122,11 +120,13 @@ export function Header() {
         <ActionsDesktop>
           <Network>
             <NetworkBulb color={getChainColor(chainId)} />
-            <Text size={14} weight={500}>
+            <Text size="xs" weight={500}>
               {getChainName(chainId)}
             </Text>
           </Network>
-          <HeaderWallet />
+          <NoSSRWrapper>
+            <HeaderWallet />
+          </NoSSRWrapper>
           <ThemeTogglerWrap>
             <ThemeToggler />
           </ThemeTogglerWrap>
@@ -185,7 +185,7 @@ export function Header() {
                 <MobileNetworkLabel>Network</MobileNetworkLabel>
                 <Network>
                   <NetworkBulb color={getChainColor(chainId)} />
-                  <Text size={14} weight={500}>
+                  <Text size="xs" weight={500}>
                     {getChainName(chainId)}
                   </Text>
                 </Network>

@@ -4,9 +4,8 @@ import { useFormVoteSubmit } from './useFormVoteSubmit'
 import { useVotePassedCallback } from '../../hooks/useVotePassedCallback'
 import { useVotePrompt } from 'modules/votes/providers/VotePrompt'
 
-import { Text } from 'modules/shared/ui/Common/Text'
 import { Card } from 'modules/shared/ui/Common/Card'
-import { Container } from '@lidofinance/lido-ui'
+import { Container, Text } from '@lidofinance/lido-ui'
 import { PageLoader } from 'modules/shared/ui/Common/PageLoader'
 import { VoteDetails } from 'modules/votes/ui/VoteDetails'
 import { TxRow } from 'modules/blockChain/ui/TxRow'
@@ -74,10 +73,10 @@ export function VoteForm({ voteId }: Props) {
     <Container as="main" size="tight" key={voteId}>
       {isEmpty && (
         <Desc>
-          <Text as="p" size={16} weight={700}>
+          <Text as="p" size="sm" weight={700}>
             Enter DAO vote # in the search input above
           </Text>
-          <Text as="p" size={14} weight={400} color="textSecondary">
+          <Text as="p" size="xs" weight={400} color="secondary">
             The DAO vote you are looking for will be displayed here
           </Text>
         </Desc>
@@ -88,14 +87,14 @@ export function VoteForm({ voteId }: Props) {
       {isNotFound && (
         <Desc>
           <p>
-            <Text as="span" size={16} weight={700} color="textSecondary">
+            <Text as="span" size="sm" weight={700} color="secondary">
               No result found:{' '}
             </Text>
-            <Text as="span" size={16} weight={700}>
+            <Text as="span" size="sm" weight={700}>
               {voteId}
             </Text>
           </p>
-          <Text as="p" size={14} weight={400} color="textSecondary">
+          <Text as="p" size="xs" weight={400} color="secondary">
             Sorry, we weren&apos;t able to find any votes for your search. Try
             another search.
           </Text>

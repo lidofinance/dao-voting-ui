@@ -7,6 +7,7 @@ import { PopulatedTransaction } from '@ethersproject/contracts'
 import { openWindow } from 'modules/shared/utils/openWindow'
 import { getGnosisSafeLink } from '../utils/getGnosisSafeLink'
 import { getEtherscanLink } from '@lido-sdk/helpers'
+import { getErrorMessage } from 'modules/shared/utils/getErrorMessage'
 import { ToastError } from '@lidofinance/lido-ui'
 
 type PopulateFn<A extends unknown[]> =
@@ -53,7 +54,7 @@ export function useTransactionSender<A extends unknown[]>(
         onError?.()
         setStatus('empty')
         console.error(error)
-        ToastError(error.message || (error as any).toString(), {})
+        ToastError(getErrorMessage(error), {})
       }
     },
     [finish, populateTx, sendTransactionGnosisWorkaround, onError],
@@ -88,7 +89,7 @@ export function useTransactionSender<A extends unknown[]>(
     if (!resultTx) return
     const link =
       resultTx.type === 'safe'
-        ? getGnosisSafeLink(chainId, `${walletAddress}/transaction`)
+        ? getGnosisSafeLink(chainId, `${walletAddress}`)
         : getEtherscanLink(chainId, resultTx.tx.hash, 'tx')
     openWindow(link)
   }, [chainId, resultTx, walletAddress])

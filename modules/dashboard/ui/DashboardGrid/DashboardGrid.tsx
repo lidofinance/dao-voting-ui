@@ -1,16 +1,13 @@
 import range from 'lodash/range'
 import Router from 'next/router'
-
 import { useEffect } from 'react'
 import { useSWR } from 'modules/network/hooks/useSwr'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-
 import { Container, Pagination } from '@lidofinance/lido-ui'
 import { DashboardVote } from '../DashboardVote'
 import { DashboardVoteSkeleton } from '../DashboardVoteSkeleton'
 import { SkeletonBar } from 'modules/shared/ui/Skeletons/SkeletonBar'
 import { GridWrap, PaginationWrap } from './DashboardGridStyle'
-
 import { ContractVoting } from 'modules/blockChain/contracts'
 import { getVoteStatus } from 'modules/votes/utils/getVoteStatus'
 import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
