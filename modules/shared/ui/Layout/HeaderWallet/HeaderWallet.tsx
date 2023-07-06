@@ -5,7 +5,11 @@ import { useConnectWalletModal } from 'modules/wallet/ui/ConnectWalletModal'
 import { Button, Identicon, trimAddress } from '@lidofinance/lido-ui'
 import { Wrap, AddressBadge, AddressText } from './HeaderWalletStyle'
 
-export function HeaderWallet() {
+type Props = {
+  trimAddressSymbols?: number
+}
+
+export function HeaderWallet({ trimAddressSymbols = 3 }: Props) {
   const { isWalletConnected, walletAddress } = useWeb3()
   const openWalletModal = useWalletModal()
   const openConnectWalletModal = useConnectWalletModal()
@@ -28,7 +32,9 @@ export function HeaderWallet() {
     <Wrap>
       <AddressBadge onClick={openWalletModal}>
         <Identicon address={walletAddress!} />
-        <AddressText>{trimAddress(walletAddress!, 3)}</AddressText>
+        <AddressText>
+          {trimAddress(walletAddress!, trimAddressSymbols)}
+        </AddressText>
       </AddressBadge>
     </Wrap>
   )

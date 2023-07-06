@@ -5,7 +5,14 @@ import { useScrollLock } from 'modules/shared/hooks/useScrollLock'
 import Link from 'next/link'
 import { NoSSRWrapper } from 'modules/shared/ui/Utils/NoSSRWrapper'
 import { HeaderWallet } from '../HeaderWallet'
-import { Text, ThemeToggler } from '@lidofinance/lido-ui'
+import {
+  ThemeName,
+  ThemeToggler,
+  Dark,
+  Light,
+  useThemeToggle,
+  Text,
+} from '@lidofinance/lido-ui'
 import { HeaderVoteInput } from 'modules/votes/ui/HeaderVoteInput'
 import {
   Wrap,
@@ -13,6 +20,8 @@ import {
   Nav,
   NavItems,
   NavLink,
+  NavLinkInner,
+  NavLinkIconWrap,
   InputWrap,
   ActionsDesktop,
   Network,
@@ -26,11 +35,14 @@ import {
   MobileSpacer,
   NavBurger,
   ThemeTogglerWrap,
+  MobileNetworkLabel,
 } from './HeaderStyle'
 
 import { getChainName } from 'modules/blockChain/chains'
 import { getChainColor } from '@lido-sdk/constants'
 import LidoLogoSvg from 'assets/logo.com.svg.react'
+import StarSvg from 'assets/star.com.svg.react'
+import SettingsSvg from 'assets/settings.com.svg.react'
 import * as urls from 'modules/network/utils/urls'
 
 function NavItem({
@@ -59,7 +71,7 @@ function NavItem({
   return (
     <Link passHref href={link}>
       <NavLink isActive={isActive} onClick={onClick}>
-        <div>{children}</div>
+        <NavLinkInner>{children}</NavLinkInner>
       </NavLink>
     </Link>
   )
@@ -67,8 +79,16 @@ function NavItem({
 
 export function Header() {
   const { chainId } = useWeb3()
+  const { themeName, toggleTheme } = useThemeToggle()
   const [isBurgerOpened, setBurgerOpened] = useState(false)
   const handleCloseMobileMenu = useCallback(() => setBurgerOpened(false), [])
+  const handleClickToggleTheme = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault()
+      toggleTheme()
+    },
+    [toggleTheme],
+  )
   useScrollLock(isBurgerOpened)
 
   return (
@@ -124,41 +144,55 @@ export function Header() {
         </NavBurger>
 
         {isBurgerOpened && (
-          <>
-            <MobileNavItems>
-              <NavItem
-                link={urls.home}
-                activeOn={[
-                  { url: urls.home, exact: true },
-                  urls.voteIndex,
-                  urls.dashboardIndex,
-                ]}
-                onClick={handleCloseMobileMenu}
-              >
-                Vote
-              </NavItem>
-              <NavItem link={urls.settings} onClick={handleCloseMobileMenu}>
-                Settings
-              </NavItem>
-            </MobileNavItems>
-
-            <MobileMenu>
-              <MobileMenuScroll>
-                <MobileNetworkWrap>
-                  <ThemeTogglerWrap>
-                    <ThemeToggler />
-                  </ThemeTogglerWrap>
-                  <HeaderWallet />
-                  <Network>
-                    <Text size="xs" weight={500}>
-                      {getChainName(chainId)}
-                    </Text>
-                    <NetworkBulb color={getChainColor(chainId)} />
-                  </Network>
-                </MobileNetworkWrap>
-              </MobileMenuScroll>
-            </MobileMenu>
-          </>
+          <MobileMenu>
+            <MobileMenuScroll>
+              <MobileNavItems>
+                <NavItem
+                  link={urls.home}
+                  activeOn={[
+                    { url: urls.home, exact: true },
+                    urls.voteIndex,
+                    urls.dashboardIndex,
+                  ]}
+                  onClick={handleCloseMobileMenu}
+                >
+                  <NavLinkIconWrap>
+                    <StarSvg />
+                  </NavLinkIconWrap>{' '}
+                  Vote
+                </NavItem>
+                <NavItem link={urls.settings} onClick={handleCloseMobileMenu}>
+                  <NavLinkIconWrap>
+                    <SettingsSvg />
+                  </NavLinkIconWrap>{' '}
+                  Settings
+                </NavItem>
+                <NavLink
+                  href=""
+                  isActive={false}
+                  onClick={handleClickToggleTheme}
+                >
+                  <NavLinkInner>
+                    <NavLinkIconWrap>
+                      {themeName === ThemeName.light ? <Dark /> : <Light />}{' '}
+                    </NavLinkIconWrap>
+                    Switch to {themeName === ThemeName.light ? 'dark' : 'light'}{' '}
+                    theme
+                  </NavLinkInner>
+                </NavLink>
+              </MobileNavItems>
+              <MobileNetworkWrap>
+                <MobileNetworkLabel>Network</MobileNetworkLabel>
+                <Network>
+                  <NetworkBulb color={getChainColor(chainId)} />
+                  <Text size="xs" weight={500}>
+                    {getChainName(chainId)}
+                  </Text>
+                </Network>
+              </MobileNetworkWrap>
+              <HeaderWallet trimAddressSymbols={6} />
+            </MobileMenuScroll>
+          </MobileMenu>
         )}
         <MobileSpacer />
       </Wrap>
