@@ -1,10 +1,10 @@
-import { replaceAddressWithBadges } from 'modules/shared/utils/replaceAddressWithBadges'
 import { DescriptionText } from './VoteMetadataDescriptionStyle'
+import { replaceJsxElements } from 'modules/shared/utils/replaceLinksWithComponents'
 
 type Props = {
   metadata: string
 }
 
 export function VoteMetadataDescription({ metadata }: Props) {
-  return <DescriptionText>{replaceAddressWithBadges(metadata)}</DescriptionText>
+  return <DescriptionText>{replaceJsxElements(metadata)}</DescriptionText>
 }
