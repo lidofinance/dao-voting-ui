@@ -1916,10 +1916,10 @@
     "@ethersproject/abi" "^5.0.7"
     keccak256 "^1.0.3"
 
-"@lidofinance/lido-ui@3.8.0":
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/lido-ui/-/lido-ui-3.8.0.tgz#d0eed289eccfe76522e01b17f91e6341553ef8f1"
-  integrity sha512-p1X0LLLxiHQRflK7s50I2fa3lBfRTxu8qMNXbU0MU0FtyRt4vp4Lw1BGccC5TZXS9ZQsnC1J/LEv5VCRS0RyBg==
+"@lidofinance/lido-ui@3.8.1":
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/@lidofinance/lido-ui/-/lido-ui-3.8.1.tgz#21af8db3e27d12f08d032fcbedf00ea8904f9199"
+  integrity sha512-RalApHbilFGOePeRtRrcokMUQyH/YDcWu8njlZizNPxEDLJxMW8Y7i/rWtO05UESjEyvto2azTCDuPVuIhZHCw==
   dependencies:
     "@styled-system/should-forward-prop" "5.1.5"
     "@swc/helpers" "^0.4.11"
