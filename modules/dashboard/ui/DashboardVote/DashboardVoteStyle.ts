@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Text as TextLocal } from 'modules/shared/ui/Common/Text'
+import { Text } from '@lidofinance/lido-ui'
 
 export const Wrap = styled.a`
   display: flex;
@@ -18,13 +18,13 @@ export const VoteBody = styled.div`
   margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
 `
 
-export const VoteTitle = styled(TextLocal).attrs({
-  size: 14,
+export const VoteTitle = styled(Text).attrs({
+  size: 'xs',
   weight: 700,
 })``
 
-export const VoteDescription = styled(TextLocal).attrs({
-  size: 12,
+export const VoteDescription = styled(Text).attrs({
+  size: 'xxs',
   weight: 400,
 })`
   margin-top: ${({ theme }) => theme.spaceMap.sm}px;

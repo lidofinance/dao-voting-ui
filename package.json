@@ -37,7 +37,7 @@
     "@lido-sdk/providers": "^1.4.8",
     "@lido-sdk/react": "^1.18.5",
     "@lidofinance/evm-script-decoder": "0.2.2",
-    "@lidofinance/lido-ui": "3.2.0",
+    "@lidofinance/lido-ui": "3.8.0",
     "@typechain/ethers-v5": "10.0.0",
     "@types/lodash": "4.14.180",
     "copy-to-clipboard": "3.3.1",

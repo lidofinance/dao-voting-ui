@@ -1,12 +1,11 @@
 import styled from 'styled-components'
-import { Text } from 'modules/shared/ui/Common/Text'
+import { Text } from '@lidofinance/lido-ui'
 import { TxStatus as TxStatusType } from 'modules/blockChain/types'
 
 export const Hint = styled(Text).attrs({
-  size: 12,
+  size: 'xxs',
   weight: 500,
 })`
-  font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
   margin-bottom: 10px;
   opacity: 0.8;
 `

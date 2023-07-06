@@ -1,7 +1,7 @@
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 
-import { Text } from 'modules/shared/ui/Common/Text'
 import { Tooltip, PopoverPlacements, Link } from '@lidofinance/lido-ui'
+import { TooltipText } from './VotePhasesTooltipStyle'
 
 import { getEtherscanTxLink } from '@lido-sdk/helpers'
 
@@ -21,7 +21,7 @@ export function VotePhasesTooltip({
     <Tooltip
       placement={placement}
       title={
-        <Text size={12} color="contrast" weight={400}>
+        <TooltipText>
           Each voting comes in two phases.
           <br />
           In the first phase (or&nbsp;Main&nbsp;phase), participants can either
@@ -35,7 +35,7 @@ export function VotePhasesTooltip({
               </Link>
             </>
           )}
-        </Text>
+        </TooltipText>
       }
     >
       {/* Wrapped with div to make tooltip work properly with any children */}

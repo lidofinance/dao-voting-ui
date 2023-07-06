@@ -3,10 +3,9 @@ import { useRouter } from 'next/dist/client/router'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useScrollLock } from 'modules/shared/hooks/useScrollLock'
 import Link from 'next/link'
-import { Text } from 'modules/shared/ui/Common/Text'
 import { NoSSRWrapper } from 'modules/shared/ui/Utils/NoSSRWrapper'
 import { HeaderWallet } from '../HeaderWallet'
-import { ThemeToggler } from '@lidofinance/lido-ui'
+import { Text, ThemeToggler } from '@lidofinance/lido-ui'
 import { HeaderVoteInput } from 'modules/votes/ui/HeaderVoteInput'
 import {
   Wrap,
@@ -101,7 +100,7 @@ export function Header() {
         <ActionsDesktop>
           <Network>
             <NetworkBulb color={getChainColor(chainId)} />
-            <Text size={14} weight={500}>
+            <Text size="xs" weight={500}>
               {getChainName(chainId)}
             </Text>
           </Network>
@@ -151,7 +150,7 @@ export function Header() {
                   </ThemeTogglerWrap>
                   <HeaderWallet />
                   <Network>
-                    <Text size={14} weight={500}>
+                    <Text size="xs" weight={500}>
                       {getChainName(chainId)}
                     </Text>
                     <NetworkBulb color={getChainColor(chainId)} />
