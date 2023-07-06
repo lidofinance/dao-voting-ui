@@ -88,6 +88,7 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
             ...abiProviders.middlewares.ProxyABIMiddleware
               .DefaultImplMethodNames,
             '__Proxy_implementation',
+            'proxy__getImplementation',
           ],
           loadImplAddress(proxyAddress, abiElement) {
             const contract = new Contract(
