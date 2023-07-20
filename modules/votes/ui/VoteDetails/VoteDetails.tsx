@@ -16,11 +16,13 @@ import {
 import { ContentHighlightBox } from 'modules/shared/ui/Common/ContentHighlightBox'
 import { InfoRowFull } from 'modules/shared/ui/Common/InfoRow'
 import { VoteMetadataDescription } from '../VoteMetadataDescription'
+import { VoteMetadataIPFSDescription } from '../VoteMetadataIPFSDescription'
 
 import { Vote, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { formatNumber } from 'modules/shared/utils/formatNumber'
 import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
+import { REGEX_CID } from 'modules/shared/utils/regexCID'
 
 type Props = {
   vote: Vote
@@ -41,7 +43,7 @@ export function VoteDetails({
   voteTime,
   objectionPhaseTime,
   creator,
-  metadata,
+  metadata = '',
   isEnded,
   executedTxHash,
 }: Props) {
@@ -57,6 +59,7 @@ export function VoteDetails({
     endDate,
   } = getVoteDetailsFormatted({ vote, voteTime })
 
+  const cid = metadata.match(REGEX_CID)?.[0]
   return (
     <>
       <VotePhasesTooltip placement="bottomLeft" executedTxHash={executedTxHash}>
@@ -161,6 +164,15 @@ export function VoteDetails({
           <InfoRowFull title="Description" />
           <DescriptionWrap>
             <VoteMetadataDescription metadata={metadata} />
+          </DescriptionWrap>
+        </DetailsBoxWrap>
+      )}
+
+      {cid && (
+        <DetailsBoxWrap>
+          <InfoRowFull title="Content" />
+          <DescriptionWrap>
+            <VoteMetadataIPFSDescription cid={cid} />
           </DescriptionWrap>
         </DetailsBoxWrap>
       )}
