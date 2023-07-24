@@ -15,7 +15,7 @@ export function VoteMetadataIPFSDescription({ cid }: Props) {
   }
   if (error) {
     return (
-      <DescriptionText color="red">
+      <DescriptionText>
         ⚠️ Failed to load vote content, please try again later.
       </DescriptionText>
     )
