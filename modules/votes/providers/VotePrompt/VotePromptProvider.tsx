@@ -11,9 +11,7 @@ type Props = {
 
 export function VotePromptProvider({ children }: Props) {
   const { asPath, query } = useRouter()
-
-  const { voteId: urlVoteIdArr = [] } = query
-  const [urlVoteId] = urlVoteIdArr as string[]
+  const { voteId: urlVoteId = '' } = query as { voteId: string }
   const [voteId, setVoteIdState] = useState(urlVoteId || '')
 
   const changeRouteInstantly = useCallback((value: string) => {

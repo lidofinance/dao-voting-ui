@@ -1,5 +1,5 @@
 import styled, { css, keyframes } from 'styled-components'
-import { Container } from '@lidofinance/lido-ui'
+import { Container, Text } from '@lidofinance/lido-ui'
 import { BREAKPOINT_MOBILE } from 'modules/globalStyles'
 
 export const Wrap = styled(Container).attrs({
@@ -69,7 +69,6 @@ export const NavLink = styled.a<NavLinkProps>`
 
   & svg {
     display: block;
-    margin-right: ${({ theme }) => theme.spaceMap.sm}px;
     fill: currentColor;
   }
 
@@ -80,13 +79,29 @@ export const NavLink = styled.a<NavLinkProps>`
     `}
 
   @media (max-width: ${BREAKPOINT_MOBILE}) {
-    padding: 3px 0;
+    text-transform: none;
+    font-weight: 700;
+    font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
 
     &:not(:last-child) {
       margin-right: 0;
-      margin-bottom: 10px;
+      margin-bottom: ${({ theme }) => theme.spaceMap.xxl}px;
     }
   }
+`
+
+export const NavLinkIconWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-right: ${({ theme }) => theme.spaceMap.sm}px;
+`
+
+export const NavLinkInner = styled.div`
+  display: flex;
+  align-items: center;
 `
 
 export const ActionsDesktop = styled.div`
@@ -210,7 +225,7 @@ const menuAppearing = keyframes`
 export const MobileMenu = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 60px ${({ theme }) => theme.spaceMap.lg}px 0;
+  padding: 90px ${({ theme }) => theme.spaceMap.lg}px 0;
   position: fixed;
   overflow: auto;
   top: 0;
@@ -229,19 +244,23 @@ export const MobileMenuScroll = styled.div`
 `
 
 export const MobileNavItems = styled.div`
-  position: absolute;
-  top: 100%;
-  z-index: 100;
   display: flex;
   flex-direction: column;
-  margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;
+  margin-bottom: ${({ theme }) => theme.spaceMap.xxl}px;
 `
+
+export const MobileNetworkLabel = styled(Text).attrs({
+  color: 'secondary',
+  size: 'xs',
+})``
 
 export const MobileNetworkWrap = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  margin-top: auto;
-  margin-bottom: 40px;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  padding-top: ${({ theme }) => theme.spaceMap.xxl}px;
+  margin-bottom: ${({ theme }) => theme.spaceMap.md}px;
 
   & ${ThemeTogglerWrap} {
     margin-left: 0;
@@ -249,11 +268,12 @@ export const MobileNetworkWrap = styled.div`
   }
 
   & ${Network} {
+    margin-right: 0;
     margin-left: ${({ theme }) => theme.spaceMap.sm}px;
   }
 
   & ${NetworkBulb} {
-    margin-left: ${({ theme }) => theme.spaceMap.xs}px;
+    margin-right: ${({ theme }) => theme.spaceMap.sm}px;
   }
 `
 

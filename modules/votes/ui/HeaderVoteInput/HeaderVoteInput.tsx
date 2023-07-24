@@ -1,12 +1,7 @@
 import { useCallback } from 'react'
 import { useVotePrompt } from 'modules/votes/providers/VotePrompt'
 
-import {
-  Input,
-  Wrap,
-  SearchIconWrap,
-  ClearIconWrap,
-} from './HeaderVoteInputStyle'
+import { Input, SearchIconWrap, ClearIconWrap } from './HeaderVoteInputStyle'
 import SearchIconSVG from './icons/search.com.svg.react'
 import ClearIconSVG from 'assets/clear.com.svg.react'
 
@@ -31,22 +26,25 @@ export function HeaderVoteInput() {
   )
 
   return (
-    <Wrap>
-      <Input
-        name="voteId"
-        value={voteId}
-        placeholder="DAO Vote #"
-        onChange={handleChangeVoteId}
-        onKeyDown={handleKeyDown}
-      />
-      <SearchIconWrap>
-        <SearchIconSVG />
-      </SearchIconWrap>
-      {voteId && (
-        <ClearIconWrap onClick={clearVoteId}>
-          <ClearIconSVG />
-        </ClearIconWrap>
-      )}
-    </Wrap>
+    <Input
+      name="voteId"
+      value={voteId}
+      placeholder="DAO Vote #"
+      onChange={handleChangeVoteId}
+      onKeyDown={handleKeyDown}
+      fullwidth
+      leftDecorator={
+        <SearchIconWrap>
+          <SearchIconSVG />
+        </SearchIconWrap>
+      }
+      rightDecorator={
+        voteId && (
+          <ClearIconWrap onClick={clearVoteId}>
+            <ClearIconSVG />
+          </ClearIconWrap>
+        )
+      }
+    />
   )
 }
