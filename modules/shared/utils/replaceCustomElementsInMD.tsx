@@ -24,8 +24,8 @@ export const prepareMDForReplace = (text: string) => {
     .replace(REGEX_CID, '`$1`')
 }
 
-const isMainMatch = (regexp: RegExp, string: string) =>
-  string.match(regexp)?.[0] === string
+const isMainMatch = (regexp: RegExp, string?: string) =>
+  Boolean(string && string.match(regexp)?.[0] === string)
 
 type CodeType = Components['code']
 export const replaceAddressAndCIDInMD: CodeType = ({
@@ -50,7 +50,7 @@ export const replaceAddressAndCIDInMD: CodeType = ({
 type LinkType = Components['a']
 
 export const replaceLinksInMD: LinkType = ({ children, href, ...props }) => {
-  if (href && href.match(REGEX_URL)?.[0]) {
+  if (isMainMatch(REGEX_URL, href)) {
     return <ExternalLink {...props}>{children}</ExternalLink>
   }
   // not supporting internal links
@@ -58,7 +58,7 @@ export const replaceLinksInMD: LinkType = ({ children, href, ...props }) => {
     <span {...props}>
       <>
         {children}
-        {href && `(${href})`}
+        {href ? ` (${href})` : ''}
       </>
     </span>
   )
@@ -73,13 +73,17 @@ export const replaceImagesInMD: ImgType = ({
   src,
   ...props
 }) => {
-  console.log(props, children)
-  if (src && src.match(REGEX_URL)?.[0]) {
+  if (isMainMatch(REGEX_URL, src)) {
     return (
       <ExternalLink href={src} {...props}>
         {title || alt || 'view'} image
       </ExternalLink>
     )
   }
-  return <div>{children}</div>
+  return (
+    <div>
+      {title || alt || children}
+      {src ? ` (${src})` : ''}
+    </div>
+  )
 }

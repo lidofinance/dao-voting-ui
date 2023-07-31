@@ -13,7 +13,7 @@ export type Modal = React.ComponentType<ModalProps>
 export type Data = Record<string, string>
 
 type ModalContextValue = {
-  openModal: (modal: Modal, data: Data) => void
+  openModal: (modal: Modal, initialData?: Data) => void
 }
 
 // https://github.com/CharlesStover/use-force-update
@@ -30,7 +30,7 @@ function ModalProviderRaw({ children }: Props) {
   const [data, setData] = useState<Data>(createNewEmptyObjectForForceUpdate())
 
   const openModal = useCallback(
-    (modal: Modal, initialData: null | Data = null) => {
+    (modal: Modal, initialData?: Data) => {
       stateRef.current = modal
       if (initialData) {
         setData(initialData)
