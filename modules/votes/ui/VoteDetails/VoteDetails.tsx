@@ -15,14 +15,12 @@ import {
 } from './VoteDetailsStyle'
 import { ContentHighlightBox } from 'modules/shared/ui/Common/ContentHighlightBox'
 import { InfoRowFull } from 'modules/shared/ui/Common/InfoRow'
-import { VoteMetadataDescription } from '../VoteMetadataDescription'
-import { VoteMetadataIPFSDescription } from '../VoteMetadataIPFSDescription'
+import { VoteDescription } from '../VoteDescription'
 
 import { Vote, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { formatNumber } from 'modules/shared/utils/formatNumber'
 import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
-import { REGEX_CID } from 'modules/shared/utils/regexCID'
 
 type Props = {
   vote: Vote
@@ -34,6 +32,7 @@ type Props = {
   metadata?: string
   isEnded: boolean
   executedTxHash?: string
+  description?: string
 }
 
 export function VoteDetails({
@@ -46,6 +45,7 @@ export function VoteDetails({
   metadata = '',
   isEnded,
   executedTxHash,
+  description,
 }: Props) {
   const {
     totalSupplyFormatted,
@@ -59,7 +59,6 @@ export function VoteDetails({
     endDate,
   } = getVoteDetailsFormatted({ vote, voteTime })
 
-  const cid = metadata.match(REGEX_CID)?.[0]
   return (
     <>
       <VotePhasesTooltip placement="bottomLeft" executedTxHash={executedTxHash}>
@@ -163,23 +162,21 @@ export function VoteDetails({
         <DetailsBoxWrap>
           <InfoRowFull title="Description" />
           <DescriptionWrap>
-            <VoteMetadataDescription metadata={metadata} />
-          </DescriptionWrap>
-        </DetailsBoxWrap>
-      )}
-
-      {cid && (
-        <DetailsBoxWrap>
-          <InfoRowFull title="Content" />
-          <DescriptionWrap>
-            <VoteMetadataIPFSDescription cid={cid} />
+            <VoteDescription
+              metadata={metadata}
+              description={description}
+              prettify
+            />
           </DescriptionWrap>
         </DetailsBoxWrap>
       )}
 
       <DetailsBoxWrap>
         <InfoRowFull title="Script" />
-        <VoteScript script={vote.script} />
+        <VoteScript
+          script={vote.script}
+          metadata={description ? metadata : ''}
+        />
       </DetailsBoxWrap>
     </>
   )

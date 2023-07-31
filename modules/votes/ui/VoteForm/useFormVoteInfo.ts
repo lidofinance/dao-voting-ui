@@ -14,6 +14,8 @@ import { getEventExecuteVote } from 'modules/votes/utils/getEventExecuteVote'
 import { getVoteStatus } from 'modules/votes/utils/getVoteStatus'
 import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
 import { getEventsCastVote } from 'modules/votes/utils/getEventsCastVote'
+import { fetcherIPFS } from 'modules/network/utils/fetcherIPFS'
+import { REGEX_LIDO_VOTE_CID } from 'modules/shared/utils/regexCID'
 
 type Args = {
   voteId?: string
@@ -89,6 +91,14 @@ export function useFormVoteInfo({ voteId }: Args) {
     { onError: noop },
   )
 
+  const metadata = swrVote.data?.eventStart.metadata || ''
+  const cid = metadata.match(REGEX_LIDO_VOTE_CID)?.[1] || null
+
+  // fetch will not be triggered with cid === null
+  const swrIPFS = useSWR(cid, fetcherIPFS, { onError: noop })
+
+  const description = swrIPFS.data || ''
+
   const vote = swrVote.data?.vote
   const startDate = vote?.startDate.toNumber()
   const voteTime = swrVote.data?.voteTime.toNumber()
@@ -96,7 +106,7 @@ export function useFormVoteInfo({ voteId }: Args) {
   const votePower = swrVote.data?.votePower
   const canVote = Boolean(swrVote.data?.canVote)
   const canExecute = swrVote.data?.canExecute
-  const isLoading = swrVote.initialLoading
+  const isLoading = swrVote.initialLoading || swrIPFS.initialLoading
 
   const voterState =
     swrVote.data?.voterState === undefined
@@ -142,5 +152,6 @@ export function useFormVoteInfo({ voteId }: Args) {
     eventsVoted: swrVote.data?.eventsVoted,
     eventExecuteVote: swrVote.data?.eventExecuteVote,
     status: swrVote.data?.status,
+    description,
   }
 }

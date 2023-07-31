@@ -12,6 +12,8 @@ import { ContractVoting } from 'modules/blockChain/contracts'
 import { getVoteStatus } from 'modules/votes/utils/getVoteStatus'
 import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
 import * as urls from 'modules/network/utils/urls'
+import { fetcherIPFS } from 'modules/network/utils/fetcherIPFS'
+import { REGEX_LIDO_VOTE_CID } from 'modules/shared/utils/regexCID'
 
 const PAGE_SIZE = 20
 
@@ -87,7 +89,26 @@ export function DashboardGrid({ currentPage }: Props) {
 
       const votesWithEvents = await Promise.all(eventsPromises)
 
-      return votesWithEvents
+      const ipfsPromises = votesWithEvents.map(dataItem => {
+        const fetch = async () => {
+          const { metadata } = dataItem.eventStart
+          const cid = metadata.match(REGEX_LIDO_VOTE_CID)?.[1]
+
+          // error with description should not block UI
+          const description = await (cid
+            ? fetcherIPFS(cid).catch(() => '')
+            : Promise.resolve(''))
+          return {
+            ...dataItem,
+            description,
+          }
+        }
+        return fetch()
+      })
+
+      const votesWithEventsAndDescription = await Promise.all(ipfsPromises)
+
+      return votesWithEventsAndDescription
     },
   )
 

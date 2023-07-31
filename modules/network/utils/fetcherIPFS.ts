@@ -4,7 +4,11 @@ export const DEFAULT_PARAMS = {
   method: 'GET',
   headers: {
     'Content-type': 'text/plain',
+    // 100kb max description filesize (about 50k words)
+    range: 'bytes=0-100000',
   },
+  cache: 'force-cache' as RequestCache,
+  signal: AbortSignal.timeout(8000),
 }
 
 type FetcherIPFS = (cid: string, params?: RequestInit) => Promise<string>

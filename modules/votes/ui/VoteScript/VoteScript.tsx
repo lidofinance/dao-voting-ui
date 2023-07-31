@@ -12,18 +12,23 @@ import { VoteScriptBody } from './VoteScriptBody'
 
 type Props = {
   script: string
+  metadata: string
 }
 
-export function VoteScript({ script }: Props) {
+export function VoteScript({ script, metadata = '' }: Props) {
   const [activeTab, setActiveTab] = useState(0)
   const { initialLoading, binary, decoded } = useDecodedScript(script)
 
   const tabs = useMemo(() => {
-    if (!initialLoading && decoded?.calls.length) {
-      return ['Parsed', 'JSON', 'Raw']
+    const tabMap = {
+      Parsed: !initialLoading && decoded?.calls.length,
+      JSON: !initialLoading && decoded?.calls.length,
+      Raw: true,
+      Metadata: metadata,
     }
-    return ['Raw']
-  }, [decoded, initialLoading])
+    const TabNames = Object.keys(tabMap) as (keyof typeof tabMap)[]
+    return TabNames.filter(key => tabMap[key])
+  }, [decoded?.calls.length, initialLoading, metadata])
 
   return (
     <>
@@ -54,6 +59,7 @@ export function VoteScript({ script }: Props) {
         {tabs[activeTab] === 'Parsed' && (
           <VoteScriptBody binary={binary} decoded={decoded} />
         )}
+        {tabs[activeTab] === 'Metadata' && <VoteScriptBody binary={metadata} />}
       </VoteScriptBodyWrap>
     </>
   )

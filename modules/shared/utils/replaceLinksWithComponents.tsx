@@ -1,4 +1,4 @@
-import { Link } from '@lidofinance/lido-ui'
+import { ExternalLink } from '../ui/Common/ExternalLink'
 import { AddressBadge } from '../ui/Common/AddressBadge'
 
 import { REGEX_ETH_ADDRESS } from 'modules/shared/utils/regexEthAddress'
@@ -12,7 +12,7 @@ export const replaceJsxElements = (text: string) => {
   return replaceRegexWithJSX(text, [
     {
       regex: REGEX_URL,
-      replace: link => <Link href={link}>{link}</Link>,
+      replace: link => <ExternalLink href={link}>{link}</ExternalLink>,
     },
     {
       regex: REGEX_ETH_ADDRESS,
@@ -20,7 +20,9 @@ export const replaceJsxElements = (text: string) => {
     },
     {
       regex: REGEX_CID,
-      replace: cid => <Link href={getUrlFromCID(cid)}>{cid}</Link>,
+      replace: cid => (
+        <ExternalLink href={getUrlFromCID(cid)}>{cid}</ExternalLink>
+      ),
     },
   ])
 }

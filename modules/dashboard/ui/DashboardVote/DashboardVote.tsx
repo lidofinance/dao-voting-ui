@@ -5,16 +5,16 @@ import Link from 'next/link'
 import { VoteStatusBanner } from 'modules/votes/ui/VoteStatusBanner'
 import { VoteYesNoBar } from 'modules/votes/ui/VoteYesNoBar'
 import { InfoRowFull } from 'modules/shared/ui/Common/InfoRow'
-import { VoteMetadataDescription } from 'modules/votes/ui/VoteMetadataDescription'
+import { VoteDescription } from 'modules/votes/ui/VoteDescription'
+
 import {
   Wrap,
   VoteBody,
   VoteTitle,
-  VoteDescription,
+  VoteDescriptionWrap,
   VotesBarWrap,
   Footer,
 } from './DashboardVoteStyle'
-
 import type { StartVoteEventObject } from 'generated/AragonVotingAbi'
 import { Vote, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
@@ -30,6 +30,7 @@ type Props = {
   voteTime: number
   objectionPhaseTime: number
   onPass: () => void
+  description: string
 }
 
 export function DashboardVote({
@@ -40,6 +41,7 @@ export function DashboardVote({
   voteTime,
   objectionPhaseTime,
   onPass,
+  description,
 }: Props) {
   const {
     nayPct,
@@ -97,11 +99,9 @@ export function DashboardVote({
 
         <VoteBody>
           <VoteTitle>Vote #{voteId}</VoteTitle>
-          {metadata && (
-            <VoteDescription>
-              <VoteMetadataDescription metadata={metadata} />
-            </VoteDescription>
-          )}
+          <VoteDescriptionWrap>
+            <VoteDescription description={description} metadata={metadata} />
+          </VoteDescriptionWrap>
         </VoteBody>
 
         <Footer>
