@@ -6,6 +6,8 @@ export const ErrorMessageDisplayText = {
     'Please enable blind signing on your Ledger hardware wallet.',
   LIMIT_REACHED:
     'Transaction could not be completed because stake limit is exhausted. Please wait until the stake limit restores and try again. Otherwise, you can swap your Ethereum on 1inch platform instantly.',
+  RPC_TOO_MANY_REQUESTS:
+    'RPC service has reached its requests limit or compute capacity.',
 } as const
 
 // type safe error code extractor
@@ -84,6 +86,8 @@ export const getErrorMessage = (error: unknown) => {
       return ErrorMessageDisplayText.LIMIT_REACHED
     case 'ENABLE_BLIND_SIGNING':
       return ErrorMessageDisplayText.ENABLE_BLIND_SIGNING
+    case 429:
+      return ErrorMessageDisplayText.RPC_TOO_MANY_REQUESTS
     default:
       return ErrorMessageDisplayText.SOMETHING_WRONG
   }
