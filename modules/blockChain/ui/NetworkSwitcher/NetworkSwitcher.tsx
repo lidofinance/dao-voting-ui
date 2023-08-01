@@ -1,18 +1,14 @@
 import { useErrorMessage } from 'modules/blockChain/hooks/useErrorMessage'
 
 import { Container } from '@lidofinance/lido-ui'
-import { Wrap } from './NetworkSwitcherStyle'
-import DangerIconSVG from 'assets/danger.com.svg.react'
+import { AttentionBanner } from 'modules/shared/ui/Common/AttentionBanner'
 
 export function NetworkSwitcher() {
   const errorMessage = useErrorMessage()
 
   return (
     <Container size="full">
-      <Wrap>
-        <DangerIconSVG />
-        <span>{errorMessage}</span>
-      </Wrap>
+      <AttentionBanner>{errorMessage}</AttentionBanner>
     </Container>
   )
 }

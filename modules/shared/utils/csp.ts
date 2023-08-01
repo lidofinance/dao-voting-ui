@@ -32,6 +32,7 @@ export const contentSecurityPolicy = {
       'https://api.thegraph.com',
       'https://*.infura.io',
       'https://*.alchemyapi.io',
+      'https://*.alchemy.com',
       'https://*.etherscan.io/api',
       ...trustedHosts,
     ],
