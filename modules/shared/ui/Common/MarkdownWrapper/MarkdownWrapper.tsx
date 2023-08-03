@@ -2,7 +2,6 @@ import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import {
-  prepareMDForReplace,
   replaceLinksInMD,
   replaceAddressAndCIDInMD,
   replaceImagesInMD,
@@ -13,7 +12,6 @@ import { MarkdownWrap } from './MarkdownWrapperStyles'
 type Props = React.ComponentProps<typeof ReactMarkdown>
 
 export function MarkdownWrapper({ children: text, ...rest }: Props) {
-  const markdown = prepareMDForReplace(text)
   return (
     <MarkdownWrap>
       <ReactMarkdown
@@ -25,7 +23,7 @@ export function MarkdownWrapper({ children: text, ...rest }: Props) {
         }}
         {...rest}
       >
-        {markdown}
+        {text}
       </ReactMarkdown>
     </MarkdownWrap>
   )

@@ -4,28 +4,10 @@ import type { Components } from 'react-markdown'
 import { ExternalLink } from '../ui/Common/ExternalLink'
 import { AddressBadge } from '../ui/Common/AddressBadge'
 
-import {
-  REGEX_ETH_ADDRESS,
-  REGEX_ETH_ADDRESS_IN_MD,
-} from 'modules/shared/utils/regexEthAddress'
-import { REGEX_CID, REGEX_CID_IN_MD } from 'modules/shared/utils/regexCID'
-import { REGEX_URL } from 'modules/shared/utils/regexURL'
+import { REGEX_ETH_ADDRESS_ONLY } from 'modules/shared/utils/regexEthAddress'
+import { REGEX_CID_ONLY } from 'modules/shared/utils/regexCID'
+import { REGEX_URL_ONLY } from 'modules/shared/utils/regexURL'
 import { getUrlFromCID } from 'modules/shared/utils/getUrlFromCID'
-
-/**
- * Make special elements as inline code to find them during transformation to JSX
- * @param text - Markdown string
- */
-export const prepareMDForReplace = (text: string) => {
-  return text
-    .replace(REGEX_ETH_ADDRESS_IN_MD, '$1')
-    .replace(REGEX_ETH_ADDRESS, '`$1`')
-    .replace(REGEX_CID_IN_MD, '$1')
-    .replace(REGEX_CID, '`$1`')
-}
-
-const isMainMatch = (regexp: RegExp, string?: string) =>
-  Boolean(string && string.match(regexp)?.[0] === string)
 
 type CodeType = Components['code']
 export const replaceAddressAndCIDInMD: CodeType = ({
@@ -34,14 +16,12 @@ export const replaceAddressAndCIDInMD: CodeType = ({
   ...props
 }) => {
   const value = Array.isArray(children) ? `${children[0]}` : `${children}`
-  const isCID = isMainMatch(REGEX_CID, value)
-  const isAddress = isMainMatch(REGEX_ETH_ADDRESS, value)
 
-  if (inline && isCID) {
+  if (inline && value.match(REGEX_CID_ONLY)) {
     return <ExternalLink href={getUrlFromCID(value)}>{value}</ExternalLink>
   }
 
-  if (inline && isAddress) {
+  if (inline && value.match(REGEX_ETH_ADDRESS_ONLY)) {
     return <AddressBadge address={value} />
   }
 
@@ -49,17 +29,15 @@ export const replaceAddressAndCIDInMD: CodeType = ({
 }
 type LinkType = Components['a']
 
-export const replaceLinksInMD: LinkType = ({ children, href, ...props }) => {
-  if (isMainMatch(REGEX_URL, href)) {
-    return <ExternalLink {...props}>{children}</ExternalLink>
+export const replaceLinksInMD: LinkType = ({ children, href }) => {
+  if (href?.match(REGEX_URL_ONLY)) {
+    return <ExternalLink href={href}>{children}</ExternalLink>
   }
   // not supporting internal links
   return (
-    <span {...props}>
-      <>
-        {children}
-        {href ? ` (${href})` : ''}
-      </>
+    <span>
+      {children}
+      {href ? ` (${href})` : ''}
     </span>
   )
 }
@@ -73,17 +51,18 @@ export const replaceImagesInMD: ImgType = ({
   src,
   ...props
 }) => {
-  if (isMainMatch(REGEX_URL, src)) {
+  if (src?.match(REGEX_URL_ONLY)) {
     return (
       <ExternalLink href={src} {...props}>
         {title || alt || 'view'} image
       </ExternalLink>
     )
   }
+  // not supporting internal links
   return (
-    <div>
+    <span>
       {title || alt || children}
       {src ? ` (${src})` : ''}
-    </div>
+    </span>
   )
 }

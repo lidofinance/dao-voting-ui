@@ -7,7 +7,6 @@ export const DEFAULT_PARAMS = {
     // 100kb max description filesize (about 50k words)
     range: 'bytes=0-100000',
   },
-  cache: 'force-cache' as RequestCache,
   signal: AbortSignal.timeout(8000),
 }
 
