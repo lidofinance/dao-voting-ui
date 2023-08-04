@@ -21,17 +21,15 @@
  *    all - infra.io
  */
 
-const CID_0_58btc = 'Qm[1-9A-HJ-NP-Za-km-z]{44,128}'
-const CID_1_16 = 'f[0-9a-zA-F]{50,128}'
-const CID_1_16upper = 'F[0-9A-F]{50,128}'
-const CID_1_32 = 'b[A-Za-z2-7]{58,128}'
-const CID_1_32upper = 'B[A-Z2-7]{58,128}'
-const CID_1_58btc = 'z[1-9A-HJ-NP-Za-km-z]{48,128}'
-const CID_1_64 = 'm[+A-Za-z0-9/]{44,128}'
-const CID_1_64url = 'u[-A-Za-z0-9_]{44,128}={0,3}'
-const CID_1_64urlpad = 'U[-A-Za-z0-9_]{44,128}={0,3}'
+const CID_0_58_BTC = 'Qm[1-9A-HJ-NP-Za-km-z]{44,128}'
+const CID_1_16 = '[fF][0-9a-zA-F]{50,128}' // case-insensitive
+const CID_1_32 = '[bB][A-Za-z2-7]{58,128}' // case-insensitive
+const CID_1_58_BTC = 'z[1-9A-HJ-NP-Za-km-z]{48,128}'
+const CID_1_64 = 'm[+A-Za-z0-9/]{40,128}'
+const CID_1_64_URL = 'u[-A-Za-z0-9_]{40,128}'
+const CID_1_64_URLPAD = 'U[-A-Za-z0-9_]{40,128}={0,3}'
 
-const PATTERN_CID = `\\b(${CID_0_58btc}|${CID_1_16}|${CID_1_16upper}|${CID_1_32}|${CID_1_32upper}|${CID_1_58btc}|${CID_1_64}|${CID_1_64url}|${CID_1_64urlpad})\\b`
+const PATTERN_CID = `\\b(${CID_0_58_BTC}|${CID_1_16}|${CID_1_32}|${CID_1_58_BTC}|${CID_1_64}|${CID_1_64_URL}|${CID_1_64_URLPAD})\\b`
 
 export const REGEX_CID = new RegExp(PATTERN_CID, 'g')
 export const REGEX_CID_ONLY = new RegExp(`^${PATTERN_CID}$`)
