@@ -6,6 +6,6 @@ const w3sPrefix = 'https://'
 const w3sSuffix = '.ipfs.w3s.link'
 
 export const getUrlFromCID = (cid: string) =>
-  `${cid}`.startsWith('b')
+  `${cid}`.match(/^b/i)
     ? `${w3sPrefix}${cid}${w3sSuffix}`
     : `${defaultPrefix}${cid}${defaultSuffix}`
