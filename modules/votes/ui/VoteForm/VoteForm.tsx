@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { useFormVoteInfo } from './useFormVoteInfo'
 import { useFormVoteSubmit } from './useFormVoteSubmit'
 import { useVotePassedCallback } from '../../hooks/useVotePassedCallback'
@@ -13,10 +12,10 @@ import { VoteFormActions } from '../VoteFormActions'
 import { VoteFormMustConnect } from '../VoteFormMustConnect'
 import { VoteFormVoterState } from '../VoteFormVoterState'
 import { VoteVotersList } from '../VoteVotersList'
-import { Desc, ErrorMessage, ClearButton } from './VoteFormStyle'
+import { Desc, ClearButton } from './VoteFormStyle'
+import { FetchErrorBanner } from 'modules/shared/ui/Common/FetchErrorBanner'
 
 import { VoteStatus } from 'modules/votes/types'
-import * as urls from 'modules/network/utils/urls'
 
 type Props = {
   voteId?: string
@@ -105,13 +104,7 @@ export function VoteForm({ voteId }: Props) {
       )}
 
       {!isLoading && swrVote.error && !isNotFound && (
-        <ErrorMessage>
-          <p>There is a problem with rpc node currently in use.</p>
-          <p>
-            You can set your own url on{' '}
-            <Link href={urls.settings}>settings</Link> page.
-          </p>
-        </ErrorMessage>
+        <FetchErrorBanner error={swrVote.error} />
       )}
 
       {isFound && (

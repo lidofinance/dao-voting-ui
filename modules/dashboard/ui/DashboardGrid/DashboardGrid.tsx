@@ -8,6 +8,7 @@ import { DashboardVote } from '../DashboardVote'
 import { DashboardVoteSkeleton } from '../DashboardVoteSkeleton'
 import { SkeletonBar } from 'modules/shared/ui/Skeletons/SkeletonBar'
 import { GridWrap, PaginationWrap } from './DashboardGridStyle'
+import { FetchErrorBanner } from 'modules/shared/ui/Common/FetchErrorBanner'
 import { ContractVoting } from 'modules/blockChain/contracts'
 import { getVoteStatus } from 'modules/votes/utils/getVoteStatus'
 import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
@@ -143,6 +144,14 @@ export function DashboardGrid({ currentPage }: Props) {
 
   if (isOutOfPageBoundy) {
     return null
+  }
+
+  if (swrVotes.error || infoSwr.error) {
+    return (
+      <Container as="main" size="tight">
+        <FetchErrorBanner error={swrVotes.error || infoSwr.error} />
+      </Container>
+    )
   }
 
   return (
