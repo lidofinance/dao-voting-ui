@@ -39,7 +39,6 @@ export function VoteForm({ voteId }: Props) {
     eventsVoted,
     eventExecuteVote,
     status,
-    description,
   } = useFormVoteInfo({ voteId })
   const { clearVoteId } = useVotePrompt()
 
@@ -118,7 +117,6 @@ export function VoteForm({ voteId }: Props) {
             isEnded={isEnded}
             creator={eventStart?.creator}
             metadata={eventStart?.metadata}
-            description={description}
             executedTxHash={eventExecuteVote?.event.transactionHash}
           />
 

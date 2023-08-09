@@ -32,7 +32,6 @@ type Props = {
   metadata?: string
   isEnded: boolean
   executedTxHash?: string
-  description?: string
 }
 
 export function VoteDetails({
@@ -45,7 +44,6 @@ export function VoteDetails({
   metadata = '',
   isEnded,
   executedTxHash,
-  description,
 }: Props) {
   const {
     totalSupplyFormatted,
@@ -162,21 +160,14 @@ export function VoteDetails({
         <DetailsBoxWrap>
           <InfoRowFull title="Description" />
           <DescriptionWrap>
-            <VoteDescription
-              metadata={metadata}
-              description={description}
-              prettify
-            />
+            <VoteDescription metadata={metadata} allowMD />
           </DescriptionWrap>
         </DetailsBoxWrap>
       )}
 
       <DetailsBoxWrap>
         <InfoRowFull title="Script" />
-        <VoteScript
-          script={vote.script}
-          metadata={description ? metadata : ''}
-        />
+        <VoteScript script={vote.script} metadata={metadata} />
       </DetailsBoxWrap>
     </>
   )

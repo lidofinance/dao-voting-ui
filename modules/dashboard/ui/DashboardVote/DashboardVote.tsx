@@ -30,7 +30,6 @@ type Props = {
   voteTime: number
   objectionPhaseTime: number
   onPass: () => void
-  description: string
 }
 
 export function DashboardVote({
@@ -41,7 +40,6 @@ export function DashboardVote({
   voteTime,
   objectionPhaseTime,
   onPass,
-  description,
 }: Props) {
   const {
     nayPct,
@@ -100,7 +98,7 @@ export function DashboardVote({
         <VoteBody>
           <VoteTitle>Vote #{voteId}</VoteTitle>
           <VoteDescriptionWrap>
-            <VoteDescription description={description} metadata={metadata} />
+            <VoteDescription metadata={metadata} />
           </VoteDescriptionWrap>
         </VoteBody>
 

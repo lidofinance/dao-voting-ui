@@ -24,7 +24,7 @@ export function VoteScript({ script, metadata = '' }: Props) {
       Parsed: !initialLoading && decoded?.calls.length,
       JSON: !initialLoading && decoded?.calls.length,
       Raw: true,
-      Metadata: metadata,
+      Items: Boolean(metadata),
     }
     const TabNames = Object.keys(tabMap) as (keyof typeof tabMap)[]
     return TabNames.filter(key => tabMap[key])
@@ -59,7 +59,7 @@ export function VoteScript({ script, metadata = '' }: Props) {
         {tabs[activeTab] === 'Parsed' && (
           <VoteScriptBody binary={binary} decoded={decoded} />
         )}
-        {tabs[activeTab] === 'Metadata' && <VoteScriptBody binary={metadata} />}
+        {tabs[activeTab] === 'Items' && <VoteScriptBody binary={metadata} />}
       </VoteScriptBodyWrap>
     </>
   )
