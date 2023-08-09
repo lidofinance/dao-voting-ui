@@ -5,7 +5,7 @@ import { ExternalLink } from '../ui/Common/ExternalLink'
 import { AddressBadge } from '../ui/Common/AddressBadge'
 
 import { REGEX_ETH_ADDRESS_ONLY } from 'modules/shared/utils/regexEthAddress'
-import { REGEX_CID_ONLY } from 'modules/shared/utils/regexCID'
+import { REGEX_CID_CUTER, REGEX_CID_ONLY } from 'modules/shared/utils/regexCID'
 import { REGEX_URL_ONLY } from 'modules/shared/utils/regexURL'
 import { getUrlFromCID } from 'modules/shared/utils/getUrlFromCID'
 
@@ -18,7 +18,11 @@ export const replaceAddressAndCIDInMD: CodeType = ({
   const value = Array.isArray(children) ? `${children[0]}` : `${children}`
 
   if (inline && value.match(REGEX_CID_ONLY)) {
-    return <ExternalLink href={getUrlFromCID(value)}>{value}</ExternalLink>
+    return (
+      <ExternalLink href={getUrlFromCID(value)}>
+        {value.replace(REGEX_CID_CUTER, '$1..$2')}
+      </ExternalLink>
+    )
   }
 
   if (inline && value.match(REGEX_ETH_ADDRESS_ONLY)) {

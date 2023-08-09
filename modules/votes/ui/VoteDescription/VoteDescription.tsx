@@ -36,9 +36,15 @@ export function VoteDescription({ metadata, allowMD }: Props) {
   const trimmedData = trimStart(data)
 
   if (error || !trimmedData) {
-    const loadingInfo = `\n\nA detailed description will be uploaded to an IPFS soon. File hash:${cid} To read the description, please refresh the page in 15 minutes.`
-    const text = metadata.replace(REGEX_LIDO_VOTE_CID, '') + loadingInfo
-    return <DescriptionText>{replaceJsxElements(text)}</DescriptionText>
+    const text = metadata.replace(REGEX_LIDO_VOTE_CID, '')
+    return (
+      <DescriptionText>
+        {replaceJsxElements(text)}
+        {`\n\nA detailed description will be uploaded to an IPFS soon. File hash: `}
+        <b>{cid}</b>
+        {`. To read the description, please refresh the page in 15 minutes.`}
+      </DescriptionText>
+    )
   }
 
   if (trimmedData && allowMD) {
