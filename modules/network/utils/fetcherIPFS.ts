@@ -10,17 +10,12 @@ export const DEFAULT_PARAMS = {
 }
 
 type FetcherIPFS = (cid: string, params?: RequestInit) => Promise<string>
-type IFailedResponse = { ok: false }
 export const fetcherIPFS: FetcherIPFS = async (
   cid,
   params = DEFAULT_PARAMS,
 ) => {
-  const response = await Promise.race([
-    fetch(getUrlFromCID(cid), params),
-    new Promise<IFailedResponse>(resolve =>
-      setTimeout(() => resolve({ ok: false }), 5000),
-    ),
-  ])
+  const paramsWithTimeout = { ...params, signal: AbortSignal.timeout(8000) }
+  const response = await fetch(getUrlFromCID(cid), paramsWithTimeout)
 
   if (!response.ok) {
     throw new Error('An error occurred while fetching the data.')
