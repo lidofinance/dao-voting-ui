@@ -17,7 +17,6 @@ export function VotePromptProvider({ children }: Props) {
   const changeRouteInstantly = useCallback((value: string) => {
     Router.push(urls.vote(value), undefined, {
       scroll: false,
-      shallow: true,
     })
   }, [])
 
