@@ -32,7 +32,7 @@ export const fetcherIPFS: FetcherIPFS = async (
   const hash = await Hash.of(text, { cidVersion: 1, rawLeaves: true })
 
   if (hash !== cid) {
-    throw new Error('An error occurred while validate fetching the data.')
+    throw new Error('An error occurred while validate fetched the data.')
   }
 
   return text
