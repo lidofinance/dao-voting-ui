@@ -34,7 +34,7 @@ const PATTERN_CID = `\\b(${CID_0_58_BTC}|${CID_1_16}|${CID_1_32}|${CID_1_58_BTC}
 export const REGEX_CID = new RegExp(PATTERN_CID, 'g')
 export const REGEX_CID_ONLY = new RegExp(`^${PATTERN_CID}$`)
 export const REGEX_CID_CUTER = /(\w{8})\w+(\w{8}$)/
-
+export const DESC_CID = new RegExp(`^${CID_1_32}$`, 'i')
 export const REGEX_LIDO_VOTE_CID = new RegExp(
   `\\blidovoteipfs://(${CID_1_32})\\s*$`,
 )

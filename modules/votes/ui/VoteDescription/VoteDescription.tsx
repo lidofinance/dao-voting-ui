@@ -6,7 +6,7 @@ import { REGEX_LIDO_VOTE_CID } from 'modules/shared/utils/regexCID'
 
 import { MarkdownWrapper } from 'modules/shared/ui/Common/MarkdownWrapper'
 import { DescriptionText } from './VoteDescriptionStyle'
-import { fetcherIPFS } from 'modules/network/utils/fetcherIPFS'
+import { fetcherDescIPFS } from 'modules/network/utils/fetcherDescIPFS'
 import { useSWR } from 'modules/network/hooks/useSwr'
 
 type Props = {
@@ -23,7 +23,7 @@ export function VoteDescription({ metadata, allowMD }: Props) {
     data = '',
     error,
     initialLoading,
-  } = useSWR(cid, fetcherIPFS, { onError: noop })
+  } = useSWR(cid, fetcherDescIPFS, { onError: noop })
 
   if (!cid) {
     return <DescriptionText>{replaceJsxElements(metadata)}</DescriptionText>
