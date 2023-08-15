@@ -7,7 +7,7 @@ import { logger } from 'modules/shared/utils/log'
 import clone from 'just-clone'
 import { IPFS_CACHE_TTL } from 'modules/config'
 import { getExternalUrlFromCID } from 'modules/config/network'
-import { DESC_CID } from '../../../modules/shared/utils/regexCID'
+import { DESC_CID } from 'modules/shared/utils/regexCID'
 
 const cache = new Cache<string, unknown>()
 
