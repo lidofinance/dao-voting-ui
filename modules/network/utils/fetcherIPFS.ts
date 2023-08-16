@@ -29,9 +29,12 @@ export const fetcherIPFS: FetcherIPFS = async (
 
   const text = await response.text()
 
-  const hash = await Hash.of(text, { cidVersion: 1, rawLeaves: true })
+  const [hash, hashBOM] = await Promise.all([
+    Hash.of(text, { cidVersion: 1, rawLeaves: true }),
+    Hash.of('\ufeff' + text, { cidVersion: 1, rawLeaves: true }),
+  ])
 
-  if (hash !== cid) {
+  if (![hash, hashBOM].includes(cid)) {
     throw new Error('An error occurred while validate fetched the data.')
   }
 
