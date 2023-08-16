@@ -40,7 +40,8 @@ export function VoteDescription({ metadata, allowMD }: Props) {
     return (
       <DescriptionText>
         {replaceJsxElements(text)}
-        {`\n\nA detailed description will be uploaded to an IPFS soon. File hash: `}
+        {text.trim() ? `\n\n` : ''}
+        {`A detailed description will be uploaded to an IPFS soon. File hash: `}
         <b>{cid}</b>
         {`. To read the description, please refresh the page in 15 minutes.`}
       </DescriptionText>

@@ -34,6 +34,8 @@ export const contentSecurityPolicy = {
       'https://*.alchemyapi.io',
       'https://*.alchemy.com',
       'https://*.etherscan.io/api',
+      'https://*.ipfs.w3s.link',
+      'https://cloudflare-ipfs.com/ipfs/',
       ...trustedHosts,
     ],
     prefetchSrc: ["'self'", ...trustedHosts],
