@@ -1,14 +1,19 @@
 import clone from 'just-clone'
 import getConfig from 'next/config'
-import { getAlchemyRPCUrl, getInfuraRPCUrl } from '@lido-sdk/fetch'
+import { CHAINS } from '@lido-sdk/constants'
 import { parseChainId } from 'modules/blockChain/chains'
 import { fetchWithFallback } from 'modules/network/utils/fetchWithFallback'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const { serverRuntimeConfig } = getConfig()
-const { infuraApiKey, alchemyApiKey } = serverRuntimeConfig
+const { rpcUrls_1, rpcUrls_5 } = serverRuntimeConfig
 
 export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
+  const RPC_URLS: Record<number, string[]> = {
+    [CHAINS.Mainnet]: rpcUrls_1,
+    [CHAINS.Goerli]: rpcUrls_5,
+  }
+
   const requestInfo = {
     type: 'API request',
     path: 'rpc',
@@ -22,10 +27,7 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
 
   try {
     const chainId = parseChainId(String(req.query.chainId))
-    const urls = [
-      alchemyApiKey ? getAlchemyRPCUrl(chainId, alchemyApiKey) : '',
-      infuraApiKey ? getInfuraRPCUrl(chainId, infuraApiKey) : '',
-    ].filter(Boolean)
+    const urls = RPC_URLS[chainId]
 
     const requested = await fetchWithFallback(urls, chainId, {
       method: 'POST',

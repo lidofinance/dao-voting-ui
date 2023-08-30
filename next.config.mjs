@@ -1,6 +1,19 @@
 const basePath = process.env.BASE_PATH || ''
 const infuraApiKey = process.env.INFURA_API_KEY
 const alchemyApiKey = process.env.ALCHEMY_API_KEY
+
+const rpcUrls_1 = (process.env.EL_RPC_URLS_1 &&
+  process.env.EL_RPC_URLS_1.split(',')) || [
+  alchemyApiKey ?? `https://eth-mainnet.alchemyapi.io/v2/${alchemyApiKey}`,
+  infuraApiKey ?? `https://mainnet.infura.io/v3/${infuraApiKey}`,
+].filter(Boolean);
+
+const rpcUrls_5 = (process.env.EL_RPC_URLS_5 &&
+  process.env.EL_RPC_URLS_5.split(',')) || [
+  alchemyApiKey ?? `https://eth-goerli.alchemyapi.io/v2/${alchemyApiKey}`,
+  infuraApiKey ?? `https://goerli.infura.io/v3/${infuraApiKey}`,
+].filter(Boolean);
+
 const etherscanApiKey = process.env.ETHERSCAN_API_KEY
 
 const defaultChain = process.env.DEFAULT_CHAIN || '1'
@@ -111,8 +124,8 @@ export default {
   },
   serverRuntimeConfig: {
     basePath,
-    infuraApiKey,
-    alchemyApiKey,
+    rpcUrls_1,
+    rpcUrls_5,
     etherscanApiKey,
     cspTrustedHosts,
     cspReportOnly,
