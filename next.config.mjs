@@ -4,14 +4,14 @@ const alchemyApiKey = process.env.ALCHEMY_API_KEY
 
 const rpcUrls_1 = (process.env.EL_RPC_URLS_1 &&
   process.env.EL_RPC_URLS_1.split(',')) || [
-  alchemyApiKey ?? `https://eth-mainnet.alchemyapi.io/v2/${alchemyApiKey}`,
-  infuraApiKey ?? `https://mainnet.infura.io/v3/${infuraApiKey}`,
+  alchemyApiKey && `https://eth-mainnet.alchemyapi.io/v2/${alchemyApiKey}`,
+  infuraApiKey && `https://mainnet.infura.io/v3/${infuraApiKey}`,
 ].filter(Boolean);
 
 const rpcUrls_5 = (process.env.EL_RPC_URLS_5 &&
   process.env.EL_RPC_URLS_5.split(',')) || [
-  alchemyApiKey ?? `https://eth-goerli.alchemyapi.io/v2/${alchemyApiKey}`,
-  infuraApiKey ?? `https://goerli.infura.io/v3/${infuraApiKey}`,
+  alchemyApiKey && `https://eth-goerli.alchemyapi.io/v2/${alchemyApiKey}`,
+  infuraApiKey && `https://goerli.infura.io/v3/${infuraApiKey}`,
 ].filter(Boolean);
 
 const etherscanApiKey = process.env.ETHERSCAN_API_KEY
