@@ -48,7 +48,7 @@ export function DashboardVote({
     neededToQuorumFormatted,
     startDate,
     endDate,
-  } = useVoteDetailsFormatted({ vote, voteTime })
+  } = useVoteDetailsFormatted({ vote, voteTime })! // we are sure that we have non-undefined `vote` and `voteTime` here
 
   const handlePass = useCallback(() => {
     // TODO:
