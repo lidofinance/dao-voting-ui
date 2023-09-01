@@ -4,7 +4,6 @@ import getConfig from 'next/config'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { parseChainId } from 'modules/blockChain/chains'
 import { fetchWithFallback } from 'modules/network/utils/fetchWithFallback'
-import { logger } from 'modules/shared/utils/log'
 import clone from 'just-clone'
 import { ETHERSCAN_CACHE_TTL } from 'modules/config'
 import { etherscanResponseTime } from 'modules/shared/metrics/responseTime'
@@ -30,11 +29,11 @@ export default async function etherscan(
     stage: 'INCOMING',
   }
 
-  logger.info('Incoming request to api/etherscan', requestInfo)
+  console.info('Incoming request to api/etherscan', requestInfo)
 
   try {
     const throwErr = (status: string) => {
-      logger.error(status, requestInfo)
+      console.error(status, requestInfo)
       res.status(400).json({ status })
     }
 
@@ -84,12 +83,12 @@ export default async function etherscan(
       res.status(result.status).json(parsed)
     }
 
-    logger.info('Request to api/etherscan successfully fullfilled', {
+    console.info('Request to api/etherscan successfully fullfilled', {
       ...requestInfo,
       stage: 'FULFILLED',
     })
   } catch (error) {
-    logger.error(
+    console.error(
       error instanceof Error ? error.message : 'Something went wrong',
       error,
     )

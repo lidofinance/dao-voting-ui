@@ -15,8 +15,7 @@ The required functionality includes:
 - connecting wallet (similar to Lido on Ethereum staking widget)
 - casting vote (Yes/No)
 
-[More details](
-https://www.notion.so/Custom-voting-UI-feature-description-bde7fde42d3749a3afcbab3a56f26674)
+[More details](https://www.notion.so/Custom-voting-UI-feature-description-bde7fde42d3749a3afcbab3a56f26674)
 
 ## Pre-requisites
 
@@ -25,12 +24,17 @@ https://www.notion.so/Custom-voting-UI-feature-description-bde7fde42d3749a3afcba
 
 This project requires an .env file which is distributed via private communication channels. A sample can be found in .env.sample.
 
+## Dockerfile env
+
+- Node.js v16.20.1
+- Yarn package manager v1.22.19
+
 ## Development
 
 Step 1. Copy the contents of `.env.sample` to `.env.local`
 
 ```bash
-cp sample.env .env.local
+cp .env.sample .env.local
 ```
 
 Step 2. Fill out the `.env.local`. You may need to sign up for [Infura](https://infura.io/) or [Alchemy](https://www.alchemy.com/), if you haven't already, to be able to use Ethereum JSON RPC connection.

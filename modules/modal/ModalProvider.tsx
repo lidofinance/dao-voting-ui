@@ -1,12 +1,23 @@
-import { memo, useMemo, useCallback, createContext, useRef } from 'react'
+import {
+  memo,
+  useMemo,
+  useCallback,
+  createContext,
+  useRef,
+  useState,
+} from 'react'
 import type { ModalProps } from '@lidofinance/lido-ui'
-import { useForceUpdate } from 'modules/shared/hooks/useForceUpdate'
 
 export type Modal = React.ComponentType<ModalProps>
 
+export type Data = Record<string, string>
+
 type ModalContextValue = {
-  openModal: (modal: Modal) => void
+  openModal: (modal: Modal, initialData?: Data) => void
 }
+
+// https://github.com/CharlesStover/use-force-update
+const createNewEmptyObjectForForceUpdate = (): Data => ({})
 
 export const modalContext = createContext({} as ModalContextValue)
 
@@ -15,15 +26,19 @@ type Props = {
 }
 
 function ModalProviderRaw({ children }: Props) {
-  const stateRef = useRef(null as Modal | null)
-  const update = useForceUpdate()
+  const stateRef = useRef<Modal | null>(null)
+  const [data, setData] = useState<Data>(createNewEmptyObjectForForceUpdate())
 
   const openModal = useCallback(
-    (modal: Modal) => {
+    (modal: Modal, initialData?: Data) => {
       stateRef.current = modal
-      update()
+      if (initialData) {
+        setData(initialData)
+      } else {
+        setData(createNewEmptyObjectForForceUpdate())
+      }
     },
-    [update],
+    [setData],
   )
 
   const closeModal = useCallback(() => {
@@ -32,9 +47,9 @@ function ModalProviderRaw({ children }: Props) {
     // after WalletConnect connection
     setTimeout(() => {
       stateRef.current = null
-      update()
+      setData(createNewEmptyObjectForForceUpdate())
     }, 0)
-  }, [update])
+  }, [setData])
 
   const context = useMemo(
     () => ({
@@ -47,7 +62,9 @@ function ModalProviderRaw({ children }: Props) {
   return (
     <modalContext.Provider value={context}>
       {children}
-      {stateRef.current && <stateRef.current open onClose={closeModal} />}
+      {stateRef.current && (
+        <stateRef.current open onClose={closeModal} data={data} />
+      )}
     </modalContext.Provider>
   )
 }

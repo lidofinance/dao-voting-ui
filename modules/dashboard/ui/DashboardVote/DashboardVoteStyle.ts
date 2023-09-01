@@ -23,7 +23,7 @@ export const VoteTitle = styled(Text).attrs({
   weight: 700,
 })``
 
-export const VoteDescription = styled(Text).attrs({
+export const VoteDescriptionWrap = styled(Text).attrs({
   size: 'xxs',
   weight: 400,
 })`
