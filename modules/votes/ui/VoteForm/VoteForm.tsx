@@ -14,8 +14,11 @@ import { VoteFormVoterState } from '../VoteFormVoterState'
 import { VoteVotersList } from '../VoteVotersList'
 import { Desc, ClearButton } from './VoteFormStyle'
 import { FetchErrorBanner } from 'modules/shared/ui/Common/FetchErrorBanner'
+import { VoteSimulation } from '../VoteSimulation'
+import { DetailsBoxWrap } from '../VoteDetails/VoteDetailsStyle'
 
 import { VoteStatus } from 'modules/votes/types'
+import { isVoteEnactable } from 'modules/votes/utils/isVoteEnactable'
 
 type Props = {
   voteId?: string
@@ -39,14 +42,21 @@ export function VoteForm({ voteId }: Props) {
     eventsVoted,
     eventExecuteVote,
     status,
+    voteDetailsFormatted,
   } = useFormVoteInfo({ voteId })
   const { clearVoteId } = useVotePrompt()
 
-  const { txVote, txEnact, handleVote, handleEnact, isSubmitting } =
-    useFormVoteSubmit({
-      voteId,
-      onFinish: doRevalidate,
-    })
+  const {
+    txVote,
+    txEnact,
+    handleVote,
+    populateEnact,
+    handleEnact,
+    isSubmitting,
+  } = useFormVoteSubmit({
+    voteId,
+    onFinish: doRevalidate,
+  })
 
   useVotePassedCallback({
     startDate,
@@ -67,6 +77,15 @@ export function VoteForm({ voteId }: Props) {
   const isEmpty = !voteId
   const isNotFound = swrVote.error?.reason === 'VOTING_NO_VOTE'
   const isFound = !isEmpty && !isNotFound && !isLoading && vote && status
+  const isEnactmentStillPossible =
+    vote &&
+    voteDetailsFormatted &&
+    isVoteEnactable(vote) &&
+    !isEnded &&
+    !(
+      status !== VoteStatus.ActiveMain &&
+      voteDetailsFormatted.neededToQuorum > 0
+    )
 
   return (
     <Container as="main" size="tight" key={voteId}>
@@ -118,7 +137,20 @@ export function VoteForm({ voteId }: Props) {
             creator={eventStart?.creator}
             metadata={eventStart?.metadata}
             executedTxHash={eventExecuteVote?.event.transactionHash}
+            voteDetailsFormatted={voteDetailsFormatted!}
           />
+
+          {isEnactmentStillPossible && (
+            <DetailsBoxWrap>
+              <VoteSimulation
+                voteId={voteId}
+                vote={vote}
+                voteTime={voteTime}
+                objectionPhaseTime={objectionPhaseTime}
+                populateEnact={populateEnact}
+              />
+            </DetailsBoxWrap>
+          )}
 
           {!isWalletConnected && <VoteFormMustConnect />}
 

@@ -20,7 +20,7 @@ import { VoteMetadataDescription } from '../VoteMetadataDescription'
 import { Vote, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { formatNumber } from 'modules/shared/utils/formatNumber'
-import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
+import type { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
 
 type Props = {
   vote: Vote
@@ -32,6 +32,7 @@ type Props = {
   metadata?: string
   isEnded: boolean
   executedTxHash?: string
+  voteDetailsFormatted: ReturnType<typeof getVoteDetailsFormatted>
 }
 
 export function VoteDetails({
@@ -44,6 +45,7 @@ export function VoteDetails({
   metadata,
   isEnded,
   executedTxHash,
+  voteDetailsFormatted,
 }: Props) {
   const {
     totalSupplyFormatted,
@@ -55,7 +57,7 @@ export function VoteDetails({
     yeaPctOfTotalSupplyFormatted,
     startDate,
     endDate,
-  } = getVoteDetailsFormatted({ vote, voteTime })
+  } = voteDetailsFormatted
 
   return (
     <>

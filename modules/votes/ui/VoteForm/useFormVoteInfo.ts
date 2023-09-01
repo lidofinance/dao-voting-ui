@@ -4,6 +4,7 @@ import { useCallback, useEffect } from 'react'
 import { useSWR } from 'modules/network/hooks/useSwr'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useConfig } from 'modules/config/hooks/useConfig'
+import { useVoteDetailsFormatted } from 'modules/votes/hooks/useVoteDetailsFormatted'
 
 import {
   ContractVoting,
@@ -125,6 +126,11 @@ export function useFormVoteInfo({ voteId }: Args) {
     }
   }, [doRevalidate, contractVoting, voteId])
 
+  const voteDetailsFormatted = useVoteDetailsFormatted({
+    vote,
+    voteTime,
+  })
+
   return {
     swrVote,
     vote,
@@ -142,5 +148,6 @@ export function useFormVoteInfo({ voteId }: Args) {
     eventsVoted: swrVote.data?.eventsVoted,
     eventExecuteVote: swrVote.data?.eventExecuteVote,
     status: swrVote.data?.status,
+    voteDetailsFormatted,
   }
 }
