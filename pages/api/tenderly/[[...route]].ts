@@ -1,7 +1,6 @@
 import isEmpty from 'lodash/isEmpty'
 import clone from 'just-clone'
 import getConfig from 'next/config'
-import { logger } from 'modules/shared/utils/log'
 import { tenderlyResponseTime } from 'modules/shared/metrics/responseTime'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
@@ -25,7 +24,7 @@ export default async function tenderly(
     stage: 'INCOMING',
   }
 
-  logger.info('Incoming request to tenderly', requestInfo)
+  console.info('Incoming request to tenderly', requestInfo)
 
   try {
     const contentType = req.headers['content-type']
@@ -60,12 +59,12 @@ export default async function tenderly(
       res.end()
     }
 
-    logger.info('Request to tenderly successfully fullfilled', {
+    console.info('Request to tenderly successfully fullfilled', {
       ...requestInfo,
       stage: 'FULFILLED',
     })
   } catch (error) {
-    logger.error(
+    console.error(
       error instanceof Error ? error.message : 'Something went wrong',
       error,
     )
