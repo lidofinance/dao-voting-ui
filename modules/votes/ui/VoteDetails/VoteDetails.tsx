@@ -15,7 +15,7 @@ import {
 } from './VoteDetailsStyle'
 import { ContentHighlightBox } from 'modules/shared/ui/Common/ContentHighlightBox'
 import { InfoRowFull } from 'modules/shared/ui/Common/InfoRow'
-import { VoteMetadataDescription } from '../VoteMetadataDescription'
+import { VoteDescription } from '../VoteDescription'
 
 import { Vote, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
@@ -41,7 +41,7 @@ export function VoteDetails({
   voteTime,
   objectionPhaseTime,
   creator,
-  metadata,
+  metadata = '',
   isEnded,
   executedTxHash,
 }: Props) {
@@ -160,14 +160,14 @@ export function VoteDetails({
         <DetailsBoxWrap>
           <InfoRowFull title="Description" />
           <DescriptionWrap>
-            <VoteMetadataDescription metadata={metadata} />
+            <VoteDescription metadata={metadata} allowMD />
           </DescriptionWrap>
         </DetailsBoxWrap>
       )}
 
       <DetailsBoxWrap>
         <InfoRowFull title="Script" />
-        <VoteScript script={vote.script} />
+        <VoteScript script={vote.script} metadata={metadata} />
       </DetailsBoxWrap>
     </>
   )

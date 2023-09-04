@@ -165,3 +165,8 @@ export const ExecutionLayerRewardsVault: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x388C818CA8B9251b393131C08a736A67ccB19297',
   [CHAINS.Goerli]: '0x94750381bE1AbA0504C666ee1DB118F68f0780D4',
 }
+
+export const Burner: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xD15a672319Cf0352560eE76d9e89eAB0889046D3',
+  [CHAINS.Goerli]: '0x20c61C07C2E2FAb04BF5b4E12ce45a459a18f3B1',
+}
