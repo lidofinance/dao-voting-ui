@@ -1,26 +1,17 @@
-import { useState, useCallback } from 'react'
+import { useCallback } from 'react'
 import { Input } from '@lidofinance/lido-ui'
 import { withFormController } from 'modules/shared/hocs/withFormController'
 
-type InputProps = React.ComponentProps<typeof Input>
+type InputProps = React.ComponentProps<typeof Input> & {
+  isInteger?: boolean
+}
 
-export function InputNumber({
-  value: valueProp,
-  defaultValue = '',
-  onChange,
-  ...props
-}: InputProps) {
-  const [valueState, setValue] = useState(defaultValue)
-
-  const value = valueProp !== undefined ? valueProp : valueState
-
+export function InputNumber({ value, onChange, ...props }: InputProps) {
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (isNaN(Number(e.target.value))) {
-        return
-      }
+      if (isNaN(Number(e.target.value))) return
+      e.target.value = e.target.value.trim()
       onChange?.(e)
-      setValue(e.target.value)
     },
     [onChange],
   )
