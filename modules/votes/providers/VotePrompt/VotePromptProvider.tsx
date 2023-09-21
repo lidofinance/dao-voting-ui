@@ -34,8 +34,8 @@ export function VotePromptProvider({ children }: Props) {
   )
 
   const clearVoteId = useCallback(() => {
-    changeRouteInstantly('')
-  }, [changeRouteInstantly])
+    setVoteId('')
+  }, [setVoteId])
 
   useEffect(() => {
     setVoteIdState(urlVoteId || '')
