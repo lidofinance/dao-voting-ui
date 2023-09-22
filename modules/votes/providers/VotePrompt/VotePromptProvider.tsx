@@ -10,7 +10,7 @@ type Props = {
 }
 
 export function VotePromptProvider({ children }: Props) {
-  const { asPath, query } = useRouter()
+  const { query } = useRouter()
   const { voteId: urlVoteId = '' } = query as { voteId: string }
   const [voteId, setVoteIdState] = useState(urlVoteId || '')
 
@@ -29,41 +29,39 @@ export function VotePromptProvider({ children }: Props) {
 
   const setVoteId = useCallback(
     (value: string) => {
-      if (value) {
-        setVoteIdState(value)
-        changeRouteDebounced(value)
-      } else {
-        setVoteIdState(value)
-        Router.push(urls.home)
-      }
+      setVoteIdState(value)
+      changeRouteDebounced(value)
     },
     [setVoteIdState, changeRouteDebounced],
   )
 
   const clearVoteId = useCallback(() => {
-    Router.push(urls.home)
-  }, [])
-
-  useEffect(() => {
-    if (asPath === urls.voteIndex && voteId) {
-      changeRouteDebounced(voteId)
-    }
-  }, [asPath, voteId, changeRouteDebounced])
+    setVoteId('')
+  }, [setVoteId])
 
   useEffect(() => {
     setVoteIdState(urlVoteId || '')
   }, [urlVoteId])
 
+  const contextValue = useMemo(
+    () => ({
+      voteId,
+      setVoteId,
+      clearVoteId,
+      changeRouteDebounced,
+      changeRouteInstantly,
+    }),
+    [
+      voteId,
+      setVoteId,
+      clearVoteId,
+      changeRouteDebounced,
+      changeRouteInstantly,
+    ],
+  )
+
   return (
-    <votePromptContext.Provider
-      value={{
-        voteId: voteId,
-        setVoteId,
-        clearVoteId,
-        changeRouteDebounced,
-        changeRouteInstantly,
-      }}
-    >
+    <votePromptContext.Provider value={contextValue}>
       {children}
     </votePromptContext.Provider>
   )
