@@ -15,7 +15,9 @@ export function VotePromptProvider({ children }: Props) {
   const [voteId, setVoteIdState] = useState(urlVoteId || '')
 
   const changeRouteInstantly = useCallback((value: string) => {
-    Router.push(urls.vote(value), undefined, {
+    const _voteId = Router.query.voteId
+    if (_voteId === value || (!_voteId && !value)) return
+    Router.push(value ? urls.vote(value) : urls.home, undefined, {
       scroll: false,
     })
   }, [])
