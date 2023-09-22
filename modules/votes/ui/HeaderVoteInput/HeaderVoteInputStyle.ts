@@ -1,7 +1,9 @@
 import styled, { css } from 'styled-components'
 import { InputNumber } from 'modules/shared/ui/Controls/InputNumber'
 
-export const Input = styled(InputNumber)`
+export const Input = styled(InputNumber).attrs({
+  isInteger: true,
+})`
   height: 44px;
 
   & > span {

@@ -1,28 +1,46 @@
-import { useState, useCallback } from 'react'
+import { useCallback } from 'react'
 import { Input } from '@lidofinance/lido-ui'
 import { withFormController } from 'modules/shared/hocs/withFormController'
 
-type InputProps = React.ComponentProps<typeof Input>
+type InputProps = React.ComponentProps<typeof Input> & {
+  isInteger?: boolean
+}
 
 export function InputNumber({
-  value: valueProp,
-  defaultValue = '',
+  value,
+  isInteger,
   onChange,
   ...props
 }: InputProps) {
-  const [valueState, setValue] = useState(defaultValue)
-
-  const value = valueProp !== undefined ? valueProp : valueState
-
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (isNaN(Number(e.target.value))) {
-        return
+      let eventValue = e.currentTarget.value.trim()
+
+      if (isNaN(Number(eventValue))) return
+
+      if (isInteger) {
+        if (eventValue.includes(',')) {
+          eventValue = eventValue.replaceAll(',', '')
+        }
+        if (eventValue.includes('.')) {
+          eventValue = eventValue.replaceAll('.', '')
+        }
+      } else {
+        // Support for devices where inputMode="decimal" showing keyboard with comma as decimal delimiter
+        if (eventValue.includes(',')) {
+          eventValue = eventValue.replaceAll(',', '.')
+        }
+
+        // Prepend zero when user types just a dot symbol for "0."
+        if (eventValue === '.') {
+          eventValue = '0.'
+        }
       }
+
+      e.currentTarget.value = eventValue
       onChange?.(e)
-      setValue(e.target.value)
     },
-    [onChange],
+    [isInteger, onChange],
   )
 
   return <Input value={value} onChange={handleChange} {...props} />
