@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import { useVotePassedCallback } from 'modules/votes/hooks/useVotePassedCallback'
+import { useVoteDetailsFormatted } from 'modules/votes/hooks/useVoteDetailsFormatted'
 
 import Link from 'next/link'
 import { VoteStatusBanner } from 'modules/votes/ui/VoteStatusBanner'
@@ -17,9 +18,6 @@ import {
 } from './DashboardVoteStyle'
 import type { StartVoteEventObject } from 'generated/AragonVotingAbi'
 import { Vote, VoteStatus } from 'modules/votes/types'
-import { weiToNum } from 'modules/blockChain/utils/parseWei'
-import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
-import { formatFloatPct } from 'modules/shared/utils/formatFloatPct'
 import * as urls from 'modules/network/utils/urls'
 
 type Props = {
@@ -44,12 +42,13 @@ export function DashboardVote({
   const {
     nayPct,
     yeaPct,
-    yeaPctOfTotalSupply,
     nayPctOfTotalSupplyFormatted,
     yeaPctOfTotalSupplyFormatted,
+    neededToQuorum,
+    neededToQuorumFormatted,
     startDate,
     endDate,
-  } = getVoteDetailsFormatted({ vote, voteTime })
+  } = useVoteDetailsFormatted({ vote, voteTime })! // we are sure that we have non-undefined `vote` and `voteTime` here
 
   const handlePass = useCallback(() => {
     // TODO:
@@ -71,11 +70,6 @@ export function DashboardVote({
     voteTime: voteTime && objectionPhaseTime && voteTime - objectionPhaseTime,
     onPass: handlePass,
   })
-
-  const neededToQuorum = weiToNum(vote.minAcceptQuorum) - yeaPctOfTotalSupply
-  const neededToQuorumFormatted = formatFloatPct(neededToQuorum, {
-    floor: true,
-  }).toFixed(2)
 
   const isEnded =
     status === VoteStatus.Rejected || status === VoteStatus.Executed

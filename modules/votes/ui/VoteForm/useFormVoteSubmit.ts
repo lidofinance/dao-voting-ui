@@ -68,20 +68,17 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
     [voteId, txVote],
   )
 
-  const populateEnact = useCallback(
-    async (args: { voteId: string }) => {
-      const gasLimit = await estimateGasFallback(
-        contractVoting.estimateGas.executeVote(args.voteId),
-        2000000,
-      )
-      const tx = await contractVoting.populateTransaction.executeVote(
-        args.voteId,
-        { gasLimit },
-      )
-      return tx
-    },
-    [contractVoting],
-  )
+  const populateEnact = useCallback(async () => {
+    if (!voteId) throw new Error('voteId is required')
+    const gasLimit = await estimateGasFallback(
+      contractVoting.estimateGas.executeVote(voteId),
+      2000000,
+    )
+    const tx = await contractVoting.populateTransaction.executeVote(voteId, {
+      gasLimit,
+    })
+    return tx
+  }, [voteId, contractVoting])
   const txEnact = useTransactionSender(populateEnact, {
     onError: handleError,
     onFinish: handleFinish,
@@ -91,7 +88,7 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
     if (!voteId) return
     try {
       setSubmitting('enact')
-      await txEnact.send({ voteId })
+      await txEnact.send()
     } catch (err) {
       console.error(err)
       setSubmitting(false)
@@ -104,5 +101,6 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
     handleVote,
     handleEnact,
     isSubmitting,
+    populateEnact,
   }
 }

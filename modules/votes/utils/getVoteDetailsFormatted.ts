@@ -31,6 +31,11 @@ export function getVoteDetailsFormatted({ vote, voteTime }: Args) {
   const startDate = vote.startDate.toNumber()
   const endDate = startDate + voteTime
 
+  const neededToQuorum = weiToNum(vote.minAcceptQuorum) - yeaPctOfTotalSupply
+  const neededToQuorumFormatted = formatFloatPct(neededToQuorum, {
+    floor: true,
+  }).toFixed(2)
+
   return {
     totalSupply,
     totalSupplyFormatted,
@@ -42,6 +47,8 @@ export function getVoteDetailsFormatted({ vote, voteTime }: Args) {
     yeaPctOfTotalSupply,
     nayPctOfTotalSupplyFormatted,
     yeaPctOfTotalSupplyFormatted,
+    neededToQuorum,
+    neededToQuorumFormatted,
     startDate,
     endDate,
   }

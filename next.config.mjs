@@ -26,6 +26,10 @@ const cspReportUri = process.env.CSP_REPORT_URI
 const ipfsMode = process.env.IPFS_MODE
 const walletconnectProjectId = process.env.WALLETCONNECT_PROJECT_ID
 
+const tenderlyUser = process.env.TENDERLY_USER
+const tenderlyProject = process.env.TENDERLY_PROJECT
+const tendrerlyAccessKey = process.env.TENDERLY_ACCESS_KEY
+
 export default {
   basePath,
   webpack5: true,
@@ -130,6 +134,9 @@ export default {
     cspTrustedHosts,
     cspReportOnly,
     cspReportUri,
+    tenderlyUser,
+    tenderlyProject,
+    tendrerlyAccessKey,
   },
   publicRuntimeConfig: {
     defaultChain,

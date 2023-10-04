@@ -14,6 +14,9 @@ const patterns = [
   process.env.INFURA_API_KEY,
   process.env.ALCHEMY_API_KEY,
   process.env.ETHERSCAN_API_KEY,
+  process.env.TENDERLY_USER,
+  process.env.TENDERLY_PROJECT,
+  process.env.TENDERLY_API_KEY,
 ]
 const mask = satanizer(patterns)
 
