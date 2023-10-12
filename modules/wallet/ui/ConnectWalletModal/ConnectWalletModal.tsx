@@ -21,6 +21,9 @@ const HIDDEN_WALLETS: WalletModalForEthProps['hiddenWallets'] = [
   'tally',
   'zengo',
   'zerion',
+  'bitget',
+  'bitkeep',
+  'taho',
 ]
 
 type Props = WalletModalForEthProps & {}
