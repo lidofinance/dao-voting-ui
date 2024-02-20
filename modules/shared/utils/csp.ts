@@ -33,6 +33,7 @@ export const contentSecurityPolicy = {
       'https://*.infura.io',
       'https://*.alchemyapi.io',
       'https://*.alchemy.com',
+      'https://*.drpc.org',
       'https://*.etherscan.io/api',
       'https://*.ipfs.w3s.link',
       'https://*.ipfs.dweb.link',
