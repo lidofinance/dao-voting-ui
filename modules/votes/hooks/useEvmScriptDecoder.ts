@@ -70,6 +70,7 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
       [KEYS.ExecutionLayerRewardsVault]:
         abis.ExecutionLayerRewardsVaultAbi__factory.abi,
       [KEYS.Burner]: abis.BurnerAbi__factory.abi,
+      [KEYS.SimpleDVT]: abis.NodeOperatorsRegistryAbi__factory.abi,
     })
 
     const etherscanDecoder = new abiProviders.Base({
