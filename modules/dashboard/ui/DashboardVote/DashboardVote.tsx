@@ -25,7 +25,7 @@ import * as urls from 'modules/network/utils/urls'
 type Props = {
   voteId: number
   vote: Vote
-  eventStart: StartVoteEventObject
+  eventStart: StartVoteEventObject | null
   status: VoteStatus
   voteTime: number
   objectionPhaseTime: number
@@ -79,9 +79,6 @@ export function DashboardVote({
 
   const isEnded =
     status === VoteStatus.Rejected || status === VoteStatus.Executed
-
-  const { metadata } = eventStart
-
   return (
     <Link passHref href={urls.vote(voteId)}>
       <Wrap>
@@ -98,7 +95,7 @@ export function DashboardVote({
         <VoteBody>
           <VoteTitle>Vote #{voteId}</VoteTitle>
           <VoteDescriptionWrap>
-            <VoteDescription metadata={metadata} />
+            <VoteDescription metadata={eventStart?.metadata} />
           </VoteDescriptionWrap>
         </VoteBody>
 

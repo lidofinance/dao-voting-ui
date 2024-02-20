@@ -10,14 +10,14 @@ import { fetcherIPFS } from 'modules/network/utils/fetcherIPFS'
 import { useSWR } from 'modules/network/hooks/useSwr'
 
 type Props = {
-  metadata: string
+  metadata: string | undefined
   allowMD?: boolean
 }
 
 const trimStart = (string = '') => `${string}`.replace(/^\s+/, '')
 
 export function VoteDescription({ metadata, allowMD }: Props) {
-  const cid = metadata.match(REGEX_LIDO_VOTE_CID)?.[1] || null
+  const cid = metadata?.match(REGEX_LIDO_VOTE_CID)?.[1] || null
 
   const {
     data = '',
@@ -25,7 +25,11 @@ export function VoteDescription({ metadata, allowMD }: Props) {
     initialLoading,
   } = useSWR(cid, fetcherIPFS, { onError: noop })
 
-  if (!cid) {
+  if (!metadata) {
+    return <DescriptionText>Failed to fetch vote description.</DescriptionText>
+  }
+
+  if (!cid && metadata) {
     return <DescriptionText>{replaceJsxElements(metadata)}</DescriptionText>
   }
 
