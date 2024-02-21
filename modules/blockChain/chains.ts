@@ -12,6 +12,7 @@ export const ChainNames = {
   [CHAINS.Moonbeam]: 'Moonbeam',
   [CHAINS.Moonriver]: 'Moonriver',
   [CHAINS.Moonbase]: 'Moonbase',
+  [CHAINS.Holesky]: 'Holesky',
 } as const
 
 export const parseChainId = (chainId: number | string) => {

@@ -16,7 +16,7 @@ export async function getEventStartVote(
   )
   const event = events[0]
   if (!events[0] || !event.decode) {
-    throw new Error('Start vote event parsing error')
+    return null
   }
   const decoded = event.decode(event.data, event.topics)
   return decoded as StartVoteEventObject
