@@ -206,3 +206,8 @@ export const Burner: ChainAddressMap = {
   [CHAINS.Goerli]: '0x20c61C07C2E2FAb04BF5b4E12ce45a459a18f3B1',
   [CHAINS.Holesky]: '0x4E46BD7147ccf666E1d73A3A456fC7a68de82eCA',
 }
+
+export const SimpleDVT: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xaE7B191A31f627b4eB1d4DaC64eaB9976995b433',
+  [CHAINS.Holesky]: '0x11a93807078f8BB880c1BD0ee4C387537de4b4b6',
+}
