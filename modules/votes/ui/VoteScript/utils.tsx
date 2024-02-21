@@ -17,7 +17,7 @@ export const formatCallString = (
     if (inputsFormatted) inputsFormatted += '\n'
 
     res += `${abi.type} ${abi.name}(${inputsFormatted})`
-    res += '\n\nCall data:\n'
+    res += '\n\nCall data :\n'
   } else {
     res += '[abi not found]\n'
   }
