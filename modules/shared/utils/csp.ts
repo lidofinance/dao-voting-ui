@@ -37,7 +37,7 @@ export const contentSecurityPolicy = {
       'https://*.etherscan.io/api',
       'https://*.ipfs.w3s.link',
       'https://*.ipfs.dweb.link',
-      'wss://*.walletlink.org/',
+      'wss://*.walletlink.org',
       'https://*.coinbase.com',
       ...trustedHosts,
     ],
