@@ -39,7 +39,7 @@ import {
 } from './HeaderStyle'
 
 import { getChainName } from 'modules/blockChain/chains'
-import { getChainColor } from '@lido-sdk/constants'
+import { getChainColor, CHAINS_COLORS } from '@lido-sdk/constants'
 import LidoLogoSvg from 'assets/logo.com.svg.react'
 import StarSvg from 'assets/star.com.svg.react'
 import SettingsSvg from 'assets/settings.com.svg.react'
@@ -118,12 +118,18 @@ export function Header() {
         </InputWrap>
 
         <ActionsDesktop>
-          <Network>
-            <NetworkBulb color={getChainColor(chainId)} />
+          {chainId in CHAINS_COLORS ? (
+            <Network>
+              <NetworkBulb color={getChainColor(chainId)} />
+              <Text size="xs" weight={500}>
+                {getChainName(chainId)}
+              </Text>
+            </Network>
+          ) : (
             <Text size="xs" weight={500}>
-              {getChainName(chainId)}
+              unknown #{chainId}
             </Text>
-          </Network>
+          )}
           <NoSSRWrapper>
             <HeaderWallet />
           </NoSSRWrapper>
@@ -183,12 +189,18 @@ export function Header() {
               </MobileNavItems>
               <MobileNetworkWrap>
                 <MobileNetworkLabel>Network</MobileNetworkLabel>
-                <Network>
-                  <NetworkBulb color={getChainColor(chainId)} />
+                {chainId in CHAINS_COLORS ? (
+                  <Network>
+                    <NetworkBulb color={getChainColor(chainId)} />
+                    <Text size="xs" weight={500}>
+                      {getChainName(chainId)}
+                    </Text>
+                  </Network>
+                ) : (
                   <Text size="xs" weight={500}>
-                    {getChainName(chainId)}
+                    unknown #{chainId}
                   </Text>
-                </Network>
+                )}
               </MobileNetworkWrap>
               <HeaderWallet trimAddressSymbols={6} />
             </MobileMenuScroll>
