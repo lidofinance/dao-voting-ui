@@ -122,6 +122,6 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
       error instanceof Error ? error.message : 'Something went wrong',
       error,
     )
-    res.status(500).send({ error: 'Something went wrong!' })
+    res.status(500).send({ error })
   }
 }
