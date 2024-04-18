@@ -63,7 +63,10 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
 
     // this part for detecting issue with loose answer to eth_getLogs request
     if (requestedFb) {
-      const respondedFb: IRpcResponse[] = await requestedFb.json()
+      // const respondedFb: IRpcResponse[] = await requestedFb.json()
+      const respondedFb: string = await requestedFb.text()
+      res.status(500).send({ error: respondedFb })
+      return
 
       const mixed = req.body.filter(isLogsRequest).map((item: IRpcRequest) => ({
         req: item,
