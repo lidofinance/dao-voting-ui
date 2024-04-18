@@ -49,6 +49,9 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
         method: 'POST',
         // Next by default parses our body for us, we don't want that here
         body: JSON.stringify(req.body),
+        headers: {
+          'Content-type': 'application/json',
+        },
       })
 
     const needCompareWithFallback = req.body.some(isLogsRequest) // assign false to off comparison
