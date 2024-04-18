@@ -49,6 +49,9 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
         method: 'POST',
         // Next by default parses our body for us, we don't want that here
         body: JSON.stringify(req.body),
+        headers: {
+          'Content-type': 'application/json',
+        },
       })
 
     const needCompareWithFallback = req.body.some(isLogsRequest) // assign false to off comparison
@@ -64,7 +67,6 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
     // this part for detecting issue with loose answer to eth_getLogs request
     if (requestedFb) {
       const respondedFb: IRpcResponse[] = await requestedFb.json()
-
       const mixed = req.body.filter(isLogsRequest).map((item: IRpcRequest) => ({
         req: item,
         res: [
@@ -122,6 +124,6 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
       error instanceof Error ? error.message : 'Something went wrong',
       error,
     )
-    res.status(500).send({ error: 'Something went wrong!' })
+    res.status(500).send({ error })
   }
 }
