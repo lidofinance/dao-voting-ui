@@ -41,7 +41,7 @@ export function VoteDetails({
   voteTime,
   objectionPhaseTime,
   creator,
-  metadata = '',
+  metadata,
   isEnded,
   executedTxHash,
 }: Props) {
