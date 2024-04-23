@@ -12,7 +12,7 @@ import { VoteScriptBody } from './VoteScriptBody'
 
 type Props = {
   script: string
-  metadata: string
+  metadata?: string
 }
 
 export function VoteScript({ script, metadata = '' }: Props) {

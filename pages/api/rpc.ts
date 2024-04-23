@@ -4,6 +4,9 @@ import { CHAINS } from '@lido-sdk/constants'
 import { parseChainId } from 'modules/blockChain/chains'
 import { fetchWithFallback } from 'modules/network/utils/fetchWithFallback'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { ethers } from 'ethers'
+import { AragonVoting } from '../../modules/blockChain/contractAddresses'
+import { AragonVotingAbi__factory } from '../../generated'
 
 const { serverRuntimeConfig } = getConfig()
 const { rpcUrls_1, rpcUrls_5, rpcUrls_17000 } = serverRuntimeConfig
@@ -19,8 +22,20 @@ interface IRpcResponse {
   id: number
   result: any[]
 }
-const isLogsRequest = (item: any) => item?.method === 'eth_getLogs'
-const hasResult = (item: any) => item.data?.result?.length > 0
+interface IStat {
+  req: IRpcRequest
+  res?: IRpcResponse
+  date: string
+  trace: string
+  voteId: number
+}
+
+const isStartFromTopic = (topic: string) => (req: IRpcRequest) =>
+  req.method === 'eth_getLogs' && req.params[0]?.topics?.[0] === topic
+
+const getVoteIdFromRequest = (req: any) => Number(req?.params?.[0]?.topics?.[1])
+
+const noResult = (item: any) => item?.res?.result?.length === 0
 
 export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
   const RPC_URLS: Record<number, string[]> = {
@@ -44,73 +59,44 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
     const chainId = parseChainId(String(req.query.chainId))
     const urls = RPC_URLS[chainId]
 
-    const rpcReq = (chainUrls: string[]) =>
-      fetchWithFallback(chainUrls, chainId, {
-        method: 'POST',
-        // Next by default parses our body for us, we don't want that here
-        body: JSON.stringify(req.body),
-        headers: {
-          'Content-type': 'application/json',
-        },
-      })
-
-    const needCompareWithFallback = req.body.some(isLogsRequest) // assign false to off comparison
-    const requests: [Promise<Response>, Promise<Response | null>] =
-      urls[1] && needCompareWithFallback
-        ? [rpcReq(urls), rpcReq([urls[1]]).catch(() => null)]
-        : [rpcReq(urls), Promise.resolve(null)]
-
-    const [requested, requestedFb] = await Promise.all(requests)
+    const requested = await fetchWithFallback(urls, chainId, {
+      method: 'POST',
+      // Next by default parses our body for us, we don't want that here
+      body: JSON.stringify(req.body),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
 
     const responded: IRpcResponse[] = await requested.json()
+    try {
+      const contractVoting = new ethers.Contract(
+        AragonVoting[chainId] ?? '',
+        AragonVotingAbi__factory.abi,
+      )
+      const filter = contractVoting.filters.StartVote(Number(0))
+      const startVoteTopic = String(filter.topics?.[0])
+      const voteEvents: IStat[] = req.body
+        .filter(isStartFromTopic(startVoteTopic))
+        .map((item: IRpcRequest) => ({
+          req: item,
+          res: responded.find(resp => resp.id === item.id),
+          date: requested.headers.get('date') ?? '',
+          trace: requested.headers.get('x-drpc-trace-id') ?? '',
+          voteId: getVoteIdFromRequest(item),
+        }))
 
-    // this part for detecting issue with loose answer to eth_getLogs request
-    if (requestedFb) {
-      const respondedFb: IRpcResponse[] = await requestedFb.json()
-      const mixed = req.body.filter(isLogsRequest).map((item: IRpcRequest) => ({
-        req: item,
-        res: [
-          {
-            data: responded.find(resp => resp.id === item.id),
-            date: requested.headers.get('date'),
-            trace: requested.headers.get('x-drpc-trace-id'),
-          },
-          {
-            data: respondedFb.find(resp => resp.id === item.id),
-            date: requestedFb.headers.get('date'),
-            trace: requestedFb.headers.get('x-drpc-trace-id'),
-          },
-        ],
-      }))
+      const lostVoteEvents = voteEvents.filter(noResult)
 
-      mixed.forEach((item: any) => {
-        let index = -1
-        let message = 'no blockers'
-        index = !hasResult(item.res[0]) && hasResult(item.res[1]) ? 0 : index
-        index = hasResult(item.res[0]) && !hasResult(item.res[1]) ? 1 : index
-
-        if (index != -1) {
-          message = 'One chain loose rpc logs'
-        }
-
-        if (!hasResult(item.res[0]) && !hasResult(item.res[1])) {
-          index = 1
-          message = 'Both chains loose rpc logs'
-        }
-
-        if (index != -1) {
-          const { data, date, trace } = item.res[index]
-          console.info({
-            message,
-            urlIndex: index,
-            chainId,
-            date,
-            trace,
-            req: item.req,
-            res: data,
-          })
-        }
+      lostVoteEvents.forEach(item => {
+        console.error({
+          message: `Lost log event for vote #${item.voteId}`,
+          chainId,
+          ...item,
+        })
       })
+    } catch (err) {
+      console.error(`Failed on empty log response verification`)
     }
 
     res.status(requested.status).json(responded)
@@ -124,6 +110,6 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
       error instanceof Error ? error.message : 'Something went wrong',
       error,
     )
-    res.status(500).send({ error: 'Something went wrong' })
+    res.status(500).send({ error: 'Something went wrong!' })
   }
 }
