@@ -30,7 +30,11 @@ export function VoteDescription({ metadata, allowMD }: Props) {
   }
 
   if (!metadata) {
-    return <DescriptionText>Failed to fetch vote description.</DescriptionText>
+    return (
+      <DescriptionText>
+        Failed to fetch vote description from RPC provider.
+      </DescriptionText>
+    )
   }
 
   if (!cid && metadata) {
