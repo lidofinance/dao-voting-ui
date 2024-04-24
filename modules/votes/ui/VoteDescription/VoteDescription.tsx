@@ -10,7 +10,7 @@ import { fetcherIPFS } from 'modules/network/utils/fetcherIPFS'
 import { useSWR } from 'modules/network/hooks/useSwr'
 
 type Props = {
-  metadata: string | undefined
+  metadata?: string | undefined
   allowMD?: boolean
 }
 
@@ -25,8 +25,16 @@ export function VoteDescription({ metadata, allowMD }: Props) {
     initialLoading,
   } = useSWR(cid, fetcherIPFS, { onError: noop })
 
+  if (metadata === '') {
+    return <DescriptionText>No description.</DescriptionText>
+  }
+
   if (!metadata) {
-    return <DescriptionText>Failed to fetch vote description.</DescriptionText>
+    return (
+      <DescriptionText>
+        Failed to fetch vote description from RPC provider.
+      </DescriptionText>
+    )
   }
 
   if (!cid && metadata) {

@@ -92,4 +92,3 @@ To create a new release:
 1. When you need to release, go to Repo → Releases.
 1. Publish the desired release draft manually by clicking the edit button - this release is now the `Latest Published`.
 1. After publication, the action to create a release bump will be triggered automatically.
-1.
