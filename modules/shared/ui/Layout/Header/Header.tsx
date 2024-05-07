@@ -50,6 +50,7 @@ function NavItem({
   activeOn,
   onClick,
   children,
+  ...rest
 }: {
   link: string
   activeOn?: (string | { url: string; exact: boolean })[]
@@ -70,7 +71,7 @@ function NavItem({
 
   return (
     <Link passHref href={link}>
-      <NavLink isActive={isActive} onClick={onClick}>
+      <NavLink isActive={isActive} onClick={onClick} {...rest}>
         <NavLinkInner>{children}</NavLinkInner>
       </NavLink>
     </Link>
@@ -95,7 +96,7 @@ export function Header() {
     <>
       <Wrap>
         <Nav>
-          <Logo>
+          <Logo data-testid="lidoLogo">
             <LidoLogoSvg />
           </Logo>
           <NavItems>
@@ -106,10 +107,13 @@ export function Header() {
                 urls.voteIndex,
                 urls.dashboardIndex,
               ]}
+              data-testid="navVote"
             >
               Vote
             </NavItem>
-            <NavItem link={urls.settings}>Settings</NavItem>
+            <NavItem link={urls.settings} data-testid="navSettings">
+              Settings
+            </NavItem>
           </NavItems>
         </Nav>
 
@@ -120,7 +124,7 @@ export function Header() {
         <ActionsDesktop>
           <Network>
             <NetworkBulb color={getChainColor(chainId)} />
-            <Text size="xs" weight={500}>
+            <Text size="xs" weight={500} data-testid="network">
               {getChainName(chainId)}
             </Text>
           </Network>
@@ -185,7 +189,7 @@ export function Header() {
                 <MobileNetworkLabel>Network</MobileNetworkLabel>
                 <Network>
                   <NetworkBulb color={getChainColor(chainId)} />
-                  <Text size="xs" weight={500}>
+                  <Text size="xs" weight={500} data-testid="network">
                     {getChainName(chainId)}
                   </Text>
                 </Network>
