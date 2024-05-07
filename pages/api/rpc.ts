@@ -35,7 +35,8 @@ const isStartFromTopic = (topic: string) => (req: IRpcRequest) =>
 
 const getVoteIdFromRequest = (req: any) => Number(req?.params?.[0]?.topics?.[1])
 
-const noResult = (item: any) => item?.res?.result?.length === 0
+const hasNoResult = (item: any) => item?.res?.result?.length === 0
+const hasVoteId = (item: any) => !isNaN(item.voteId)
 
 export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
   const RPC_URLS: Record<number, string[]> = {
@@ -86,7 +87,7 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
           voteId: getVoteIdFromRequest(item),
         }))
 
-      const lostVoteEvents = voteEvents.filter(noResult)
+      const lostVoteEvents = voteEvents.filter(hasNoResult).filter(hasVoteId)
 
       lostVoteEvents.forEach(item => {
         console.error({
