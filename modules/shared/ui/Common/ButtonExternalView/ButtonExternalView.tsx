@@ -8,7 +8,12 @@ type Props = {
   children: React.ReactNode
 }
 
-export function ButtonExternalView({ children, link, onClick }: Props) {
+export function ButtonExternalView({
+  children,
+  link,
+  onClick,
+  ...rest
+}: Props) {
   const handleClick = useCallback(() => {
     if (link) openWindow(link)
     onClick?.()
@@ -20,6 +25,7 @@ export function ButtonExternalView({ children, link, onClick }: Props) {
       size="xs"
       variant="translucent"
       children={children}
+      {...rest}
     />
   )
 }

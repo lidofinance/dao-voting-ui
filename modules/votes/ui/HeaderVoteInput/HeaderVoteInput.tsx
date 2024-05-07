@@ -45,6 +45,7 @@ export function HeaderVoteInput() {
           </ClearIconWrap>
         )
       }
+      data-testid="searchInput"
     />
   )
 }
