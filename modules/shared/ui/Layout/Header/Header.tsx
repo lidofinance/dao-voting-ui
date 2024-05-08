@@ -123,7 +123,10 @@ export function Header() {
 
         <ActionsDesktop>
           <Network>
-            <NetworkBulb color={getChainColor(chainId)} />
+            <NetworkBulb
+              color={getChainColor(chainId)}
+              data-testid="networkIndicator"
+            />
             <Text size="xs" weight={500} data-testid="network">
               {getChainName(chainId)}
             </Text>
@@ -188,7 +191,10 @@ export function Header() {
               <MobileNetworkWrap>
                 <MobileNetworkLabel>Network</MobileNetworkLabel>
                 <Network>
-                  <NetworkBulb color={getChainColor(chainId)} />
+                  <NetworkBulb
+                    color={getChainColor(chainId)}
+                    data-testid="networkIndicator"
+                  />
                   <Text size="xs" weight={500} data-testid="network">
                     {getChainName(chainId)}
                   </Text>
