@@ -40,7 +40,7 @@ function WalletModalContent() {
           weight={500}
           children={`${governanceSymbol} Balance:`}
         />
-        <Text size="xxs" weight={500}>
+        <Text size="xxs" weight={500} data-testid="ldoBalance">
           &nbsp;
           {governanceBalance.initialLoading || !governanceBalance.data
             ? 'Loading...'
@@ -82,8 +82,15 @@ export function WalletModal(props: ModalProps) {
     <Modal title="Account" {...props}>
       <Content>
         <Connected>
-          <Connector>Connected with {providerName}</Connector>
-          <Disconnect size="xs" variant="outlined" onClick={handleDisconnect}>
+          <Connector data-testid="providerName">
+            Connected with {providerName}
+          </Connector>
+          <Disconnect
+            size="xs"
+            variant="outlined"
+            onClick={handleDisconnect}
+            data-testid="disconnectBtn"
+          >
             Disconnect
           </Disconnect>
         </Connected>

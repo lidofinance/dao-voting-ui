@@ -121,7 +121,7 @@ export function SettingsForm() {
 
   return (
     <Container as="main" size="tight">
-      <Card>
+      <Card data-testid="settingsSection">
         <Form formMethods={formMethods} onSubmit={handleSubmit}>
           <Fieldset>
             <InputControl
@@ -137,7 +137,7 @@ export function SettingsForm() {
               rules={{ validate: validateEtherscanKey }}
             />
           </Fieldset>
-          <Fieldset>
+          <Fieldset data-testid="abisBlock">
             <CheckboxLabelWrap>
               <CheckboxControl name="useBundledAbi" />
               Use built-in ABIs
@@ -149,6 +149,7 @@ export function SettingsForm() {
               variant="translucent"
               children="Reset to defaults"
               onClick={handleReset}
+              data-testid="resetBtn"
             />
             <Button
               type="submit"
@@ -157,6 +158,7 @@ export function SettingsForm() {
               children="Save"
               loading={formState.isValidating}
               disabled={!formState.isValid || formState.isValidating}
+              data-testid="saveBtn"
             />
           </Actions>
         </Form>
@@ -165,7 +167,7 @@ export function SettingsForm() {
       <br />
 
       <Card>
-        <DescriptionText>
+        <DescriptionText data-testid="faqSection">
           <DescriptionTitle>What are these settings for?</DescriptionTitle>
           <p>
             This website relies on a JSON RPC connection and an Etherscan API
