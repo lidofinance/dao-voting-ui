@@ -27,7 +27,7 @@ function WalletModalContent() {
     () => trimAddress(walletAddress ?? '', 6),
     [walletAddress],
   )
-  const { data, initialLoading } = useGovernanceBalance()
+  const { data: governanceBalance, initialLoading } = useGovernanceBalance()
 
   return (
     <>
@@ -37,10 +37,10 @@ function WalletModalContent() {
           weight={500}
           children={initialLoading ? 'Loading...' : 'Balance'}
         />
-        {data?.governanceBalanceStr ? (
+        {governanceBalance?.balanceStr ? (
           <Text size="xxs" weight={500}>
             &nbsp;
-            {data.governanceBalanceStr}
+            {governanceBalance.balanceStr}
           </Text>
         ) : null}
       </Row>
