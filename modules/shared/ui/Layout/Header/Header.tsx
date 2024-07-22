@@ -109,6 +109,7 @@ export function Header() {
             >
               Vote
             </NavItem>
+            <NavItem link={urls.delegation}>Delegation</NavItem>
             <NavItem link={urls.settings}>Settings</NavItem>
           </NavItems>
         </Nav>
@@ -161,6 +162,7 @@ export function Header() {
                   </NavLinkIconWrap>{' '}
                   Vote
                 </NavItem>
+                <NavItem link={urls.delegation}>Delegation</NavItem>
                 <NavItem link={urls.settings} onClick={handleCloseMobileMenu}>
                   <NavLinkIconWrap>
                     <SettingsSvg />
