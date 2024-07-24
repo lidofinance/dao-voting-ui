@@ -23,7 +23,7 @@ export function DelegationAddressBadge({ address, type }: Props) {
     <DelegationAddressBadgeStyled>
       <AddressPop address={address}>
         <AddressBadgeWrap>
-          <Identicon address={address} diameter={16} />
+          <Identicon address={address} diameter={20} />
           <Text as="span" size="xxs" color="secondary">
             {trimAddress(address, 4)}
           </Text>

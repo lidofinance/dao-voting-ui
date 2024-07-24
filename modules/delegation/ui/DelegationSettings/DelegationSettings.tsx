@@ -1,8 +1,8 @@
 import { useState } from 'react'
+import { Button, Text } from '@lidofinance/lido-ui'
 
 import { FormTitle, Wrap } from './DelegationSettingsStyle'
 import { DelegationForm } from '../DelegationForm'
-import { Button, Text } from '@lidofinance/lido-ui'
 
 export function DelegationSettings() {
   const [isSimpleModeOn, setIsSimpleModeOn] = useState(true)
