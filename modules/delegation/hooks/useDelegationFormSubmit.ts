@@ -69,7 +69,9 @@ export function useDelegationFormSubmit({
     [snapshot.estimateGas, snapshot.populateTransaction],
   )
 
-  const txSnapshotDelegate = useTransactionSender(populateSnapshotDelegate)
+  const txSnapshotDelegate = useTransactionSender(populateSnapshotDelegate, {
+    onError,
+  })
 
   const submitDelegation = useCallback(
     async ({ delegateAddress }: DelegationFormInput) => {

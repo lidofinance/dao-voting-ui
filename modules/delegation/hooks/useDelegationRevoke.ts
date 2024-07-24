@@ -1,10 +1,7 @@
 import { useCallback } from 'react'
 import invariant from 'tiny-invariant'
 import { ContractSnapshot, ContractVoting } from 'modules/blockChain/contracts'
-import {
-  FinishHandler,
-  useTransactionSender,
-} from 'modules/blockChain/hooks/useTransactionSender'
+import { useTransactionSender } from 'modules/blockChain/hooks/useTransactionSender'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { DelegationFormNetworkData, DelegationType } from '../types'
 import { estimateDelegationGasLimit } from '../utils/estimateDelegationGasLimit'
@@ -14,7 +11,7 @@ type Args = {
   networkData: DelegationFormNetworkData
   onSubmitClick?: () => void
   onError?: () => void
-  onFinish?: FinishHandler
+  onFinish?: () => Promise<void>
 }
 
 export function useDelegationRevoke({
@@ -36,7 +33,6 @@ export function useDelegationRevoke({
   }, [voting.estimateGas, voting.populateTransaction])
 
   const txAragonRevoke = useTransactionSender(populateAragonRevoke, {
-    onFinish,
     onError,
   })
 
@@ -56,7 +52,7 @@ export function useDelegationRevoke({
   }, [chainId, library])
 
   const txSnapshotRevoke = useTransactionSender(populateSnapshotRevoke, {
-    onFinish,
+    onError,
   })
 
   const submitRevoke = useCallback(
@@ -69,7 +65,10 @@ export function useDelegationRevoke({
             'Aragon delegate address is required',
           )
 
-          await txAragonRevoke.send()
+          const tx = await txAragonRevoke.send()
+          if (tx?.type === 'regular') {
+            await tx.tx.wait()
+          }
         }
         if (type === 'snapshot') {
           invariant(
@@ -77,10 +76,15 @@ export function useDelegationRevoke({
             'Snapshot delegate address is required',
           )
 
-          await txSnapshotRevoke.send()
+          const tx = await txSnapshotRevoke.send()
+          if (tx?.type === 'regular') {
+            await tx.tx.wait()
+          }
         }
       } catch (err) {
         console.error(err)
+      } finally {
+        await onFinish?.()
       }
     },
     [
@@ -89,6 +93,7 @@ export function useDelegationRevoke({
       txAragonRevoke,
       txSnapshotRevoke,
       onSubmitClick,
+      onFinish,
     ],
   )
 
