@@ -12,6 +12,7 @@ import {
   Light,
   useThemeToggle,
   Text,
+  LidoLogo,
 } from '@lidofinance/lido-ui'
 import { HeaderVoteInput } from 'modules/votes/ui/HeaderVoteInput'
 import {
@@ -40,9 +41,9 @@ import {
 
 import { getChainName } from 'modules/blockChain/chains'
 import { getChainColor } from '@lido-sdk/constants'
-import LidoLogoSvg from 'assets/logo.com.svg.react'
 import StarSvg from 'assets/star.com.svg.react'
 import SettingsSvg from 'assets/settings.com.svg.react'
+import DelegationSvg from 'assets/delegation.com.svg.react'
 import * as urls from 'modules/network/utils/urls'
 
 function NavItem({
@@ -96,8 +97,8 @@ export function Header() {
     <>
       <Wrap>
         <Nav>
-          <Logo data-testid="lidoLogo">
-            <LidoLogoSvg />
+          <Logo data-testid="lidoLogo" href="https://lido.fi">
+            <LidoLogo />
           </Logo>
           <NavItems>
             <NavItem
@@ -110,6 +111,9 @@ export function Header() {
               data-testid="navVote"
             >
               Vote
+            </NavItem>
+            <NavItem link={urls.delegation} data-testid="navDelegation">
+              Delegation
             </NavItem>
             <NavItem link={urls.settings} data-testid="navSettings">
               Settings
@@ -168,7 +172,12 @@ export function Header() {
                   </NavLinkIconWrap>{' '}
                   Vote
                 </NavItem>
-                <NavItem link={urls.delegation}>Delegation</NavItem>
+                <NavItem link={urls.delegation} onClick={handleCloseMobileMenu}>
+                  <NavLinkIconWrap>
+                    <DelegationSvg />
+                  </NavLinkIconWrap>{' '}
+                  Delegation
+                </NavItem>
                 <NavItem link={urls.settings} onClick={handleCloseMobileMenu}>
                   <NavLinkIconWrap>
                     <SettingsSvg />

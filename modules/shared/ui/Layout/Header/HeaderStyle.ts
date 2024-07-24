@@ -16,7 +16,6 @@ export const Wrap = styled(Container).attrs({
   align-items: center;
   justify-content: space-between;
   background-color: var(--lido-color-foreground);
-  border-bottom: 1px solid var(--lido-color-border);
   z-index: 99;
   margin-bottom: ${({ theme }) => theme.spaceMap.xxl}px;
 
@@ -31,8 +30,8 @@ export const Nav = styled.div`
   width: 30%;
 `
 
-export const Logo = styled.div`
-  margin-right: ${({ theme }) => theme.spaceMap.lg}px;
+export const Logo = styled.a`
+  margin-right: 50px;
   font-size: 0;
   z-index: 99;
 `
@@ -69,7 +68,10 @@ export const NavLink = styled.a<NavLinkProps>`
 
   & svg {
     display: block;
-    fill: currentColor;
+    &,
+    & path {
+      fill: currentColor;
+    }
   }
 
   ${({ isActive }) =>
@@ -128,7 +130,7 @@ export const InputWrap = styled.div`
 `
 
 export const Network = styled.div`
-  margin-right: ${({ theme }) => theme.spaceMap.sm}px;
+  margin-right: 12px;
   display: flex;
   align-items: center;
 `
@@ -149,7 +151,7 @@ export const ThemeTogglerWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: ${({ theme }) => theme.spaceMap.sm}px;
+  margin-left: 12px;
   width: 44px;
   height: 44px;
   border: 1px solid var(--lido-color-border);
@@ -225,7 +227,7 @@ const menuAppearing = keyframes`
 export const MobileMenu = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 90px ${({ theme }) => theme.spaceMap.lg}px 0;
+  padding: 220px ${({ theme }) => theme.spaceMap.lg}px 0;
   position: fixed;
   overflow: auto;
   top: 0;
