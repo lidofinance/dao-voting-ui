@@ -79,8 +79,15 @@ export function WalletModal(props: ModalProps) {
     <Modal title="Account" {...props}>
       <Content>
         <Connected>
-          <Connector>Connected with {providerName}</Connector>
-          <Disconnect size="xs" variant="outlined" onClick={handleDisconnect}>
+          <Connector data-testid="providerName">
+            Connected with {providerName}
+          </Connector>
+          <Disconnect
+            size="xs"
+            variant="outlined"
+            onClick={handleDisconnect}
+            data-testid="disconnectBtn"
+          >
             Disconnect
           </Disconnect>
         </Connected>

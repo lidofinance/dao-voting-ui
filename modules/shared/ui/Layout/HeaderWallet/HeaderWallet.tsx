@@ -21,6 +21,7 @@ export function HeaderWallet({ trimAddressSymbols = 3 }: Props) {
           size="sm"
           onClick={openConnectWalletModal}
           style={{ width: '100%' }}
+          data-testid="connectButton"
         >
           Connect wallet
         </Button>
@@ -32,7 +33,7 @@ export function HeaderWallet({ trimAddressSymbols = 3 }: Props) {
     <Wrap>
       <AddressBadge onClick={openWalletModal}>
         <Identicon address={walletAddress!} />
-        <AddressText>
+        <AddressText data-testid="accountSection">
           {trimAddress(walletAddress!, trimAddressSymbols)}
         </AddressText>
       </AddressBadge>

@@ -26,10 +26,12 @@ export function CopyOpenActions({ value, entity }: Props) {
         size="xs"
         variant="translucent"
         children={`Copy ${copyText}`}
+        data-testid="copyAddressBtn"
       />
       <ButtonExternalView
         onClick={handleEtherscan}
         children="View on Etherscan"
+        data-testid="etherscanBtn"
       />
     </Wrap>
   )

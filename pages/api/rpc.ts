@@ -4,9 +4,39 @@ import { CHAINS } from '@lido-sdk/constants'
 import { parseChainId } from 'modules/blockChain/chains'
 import { fetchWithFallback } from 'modules/network/utils/fetchWithFallback'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { ethers } from 'ethers'
+import { AragonVoting } from '../../modules/blockChain/contractAddresses'
+import { AragonVotingAbi__factory } from '../../generated'
 
 const { serverRuntimeConfig } = getConfig()
 const { rpcUrls_1, rpcUrls_5, rpcUrls_17000 } = serverRuntimeConfig
+
+interface IRpcRequest {
+  method: string
+  params: any[]
+  id: number
+  jsonrpc: '2.0'
+}
+interface IRpcResponse {
+  jsonrpc: '2.0'
+  id: number
+  result: any[]
+}
+interface IStat {
+  req: IRpcRequest
+  res?: IRpcResponse
+  date: string
+  trace: string
+  voteId: number
+}
+
+const isStartFromTopic = (topic: string) => (req: IRpcRequest) =>
+  req.method === 'eth_getLogs' && req.params[0]?.topics?.[0] === topic
+
+const getVoteIdFromRequest = (req: any) => Number(req?.params?.[0]?.topics?.[1])
+
+const hasNoResult = (item: any) => item?.res?.result?.length === 0
+const hasVoteId = (item: any) => !isNaN(item.voteId)
 
 export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
   const RPC_URLS: Record<number, string[]> = {
@@ -34,9 +64,41 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
       method: 'POST',
       // Next by default parses our body for us, we don't want that here
       body: JSON.stringify(req.body),
+      headers: {
+        'Content-type': 'application/json',
+      },
     })
 
-    const responded = await requested.json()
+    const responded: IRpcResponse[] = await requested.json()
+    try {
+      const contractVoting = new ethers.Contract(
+        AragonVoting[chainId] ?? '',
+        AragonVotingAbi__factory.abi,
+      )
+      const filter = contractVoting.filters.StartVote(Number(0))
+      const startVoteTopic = String(filter.topics?.[0])
+      const voteEvents: IStat[] = req.body
+        .filter(isStartFromTopic(startVoteTopic))
+        .map((item: IRpcRequest) => ({
+          req: item,
+          res: responded.find(resp => resp.id === item.id),
+          date: requested.headers.get('date') ?? '',
+          trace: requested.headers.get('x-drpc-trace-id') ?? '',
+          voteId: getVoteIdFromRequest(item),
+        }))
+
+      const lostVoteEvents = voteEvents.filter(hasNoResult).filter(hasVoteId)
+
+      lostVoteEvents.forEach(item => {
+        console.error({
+          message: `Lost log event for vote #${item.voteId}`,
+          chainId,
+          ...item,
+        })
+      })
+    } catch (err) {
+      console.error(`Failed on empty log response verification`)
+    }
 
     res.status(requested.status).json(responded)
 
