@@ -13,7 +13,8 @@ type Props = {
 }
 
 export function DelegationFormBalance({ onCustomizeClick }: Props) {
-  const { governanceBalanceStr, loading } = useDelegationFormData()
+  const { governanceBalanceStr, loading, isSubmitting } =
+    useDelegationFormData()
   const { isWalletConnected } = useWeb3()
   const { errors } = useFormState()
 
@@ -32,7 +33,9 @@ export function DelegationFormBalance({ onCustomizeClick }: Props) {
         </Text>
       </Balance>
       {onCustomizeClick && (
-        <CustomizeButton onClick={onCustomizeClick}>Customize</CustomizeButton>
+        <CustomizeButton onClick={onCustomizeClick} disabled={isSubmitting}>
+          Customize
+        </CustomizeButton>
       )}
     </DelegationFormBalanceStyled>
   )

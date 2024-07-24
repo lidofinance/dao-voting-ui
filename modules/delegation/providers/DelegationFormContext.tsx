@@ -1,4 +1,11 @@
-import { FC, useMemo, createContext, useContext, useCallback } from 'react'
+import {
+  FC,
+  useMemo,
+  createContext,
+  useContext,
+  useCallback,
+  useState,
+} from 'react'
 import { useGovernanceBalance } from 'modules/tokens/hooks/useGovernanceBalance'
 import { useDelegationInfo } from '../hooks/useDelegationInfo'
 import invariant from 'tiny-invariant'
@@ -9,13 +16,15 @@ import {
   DelegationFormNetworkData,
   DelegationFormMode,
 } from '../types'
+import { useDelegationFormSubmit } from '../hooks/useDelegationFormSubmit'
+import { useDelegationRevoke } from '../hooks/useDelegationRevoke'
+import { ToastSuccess } from '@lidofinance/lido-ui'
 
 //
 // Data context
 //
 const DelegationFormDataContext =
   createContext<DelegationFormDataContextValue | null>(null)
-DelegationFormDataContext.displayName = 'DelegationFormDataContext'
 
 export const useDelegationFormData = () => {
   const value = useContext(DelegationFormDataContext)
@@ -59,6 +68,46 @@ const useDelegationFormNetworkData = (): DelegationFormNetworkData => {
   }
 }
 
+const useDelegationFormActions = (
+  networkData: DelegationFormNetworkData,
+  mode: DelegationFormMode,
+) => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const setSubmitting = useCallback(() => setIsSubmitting(true), [])
+  const resetSubmitting = useCallback(() => setIsSubmitting(false), [])
+
+  const handleFinish = useCallback(async () => {
+    await networkData.revalidate()
+    resetSubmitting()
+    ToastSuccess('Transaction submitted successfully')
+  }, [networkData, resetSubmitting])
+
+  const { txAragonDelegate, txSnapshotDelegate, submitDelegation } =
+    useDelegationFormSubmit({
+      mode,
+      networkData,
+      onSubmitClick: setSubmitting,
+      onError: resetSubmitting,
+      onFinish: handleFinish,
+    })
+
+  const { submitRevoke } = useDelegationRevoke({
+    networkData,
+    onSubmitClick: setSubmitting,
+    onError: resetSubmitting,
+    onFinish: handleFinish,
+  })
+
+  return {
+    isSubmitting,
+    txAragonDelegate,
+    txSnapshotDelegate,
+    submitDelegation,
+    submitRevoke,
+  }
+}
+
 //
 // Data provider
 //
@@ -73,9 +122,27 @@ export const DelegationFormProvider: FC<{ mode: DelegationFormMode }> = ({
     mode: 'onChange',
   })
 
+  const {
+    isSubmitting,
+    txAragonDelegate,
+    txSnapshotDelegate,
+    submitDelegation,
+    submitRevoke,
+  } = useDelegationFormActions(networkData, mode)
+
   return (
     <FormProvider {...formObject}>
-      <DelegationFormDataContext.Provider value={{ ...networkData, mode }}>
+      <DelegationFormDataContext.Provider
+        value={{
+          ...networkData,
+          mode,
+          isSubmitting,
+          txAragonDelegate,
+          txSnapshotDelegate,
+          onSubmit: formObject.handleSubmit(submitDelegation),
+          onRevoke: submitRevoke,
+        }}
+      >
         {children}
       </DelegationFormDataContext.Provider>
     </FormProvider>

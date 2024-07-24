@@ -1,44 +1,21 @@
-import { useMemo } from 'react'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-import { getChainName } from 'modules/blockChain/chains'
-import { AddressBadge } from 'modules/shared/ui/Common/AddressBadge'
 import { useDelegationFormData } from 'modules/delegation/providers/DelegationFormContext'
 import {
-  DelegationStatuses,
-  DelegationStatusLabel,
+  StatusesWrap,
+  StatusLabel,
   DelegationStatusStyled,
-  DelegationStatusValue,
-  DelegationStatusWithIcon,
-} from '../DelegationFormStyle'
+  StatusValue,
+  StatusWithIcon,
+} from './DelegationStatusStyle'
+import { DelegationAddressBadge } from './DelegationAddressBadge'
 
 import AragonSvg from 'assets/aragon.com.svg.react'
 import SnapshotSvg from 'assets/snapshot.com.svg.react'
-// import CrossSVG from 'assets/cross.com.svg.react'
 
 export function DelegationStatus() {
-  const { chainId, isWalletConnected } = useWeb3()
-  const {
-    mode,
-    aragonDelegateAddress,
-    snapshotDelegateAddress,
-    isSnapshotDelegationSupported,
-    loading,
-  } = useDelegationFormData()
-
-  const notDelegatedText = useMemo(() => {
-    if (loading.isDelegationInfoLoading) {
-      return 'Loading...'
-    }
-    if (mode === 'snapshot' && !isSnapshotDelegationSupported) {
-      return `Not supported on ${getChainName(chainId)}`
-    }
-    return 'Not delegated'
-  }, [
-    chainId,
-    isSnapshotDelegationSupported,
-    loading.isDelegationInfoLoading,
-    mode,
-  ])
+  const { isWalletConnected } = useWeb3()
+  const { mode, aragonDelegateAddress, snapshotDelegateAddress, loading } =
+    useDelegationFormData()
 
   if (!isWalletConnected) {
     return null
@@ -46,30 +23,40 @@ export function DelegationStatus() {
 
   if (mode === 'simple') {
     return (
-      <DelegationStatuses>
+      <StatusesWrap>
         <DelegationStatusStyled>
-          <DelegationStatusWithIcon>
+          <StatusWithIcon>
             <AragonSvg />
-            <DelegationStatusLabel>On Aragon</DelegationStatusLabel>
-          </DelegationStatusWithIcon>
+            <StatusLabel>On Aragon</StatusLabel>
+          </StatusWithIcon>
           {aragonDelegateAddress ? (
-            <AddressBadge address={aragonDelegateAddress} />
+            <DelegationAddressBadge
+              address={aragonDelegateAddress}
+              type="aragon"
+            />
           ) : (
-            <DelegationStatusValue>{notDelegatedText}</DelegationStatusValue>
+            <StatusValue>
+              {loading.isDelegationInfoLoading ? 'Loading...' : 'Not delegated'}
+            </StatusValue>
           )}
         </DelegationStatusStyled>
         <DelegationStatusStyled>
-          <DelegationStatusWithIcon>
+          <StatusWithIcon>
             <SnapshotSvg />
-            <DelegationStatusLabel>On Snapshot</DelegationStatusLabel>
-          </DelegationStatusWithIcon>
+            <StatusLabel>On Snapshot</StatusLabel>
+          </StatusWithIcon>
           {snapshotDelegateAddress ? (
-            <AddressBadge address={snapshotDelegateAddress} />
+            <DelegationAddressBadge
+              address={snapshotDelegateAddress}
+              type="snapshot"
+            />
           ) : (
-            <DelegationStatusValue>{notDelegatedText}</DelegationStatusValue>
+            <StatusValue>
+              {loading.isDelegationInfoLoading ? 'Loading...' : 'Not delegated'}
+            </StatusValue>
           )}
         </DelegationStatusStyled>
-      </DelegationStatuses>
+      </StatusesWrap>
     )
   }
 
@@ -78,11 +65,13 @@ export function DelegationStatus() {
 
   return (
     <DelegationStatusStyled>
-      <DelegationStatusLabel>Delegated to</DelegationStatusLabel>
+      <StatusLabel>Delegated to</StatusLabel>
       {delegateAddress ? (
-        <AddressBadge address={delegateAddress} />
+        <DelegationAddressBadge address={delegateAddress} type={mode} />
       ) : (
-        <DelegationStatusValue>{notDelegatedText}</DelegationStatusValue>
+        <StatusValue>
+          {loading.isDelegationInfoLoading ? 'Loading...' : 'Not delegated'}
+        </StatusValue>
       )}
     </DelegationStatusStyled>
   )

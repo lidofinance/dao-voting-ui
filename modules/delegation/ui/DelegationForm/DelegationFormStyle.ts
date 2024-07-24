@@ -23,34 +23,6 @@ export const DelegationSubtitleStyled = styled.div`
   margin-bottom: 12px;
 `
 
-export const DelegationStatuses = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 12px;
-`
-
-export const DelegationStatusStyled = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-`
-
-export const DelegationStatusWithIcon = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`
-
-export const DelegationStatusLabel = styled(Text).attrs({
-  size: 'xxs',
-})``
-
-export const DelegationStatusValue = styled(Text).attrs({
-  size: 'xxs',
-  color: 'secondary',
-})``
-
 export const DelegationFormBalanceStyled = styled.div<{ $withError: boolean }>`
   margin-top: ${({ $withError }) => ($withError ? '32px' : '12px')};
   display: flex;

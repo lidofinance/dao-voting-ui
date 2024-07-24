@@ -214,4 +214,5 @@ export const SimpleDVT: ChainAddressMap = {
 
 export const Snapshot: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x469788fE6E9E9681C6ebF3bF78e7Fd26Fc015446',
+  [CHAINS.Holesky]: '0x575e8c7DD6422e574A0E3e8cf6B23db1F01584CD',
 }

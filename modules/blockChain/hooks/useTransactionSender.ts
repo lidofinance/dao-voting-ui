@@ -50,11 +50,13 @@ export function useTransactionSender<A extends unknown[]>(
 
         setResultTx(res)
         if (res.type === 'safe') finish('success', res)
+        return res
       } catch (error: any) {
         onError?.()
         setStatus('empty')
         console.error(error)
         ToastError(getErrorMessage(error), {})
+        return null
       }
     },
     [finish, populateTx, sendTransactionGnosisWorkaround, onError],
@@ -70,9 +72,9 @@ export function useTransactionSender<A extends unknown[]>(
     const checkTransaction = (e: any) => {
       if (!e) {
         setStatus('pending')
-      } else if (e.status === 1) {
+      } else if (e.status === 1 && status !== 'success') {
         finish('success', resultTx)
-      } else if (e.status === 0) {
+      } else if (e.status === 0 && status !== 'failed') {
         finish('failed', resultTx)
       }
     }
@@ -83,6 +85,8 @@ export function useTransactionSender<A extends unknown[]>(
     return () => {
       library.off(tx.hash)
     }
+    // disable to avoid re-subscribing on `status` change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [library, resultTx, onFinish, finish])
 
   const open = useCallback(() => {

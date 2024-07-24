@@ -8,7 +8,7 @@ export function DelegationSettings() {
   const [isSimpleModeOn, setIsSimpleModeOn] = useState(true)
 
   return (
-    <Wrap>
+    <Wrap $customizable={!isSimpleModeOn}>
       <FormTitle>
         <Text size="xl" weight={700}>
           Delegation

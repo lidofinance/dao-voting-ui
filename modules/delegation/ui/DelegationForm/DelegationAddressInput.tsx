@@ -5,14 +5,22 @@ import { InputControl } from 'modules/shared/ui/Controls/Input'
 
 export function DelegationAddressInput() {
   const { isWalletConnected, walletAddress } = useWeb3()
-  const { loading } = useDelegationFormData()
+  const {
+    loading,
+    isSubmitting,
+    aragonDelegateAddress,
+    snapshotDelegateAddress,
+    mode,
+  } = useDelegationFormData()
 
   return (
     <InputControl
       autoComplete="off"
       name="delegateAddress"
       label="Delegate address"
-      disabled={!isWalletConnected || loading.isDelegationInfoLoading}
+      disabled={
+        !isWalletConnected || loading.isDelegationInfoLoading || isSubmitting
+      }
       rules={{
         required: 'Field is required',
         validate: value => {
@@ -20,8 +28,24 @@ export function DelegationAddressInput() {
           if (addressErr) {
             return addressErr
           }
-          if (walletAddress?.toLowerCase() === value.toLowerCase()) {
+          const loweredValue = value.toLowerCase()
+          if (walletAddress?.toLowerCase() === loweredValue) {
             return 'You cannot delegate to yourself'
+          }
+          if (
+            mode === 'simple' &&
+            loweredValue === aragonDelegateAddress &&
+            loweredValue === snapshotDelegateAddress
+          ) {
+            return 'You cannot delegate to the same address'
+          } else if (mode !== 'simple') {
+            const delegate =
+              mode === 'aragon'
+                ? aragonDelegateAddress
+                : snapshotDelegateAddress
+            if (loweredValue === delegate) {
+              return 'You cannot delegate to the same address'
+            }
           }
 
           return true

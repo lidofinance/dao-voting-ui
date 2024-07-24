@@ -1,36 +1,43 @@
+import { useCallback } from 'react'
+import invariant from 'tiny-invariant'
 import { ContractSnapshot, ContractVoting } from 'modules/blockChain/contracts'
+import { useTransactionSender } from 'modules/blockChain/hooks/useTransactionSender'
 import {
-  FinishHandler,
-  useTransactionSender,
-} from 'modules/blockChain/hooks/useTransactionSender'
-import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-import { DelegationFormInput, DelegationFormMode } from '../types'
+  DelegationFormInput,
+  DelegationFormMode,
+  DelegationFormNetworkData,
+} from '../types'
 import { NonNullableMembers } from 'modules/shared/utils/utilTypes'
 import { estimateDelegationGasLimit } from '../utils/estimateDelegationGasLimit'
 import { SNAPSHOT_LIDO_SPACE_NAME } from '../constants'
-import invariant from 'tiny-invariant'
-import { isSnapshotSupported } from '../utils/isSnapshotSupported'
-import { getChainName } from 'modules/blockChain/chains'
-import { useCallback } from 'react'
 
 type Args = {
+  networkData: DelegationFormNetworkData
   mode: DelegationFormMode
-  onFinish?: FinishHandler
+  onSubmitClick?: () => void
+  onError?: () => void
+  onFinish?: () => Promise<void>
 }
 
 type FormData = NonNullableMembers<DelegationFormInput>
 
-export function useDelegationFormSubmit({ mode, onFinish }: Args) {
-  const { chainId, library } = useWeb3()
+export function useDelegationFormSubmit({
+  networkData,
+  mode,
+  onSubmitClick,
+  onError,
+  onFinish,
+}: Args) {
   const voting = ContractVoting.useWeb3()
+  const snapshot = ContractSnapshot.useWeb3()
 
   const populateAragonDelegate = useCallback(
     async (args: FormData) => {
       const gasLimit = await estimateDelegationGasLimit(
-        voting.estimateGas.setDelegate(args.delegateAddress),
+        voting.estimateGas.assignDelegate(args.delegateAddress),
       )
 
-      const tx = await voting.populateTransaction.setDelegate(
+      const tx = await voting.populateTransaction.assignDelegate(
         args.delegateAddress,
         { gasLimit },
       )
@@ -40,20 +47,11 @@ export function useDelegationFormSubmit({ mode, onFinish }: Args) {
   )
 
   const txAragonDelegate = useTransactionSender(populateAragonDelegate, {
-    onFinish,
+    onError,
   })
 
   const populateSnapshotDelegate = useCallback(
     async (args: FormData) => {
-      invariant(library, 'Snapshot delegation: user is not connected')
-      invariant(
-        isSnapshotSupported(chainId),
-        `Snapshot delegation: network ${getChainName(
-          chainId,
-        )} is not supported`,
-      )
-
-      const snapshot = ContractSnapshot.connect({ chainId, library })
       const gasLimit = await estimateDelegationGasLimit(
         snapshot.estimateGas.setDelegate(
           SNAPSHOT_LIDO_SPACE_NAME,
@@ -68,33 +66,55 @@ export function useDelegationFormSubmit({ mode, onFinish }: Args) {
       )
       return tx
     },
-    [chainId, library],
+    [snapshot.estimateGas, snapshot.populateTransaction],
   )
 
-  const txSnapshotDelegate = useTransactionSender(populateSnapshotDelegate, {
-    onFinish,
-  })
+  const txSnapshotDelegate = useTransactionSender(populateSnapshotDelegate)
 
   const submitDelegation = useCallback(
     async ({ delegateAddress }: DelegationFormInput) => {
-      invariant(delegateAddress, 'Delegate address is required')
       try {
-        if (mode === 'simple' || mode === 'aragon') {
-          await txAragonDelegate.send({ delegateAddress })
+        invariant(delegateAddress, 'Delegate address is required')
+        const loweredDelegateAddress = delegateAddress.toLowerCase()
+        onSubmitClick?.()
+        if (mode === 'simple') {
+          if (loweredDelegateAddress !== networkData.aragonDelegateAddress) {
+            const aragonTx = await txAragonDelegate.send({ delegateAddress })
+            if (aragonTx?.type === 'regular') {
+              await aragonTx.tx.wait()
+            }
+          }
+          if (loweredDelegateAddress !== networkData.snapshotDelegateAddress) {
+            const snapshotTx = await txSnapshotDelegate.send({
+              delegateAddress,
+            })
+            if (snapshotTx?.type === 'regular') {
+              await snapshotTx.tx.wait()
+            }
+          }
+        } else {
+          const txDelegate =
+            mode === 'aragon' ? txAragonDelegate : txSnapshotDelegate
+          const tx = await txDelegate.send({ delegateAddress })
+          if (tx?.type === 'regular') {
+            await tx.tx.wait()
+          }
         }
-        if (
-          (mode === 'simple' || mode === 'snapshot') &&
-          isSnapshotSupported(chainId)
-        ) {
-          await txSnapshotDelegate.send({ delegateAddress })
-        }
-        return true
       } catch (err) {
         console.error(err)
-        return false
+      } finally {
+        await onFinish?.()
       }
     },
-    [mode, txAragonDelegate, txSnapshotDelegate, chainId],
+    [
+      mode,
+      networkData.aragonDelegateAddress,
+      networkData.snapshotDelegateAddress,
+      txAragonDelegate,
+      txSnapshotDelegate,
+      onSubmitClick,
+      onFinish,
+    ],
   )
 
   return {

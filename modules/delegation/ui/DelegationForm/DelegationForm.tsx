@@ -7,6 +7,7 @@ import { DelegationFormBalance } from './DelegationFormBalance'
 import { DelegationFormSubmitButton } from './DelegationFormSubmitButton'
 import { DelegationFormFootNote } from './DelegationFormFootNote'
 import { DelegationFormController } from './DelegationFormController'
+import { DelegationTxStatus } from './DelegationTxStatus'
 
 type Props = {
   mode: DelegationFormMode
@@ -23,7 +24,7 @@ export function DelegationForm({ mode, onCustomizeClick }: Props) {
         <DelegationFormBalance onCustomizeClick={onCustomizeClick} />
         <DelegationFormSubmitButton />
         <DelegationFormFootNote />
-        {/* TODO: TX STATUSES */}
+        <DelegationTxStatus />
       </DelegationFormController>
     </DelegationFormProvider>
   )

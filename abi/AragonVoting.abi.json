@@ -17,6 +17,29 @@
     "constant": false,
     "inputs": [
       {
+        "name": "_delegate",
+        "type": "address"
+      }
+    ],
+    "name": "assignDelegate",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "unassignDelegate",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
         "name": "_objectionPhaseTime",
         "type": "uint64"
       }
@@ -266,12 +289,8 @@
     "name": "getDelegatedVoters",
     "outputs": [
       {
-        "name": "",
+        "name": "voters",
         "type": "address[]"
-      },
-      {
-        "name": "",
-        "type": "uint256[]"
       }
     ],
     "payable": false,
@@ -300,6 +319,29 @@
       {
         "name": "",
         "type": "bytes32"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_voteId",
+        "type": "uint256"
+      },
+      {
+        "name": "_voters",
+        "type": "address[]"
+      }
+    ],
+    "name": "getVotingPowerMultipleAtVote",
+    "outputs": [
+      {
+        "name": "balances",
+        "type": "uint256[]"
       }
     ],
     "payable": false,
@@ -448,29 +490,6 @@
     "constant": true,
     "inputs": [
       {
-        "name": "_voteId",
-        "type": "uint256"
-      },
-      {
-        "name": "_voters",
-        "type": "address[]"
-      }
-    ],
-    "name": "getVotersStateAtVote",
-    "outputs": [
-      {
-        "name": "voterStatesList",
-        "type": "uint8[]"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
         "name": "_sender",
         "type": "address"
       },
@@ -509,12 +528,45 @@
     "type": "function"
   },
   {
-    "constant": false,
-    "inputs": [],
-    "name": "resetDelegate",
-    "outputs": [],
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_voteId",
+        "type": "uint256"
+      },
+      {
+        "name": "_voters",
+        "type": "address[]"
+      }
+    ],
+    "name": "getVoterStateMultipleAtVote",
+    "outputs": [
+      {
+        "name": "voterStatesList",
+        "type": "uint8[]"
+      }
+    ],
     "payable": false,
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_voters",
+        "type": "address[]"
+      }
+    ],
+    "name": "getVotingPowerMultiple",
+    "outputs": [
+      {
+        "name": "balances",
+        "type": "uint256[]"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -566,20 +618,6 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_delegate",
-        "type": "address"
-      }
-    ],
-    "name": "setDelegate",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -737,41 +775,6 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_delegate",
-        "type": "address"
-      },
-      {
-        "name": "_offset",
-        "type": "uint256"
-      },
-      {
-        "name": "_limit",
-        "type": "uint256"
-      },
-      {
-        "name": "_voteId",
-        "type": "uint256"
-      }
-    ],
-    "name": "getDelegatedVotersAtVote",
-    "outputs": [
-      {
-        "name": "",
-        "type": "address[]"
-      },
-      {
-        "name": "",
-        "type": "uint256[]"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1035,11 +1038,11 @@
       },
       {
         "indexed": true,
-        "name": "delegate",
+        "name": "assignedDelegate",
         "type": "address"
       }
     ],
-    "name": "SetDelegate",
+    "name": "AssignDelegate",
     "type": "event"
   },
   {
@@ -1052,11 +1055,11 @@
       },
       {
         "indexed": true,
-        "name": "delegate",
+        "name": "unassignedDelegate",
         "type": "address"
       }
     ],
-    "name": "ResetDelegate",
+    "name": "UnassignDelegate",
     "type": "event"
   },
   {
@@ -1073,22 +1076,12 @@
         "type": "address"
       },
       {
-        "indexed": true,
-        "name": "voter",
-        "type": "address"
-      },
-      {
         "indexed": false,
-        "name": "supports",
-        "type": "bool"
-      },
-      {
-        "indexed": false,
-        "name": "stake",
-        "type": "uint256"
+        "name": "voters",
+        "type": "address[]"
       }
     ],
-    "name": "CastVoteAsDelegate",
+    "name": "AttemptCastVoteAsDelegate",
     "type": "event"
   },
   {

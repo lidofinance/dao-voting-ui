@@ -15,7 +15,7 @@ export async function estimateDelegationGasLimit(
     const gasLimit = await estimator
     const multiplied = applyGasLimitRatio(gasLimit)
     console.log(
-      `Gas estimated ${gasLimit}. Using x1.3 value ${multiplied} for reliability`,
+      `Gas estimated ${gasLimit}. Using x${EXTRA_GAS_TRANSACTION_RATIO} value ${multiplied} for reliability`,
     )
     return multiplied
   } catch (err) {

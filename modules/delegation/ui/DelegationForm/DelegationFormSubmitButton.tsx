@@ -8,19 +8,18 @@ import { useFormState } from 'react-hook-form'
 export function DelegationFormSubmitButton() {
   const { isWalletConnected } = useWeb3()
   const openConnectWalletModal = useConnectWalletModal()
-  const { mode, aragonDelegateAddress, snapshotDelegateAddress } =
+  const { mode, isSubmitting, aragonDelegateAddress, snapshotDelegateAddress } =
     useDelegationFormData()
-  const { isSubmitting, errors } = useFormState()
+  const { errors } = useFormState()
 
   const buttonText = useMemo(() => {
     if (!isWalletConnected) {
       return null
     }
     if (mode === 'simple') {
-      if (aragonDelegateAddress && snapshotDelegateAddress) {
-        return `Redelegate on Aragon & Snapshot`
-      }
-      return `Delegate on Aragon & Snapshot`
+      return `${
+        aragonDelegateAddress ? 'Redelegate' : 'Delegate'
+      } on Aragon & Snapshot`
     }
 
     const delegateAddress =
