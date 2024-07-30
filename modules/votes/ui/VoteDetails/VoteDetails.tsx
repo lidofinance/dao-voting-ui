@@ -1,26 +1,28 @@
+import { useMemo } from 'react'
 import { Text } from '@lidofinance/lido-ui'
-import { FormattedDate } from 'modules/shared/ui/Utils/FormattedDate'
+import type {
+  AttemptCastVoteAsDelegateEventObject,
+  CastVoteEventObject,
+} from 'generated/AragonVotingAbi'
 import { VoteScript } from '../VoteScript'
-import { VoteDetailsCountdown } from '../VoteDetailsCountdown'
-import { VoteStatusBanner } from '../VoteStatusBanner'
-import { VotePhasesTooltip } from '../VotePhasesTooltip'
 import { VoteYesNoBar } from '../VoteYesNoBar'
 import {
+  BlockWrap,
   BoxVotes,
-  VoteTitle,
-  CreatorBadge,
-  DataTable,
-  DetailsBoxWrap,
   DescriptionWrap,
+  DetailsBoxWrap,
+  SectionHeading,
+  VoteHeader,
+  VoteTitle,
 } from './VoteDetailsStyle'
-import { ContentHighlightBox } from 'modules/shared/ui/Common/ContentHighlightBox'
-import { InfoRowFull } from 'modules/shared/ui/Common/InfoRow'
 import { VoteDescription } from '../VoteDescription'
 
-import { Vote, VoteStatus } from 'modules/votes/types'
+import { Vote, VotePhase, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
-import { formatNumber } from 'modules/shared/utils/formatNumber'
 import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
+import { VoteStatusChips } from '../VoteStatusChips'
+import { VoteVotersList } from '../VoteVotersList'
+import { VoteProgressBar } from 'modules/votes/ui/VoteProgressBar'
 
 type Props = {
   vote: Vote
@@ -28,10 +30,22 @@ type Props = {
   status: VoteStatus
   voteTime: number
   objectionPhaseTime: number
-  creator?: string
   metadata?: string
   isEnded: boolean
+  eventsVoted: CastVoteEventObject[] | undefined
   executedTxHash?: string
+  eventsDelegatesVoted: AttemptCastVoteAsDelegateEventObject[] | undefined
+  votePhase: VotePhase | undefined
+}
+
+const localeDateOptions = {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit',
+  hour12: false,
+  timeZoneName: 'short',
 }
 
 export function VoteDetails({
@@ -40,13 +54,15 @@ export function VoteDetails({
   voteId,
   voteTime,
   objectionPhaseTime,
-  creator,
   metadata,
   isEnded,
+  eventsVoted,
   executedTxHash,
+  eventsDelegatesVoted,
+  votePhase,
 }: Props) {
   const {
-    totalSupplyFormatted,
+    totalSupply,
     nayNum,
     yeaNum,
     nayPct,
@@ -57,116 +73,76 @@ export function VoteDetails({
     endDate,
   } = getVoteDetailsFormatted({ vote, voteTime })
 
+  const formattedEndDate = useMemo(
+    () =>
+      new Date(endDate * 1000).toLocaleDateString(
+        'en-US',
+        localeDateOptions as Intl.DateTimeFormatOptions,
+      ),
+    [endDate],
+  )
+
   return (
     <>
-      <VotePhasesTooltip placement="bottomLeft" executedTxHash={executedTxHash}>
-        <VoteStatusBanner
-          startDate={startDate}
-          endDate={endDate}
-          voteTime={voteTime}
-          objectionPhaseTime={objectionPhaseTime}
+      <VoteHeader>
+        <VoteTitle>Vote #{voteId}</VoteTitle>
+        <VoteStatusChips
+          totalSupply={totalSupply}
+          nayNum={nayNum}
+          yeaNum={yeaNum}
+          minAcceptQuorum={weiToNum(vote.minAcceptQuorum)}
           status={status}
-          isEnded={isEnded}
-          fontSize="xs"
+          executedTxHash={executedTxHash}
+          votePhase={votePhase}
         />
-      </VotePhasesTooltip>
-
-      <VoteTitle>Vote #{voteId}</VoteTitle>
-
-      <DataTable>
-        <InfoRowFull title="Snapshot block">
-          {vote.snapshotBlock.toString()}
-        </InfoRowFull>
-
-        <InfoRowFull title="Created by">
-          {creator && <CreatorBadge address={creator} />}
-        </InfoRowFull>
-
-        <VoteDetailsCountdown
-          startDate={startDate}
-          voteTime={voteTime - objectionPhaseTime}
-          isEndedBeforeTime={isEnded}
-        >
-          {diff => (
-            <InfoRowFull title="Objection phase will start in">
-              {diff}
-            </InfoRowFull>
-          )}
-        </VoteDetailsCountdown>
-
-        <VoteDetailsCountdown
-          startDate={startDate}
-          voteTime={voteTime}
-          isEndedBeforeTime={isEnded}
-        >
-          {diff => <InfoRowFull title="Time remaining">{diff}</InfoRowFull>}
-        </VoteDetailsCountdown>
-
-        <InfoRowFull title="Start date">
-          <FormattedDate date={startDate} format="MMM DD, YYYY / HH:mm" />
-        </InfoRowFull>
-
-        {!isEnded && (
-          <InfoRowFull title="End date">
-            <FormattedDate date={endDate} format="MMM DD, YYYY / HH:mm" />
-          </InfoRowFull>
-        )}
-
-        <InfoRowFull title="Support %">
-          {yeaPct}%&nbsp;
+        <BlockWrap>
           <Text as="span" color="secondary" size="xxs">
-            (&gt;{weiToNum(vote.supportRequired) * 100}% needed)
+            {'Block '}
           </Text>
-        </InfoRowFull>
-
-        <InfoRowFull title="Approval %">
-          {yeaPctOfTotalSupplyFormatted}%&nbsp;
-          <Text as="span" color="secondary" size="xxs">
-            (&gt;{weiToNum(vote.minAcceptQuorum) * 100}% needed)
+          <Text as="span" color="default" size="xxs">
+            #{vote.snapshotBlock.toString()}
           </Text>
-        </InfoRowFull>
-
-        <InfoRowFull title={`“No” voted`}>
-          {formatNumber(nayNum, 4)}&nbsp; / {totalSupplyFormatted}&nbsp;
-          <Text as="span" color="secondary" size="xxs">
-            ({nayPctOfTotalSupplyFormatted}%)
-          </Text>
-        </InfoRowFull>
-
-        <InfoRowFull title={`“Yes” voted`}>
-          {formatNumber(yeaNum, 4)}&nbsp; / {totalSupplyFormatted}&nbsp;
-          <Text as="span" color="secondary" size="xxs">
-            ({yeaPctOfTotalSupplyFormatted}%)
-          </Text>
-        </InfoRowFull>
-      </DataTable>
-
+        </BlockWrap>
+      </VoteHeader>
+      {votePhase === VotePhase.Closed && (
+        <Text color="secondary" size="xxs">{`Ended ${formattedEndDate}`}</Text>
+      )}
       <DetailsBoxWrap>
-        <ContentHighlightBox isCentered>
-          Voting {isEnded ? 'ended at' : 'ends'}{' '}
-          <FormattedDate date={endDate} format="MMMM DD, YYYY at HH:mm" />
-        </ContentHighlightBox>
         <BoxVotes>
           <VoteYesNoBar
             yeaPct={yeaPct}
             nayPct={nayPct}
             yeaPctOfTotalSupply={yeaPctOfTotalSupplyFormatted}
             nayPctOfTotalSupply={nayPctOfTotalSupplyFormatted}
+            showOnForeground
           />
         </BoxVotes>
       </DetailsBoxWrap>
-
+      {(votePhase === VotePhase.Main || votePhase === VotePhase.Objection) && (
+        <VoteProgressBar
+          startDate={startDate}
+          endDate={endDate}
+          voteTime={voteTime}
+          objectionPhaseTime={objectionPhaseTime}
+          isEnded={isEnded}
+          votePhase={votePhase}
+        />
+      )}
+      {eventsVoted && eventsVoted.length > 0 && (
+        <VoteVotersList
+          eventsVoted={eventsVoted}
+          eventsDelegatesVoted={eventsDelegatesVoted}
+        />
+      )}
+      <SectionHeading>Proposal</SectionHeading>
       {metadata && (
         <DetailsBoxWrap>
-          <InfoRowFull title="Description" />
           <DescriptionWrap>
             <VoteDescription metadata={metadata} allowMD />
           </DescriptionWrap>
         </DetailsBoxWrap>
       )}
-
       <DetailsBoxWrap>
-        <InfoRowFull title="Script" />
         <VoteScript script={vote.script} metadata={metadata} />
       </DetailsBoxWrap>
     </>

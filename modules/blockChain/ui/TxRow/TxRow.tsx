@@ -1,15 +1,17 @@
 import { TransactionSender } from 'modules/blockChain/hooks/useTransactionSender'
-import { TxHint, TxStatus } from './TxRowStyle'
+import { TxStatusBadge } from 'modules/delegation/ui/TxStatusBadge'
+import { TxStatus } from 'modules/blockChain/ui/TxRow/TxRowStyle'
 
-export function TxRow({ label, tx }: { label: string; tx: TransactionSender }) {
+export function TxRow({
+  tx,
+  onClick,
+}: {
+  tx: TransactionSender
+  onClick?: () => void
+}) {
   return (
-    <TxHint>
-      {label}
-      <TxStatus status={tx.status} onClick={tx.open}>
-        {tx.isPending && 'Pending...'}
-        {tx.isSuccess && 'Confirmed (click to open)'}
-        {tx.isFailed && 'Failed (click to see why)'}
-      </TxStatus>
-    </TxHint>
+    <TxStatus>
+      <TxStatusBadge onClick={onClick} status={tx.status} type={tx.tx?.type} />
+    </TxStatus>
   )
 }

@@ -1,5 +1,7 @@
 import { useRouter } from 'next/dist/client/router'
 import { VoteForm } from 'modules/votes/ui/VoteForm'
+import { VoteFormActionsProvider } from 'modules/votes/providers/VoteFormActions/VoteFormActionsContext'
+import { ModalProvider } from 'modules/modal/ModalProvider'
 
 export default function VotePage() {
   const router = useRouter()
@@ -8,7 +10,13 @@ export default function VotePage() {
     router.replace('/')
     return null
   }
-  return <VoteForm voteId={voteId} />
+  return (
+    <VoteFormActionsProvider>
+      <ModalProvider>
+        <VoteForm voteId={voteId} />
+      </ModalProvider>
+    </VoteFormActionsProvider>
+  )
 }
 
 // #!if IPFS_MODE !== "true"

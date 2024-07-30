@@ -31,6 +31,7 @@ export function CopyOpenActions({ value, entity }: Props) {
       <ButtonExternalView
         onClick={handleEtherscan}
         children="View on Etherscan"
+        variant="ghost"
         data-testid="etherscanBtn"
       />
     </Wrap>

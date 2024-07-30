@@ -32,7 +32,7 @@ const walletconnectProjectId = process.env.WALLETCONNECT_PROJECT_ID
 
 export default {
   basePath,
-  webpack5: true,
+  // webpack5: true,
   experimental: {
     // Fixes a build error with importing Pure ESM modules, e.g. reef-knot
     // Some docs are here:
@@ -41,6 +41,9 @@ export default {
     // <https://github.com/vercel/next.js/blob/v12.3.4/packages/next/build/webpack-config.ts#L417>
     // Presumably, it is true by default in next v13 and won't be needed
     esmExternals: true,
+  },
+  compiler: {
+    styledComponents: true,
   },
   webpack(config) {
     config.module.rules.push({
@@ -111,20 +114,6 @@ export default {
         ],
       },
     ]
-  },
-  devServer(configFunction) {
-    return function (proxy, allowedHost) {
-      const config = configFunction(proxy, allowedHost)
-
-      config.headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET',
-        'Access-Control-Allow-Headers':
-          'X-Requested-With, content-type, Authorization',
-      }
-
-      return config
-    }
   },
   serverRuntimeConfig: {
     basePath,

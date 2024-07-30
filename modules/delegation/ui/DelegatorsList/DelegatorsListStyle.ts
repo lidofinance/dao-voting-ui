@@ -51,9 +51,14 @@ export const DelegatorsListItemStyled = styled.div`
   padding: 12px 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 16px;
   &:not(:last-child) {
     border-bottom: 1px solid var(--lido-color-border);
+  }
+
+  p {
+    margin-left: auto;
   }
 `
 

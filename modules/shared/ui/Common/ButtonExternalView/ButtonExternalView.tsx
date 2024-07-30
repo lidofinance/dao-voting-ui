@@ -1,10 +1,11 @@
 import { useCallback } from 'react'
-import { ButtonIcon, External } from '@lidofinance/lido-ui'
+import { ButtonIcon, External, ButtonVariants } from '@lidofinance/lido-ui'
 import { openWindow } from 'modules/shared/utils/openWindow'
 
 type Props = {
   link?: string
   onClick?: () => void
+  variant?: ButtonVariants
   children: React.ReactNode
 }
 

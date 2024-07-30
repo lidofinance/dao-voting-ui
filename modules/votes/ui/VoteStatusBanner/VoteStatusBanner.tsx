@@ -1,9 +1,11 @@
+import { useMemo } from 'react'
 import {
   Wrap,
   BannerText,
   InfoText,
   BadgePassed,
   BadgeFailed,
+  BadgeNoQuorum,
   BadgeOngoing,
 } from './VoteStatusBannerStyle'
 import { FormattedDate } from 'modules/shared/ui/Utils/FormattedDate'
@@ -22,6 +24,10 @@ type Props = {
   isEnded: boolean
   fontSize: VoteStatusFontSize
   status: VoteStatus
+  yeaNum: number
+  nayNum: number
+  totalSupply: number
+  minAcceptQuorum: number
 }
 
 export function VoteStatusBanner({
@@ -32,8 +38,23 @@ export function VoteStatusBanner({
   isEnded,
   fontSize,
   status,
+  yeaNum,
+  nayNum,
+  totalSupply,
+  minAcceptQuorum,
 }: Props) {
   const variant = convertStatusToStyledVariant(status)
+
+  const quorumIsReached = useMemo(() => {
+    if (totalSupply === 0) {
+      return false
+    }
+
+    const yeaQuorum = yeaNum / totalSupply
+    const nayQuorum = nayNum / totalSupply
+
+    return yeaQuorum > minAcceptQuorum || nayQuorum > minAcceptQuorum
+  }, [totalSupply, yeaNum, nayNum, minAcceptQuorum])
 
   const endDateEl = (
     <InfoText variant={variant}>
@@ -101,12 +122,22 @@ export function VoteStatusBanner({
         </>
       )}
 
-      {status === VoteStatus.Rejected && (
+      {status === VoteStatus.Rejected && quorumIsReached && (
         <>
           <BadgeFailed>
             <ClearIconSVG />
           </BadgeFailed>
           <BannerText variant={variant}>Rejected</BannerText>
+          {endDateEl}
+        </>
+      )}
+
+      {status === VoteStatus.Rejected && !quorumIsReached && (
+        <>
+          <BadgeNoQuorum>
+            <ClearIconSVG />
+          </BadgeNoQuorum>
+          <BannerText variant={variant}>No quorum</BannerText>
           {endDateEl}
         </>
       )}
