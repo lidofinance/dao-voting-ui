@@ -1,7 +1,10 @@
 const basePath = process.env.BASE_PATH || ''
 
+
+// The VERCEL_MAINNET_RPC_URLS gets from the Vercel deploy
 const rpcUrls_1 =
-  process.env.EL_RPC_URLS_1 && process.env.EL_RPC_URLS_1.split(',')
+  (process.env.EL_RPC_URLS_1 && process.env.EL_RPC_URLS_1.split(',')) ||
+  (process.env.VERCEL_MAINNET_RPC_URLS && process.env.VERCEL_MAINNET_RPC_URLS.split(','))
 const rpcUrls_5 =
   process.env.EL_RPC_URLS_5 && process.env.EL_RPC_URLS_5.split(',')
 const rpcUrls_17000 =
@@ -9,8 +12,14 @@ const rpcUrls_17000 =
 
 const etherscanApiKey = process.env.ETHERSCAN_API_KEY
 
-const defaultChain = process.env.DEFAULT_CHAIN || '17000'
-const supportedChains = process.env.SUPPORTED_CHAINS || '17000'
+// Mainnet is the default chain
+const _defaultChain =  '1';
+
+// Keep both Mainnet and Holesky as defaults
+const _defaultSupportedChains = '1,17000'
+
+const defaultChain = process.env.DEFAULT_CHAIN || _defaultChain
+const supportedChains = process.env.SUPPORTED_CHAINS || _defaultSupportedChains
 
 const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS
 const cspReportOnly = process.env.CSP_REPORT_ONLY
