@@ -11,7 +11,7 @@ type Args = {
   networkData: DelegationFormNetworkData
   onSubmitClick?: () => void
   onError?: () => void
-  onFinish?: () => Promise<void>
+  onFinish?: (hasError: boolean) => Promise<void>
 }
 
 export function useDelegationRevoke({
@@ -57,34 +57,34 @@ export function useDelegationRevoke({
 
   const submitRevoke = useCallback(
     (type: DelegationType) => async () => {
+      let hasError = false
       try {
+        let tx
         onSubmitClick?.()
         if (type === 'aragon') {
           invariant(
             networkData.aragonDelegateAddress,
             'Aragon delegate address is required',
           )
-
-          const tx = await txAragonRevoke.send()
-          if (tx?.type === 'regular') {
-            await tx.tx.wait()
-          }
+          tx = await txAragonRevoke.send()
         }
         if (type === 'snapshot') {
           invariant(
             networkData.snapshotDelegateAddress,
             'Snapshot delegate address is required',
           )
-
-          const tx = await txSnapshotRevoke.send()
-          if (tx?.type === 'regular') {
-            await tx.tx.wait()
-          }
+          tx = await txSnapshotRevoke.send()
+        }
+        if (tx === null) {
+          hasError = true
+        } else if (tx?.type === 'regular') {
+          await tx.tx.wait()
         }
       } catch (err) {
+        hasError = true
         console.error(err)
       } finally {
-        await onFinish?.()
+        await onFinish?.(hasError)
       }
     },
     [

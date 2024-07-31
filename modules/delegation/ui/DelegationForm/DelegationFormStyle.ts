@@ -55,6 +55,10 @@ export const CustomizeButton = styled(Button).attrs({
 
 export const SubmitButton = styled(Button)`
   margin-top: 16px;
+  @media (max-width: 440px) {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
 `
 
 export const DelegationFormFootNoteStyled = styled(Text).attrs({

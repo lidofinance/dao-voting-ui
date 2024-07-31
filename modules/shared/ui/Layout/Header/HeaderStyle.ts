@@ -120,8 +120,8 @@ export const ActionsDesktop = styled.div`
 export const InputWrap = styled.div`
   width: 300px;
 
-  @media (max-width: 900px) {
-    width: 220px;
+  @media (max-width: 1060px) {
+    width: 200px;
   }
 
   @media (max-width: 810px) {

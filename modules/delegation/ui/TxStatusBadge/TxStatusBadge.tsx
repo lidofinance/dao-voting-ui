@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react'
 import { Text, Tooltip } from '@lidofinance/lido-ui'
-import { Wrap } from './TxStatusBadgeStyle'
+import { ExternalIcon, Wrap } from './TxStatusBadgeStyle'
 import { TxStatus } from 'modules/blockChain/types'
 
 import SuccessSvg from 'assets/check.com.svg.react'
@@ -47,13 +47,16 @@ export const TxStatusBadge: FC<Props> = ({ status, onClick }) => {
   }
 
   return (
-    <Tooltip placement="top" title={<span>show on etherscan</span>}>
-      <Wrap $color={color} $clickable onClick={onClick}>
-        {Icon && <Icon />}
-        <Text as="span" size="xxs" weight={700}>
-          {text}
-        </Text>
-      </Wrap>
+    <Tooltip placement="top" title={<span>View on Etherscan</span>}>
+      <>
+        <Wrap $color={color} $clickable onClick={onClick}>
+          {Icon && <Icon />}
+          <Text as="span" size="xxs" weight={700}>
+            {text}
+          </Text>
+        </Wrap>
+        {status === 'success' && <ExternalIcon onClick={onClick} />}
+      </>
     </Tooltip>
   )
 }

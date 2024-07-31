@@ -77,11 +77,16 @@ const useDelegationFormActions = (
   const setSubmitting = useCallback(() => setIsSubmitting(true), [])
   const resetSubmitting = useCallback(() => setIsSubmitting(false), [])
 
-  const handleFinish = useCallback(async () => {
-    await networkData.revalidate()
-    resetSubmitting()
-    ToastSuccess('Transaction submitted successfully')
-  }, [networkData, resetSubmitting])
+  const handleFinish = useCallback(
+    async (hasError?: boolean) => {
+      await networkData.revalidate()
+      resetSubmitting()
+      if (!hasError) {
+        ToastSuccess('Transaction submitted successfully')
+      }
+    },
+    [networkData, resetSubmitting],
+  )
 
   const { txAragonDelegate, txSnapshotDelegate, submitDelegation } =
     useDelegationFormSubmit({
@@ -141,6 +146,8 @@ export const DelegationFormProvider: FC<{ mode: DelegationFormMode }> = ({
           txSnapshotDelegate,
           onSubmit: formObject.handleSubmit(submitDelegation),
           onRevoke: submitRevoke,
+          register: formObject.register,
+          watch: formObject.watch,
         }}
       >
         {children}

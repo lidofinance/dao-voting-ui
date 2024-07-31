@@ -52,12 +52,12 @@ export function DelegatorsList() {
   return (
     <Wrap>
       <Text size="sm" color="secondary">
-        Delegated from {data.delegatorsCount} voter
-        {data.delegatorsCount > 1 ? 's' : ''} on-chain
+        Delegated from {data.delegatorsCount} address
+        {data.delegatorsCount > 1 ? 'es' : ''} on-chain
       </Text>
       <DeelgatorsListStyled>
         {pages}
-        {data.delegatorsCount > DELEGATORS_PAGE_SIZE && (
+        {data.delegatorsCount > pageCount * DELEGATORS_PAGE_SIZE && (
           <ShowMoreButton onClick={() => setPageCount(count => count + 1)}>
             Show More
           </ShowMoreButton>

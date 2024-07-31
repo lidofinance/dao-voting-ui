@@ -1,4 +1,5 @@
 import { TransactionSender } from 'modules/blockChain/hooks/useTransactionSender'
+import { UseFormRegister, UseFormWatch } from 'react-hook-form'
 
 export type DelegationFormInput = {
   delegateAddress: string | null
@@ -28,4 +29,6 @@ export type DelegationFormDataContextValue = DelegationFormNetworkData & {
   txSnapshotDelegate: TransactionSender
   onSubmit: () => void
   onRevoke: (type: DelegationType) => () => Promise<void>
+  register: UseFormRegister<DelegationFormInput>
+  watch: UseFormWatch<DelegationFormInput>
 }

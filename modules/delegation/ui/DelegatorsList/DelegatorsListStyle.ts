@@ -49,7 +49,7 @@ export const DelegatorsListItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  &:not(:only-child) {
+  &:not(:last-child) {
     border-bottom: 1px solid var(--lido-color-border);
   }
 `

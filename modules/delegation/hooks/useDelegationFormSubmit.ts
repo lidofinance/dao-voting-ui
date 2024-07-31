@@ -16,7 +16,7 @@ type Args = {
   mode: DelegationFormMode
   onSubmitClick?: () => void
   onError?: () => void
-  onFinish?: () => Promise<void>
+  onFinish?: (hasError?: boolean) => Promise<void>
 }
 
 type FormData = NonNullableMembers<DelegationFormInput>
@@ -75,37 +75,37 @@ export function useDelegationFormSubmit({
 
   const submitDelegation = useCallback(
     async ({ delegateAddress }: DelegationFormInput) => {
+      let hasError = false
       try {
+        let tx
         invariant(delegateAddress, 'Delegate address is required')
         const loweredDelegateAddress = delegateAddress.toLowerCase()
         onSubmitClick?.()
         if (mode === 'simple') {
           if (loweredDelegateAddress !== networkData.aragonDelegateAddress) {
-            const aragonTx = await txAragonDelegate.send({ delegateAddress })
-            if (aragonTx?.type === 'regular') {
-              await aragonTx.tx.wait()
-            }
-          }
-          if (loweredDelegateAddress !== networkData.snapshotDelegateAddress) {
-            const snapshotTx = await txSnapshotDelegate.send({
+            tx = await txAragonDelegate.send({ delegateAddress })
+          } else if (
+            loweredDelegateAddress !== networkData.snapshotDelegateAddress
+          ) {
+            tx = await txSnapshotDelegate.send({
               delegateAddress,
             })
-            if (snapshotTx?.type === 'regular') {
-              await snapshotTx.tx.wait()
-            }
           }
         } else {
           const txDelegate =
             mode === 'aragon' ? txAragonDelegate : txSnapshotDelegate
-          const tx = await txDelegate.send({ delegateAddress })
-          if (tx?.type === 'regular') {
-            await tx.tx.wait()
-          }
+          tx = await txDelegate.send({ delegateAddress })
+        }
+        if (tx === null) {
+          hasError = true
+        } else if (tx?.type === 'regular') {
+          await tx.tx.wait()
         }
       } catch (err) {
+        hasError = true
         console.error(err)
       } finally {
-        await onFinish?.()
+        await onFinish?.(hasError)
       }
     },
     [

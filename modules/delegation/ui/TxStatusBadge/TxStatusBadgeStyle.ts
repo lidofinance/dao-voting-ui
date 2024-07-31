@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+import { External } from '@lidofinance/lido-ui'
 
 export const Wrap = styled.button<{ $color: string; $clickable: boolean }>`
   display: flex;
@@ -50,4 +51,8 @@ export const Wrap = styled.button<{ $color: string; $clickable: boolean }>`
         }
       }
     `}
+`
+export const ExternalIcon = styled(External)`
+  color: ${({ theme }) => theme.colors.primary};
+  cursor: pointer;
 `
