@@ -23,12 +23,7 @@ Using the deployment button below, you can create your own version of the Voting
 
 Please, click on "Deploy" and follow the Vercel instructions.
 
-To deploy the app, you will need to set the following two required environment variables:
-
-1. `ETHERSCAN_API_KEY`: Your Etherscan API key.
-2. `MAINNET_RPC_URLS`: A comma-separated list of preferred Mainnet RPC URLs (e.g., URL1,URL2,URL3,...); The first entry is primary, else are fallbacks.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/lidofinance/dao-voting-ui&env=ETHERSCAN_API_KEY,MAINNET_RPC_URLS&project-name=lido-voting-ui&repository-name=lido-voting-ui)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/lidofinance/dao-voting-ui&project-name=lido-voting-ui&repository-name=lido-voting-ui)
 
 Note: If the GitHub account attached to Vercel is a part of any GitHub organization, the Vercel "Pro" subscription plan might be required.
 
