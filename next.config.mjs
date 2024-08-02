@@ -1,10 +1,10 @@
 const basePath = process.env.BASE_PATH || ''
 
 
-// The VERCEL_MAINNET_RPC_URLS gets from the Vercel deploy
+// The MAINNET_RPC_URLS gets from the Vercel deploy
 const rpcUrls_1 =
   (process.env.EL_RPC_URLS_1 && process.env.EL_RPC_URLS_1.split(',')) ||
-  (process.env.VERCEL_MAINNET_RPC_URLS && process.env.VERCEL_MAINNET_RPC_URLS.split(','))
+  (process.env.MAINNET_RPC_URLS && process.env.MAINNET_RPC_URLS.split(','))
 const rpcUrls_5 =
   process.env.EL_RPC_URLS_5 && process.env.EL_RPC_URLS_5.split(',')
 const rpcUrls_17000 =
