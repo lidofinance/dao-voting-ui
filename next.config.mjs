@@ -1,25 +1,28 @@
 const basePath = process.env.BASE_PATH || ''
+const publicMainnetRPCs = [
+  'https://api.noderpc.xyz/rpc-mainnet/public',
+  'https://ethereum.publicnode.com',
+  'https://nodes.mewapi.io/rpc/eth',
+]
+const defaultESK = '4FVUV183VQCSSAWFCZ7N631E21N76ED5CV'
 
-
-// The MAINNET_RPC_URLS gets from the Vercel deploy
 const rpcUrls_1 =
-  (process.env.EL_RPC_URLS_1 && process.env.EL_RPC_URLS_1.split(',')) ||
-  (process.env.MAINNET_RPC_URLS && process.env.MAINNET_RPC_URLS.split(','))
+  (process.env.EL_RPC_URLS_1 && process.env.EL_RPC_URLS_1.split(',')) || publicMainnetRPCs
 const rpcUrls_5 =
   process.env.EL_RPC_URLS_5 && process.env.EL_RPC_URLS_5.split(',')
 const rpcUrls_17000 =
   process.env.EL_RPC_URLS_17000 && process.env.EL_RPC_URLS_17000.split(',')
 
-const etherscanApiKey = process.env.ETHERSCAN_API_KEY
+const etherscanApiKey = process.env.ETHERSCAN_API_KEY || defaultESK
 
 // Mainnet is the default chain
 const _defaultChain =  '1';
 
 // Keep both Mainnet and Holesky as defaults
-const _defaultSupportedChains = '1,17000'
+const defaultSupportedChains = '1,17000'
 
 const defaultChain = process.env.DEFAULT_CHAIN || _defaultChain
-const supportedChains = process.env.SUPPORTED_CHAINS || _defaultSupportedChains
+const supportedChains = process.env.SUPPORTED_CHAINS || defaultSupportedChains
 
 const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS
 const cspReportOnly = process.env.CSP_REPORT_ONLY
