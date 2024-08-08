@@ -16,20 +16,16 @@ export function DelegatorsListPage({ pageNumber }: Props) {
   const { data, initialLoading } = useDelegatorsPaginatedList(pageNumber)
   const { data: governanceSymbol } = useGovernanceSymbol()
 
-  const addresses = useMemo(
-    () => (data ? data.map(item => item.address) : null),
-    [data],
-  )
+  const addresses = useMemo(() => data.map(item => item.address), [data])
 
-  const { data: ensNameList } = useEnsNames(addresses || [])
-
+  const { data: ensNameList } = useEnsNames(addresses)
   if (initialLoading) {
     return <PageLoader />
   }
 
   return (
     <Fragment key={pageNumber}>
-      {data?.map((delegator, i) => (
+      {data.map((delegator, i) => (
         <DelegatorsListItem key={delegator.address}>
           <AddressPop address={delegator.address}>
             <AddressBadgeWrap>

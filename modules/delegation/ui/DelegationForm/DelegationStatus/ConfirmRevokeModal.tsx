@@ -9,7 +9,7 @@ function ConfirmRevokeModal(props: ModalProps) {
   }
 
   return (
-    <Modal title="Revoke delegation?" center {...props}>
+    <Modal title={props.data?.title || 'Revoke delegation?'} center {...props}>
       <ModalButtonGroup>
         <Button onClick={handleRevoke}>Revoke</Button>
         <Button variant="outlined" onClick={props.onClose}>

@@ -11,7 +11,7 @@ export const InfoRow = styled.div`
 
 export const InfoLabel = styled.div`
   display: flex;
-  font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
+  font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
   font-weight: 400;
   color: var(--lido-color-textSecondary);
 `

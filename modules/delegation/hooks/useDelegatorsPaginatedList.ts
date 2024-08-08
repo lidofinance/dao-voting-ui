@@ -1,47 +1,21 @@
-import { CHAINS } from '@lido-sdk/constants'
-import { useLidoSWR } from '@lido-sdk/react'
-import { ContractVoting } from 'modules/blockChain/contracts'
-import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { DELEGATORS_PAGE_SIZE } from '../constants'
+import { useDelegators } from './useDelegators'
 
 export function useDelegatorsPaginatedList(pageNumber: number) {
-  const { walletAddress, chainId } = useWeb3()
-  const voting = ContractVoting.useRpc()
+  const { data, initialLoading, loading } = useDelegators()
+  if (pageNumber < 0 || !data?.list) {
+    return { data: [], initialLoading, loading }
+  }
+  const delegators = data.list
+  delegators.sort((prev, next) => (prev.balance.gt(next.balance) ? -1 : 1))
 
-  return useLidoSWR(
-    walletAddress
-      ? [`swr:useDelegatorsPaginatedList`, chainId, walletAddress, pageNumber]
-      : null,
-    async (
-      _key: string,
-      _chainId: CHAINS,
-      _walletAddress: string,
-      _pageNumber: number,
-    ) => {
-      const delegatorsCount = (
-        await voting.getDelegatedVotersCount(_walletAddress)
-      ).toNumber()
-
-      if (delegatorsCount === 0) {
-        return []
-      }
-
-      const delegators = await voting.getDelegatedVoters(
-        _walletAddress,
-        _pageNumber * DELEGATORS_PAGE_SIZE,
-        DELEGATORS_PAGE_SIZE,
-      )
-
-      if (delegators.length === 0) {
-        return []
-      }
-
-      const delegatorsBalances = await voting.getVotingPowerMultiple(delegators)
-
-      return delegators.map((delegator, index) => ({
-        address: delegator,
-        balance: delegatorsBalances[index],
-      }))
-    },
+  const delegatorsPage = delegators.slice(
+    pageNumber * DELEGATORS_PAGE_SIZE,
+    (pageNumber + 1) * DELEGATORS_PAGE_SIZE,
   )
+  return {
+    data: delegatorsPage,
+    initialLoading,
+    loading,
+  }
 }

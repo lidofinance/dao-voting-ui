@@ -1,20 +1,16 @@
-import { CHAINS } from '@lido-sdk/constants'
-import { useLidoSWR } from '@lido-sdk/react'
-import { ContractVoting } from 'modules/blockChain/contracts'
-import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
+import { useDelegators } from './useDelegators'
 
 export function useDelegatorsInfo() {
-  const { walletAddress, chainId } = useWeb3()
-  const voting = ContractVoting.useRpc()
+  const { data, initialLoading, loading } = useDelegators()
 
-  return useLidoSWR(
-    walletAddress ? [`swr:useDelegatorsInfo`, chainId, walletAddress] : null,
-    async (_key: string, _chainId: CHAINS, _walletAddress: string) => {
-      const delegatorsCount = (
-        await voting.getDelegatedVotersCount(_walletAddress)
-      ).toNumber()
-
-      return { delegatorsCount }
+  return {
+    data: {
+      totalCount: data?.totalCount ?? 0,
+      fetchedCount: data?.fetchedCount ?? 0,
+      wealthyCount: data?.wealthyCount ?? 0,
+      fetchedValue: data?.fetchedValue ?? 0,
     },
-  )
+    loading,
+    initialLoading,
+  }
 }

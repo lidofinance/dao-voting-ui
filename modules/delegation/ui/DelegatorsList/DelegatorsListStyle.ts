@@ -53,3 +53,21 @@ export const DelegatorsListItem = styled.div`
     border-bottom: 1px solid var(--lido-color-border);
   }
 `
+
+export const TitleWrap = styled.div`
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 10px;
+`
+
+export const CounterBadge = styled.div`
+  margin: 0 ${({ theme }) => theme.spaceMap.xs}px;
+  padding: 0 ${({ theme }) => theme.spaceMap.sm}px;
+  width: fit-content;
+  color: var(--lido-color-textSecondary);
+  border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
+  background-color: var(--lido-color-backgroundSecondary);
+  font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
+  line-height: ${({ theme }) => theme.spaceMap.lg}px;
+  font-weight: 700;
+`

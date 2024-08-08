@@ -17,6 +17,7 @@ type Props = {
 export function DelegationAddressBadge({ address, type }: Props) {
   const { isSubmitting, onRevoke } = useDelegationFormData()
   const openConfirmModal = useConfirmRevokeModal({
+    title: `Revoke ${type} delegation?`,
     onRevoke: onRevoke(type),
   })
   return (

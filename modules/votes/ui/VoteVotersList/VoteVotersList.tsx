@@ -1,5 +1,3 @@
-import type { BigNumber } from 'ethers'
-
 import { useMemo, useState } from 'react'
 import { useEnsNames } from 'modules/shared/hooks/useEnsNames'
 import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
@@ -21,17 +19,10 @@ import { Tooltip, trimAddress } from '@lidofinance/lido-ui'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { formatNumber } from 'modules/shared/utils/formatNumber'
 import type { CastVoteEventObject } from 'generated/AragonVotingAbi'
+import { formatBalance } from 'modules/blockChain/utils/formatBalance'
 
 type Props = {
   eventsVoted: CastVoteEventObject[]
-}
-
-const formatter = Intl.NumberFormat('en', {
-  notation: 'compact',
-  maximumSignificantDigits: 3,
-})
-const formatAmount = (amount: BigNumber) => {
-  return formatter.format(weiToNum(amount))
 }
 
 const PAGE_SIZE = 10
@@ -71,7 +62,7 @@ export function VoteVotersList({ eventsVoted }: Props) {
                 title={formatNumber(weiToNum(event.stake), 6)}
               >
                 <div>
-                  {formatAmount(event.stake)} {govSymbol}
+                  {formatBalance(event.stake)} {govSymbol}
                 </div>
               </Tooltip>
             </ListRowCell>
