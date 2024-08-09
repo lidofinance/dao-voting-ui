@@ -85,7 +85,10 @@ export function DelegatorsList() {
           Voting power display is limited to {DELEGATORS_FETCH_TOTAL}{' '}
           delegators. To see all your delegators, use the{' '}
           <Link
-            href={getEtherscanAddressLink(chainId, AragonVoting[chainId] ?? '')}
+            href={
+              getEtherscanAddressLink(chainId, AragonVoting[chainId] ?? '') +
+              '#readProxyContract'
+            }
           >
             Voting contract
           </Link>
