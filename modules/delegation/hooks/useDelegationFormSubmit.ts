@@ -10,6 +10,7 @@ import {
 import { NonNullableMembers } from 'modules/shared/utils/utilTypes'
 import { estimateDelegationGasLimit } from '../utils/estimateDelegationGasLimit'
 import { SNAPSHOT_LIDO_SPACE_NAME } from '../constants'
+import type { ResultTx } from '../../blockChain/types'
 
 type Args = {
   networkData: DelegationFormNetworkData
@@ -73,33 +74,53 @@ export function useDelegationFormSubmit({
     onError,
   })
 
+  type TxDelegate = {
+    send: (
+      args: NonNullableMembers<DelegationFormInput>,
+    ) => Promise<ResultTx | null>
+  }
+
+  const delegate = useCallback(
+    async (txDelegate: TxDelegate, address: string) => {
+      const tx = await txDelegate.send({ delegateAddress: address })
+      if (tx === null) {
+        return false
+      }
+      if (tx.type === 'regular') {
+        await tx.tx.wait()
+      }
+      return true
+    },
+    [],
+  )
+
   const submitDelegation = useCallback(
     async ({ delegateAddress }: DelegationFormInput) => {
       let hasError = false
       try {
-        let tx
         invariant(delegateAddress, 'Delegate address is required')
         const loweredDelegateAddress = delegateAddress.toLowerCase()
         onSubmitClick?.()
         if (mode === 'simple') {
           if (loweredDelegateAddress !== networkData.aragonDelegateAddress) {
-            tx = await txAragonDelegate.send({ delegateAddress })
-          } else if (
-            loweredDelegateAddress !== networkData.snapshotDelegateAddress
-          ) {
-            tx = await txSnapshotDelegate.send({
-              delegateAddress,
-            })
+            const success = await delegate(txAragonDelegate, delegateAddress)
+            if (!success) {
+              hasError = true
+            }
+          }
+          if (loweredDelegateAddress !== networkData.snapshotDelegateAddress) {
+            const success = await delegate(txSnapshotDelegate, delegateAddress)
+            if (!success) {
+              hasError = true
+            }
           }
         } else {
           const txDelegate =
             mode === 'aragon' ? txAragonDelegate : txSnapshotDelegate
-          tx = await txDelegate.send({ delegateAddress })
-        }
-        if (tx === null) {
-          hasError = true
-        } else if (tx?.type === 'regular') {
-          await tx.tx.wait()
+          const success = await delegate(txDelegate, delegateAddress)
+          if (!success) {
+            hasError = true
+          }
         }
       } catch (err) {
         hasError = true
@@ -116,6 +137,7 @@ export function useDelegationFormSubmit({
       txSnapshotDelegate,
       onSubmitClick,
       onFinish,
+      delegate,
     ],
   )
 
