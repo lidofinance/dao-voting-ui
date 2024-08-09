@@ -22,7 +22,7 @@ export function DelegationForm({ mode, onCustomizeClick }: Props) {
         <DelegationStatus />
         <DelegationAddressInput />
         <DelegationFormBalance onCustomizeClick={onCustomizeClick} />
-        <DelegationFormSubmitButton />
+        <DelegationFormSubmitButton onCustomizeClick={onCustomizeClick} />
         <DelegationFormFootNote />
         <DelegationTxStatus />
       </DelegationFormController>

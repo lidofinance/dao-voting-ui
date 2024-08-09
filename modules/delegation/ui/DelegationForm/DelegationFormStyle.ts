@@ -53,12 +53,16 @@ export const CustomizeButton = styled(Button).attrs({
   min-width: auto;
 `
 
-export const SubmitButton = styled(Button)`
+export const DelegateButton = styled(Button)`
   margin-top: 16px;
   @media (max-width: 440px) {
     padding-left: 12px;
     padding-right: 12px;
   }
+`
+
+export const HiddenButton = styled(Button)`
+  display: none;
 `
 
 export const DelegationFormFootNoteStyled = styled(Text).attrs({

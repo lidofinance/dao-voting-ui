@@ -1,12 +1,17 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useDelegationFormData } from 'modules/delegation/providers/DelegationFormContext'
 import { useConnectWalletModal } from 'modules/wallet/ui/ConnectWalletModal'
-import { SubmitButton } from './DelegationFormStyle'
+import { DelegateButton, HiddenButton } from './DelegationFormStyle'
 import { useFormState } from 'react-hook-form'
 import { hasIncorrectLength } from 'modules/delegation/utils/hasIncorrectLength'
+import { useConfirmReDelegateModal } from './ConfirmReDelegateModal'
 
-export function DelegationFormSubmitButton() {
+type Props = {
+  onCustomizeClick?: () => void
+}
+
+export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
   const { isWalletConnected } = useWeb3()
   const openConnectWalletModal = useConnectWalletModal()
   const {
@@ -16,13 +21,17 @@ export function DelegationFormSubmitButton() {
     snapshotDelegateAddress,
     watch,
   } = useDelegationFormData()
+  const ref = useRef<HTMLButtonElement>(null)
+
+  const submitFromModal = useCallback(() => {
+    ref.current?.click()
+  }, [ref])
+
+  const isSimple = mode === 'simple'
   const { errors } = useFormState()
   const [delegateAddressInput] = watch(['delegateAddress'])
 
-  const buttonText = useMemo(() => {
-    if (!isWalletConnected) {
-      return null
-    }
+  const match = useMemo(() => {
     const isInputMatchAragon = Boolean(
       delegateAddressInput &&
         `${delegateAddressInput}`.toLowerCase() ===
@@ -33,19 +42,32 @@ export function DelegationFormSubmitButton() {
         `${delegateAddressInput}`.toLowerCase() ===
           `${snapshotDelegateAddress}`.toLowerCase(),
     )
+    const isRedelegateAragon = aragonDelegateAddress && !isInputMatchAragon
+    const isRedelegateSnapshot =
+      snapshotDelegateAddress && !isInputMatchSnapshot
 
-    if (mode === 'simple') {
+    const isRedelegate = isRedelegateAragon || isRedelegateSnapshot
+    return {
+      isInputMatchAragon,
+      isInputMatchSnapshot,
+      isRedelegate,
+      isRedelegateAragon,
+      isRedelegateSnapshot,
+    }
+  }, [aragonDelegateAddress, delegateAddressInput, snapshotDelegateAddress])
+
+  const buttonText = useMemo(() => {
+    if (!isWalletConnected) {
+      return null
+    }
+
+    if (isSimple) {
       return `
-      ${
-        (aragonDelegateAddress && !isInputMatchAragon) ||
-        (snapshotDelegateAddress && !isInputMatchSnapshot)
-          ? 'Redelegate'
-          : 'Delegate'
-      }
-      ${!isInputMatchAragon || !isInputMatchSnapshot ? ' on ' : ''} 
-      ${isInputMatchAragon ? '' : 'Aragon'}
-      ${!isInputMatchAragon && !isInputMatchSnapshot ? ' & ' : ''}
-      ${isInputMatchSnapshot ? '' : 'Snapshot'}`
+      ${match.isRedelegate ? 'Redelegate' : 'Delegate'}
+      ${!match.isInputMatchAragon || !match.isInputMatchSnapshot ? ' on ' : ''} 
+      ${match.isInputMatchAragon ? '' : 'Aragon'}
+      ${!match.isInputMatchAragon && !match.isInputMatchSnapshot ? ' & ' : ''}
+      ${match.isInputMatchSnapshot ? '' : 'Snapshot'}`
     }
 
     const delegateAddress =
@@ -56,30 +78,71 @@ export function DelegationFormSubmitButton() {
     }
     return 'Delegate'
   }, [
-    aragonDelegateAddress,
     isWalletConnected,
+    isSimple,
     mode,
+    aragonDelegateAddress,
     snapshotDelegateAddress,
-    delegateAddressInput,
+    match,
   ])
+
+  const subtitle = useMemo(() => {
+    const start = `
+      ${match.isRedelegateAragon ? 'Aragon' : ''}
+      ${match.isRedelegateAragon && match.isRedelegateSnapshot ? ' & ' : ''}
+      ${match.isRedelegateSnapshot ? 'Snapshot' : ''}
+    `.trim()
+    const end = `
+      ${match.isRedelegateAragon && match.isRedelegateSnapshot ? 'one' : ''}
+      ${!match.isRedelegateAragon ? 'Aragon' : ''}
+      ${!match.isRedelegateAragon && !match.isRedelegateSnapshot ? ' & ' : ''}
+      ${!match.isRedelegateSnapshot ? 'Snapshot' : ''}
+    `.trim()
+    return `You are about to redelegate ${start}. To change only ${end}, use Customize`
+  }, [match])
+
+  const openConfirmReDelegateModal = useConfirmReDelegateModal({
+    onAlternative: onCustomizeClick,
+    onSubmit: submitFromModal,
+    subtitle,
+  })
+
   if (!isWalletConnected) {
     return (
-      <SubmitButton onClick={openConnectWalletModal}>
+      <DelegateButton onClick={openConnectWalletModal} type="button">
         Connect wallet to delegate
-      </SubmitButton>
+      </DelegateButton>
+    )
+  }
+
+  const isDisabled = Boolean(
+    hasIncorrectLength(delegateAddressInput ?? '') ||
+      errors['delegateAddress']?.message,
+  )
+
+  if (!match.isRedelegate || !isSimple) {
+    return (
+      <DelegateButton
+        type="submit"
+        loading={isSubmitting}
+        disabled={isDisabled}
+      >
+        {buttonText}
+      </DelegateButton>
     )
   }
 
   return (
-    <SubmitButton
-      type="submit"
-      loading={isSubmitting}
-      disabled={Boolean(
-        hasIncorrectLength(delegateAddressInput ?? '') ||
-          errors['delegateAddress']?.message,
-      )}
-    >
-      {buttonText}
-    </SubmitButton>
+    <>
+      <DelegateButton
+        type="button"
+        loading={isSubmitting}
+        onClick={openConfirmReDelegateModal}
+        disabled={isDisabled}
+      >
+        {buttonText}
+      </DelegateButton>
+      <HiddenButton ref={ref} type="submit" disabled={isDisabled} />
+    </>
   )
 }
