@@ -26,6 +26,9 @@ export function DelegationAddressInput() {
       rules={{
         required: 'Field is required',
         validate: value => {
+          if (value.length > 42) {
+            return 'Address is too long'
+          }
           if (hasIncorrectLength(value)) {
             return true
           }
