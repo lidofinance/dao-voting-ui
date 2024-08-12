@@ -14,8 +14,8 @@ function ConfirmReDelegateModal(props: ModalProps) {
 
   return (
     <Modal
-      title="Notce"
-      subtitle={props.data?.subtitle ?? ''}
+      title="Notice"
+      subtitle={props.data?.subtitle ?? 'You are about to redelegate'}
       titleIcon={<Warning />}
       center
       {...props}

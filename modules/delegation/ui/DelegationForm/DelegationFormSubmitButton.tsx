@@ -6,6 +6,7 @@ import { DelegateButton, HiddenButton } from './DelegationFormStyle'
 import { useFormState } from 'react-hook-form'
 import { hasIncorrectLength } from 'modules/delegation/utils/hasIncorrectLength'
 import { useConfirmReDelegateModal } from './ConfirmReDelegateModal'
+import { Text } from '@lidofinance/lido-ui'
 
 type Props = {
   onCustomizeClick?: () => void
@@ -98,7 +99,18 @@ export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
       ${!match.isRedelegateAragon && !match.isRedelegateSnapshot ? ' & ' : ''}
       ${!match.isRedelegateSnapshot ? 'Snapshot' : ''}
     `.trim()
-    return `You are about to redelegate ${start}. To change only ${end}, use Customize`
+    return (
+      <>
+        <Text
+          size="xs"
+          color="secondary"
+        >{`You are about to redelegate ${start}.`}</Text>
+        <Text
+          size="xs"
+          color="secondary"
+        >{`To change only ${end}, use Customize`}</Text>
+      </>
+    )
   }, [match])
 
   const openConfirmReDelegateModal = useConfirmReDelegateModal({
