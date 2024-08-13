@@ -94,7 +94,7 @@ export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
       ${match.isRedelegateSnapshot ? 'Snapshot' : ''}
     `.trim()
     const end = `
-      ${match.isRedelegateAragon && match.isRedelegateSnapshot ? 'one' : ''}
+      ${match.isRedelegateAragon && match.isRedelegateSnapshot ? 'one' : 'on '}
       ${!match.isRedelegateAragon ? 'Aragon' : ''}
       ${!match.isRedelegateAragon && !match.isRedelegateSnapshot ? ' & ' : ''}
       ${!match.isRedelegateSnapshot ? 'Snapshot' : ''}
@@ -108,7 +108,7 @@ export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
         <Text
           size="xs"
           color="secondary"
-        >{`To change only on ${end}, use Customize`}</Text>
+        >{`To change only ${end}, use Customize`}</Text>
       </>
     )
   }, [match])

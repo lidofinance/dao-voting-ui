@@ -84,8 +84,8 @@ export function DelegatorsList() {
       </DeelgatorsListStyled>
       {outOfList > 0 && (
         <Text size="xs" color="secondary">
-          The voting power list displays addresses with a positive balance from
-          the first{` ${DELEGATORS_FETCH_TOTAL} `}delegators. You have
+          The voting power list displays addresses with a positive LDO balance
+          from the first{` ${DELEGATORS_FETCH_TOTAL} `}delegators. You have
           {` ${outOfList} `}more delegator{outOfList > 1 ? 's' : ''} who were
           not included in the list. To see all your delegators, use the{' '}
           <Link
