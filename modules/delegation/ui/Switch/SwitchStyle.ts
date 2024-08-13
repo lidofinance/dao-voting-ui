@@ -10,6 +10,11 @@ export const SwitchWrapper = styled.div`
   :hover {
     cursor: pointer;
   }
+  -webkit-user-select: none;
+  /* pointer remove blue highlight */
+  -webkit-tap-highlight-color: transparent;
+  /* pointer remove context menu Apple */
+  -webkit-touch-callout: none;
   display: flex;
   justify-content: space-between;
   align-items: center;

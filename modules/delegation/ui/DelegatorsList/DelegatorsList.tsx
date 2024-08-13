@@ -60,6 +60,8 @@ export function DelegatorsList() {
     )
   }
 
+  const outOfList = data.totalCount - data.fetchedCount
+
   return (
     <Wrap>
       <TitleWrap>
@@ -80,10 +82,12 @@ export function DelegatorsList() {
           </ShowMoreButton>
         )}
       </DeelgatorsListStyled>
-      {data.totalCount > data.fetchedCount && (
+      {outOfList > 0 && (
         <Text size="xs" color="secondary">
-          Voting power display is limited to {DELEGATORS_FETCH_TOTAL}{' '}
-          delegators. To see all your delegators, use the{' '}
+          Voting power display delegators with positive balance form first
+          {` ${DELEGATORS_FETCH_TOTAL} `} delegators. You have {outOfList} more
+          delegator{outOfList > 1 ? 's' : ''} who were not included in the list.
+          To see all your delegators, use the{' '}
           <Link
             href={
               getEtherscanAddressLink(chainId, AragonVoting[chainId] ?? '') +

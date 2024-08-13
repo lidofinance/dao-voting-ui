@@ -55,7 +55,6 @@ export const DelegatorsListItem = styled.div`
 `
 
 export const TitleWrap = styled.div`
-  display: flex;
   align-items: baseline;
   margin-bottom: 10px;
 `
@@ -70,4 +69,5 @@ export const CounterBadge = styled.div`
   font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
   line-height: ${({ theme }) => theme.spaceMap.lg}px;
   font-weight: 700;
+  display: inline-block;
 `

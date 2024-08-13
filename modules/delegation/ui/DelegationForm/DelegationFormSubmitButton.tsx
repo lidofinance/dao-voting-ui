@@ -104,11 +104,11 @@ export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
         <Text
           size="xs"
           color="secondary"
-        >{`You are about to redelegate ${start}.`}</Text>
+        >{`You are about to redelegate on ${start}.`}</Text>
         <Text
           size="xs"
           color="secondary"
-        >{`To change only ${end}, use Customize`}</Text>
+        >{`To change only on ${end}, use Customize`}</Text>
       </>
     )
   }, [match])
