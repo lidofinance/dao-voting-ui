@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from 'react'
+import { MouseEventHandler, useCallback, useMemo, useRef } from 'react'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useDelegationFormData } from 'modules/delegation/providers/DelegationFormContext'
 import { useConnectWalletModal } from 'modules/wallet/ui/ConnectWalletModal'
@@ -119,6 +119,12 @@ export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
     subtitle,
   })
 
+  const onSubmitDialog: MouseEventHandler<HTMLButtonElement> = event => {
+    // this prevents form being submitted by Enter keypress on the input
+    event.preventDefault()
+    openConfirmReDelegateModal()
+  }
+
   if (!isWalletConnected) {
     return (
       <DelegateButton onClick={openConnectWalletModal} type="button">
@@ -147,9 +153,9 @@ export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
   return (
     <>
       <DelegateButton
-        type="button"
+        type="submit"
         loading={isSubmitting}
-        onClick={openConfirmReDelegateModal}
+        onClick={onSubmitDialog}
         disabled={isDisabled}
       >
         {buttonText}
