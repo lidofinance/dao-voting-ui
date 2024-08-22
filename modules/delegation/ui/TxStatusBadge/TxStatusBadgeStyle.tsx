@@ -1,7 +1,7 @@
+import { ButtonIcon, External } from '@lidofinance/lido-ui'
 import styled, { css } from 'styled-components'
-import { External } from '@lidofinance/lido-ui'
 
-export const Wrap = styled.button<{ $color: string; $clickable: boolean }>`
+export const Wrap = styled.button<{ $color: string }>`
   display: flex;
   align-items: center;
   gap: 4px;
@@ -9,13 +9,6 @@ export const Wrap = styled.button<{ $color: string; $clickable: boolean }>`
   border-radius: 4px;
   outline: none;
   border: none;
-  cursor: default;
-
-  ${({ $clickable = true }) =>
-    $clickable &&
-    css`
-      cursor: pointer;
-    `}
 
   background-color: ${({ $color }) =>
     `rgba(var(--lido-rgb-${$color}), ${$color === 'success' ? '0.2' : '0.1'})`};
@@ -52,7 +45,11 @@ export const Wrap = styled.button<{ $color: string; $clickable: boolean }>`
       }
     `}
 `
-export const ExternalIcon = styled(External)`
-  color: ${({ theme }) => theme.colors.primary};
-  cursor: pointer;
+
+export const ExplorerButton = styled(ButtonIcon).attrs({
+  icon: <External />,
+  variant: 'translucent',
+  size: 'xs',
+})`
+  padding: 6px;
 `

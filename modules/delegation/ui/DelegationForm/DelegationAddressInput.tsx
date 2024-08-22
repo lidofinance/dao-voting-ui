@@ -17,7 +17,6 @@ export function DelegationAddressInput() {
 
   return (
     <InputControl
-      autoComplete="off"
       {...register('delegateAddress')}
       label="Delegate address"
       disabled={
@@ -59,6 +58,8 @@ export function DelegationAddressInput() {
           return true
         },
       }}
+      autoComplete="new-password"
+      data-1p-ignore // disables 1password element
     />
   )
 }

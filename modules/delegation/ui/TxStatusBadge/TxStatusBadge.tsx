@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react'
 import { Text, Tooltip } from '@lidofinance/lido-ui'
-import { ExternalIcon, Wrap } from './TxStatusBadgeStyle'
+import { ExplorerButton, Wrap } from './TxStatusBadgeStyle'
 import { TxStatus } from 'modules/blockChain/types'
 
 import SuccessSvg from 'assets/check.com.svg.react'
@@ -11,10 +11,11 @@ type Status = TxStatus | 'warning'
 
 type Props = {
   status: Status
+  type: 'regular' | 'safe' | undefined
   onClick?: () => void
 }
 
-export const TxStatusBadge: FC<Props> = ({ status, onClick }) => {
+export const TxStatusBadge: FC<Props> = ({ status, type, onClick }) => {
   const { text, color, Icon } = useMemo(() => {
     switch (status) {
       case 'failed':
@@ -26,18 +27,32 @@ export const TxStatusBadge: FC<Props> = ({ status, onClick }) => {
           Icon: WarningSvg,
         }
       case 'success':
+        if (type === 'safe') {
+          return {
+            text: 'Signed',
+            color: 'success',
+            Icon: SuccessSvg,
+          }
+        }
         return { text: 'Success', color: 'success', Icon: SuccessSvg }
       case 'pending':
+        if (type === 'safe') {
+          return {
+            text: 'Proceed to wallet to sign',
+            color: 'primary',
+            Icon: null,
+          }
+        }
         return { text: 'Pending...', color: 'primary', Icon: null }
       default:
       case 'empty':
         return { text: 'Not started', color: 'secondary', Icon: null }
     }
-  }, [status])
+  }, [status, type])
 
   if (status === 'empty') {
     return (
-      <Wrap $color={color} $clickable={false} onClick={onClick}>
+      <Wrap $color={color} onClick={onClick}>
         {Icon && <Icon />}
         <Text as="span" size="xxs" weight={700}>
           {text}
@@ -47,16 +62,23 @@ export const TxStatusBadge: FC<Props> = ({ status, onClick }) => {
   }
 
   return (
-    <Tooltip placement="top" title={<span>View on Etherscan</span>}>
-      <>
-        <Wrap $color={color} $clickable onClick={onClick}>
-          {Icon && <Icon />}
-          <Text as="span" size="xxs" weight={700}>
-            {text}
-          </Text>
-        </Wrap>
-        {status === 'success' && <ExternalIcon onClick={onClick} />}
-      </>
-    </Tooltip>
+    <>
+      <Wrap $color={color} onClick={onClick}>
+        {Icon && <Icon />}
+        <Text as="span" size="xxs" weight={700}>
+          {text}
+        </Text>
+      </Wrap>
+      {status === 'success' && (
+        <Tooltip
+          placement="top"
+          title={
+            <span>View on {type === 'regular' ? 'Etherscan' : 'Safe'}</span>
+          }
+        >
+          <ExplorerButton onClick={onClick} />
+        </Tooltip>
+      )}
+    </>
   )
 }

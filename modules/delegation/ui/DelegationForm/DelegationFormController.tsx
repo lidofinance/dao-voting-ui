@@ -8,7 +8,6 @@ export const DelegationFormController: FC = ({ children }) => {
   return (
     <DelegationFormControllerStyled
       $customMode={mode !== 'simple'}
-      autoComplete="off"
       onSubmit={onSubmit}
       children={children}
     />

@@ -31,6 +31,7 @@ export function DelegationTxStatus() {
           <StatusWrap>
             <TxStatusBadge
               status={txAragonDelegate.status}
+              type={txAragonDelegate.tx?.type}
               onClick={txAragonDelegate.open}
             />
             {txAragonDelegate.isFailed && (
@@ -48,6 +49,7 @@ export function DelegationTxStatus() {
           <StatusWrap>
             <TxStatusBadge
               status={txSnapshotDelegate.status}
+              type={txSnapshotDelegate.tx?.type}
               onClick={txSnapshotDelegate.open}
             />
             {txSnapshotDelegate.isFailed && (
@@ -71,7 +73,11 @@ export function DelegationTxStatus() {
         Tx status
       </Text>
       <StatusWrap>
-        <TxStatusBadge status={tx.status} onClick={tx.open} />
+        <TxStatusBadge
+          status={tx.status}
+          type={tx.tx?.type}
+          onClick={tx.open}
+        />
         {tx.isFailed && <RetryButton onClick={tx.send} />}
       </StatusWrap>
     </Wrap>

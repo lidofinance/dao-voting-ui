@@ -20,6 +20,12 @@ type Args = {
   onFinish?: (hasError?: boolean) => Promise<void>
 }
 
+type TxDelegate = {
+  send: (
+    args: NonNullableMembers<DelegationFormInput>,
+  ) => Promise<ResultTx | null>
+}
+
 type FormData = NonNullableMembers<DelegationFormInput>
 
 export function useDelegationFormSubmit({
@@ -73,12 +79,6 @@ export function useDelegationFormSubmit({
   const txSnapshotDelegate = useTransactionSender(populateSnapshotDelegate, {
     onError,
   })
-
-  type TxDelegate = {
-    send: (
-      args: NonNullableMembers<DelegationFormInput>,
-    ) => Promise<ResultTx | null>
-  }
 
   const delegate = useCallback(
     async (txDelegate: TxDelegate, address: string) => {
