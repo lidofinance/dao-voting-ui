@@ -29,20 +29,13 @@ export const TxStatusBadge: FC<Props> = ({ status, type, onClick }) => {
       case 'success':
         if (type === 'safe') {
           return {
-            text: 'Signed',
-            color: 'success',
-            Icon: SuccessSvg,
-          }
-        }
-        return { text: 'Success', color: 'success', Icon: SuccessSvg }
-      case 'pending':
-        if (type === 'safe') {
-          return {
-            text: 'Proceed to wallet to sign',
+            text: 'Added to queue',
             color: 'primary',
             Icon: null,
           }
         }
+        return { text: 'Success', color: 'success', Icon: SuccessSvg }
+      case 'pending':
         return { text: 'Pending...', color: 'primary', Icon: null }
       default:
       case 'empty':
