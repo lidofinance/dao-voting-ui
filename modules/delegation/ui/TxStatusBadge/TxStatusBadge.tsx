@@ -45,7 +45,7 @@ export const TxStatusBadge: FC<Props> = ({ status, type, onClick }) => {
 
   if (status === 'empty') {
     return (
-      <Wrap $color={color} onClick={onClick}>
+      <Wrap $color={color}>
         {Icon && <Icon />}
         <Text as="span" size="xxs" weight={700}>
           {text}
@@ -56,7 +56,7 @@ export const TxStatusBadge: FC<Props> = ({ status, type, onClick }) => {
 
   return (
     <>
-      <Wrap $color={color} onClick={onClick}>
+      <Wrap $color={color}>
         {Icon && <Icon />}
         <Text as="span" size="xxs" weight={700}>
           {text}

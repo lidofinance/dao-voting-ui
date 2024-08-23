@@ -9,10 +9,10 @@ const PREFIXES = {
 
 export const getGnosisSafeLink = (chainId: CHAINS, address: string) => {
   if (chainId === CHAINS.Holesky) {
-    return `https://holesky-safe.protofire.io/transactions/history?safe=holesky:${address}`
+    return `https://holesky-safe.protofire.io/transactions/queue?safe=holesky:${address}`
   }
 
-  return `https://app.safe.global/transactions/history?safe=${get(
+  return `https://app.safe.global/transactions/queue?safe=${get(
     PREFIXES,
     chainId,
     '?',

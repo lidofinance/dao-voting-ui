@@ -31,7 +31,8 @@ const extractCodeFromError = (
       normalizedMessage.includes('denied message signature') ||
       normalizedMessage.includes('transaction was rejected') ||
       normalizedMessage.includes('rejected the transaction') ||
-      normalizedMessage.includes('rejected the request')
+      normalizedMessage.includes('rejected the request') ||
+      normalizedMessage.includes('rejected transaction')
     )
       return 'ACTION_REJECTED'
   }

@@ -1,7 +1,7 @@
 import { ButtonIcon, External } from '@lidofinance/lido-ui'
 import styled, { css } from 'styled-components'
 
-export const Wrap = styled.button<{ $color: string }>`
+export const Wrap = styled.div<{ $color: string }>`
   display: flex;
   align-items: center;
   gap: 4px;
