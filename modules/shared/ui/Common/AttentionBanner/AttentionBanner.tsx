@@ -1,5 +1,5 @@
 import { Wrap } from './AttentionBannerStyle'
-import DangerIconSVG from 'assets/danger.com.svg.react'
+import DangerIconSVG from 'assets/warning.com.svg.react'
 
 type Props = {
   type?: 'error' | 'warning'
