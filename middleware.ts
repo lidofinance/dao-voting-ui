@@ -7,6 +7,7 @@ export const CACHE_ALLOWED_LIST_FILES_PATHS = [
   { path: '/settings', headers: CACHE_HEADERS_HTML_PAGE },
   { path: /vote\/(.+)/, headers: CACHE_HEADERS_HTML_PAGE },
   { path: /dashboard\/(.+)/, headers: CACHE_HEADERS_HTML_PAGE },
+  { path: /delegation\/(.+)/, headers: CACHE_HEADERS_HTML_PAGE },
 ]
 
 // use only for cache files
