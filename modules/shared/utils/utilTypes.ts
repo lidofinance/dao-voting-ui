@@ -20,3 +20,7 @@ export type CustomAppProps = AppProps & {
 }
 
 export type CustomApp = (props: CustomAppProps) => JSX.Element
+
+export type NonNullableMembers<T> = {
+  [P in keyof T]: NonNullable<T[P]>
+}

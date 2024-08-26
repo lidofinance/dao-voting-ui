@@ -31,6 +31,7 @@
     "@walletconnect/ethereum-provider": "^2.8.3"
   },
   "dependencies": {
+    "tiny-invariant": "^1.1.0",
     "@lido-sdk/constants": "^3.2.1",
     "@lido-sdk/contracts": "^3.0.4",
     "@lido-sdk/fetch": "^2.1.12",
