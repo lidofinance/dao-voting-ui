@@ -4,7 +4,6 @@ const publicMainnetRPCs = [
   'https://ethereum.publicnode.com',
   'https://nodes.mewapi.io/rpc/eth',
 ]
-const defaultESK = '4FVUV183VQCSSAWFCZ7N631E21N76ED5CV'
 
 const rpcUrls_1 =
   (process.env.EL_RPC_URLS_1 && process.env.EL_RPC_URLS_1.split(',')) || publicMainnetRPCs
@@ -13,7 +12,7 @@ const rpcUrls_5 =
 const rpcUrls_17000 =
   process.env.EL_RPC_URLS_17000 && process.env.EL_RPC_URLS_17000.split(',')
 
-const etherscanApiKey = process.env.ETHERSCAN_API_KEY || defaultESK
+const etherscanApiKey = process.env.ETHERSCAN_API_KEY
 
 // Mainnet is the default chain
 const _defaultChain =  '1';

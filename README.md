@@ -17,16 +17,6 @@ The required functionality includes:
 
 [More details](https://www.notion.so/Custom-voting-UI-feature-description-bde7fde42d3749a3afcbab3a56f26674)
 
-## Deploy to Vercel
-
-Using the deployment button below, you can create your own version of the Voting UI on [Vercel](https://vercel.com/)
-
-Please, click on "Deploy" and follow the Vercel instructions.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/lidofinance/dao-voting-ui&project-name=lido-voting-ui&repository-name=lido-voting-ui)
-
-Note: If the GitHub account attached to Vercel is a part of any GitHub organization, the Vercel "Pro" subscription plan might be required.
-
 ## Pre-requisites
 
 - Node.js v12+
