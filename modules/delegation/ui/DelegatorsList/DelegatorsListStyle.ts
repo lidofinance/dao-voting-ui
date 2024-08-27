@@ -8,6 +8,8 @@ export const Wrap = styled.div<{ $empty?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  max-width: 496px;
+  margin: 0 auto;
 
   ${({ $empty }) =>
     $empty &&
