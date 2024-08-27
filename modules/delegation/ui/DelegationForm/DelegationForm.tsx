@@ -1,5 +1,7 @@
-import { DelegationFormProvider } from 'modules/delegation/providers/DelegationFormContext'
-import { DelegationFormMode } from 'modules/delegation/types'
+import {
+  DelegationFormProvider,
+  DelegationFormProviderProps,
+} from 'modules/delegation/providers/DelegationFormContext'
 import { DelegationStatus } from './DelegationStatus/DelegationStatus'
 import { DelegationFormSubtitle } from './DelegationFormSubtitle'
 import { DelegationAddressInput } from './DelegationAddressInput'
@@ -9,14 +11,13 @@ import { DelegationFormFootNote } from './DelegationFormFootNote'
 import { DelegationFormController } from './DelegationFormController'
 import { DelegationTxStatus } from './DelegationTxStatus'
 
-type Props = {
-  mode: DelegationFormMode
+type Props = DelegationFormProviderProps & {
   onCustomizeClick?: () => void
 }
 
-export function DelegationForm({ mode, onCustomizeClick }: Props) {
+export function DelegationForm({ onCustomizeClick, ...providerProps }: Props) {
   return (
-    <DelegationFormProvider mode={mode}>
+    <DelegationFormProvider {...providerProps}>
       <DelegationFormController>
         <DelegationFormSubtitle />
         <DelegationStatus />

@@ -1,4 +1,5 @@
 import { Button, Text, trimAddress } from '@lidofinance/lido-ui'
+import Image from 'next/image'
 import {
   DelegateInfo,
   Header,
@@ -14,15 +15,18 @@ import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useProcessedPublicDelegatesList } from './useProcessedPublicDelegatesList'
 import { PageLoader } from 'modules/shared/ui/Common/PageLoader'
 import { isValidAddress } from 'modules/shared/utils/addressValidation'
+import { formatBalance } from 'modules/blockChain/utils/formatBalance'
+import { AddressPop } from 'modules/shared/ui/Common/AddressPop'
 
 import AragonSvg from 'assets/aragon.com.svg.react'
 import XSocialSvg from 'assets/x.social.com.svg.react'
 import LidoSocialSvg from 'assets/lido.social.com.svg.react'
-import Image from 'next/image'
-import { formatBalance } from 'modules/blockChain/utils/formatBalance'
-import { AddressPop } from 'modules/shared/ui/Common/AddressPop'
 
-export function PublicDelegateList() {
+type Props = {
+  onDelegatePick: (address: string) => () => void
+}
+
+export function PublicDelegateList({ onDelegatePick }: Props) {
   const { isWalletConnected } = useWeb3()
 
   const { data, initialLoading } = useProcessedPublicDelegatesList()
@@ -58,12 +62,17 @@ export function PublicDelegateList() {
           <ListItem key={delegate.address}>
             <DelegateInfo>
               <AvatarWrap>
-                <Image
-                  src={delegate.avatar ?? ''}
-                  alt=""
-                  layout="fill"
-                  loader={({ src }) => src}
-                />
+                {delegate.avatar ? (
+                  <Image
+                    src={delegate.avatar}
+                    alt=""
+                    layout="fill"
+                    loader={({ src }) => src}
+                    unoptimized
+                  />
+                ) : (
+                  <div />
+                )}
               </AvatarWrap>
               <div>
                 <Text size="xxs" weight={700}>
@@ -93,7 +102,12 @@ export function PublicDelegateList() {
               </ExternalLink>
             </SocialButtons>
             {isWalletConnected && (
-              <Button size="xs" variant="outlined">
+              <Button
+                size="xs"
+                variant="outlined"
+                disabled={!delegate.resolvedDelegateAddress}
+                onClick={onDelegatePick(delegate.resolvedDelegateAddress!)}
+              >
                 Delegate
               </Button>
             )}

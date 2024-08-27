@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Button, Text } from '@lidofinance/lido-ui'
 
 import { FormTitle, FormWrap, Wrap } from './DelegationSettingsStyle'
@@ -7,6 +7,14 @@ import { PublicDelegateList } from '../PublicDelegateList'
 
 export function DelegationSettings() {
   const [isSimpleModeOn, setIsSimpleModeOn] = useState(true)
+  const [delegateFromPublicList, setDelegateFromPublicList] = useState<string>()
+
+  const handleDelegatePick = useCallback(
+    (address: string) => () => {
+      setDelegateFromPublicList(address)
+    },
+    [],
+  )
 
   return (
     <Wrap>
@@ -28,16 +36,23 @@ export function DelegationSettings() {
         {isSimpleModeOn ? (
           <DelegationForm
             mode="simple"
+            presetDelegateAddress={delegateFromPublicList}
             onCustomizeClick={() => setIsSimpleModeOn(false)}
           />
         ) : (
           <>
-            <DelegationForm mode="aragon" />
-            <DelegationForm mode="snapshot" />
+            <DelegationForm
+              mode="aragon"
+              presetDelegateAddress={delegateFromPublicList}
+            />
+            <DelegationForm
+              mode="snapshot"
+              presetDelegateAddress={delegateFromPublicList}
+            />
           </>
         )}
       </FormWrap>
-      <PublicDelegateList />
+      <PublicDelegateList onDelegatePick={handleDelegatePick} />
     </Wrap>
   )
 }

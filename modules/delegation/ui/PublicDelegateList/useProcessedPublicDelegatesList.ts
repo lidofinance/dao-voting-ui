@@ -5,7 +5,16 @@ import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { DELEGATORS_FETCH_TOTAL } from 'modules/delegation/constants'
 import { PUBLIC_DELEGATES } from 'modules/delegation/publicDelegates'
 import { useEnsResolvers } from 'modules/shared/hooks/useEnsResolvers'
-import { isValidEns } from 'modules/shared/utils/addressValidation'
+import {
+  isValidAddress,
+  isValidEns,
+} from 'modules/shared/utils/addressValidation'
+
+type ProcessedDelegate = typeof PUBLIC_DELEGATES[number] & {
+  delegatorsCount: string
+  delegatedVotingPower: BigNumber | string
+  resolvedDelegateAddress: string | null
+}
 
 export const useProcessedPublicDelegatesList = () => {
   const { chainId } = useWeb3()
@@ -13,45 +22,55 @@ export const useProcessedPublicDelegatesList = () => {
 
   const { resolveName } = useEnsResolvers()
 
-  return useLidoSWRImmutable(
+  return useLidoSWRImmutable<ProcessedDelegate[]>(
     [`swr:useProcessedPublicDelegatesList`, chainId],
     async () => {
-      const parsedList = await Promise.all(
+      const parsedList: ProcessedDelegate[] = await Promise.all(
         PUBLIC_DELEGATES.map(async delegate => {
-          let delegateAddress: string | null = delegate.address
+          let resolvedDelegateAddress: string | null =
+            delegate.address.toLowerCase()
 
           // If `address` was provided as ENS name, convert it to address
-          if (isValidEns(delegateAddress)) {
-            delegateAddress = await resolveName(delegateAddress)
+          if (isValidEns(delegate.address)) {
+            resolvedDelegateAddress =
+              (await resolveName(delegate.address))?.toLowerCase() ?? null
 
             // If ENS name wasn't not resolved, return delegate with N/A values
-            if (!delegateAddress) {
+            if (!resolvedDelegateAddress) {
               return {
                 ...delegate,
                 delegatorsCount: 'N/A',
                 delegatedVotingPower: 'N/A',
+                resolvedDelegateAddress: null,
               }
+            }
+          } else if (!isValidAddress(delegate.address)) {
+            return {
+              ...delegate,
+              delegatorsCount: 'N/A',
+              delegatedVotingPower: 'N/A',
+              resolvedDelegateAddress: null,
             }
           }
 
           const delegatorsCount = await voting.getDelegatedVotersCount(
-            delegateAddress,
+            resolvedDelegateAddress,
           )
 
           if (delegatorsCount.isZero()) {
             return {
               ...delegate,
               delegatorsCount: '0',
-              delegatedVotingPower: '0',
+              delegatedVotingPower: BigNumber.from(0),
+              resolvedDelegateAddress,
             }
           }
 
           const delegatorsAddresses = await voting.getDelegatedVoters(
-            delegateAddress,
+            resolvedDelegateAddress,
             0,
             DELEGATORS_FETCH_TOTAL,
           )
-          console.log('addresses', delegatorsAddresses)
           const delegatorsBalances = await voting.getVotingPowerMultiple(
             delegatorsAddresses,
           )
@@ -64,6 +83,7 @@ export const useProcessedPublicDelegatesList = () => {
             ...delegate,
             delegatorsCount: delegatorsCount.toString(),
             delegatedVotingPower: delegatedVotingPower,
+            resolvedDelegateAddress,
           }
         }),
       )
@@ -71,6 +91,9 @@ export const useProcessedPublicDelegatesList = () => {
       return parsedList.sort((a, b) => {
         if (typeof a.delegatedVotingPower === 'string') {
           return 1
+        }
+        if (typeof b.delegatedVotingPower === 'string') {
+          return -1
         }
         if (a.delegatedVotingPower.lt(b.delegatedVotingPower)) {
           return 1
@@ -80,6 +103,9 @@ export const useProcessedPublicDelegatesList = () => {
         }
         return 0
       })
+    },
+    {
+      onError: (error, key) => console.error(key, error),
     },
   )
 }

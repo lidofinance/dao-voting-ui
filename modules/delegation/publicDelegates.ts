@@ -1,3 +1,4 @@
+// The list of public delegates was provided by DAO Ops workstream member
 export const PUBLIC_DELEGATES = [
   {
     name: 'Matt Stam',
@@ -124,14 +125,6 @@ export const PUBLIC_DELEGATES = [
     address: '0x000b4369B71B6634F27F5De9Cbaaabb0D21B8be5',
     lido: 'https://research.lido.fi/t/nodesoda-com-delegate-thread/8031',
     twitter: 'https://x.com/pablolema85',
-  },
-  {
-    name: 'eboadom (Ernesto)',
-    avatar:
-      'https://dub1.discourse-cdn.com/business20/user_avatar/research.lido.fi/eboadom/288/3764_2.png',
-    address: '0x000b4369B71B6634F27F5De9Cbaaabb0D21B8be5',
-    lido: 'https://research.lido.fi/t/eboadom-delegate-thread/8079',
-    twitter: 'https://x.com/eboadom',
   },
   {
     name: 'ReservoirDAO',

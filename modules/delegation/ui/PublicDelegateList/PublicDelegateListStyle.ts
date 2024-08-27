@@ -92,7 +92,8 @@ export const AvatarWrap = styled.div`
   background-color: var(--lido-color-primaryVisited);
   overflow: hidden;
 
-  & > img {
+  & > img,
+  div {
     width: 100%;
     height: 100%;
     object-fit: cover;
