@@ -4,8 +4,13 @@ import { ContractVoting } from 'modules/blockChain/contracts'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { DELEGATORS_FETCH_SIZE, DELEGATORS_FETCH_TOTAL } from '../constants'
 import { BigNumber } from 'ethers'
+import { useEnsResolvers } from 'modules/shared/hooks/useEnsResolvers'
 
-type DelegatorData = { address: string; balance: BigNumber }
+type DelegatorData = {
+  address: string
+  balance: BigNumber
+  ensName?: string | null
+}
 
 type DelegatorsData = {
   nonZeroDelegators: DelegatorData[]
@@ -21,6 +26,7 @@ type DelegatorsData = {
 export function useDelegators() {
   const { walletAddress, chainId } = useWeb3()
   const voting = ContractVoting.useRpc()
+  const { lookupAddress } = useEnsResolvers()
 
   const { data, initialLoading, loading, error } = useLidoSWR<DelegatorsData>(
     walletAddress ? [`swr:useDelegators`, chainId, walletAddress] : null,
@@ -76,8 +82,23 @@ export function useDelegators() {
         delegator.balance.gt(0),
       )
 
+      const nonZeroDelegatorsWithEns = await Promise.all(
+        nonZeroDelegators.map(async delegator => {
+          try {
+            const ensName = await lookupAddress(delegator.address)
+
+            return {
+              ...delegator,
+              ensName,
+            }
+          } catch (err) {
+            return delegator
+          }
+        }),
+      )
+
       return {
-        nonZeroDelegators,
+        nonZeroDelegators: nonZeroDelegatorsWithEns,
         totalVotingPower,
         notFetchedDelegatorsCount: totalDelegatorsCount - delegators.length,
       }

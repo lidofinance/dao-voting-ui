@@ -10,6 +10,7 @@ import { BigNumber } from 'ethers'
 type Props = {
   address: string
   balance: BigNumber
+  ensName: string | null | undefined
   governanceSymbol: string | undefined
 }
 
@@ -17,6 +18,7 @@ export function DelegatorsListItem({
   address,
   balance,
   governanceSymbol,
+  ensName,
 }: Props) {
   return (
     <DelegatorsListItemStyled key={address}>
@@ -24,8 +26,7 @@ export function DelegatorsListItem({
         <AddressBadgeWrap>
           <Identicon address={address} diameter={20} />
           <Text as="span" size="xxs">
-            {/* {(ensNameList && ensNameList[i]) || trimAddress(address, 4)} */}
-            {trimAddress(address, 4)}
+            {ensName ?? trimAddress(address, 6)}
           </Text>
         </AddressBadgeWrap>
       </AddressPop>

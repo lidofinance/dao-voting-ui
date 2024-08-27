@@ -84,6 +84,7 @@ export function DelegatorsList() {
             key={delegator.address}
             address={delegator.address}
             balance={delegator.balance}
+            ensName={delegator.ensName}
             governanceSymbol={governanceToken?.symbol}
           />
         ))}
