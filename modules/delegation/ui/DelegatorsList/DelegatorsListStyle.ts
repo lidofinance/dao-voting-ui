@@ -10,6 +10,7 @@ export const Wrap = styled.div<{ $empty?: boolean }>`
   gap: 12px;
   max-width: 496px;
   margin: 0 auto;
+  text-align: center;
 
   ${({ $empty }) =>
     $empty &&
@@ -46,7 +47,7 @@ export const AddressBadgeWrap = styled.span`
   }
 `
 
-export const DelegatorsListItem = styled.div`
+export const DelegatorsListItemStyled = styled.div`
   padding: 12px 20px;
   display: flex;
   align-items: center;

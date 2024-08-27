@@ -8,33 +8,37 @@ import {
   CounterBadge,
   TitleWrap,
 } from './DelegatorsListStyle'
-import { DelegatorsListPage } from './DelegatorsListPage'
-import { useDelegatorsInfo } from 'modules/delegation/hooks/useDelegatorsInfo'
 import { PageLoader } from 'modules/shared/ui/Common/PageLoader'
 import {
   DELEGATORS_FETCH_TOTAL,
   DELEGATORS_PAGE_SIZE,
 } from 'modules/delegation/constants'
-import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
 import { InfoLabel } from 'modules/shared/ui/Common/InfoRow'
 import { getEtherscanAddressLink } from '@lido-sdk/helpers'
 import { AragonVoting } from 'modules/blockChain/contractAddresses'
 import { formatBalance } from 'modules/blockChain/utils/formatBalance'
+import { useDelegators } from 'modules/delegation/hooks/useDelegators'
+import { ExternalLink } from 'modules/shared/ui/Common/ExternalLink'
+import { useGovernanceBalance } from 'modules/tokens/hooks/useGovernanceBalance'
+import { DelegatorsListItem } from './DelegatorsListItem'
+
+const DAO_OPS_FORUM_LINK =
+  'https://research.lido.fi/new-message?groupname=DAO_Ops'
 
 export function DelegatorsList() {
   const { isWalletConnected, chainId } = useWeb3()
   const [pageCount, setPageCount] = useState(1)
-  const { data: governanceSymbol } = useGovernanceSymbol()
+  const { data: governanceToken } = useGovernanceBalance()
 
-  const { data, initialLoading } = useDelegatorsInfo()
+  const { data, initialLoading } = useDelegators()
 
-  const pages = useMemo(() => {
-    const result = []
-    for (let i = 0; i < pageCount; i++) {
-      result.push(<DelegatorsListPage pageNumber={i} key={i} />)
+  const delegatorsToShow = useMemo(() => {
+    if (!data.nonZeroDelegators.length) {
+      return []
     }
-    return result
-  }, [pageCount])
+
+    return data.nonZeroDelegators.slice(0, pageCount * DELEGATORS_PAGE_SIZE)
+  }, [data.nonZeroDelegators, pageCount])
 
   if (!isWalletConnected) {
     return (
@@ -50,7 +54,9 @@ export function DelegatorsList() {
     return <PageLoader />
   }
 
-  if (data.wealthyCount === 0) {
+  const nonZeroDelegatorsCount = data.nonZeroDelegators.length
+
+  if (nonZeroDelegatorsCount === 0) {
     return (
       <Wrap $empty={true}>
         <Text size="sm" color="secondary">
@@ -60,34 +66,40 @@ export function DelegatorsList() {
     )
   }
 
-  const outOfList = data.totalCount - data.fetchedCount
-
   return (
     <Wrap>
       <TitleWrap>
         <InfoLabel>Delegated</InfoLabel>
         <CounterBadge>
-          {formatBalance(data.fetchedValue || 0)} {governanceSymbol}
+          {formatBalance(data.totalVotingPower)} {governanceToken?.symbol}
         </CounterBadge>
         <InfoLabel>
-          from {data.wealthyCount} address
-          {data.wealthyCount > 1 ? 'es' : ''} on-chain
+          from {nonZeroDelegatorsCount} address
+          {nonZeroDelegatorsCount > 1 ? 'es' : ''} on-chain
         </InfoLabel>
       </TitleWrap>
       <DeelgatorsListStyled>
-        {pages}
-        {data.wealthyCount > pageCount * DELEGATORS_PAGE_SIZE && (
+        {delegatorsToShow.map(delegator => (
+          <DelegatorsListItem
+            key={delegator.address}
+            address={delegator.address}
+            balance={delegator.balance}
+            governanceSymbol={governanceToken?.symbol}
+          />
+        ))}
+        {nonZeroDelegatorsCount > pageCount * DELEGATORS_PAGE_SIZE && (
           <ShowMoreButton onClick={() => setPageCount(count => count + 1)}>
             Show More
           </ShowMoreButton>
         )}
       </DeelgatorsListStyled>
-      {outOfList > 0 && (
-        <Text size="xs" color="secondary">
-          The voting power list displays addresses with a positive LDO balance
-          from the first{` ${DELEGATORS_FETCH_TOTAL} `}delegators. You have
-          {` ${outOfList} `}more delegator{outOfList > 1 ? 's' : ''} who were
-          not included in the list. To see all your delegators, use the{' '}
+      {data.notFetchedDelegatorsCount > 0 && (
+        <Text size="xxs" color="secondary">
+          This list displays addresses with a positive {governanceToken?.symbol}{' '}
+          balance from the first {DELEGATORS_FETCH_TOTAL} delegators. You have{' '}
+          {data.notFetchedDelegatorsCount} more delegator
+          {data.notFetchedDelegatorsCount > 1 ? 's' : ''} who were not included
+          in the list. To see all your delegators, use the{' '}
           <Link
             href={
               getEtherscanAddressLink(chainId, AragonVoting[chainId] ?? '') +
@@ -97,10 +109,8 @@ export function DelegatorsList() {
             Voting contract
           </Link>
           . If needed, contact the{' '}
-          <Link href="https://research.lido.fi/new-message?groupname=DAO_Ops">
-            DAO Ops{' '}
-          </Link>{' '}
-          on the forum for assistance.
+          <ExternalLink href={DAO_OPS_FORUM_LINK}>DAO Ops </ExternalLink> on the
+          forum for assistance.
         </Text>
       )}
     </Wrap>
