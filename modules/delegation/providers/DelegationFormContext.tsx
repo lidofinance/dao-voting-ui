@@ -142,7 +142,6 @@ export const DelegationFormProvider: FC<DelegationFormProviderProps> = ({
       isValidAddress(presetDelegateAddress) &&
       currentValue?.toLowerCase() !== presetDelegateAddress.toLowerCase()
     ) {
-      console.log('setting default address', presetDelegateAddress)
       formObject.setValue('delegateAddress', presetDelegateAddress)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

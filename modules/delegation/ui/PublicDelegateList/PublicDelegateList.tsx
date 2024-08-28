@@ -52,9 +52,7 @@ export function PublicDelegateList({ onDelegatePick }: Props) {
           <HeaderTitleWithIcon>
             VP <AragonSvg />
           </HeaderTitleWithIcon>
-          <HeaderTitleWithIcon>
-            From <AragonSvg />
-          </HeaderTitleWithIcon>
+          <HeaderTitleWithIcon>From</HeaderTitleWithIcon>
           <p />
           <p />
         </Header>
