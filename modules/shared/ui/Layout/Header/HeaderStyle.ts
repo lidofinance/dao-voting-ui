@@ -123,10 +123,6 @@ export const InputWrap = styled.div`
   @media (max-width: 1060px) {
     width: 200px;
   }
-
-  @media (max-width: 810px) {
-    width: 200px;
-  }
 `
 
 export const Network = styled.div`

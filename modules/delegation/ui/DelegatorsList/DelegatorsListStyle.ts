@@ -2,7 +2,7 @@ import { Button } from '@lidofinance/lido-ui'
 import styled from 'styled-components'
 
 export const Wrap = styled.div<{ $empty?: boolean }>`
-  border-radius: 20px;
+  border-radius: ${({ theme }) => theme.borderRadiusesMap.xl}px;
   background-color: var(--lido-color-foreground);
   padding: 32px;
   display: flex;

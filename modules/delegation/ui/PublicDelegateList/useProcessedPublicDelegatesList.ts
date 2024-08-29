@@ -10,7 +10,7 @@ import {
   isValidEns,
 } from 'modules/shared/utils/addressValidation'
 
-type ProcessedDelegate = typeof PUBLIC_DELEGATES[number] & {
+export type ProcessedDelegate = typeof PUBLIC_DELEGATES[number] & {
   delegatorsCount: string
   delegatedVotingPower: BigNumber | string
   resolvedDelegateAddress: string | null

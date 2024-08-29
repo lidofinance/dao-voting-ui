@@ -1,4 +1,4 @@
-import { Text } from '@lidofinance/lido-ui'
+import { Text, useBreakpoint } from '@lidofinance/lido-ui'
 import { DelegationSubtitleStyled } from './DelegationFormStyle'
 import { useDelegationFormData } from 'modules/delegation/providers/DelegationFormContext'
 
@@ -7,12 +7,13 @@ import SnapshotSvg from 'assets/snapshot.com.svg.react'
 
 export function DelegationFormSubtitle() {
   const { mode } = useDelegationFormData()
+  const isMobile = useBreakpoint('md')
 
   if (mode === 'aragon') {
     return (
       <DelegationSubtitleStyled>
         <AragonSvg />
-        <Text size="md" weight={700}>
+        <Text size={isMobile ? 'sm' : 'md'} weight={700}>
           On Aragon
         </Text>
       </DelegationSubtitleStyled>
@@ -23,7 +24,7 @@ export function DelegationFormSubtitle() {
     return (
       <DelegationSubtitleStyled>
         <SnapshotSvg />
-        <Text size="md" weight={700}>
+        <Text size={isMobile ? 'sm' : 'md'} weight={700}>
           On Snapshot
         </Text>
       </DelegationSubtitleStyled>

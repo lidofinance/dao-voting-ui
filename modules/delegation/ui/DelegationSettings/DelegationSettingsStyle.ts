@@ -1,4 +1,4 @@
-import { BREAKPOINT_MOBILE } from 'modules/globalStyles'
+import { BREAKPOINT_MD, BREAKPOINT_MOBILE } from 'modules/globalStyles'
 import styled from 'styled-components'
 
 export const Wrap = styled.div`
@@ -6,6 +6,7 @@ export const Wrap = styled.div`
   gap: 20px;
   justify-content: center;
   align-items: flex-start;
+  flex-wrap: wrap;
 
   & > div {
     flex: 1;
@@ -22,7 +23,7 @@ export const Wrap = styled.div`
 `
 
 export const FormWrap = styled.div<{ $customizable: boolean }>`
-  border-radius: 20px;
+  border-radius: ${({ theme }) => theme.borderRadiusesMap.xl}px;
   background-color: var(--lido-color-foreground);
   display: flex;
   flex-direction: column;
@@ -35,6 +36,10 @@ export const FormWrap = styled.div<{ $customizable: boolean }>`
     `
     padding: 32px 24px;
   `}
+
+  @media (max-width: ${BREAKPOINT_MD}) {
+    padding: 20px;
+  }
 `
 
 export const FormTitle = styled.div`

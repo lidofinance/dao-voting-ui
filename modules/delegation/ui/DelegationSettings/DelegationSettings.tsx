@@ -1,58 +1,47 @@
-import { useCallback, useState } from 'react'
-import { Button, Text } from '@lidofinance/lido-ui'
+import { useState } from 'react'
+import { Button, Text, useBreakpoint } from '@lidofinance/lido-ui'
 
 import { FormTitle, FormWrap, Wrap } from './DelegationSettingsStyle'
 import { DelegationForm } from '../DelegationForm'
 import { PublicDelegateList } from '../PublicDelegateList'
+import { DelegateFromPublicListProvider } from '../../providers/DelegateFromPublicListContext'
 
 export function DelegationSettings() {
   const [isSimpleModeOn, setIsSimpleModeOn] = useState(true)
-  const [delegateFromPublicList, setDelegateFromPublicList] = useState<string>()
-
-  const handleDelegatePick = useCallback(
-    (address: string) => () => {
-      setDelegateFromPublicList(address)
-    },
-    [],
-  )
+  const isMobile = useBreakpoint('md')
 
   return (
     <Wrap>
-      <FormWrap $customizable={!isSimpleModeOn}>
-        <FormTitle>
-          <Text size="xl" weight={700}>
-            Delegation
-          </Text>
-          {!isSimpleModeOn && (
-            <Button
-              variant="outlined"
-              size="xs"
-              onClick={() => setIsSimpleModeOn(true)}
-            >
-              Back
-            </Button>
+      <DelegateFromPublicListProvider>
+        <FormWrap $customizable={!isSimpleModeOn}>
+          <FormTitle>
+            <Text size={isMobile ? 'lg' : 'xl'} weight={700}>
+              Delegation
+            </Text>
+            {!isSimpleModeOn && (
+              <Button
+                variant="outlined"
+                size="xs"
+                onClick={() => setIsSimpleModeOn(true)}
+              >
+                Back
+              </Button>
+            )}
+          </FormTitle>
+          {isSimpleModeOn ? (
+            <DelegationForm
+              mode="simple"
+              onCustomizeClick={() => setIsSimpleModeOn(false)}
+            />
+          ) : (
+            <>
+              <DelegationForm mode="aragon" />
+              <DelegationForm mode="snapshot" />
+            </>
           )}
-        </FormTitle>
-        {isSimpleModeOn ? (
-          <DelegationForm
-            mode="simple"
-            presetDelegateAddress={delegateFromPublicList}
-            onCustomizeClick={() => setIsSimpleModeOn(false)}
-          />
-        ) : (
-          <>
-            <DelegationForm
-              mode="aragon"
-              presetDelegateAddress={delegateFromPublicList}
-            />
-            <DelegationForm
-              mode="snapshot"
-              presetDelegateAddress={delegateFromPublicList}
-            />
-          </>
-        )}
-      </FormWrap>
-      <PublicDelegateList onDelegatePick={handleDelegatePick} />
+        </FormWrap>
+        <PublicDelegateList />
+      </DelegateFromPublicListProvider>
     </Wrap>
   )
 }

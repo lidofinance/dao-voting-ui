@@ -1,6 +1,8 @@
+import { themeDefault } from '@lidofinance/lido-ui'
 import { createGlobalStyle } from 'styled-components'
 
 export const BREAKPOINT_MOBILE = '960px'
+export const BREAKPOINT_MD = themeDefault.breakpointsMap.md.width
 
 export const GlobalStyle = createGlobalStyle`
   *,
