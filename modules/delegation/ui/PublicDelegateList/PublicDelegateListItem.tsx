@@ -60,9 +60,11 @@ export function PublicDelegateListItem({
             <ExternalLink href={delegate.lido}>
               <LidoSocialSvg viewBox="0 0 17 16" />
             </ExternalLink>
-            <ExternalLink href={delegate.twitter}>
-              <XSocialSvg viewBox="0 0 17 16" />
-            </ExternalLink>
+            {delegate.twitter && (
+              <ExternalLink href={delegate.twitter}>
+                <XSocialSvg viewBox="0 0 17 16" />
+              </ExternalLink>
+            )}
           </SocialButtons>
         </DelegateInfo>
         <DelegateNumbersMobile>
@@ -109,9 +111,11 @@ export function PublicDelegateListItem({
         <ExternalLink href={delegate.lido}>
           <LidoSocialSvg />
         </ExternalLink>
-        <ExternalLink href={delegate.twitter}>
-          <XSocialSvg />
-        </ExternalLink>
+        {delegate.twitter && (
+          <ExternalLink href={delegate.twitter}>
+            <XSocialSvg />
+          </ExternalLink>
+        )}
       </SocialButtons>
       {isWalletConnected && (
         <Button

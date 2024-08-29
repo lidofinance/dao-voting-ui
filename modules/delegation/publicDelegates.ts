@@ -25,7 +25,7 @@ export const PUBLIC_DELEGATES = [
     twitter: 'https://x.com/wintermute_t',
   },
   {
-    name: 'WPRC',
+    name: 'WPRC (WhitePaper Reading Club)',
     avatar:
       'https://images.squarespace-cdn.com/content/v1/65be10b23014452b13c31611/af6739ef-4a80-4175-8d04-eb7f7a5e260f/IMG_2592.png?format=1500w',
     address: '0x8Ab6612BbcF7E133A6BB03b3264718d30f25e0BA',
@@ -109,22 +109,31 @@ export const PUBLIC_DELEGATES = [
     avatar:
       'https://dub1.discourse-cdn.com/business20/user_avatar/research.lido.fi/stable_lab/288/3053_2.png',
     address: 'stablelab.eth',
-    lido: 'https://research.lido.fi/t/stablelab-delegate-thread-updated/4904',
+    lido: 'https://research.lido.fi/t/stablelab-delegate-thread-updated/4904/17',
     twitter: 'https://x.com/Stablelab',
   },
   {
     name: 'DegentradingLSD',
     avatar: null,
-    address: '0xfBfCfee2Bf2529e9926e3b047a065cBCF3b907Be',
+    address: 'degentradinglsd3.eth',
     lido: 'https://research.lido.fi/t/degentradinglsd-delegate-thread/8149',
     twitter: 'https://x.com/degentradingLSD',
   },
   {
     name: 'NodeSoda',
-    avatar: null,
+    avatar:
+      'https://dub1.discourse-cdn.com/business20/user_avatar/research.lido.fi/fible1/288/4854_2.png',
     address: '0x000b4369B71B6634F27F5De9Cbaaabb0D21B8be5',
     lido: 'https://research.lido.fi/t/nodesoda-com-delegate-thread/8031',
     twitter: 'https://x.com/pablolema85',
+  },
+  {
+    name: 'eboadom (Ernesto)',
+    avatar:
+      'https://dub1.discourse-cdn.com/business20/user_avatar/research.lido.fi/eboadom/288/3764_2.png',
+    address: '0x5Ef980c7bdA50c81E8FB13DfF2b804113065ED1c',
+    lido: 'https://research.lido.fi/t/eboadom-delegate-thread/8079',
+    twitter: 'https://x.com/eboadom',
   },
   {
     name: 'ReservoirDAO',
@@ -136,7 +145,8 @@ export const PUBLIC_DELEGATES = [
   },
   {
     name: 'FranklinDAO',
-    avatar: null,
+    avatar:
+      'https://dub1.discourse-cdn.com/business20/user_avatar/research.lido.fi/franklindao/288/4879_2.png',
     address: '0x070341aA5Ed571f0FB2c4a5641409B1A46b4961b',
     lido: 'https://research.lido.fi/t/franklin-dao-delegate-platform/8167',
     twitter: 'https://x.com/franklin_dao',
@@ -151,9 +161,95 @@ export const PUBLIC_DELEGATES = [
   },
   {
     name: 'Pol Lanski',
-    avatar: null,
+    avatar:
+      'https://dub1.discourse-cdn.com/business20/user_avatar/research.lido.fi/lanski/288/4846_2.png',
     address: 'lanski.eth',
     lido: 'https://research.lido.fi/t/pol-lanski-delegate-thread/8155',
     twitter: 'https://x.com/Pol_Lanski',
+  },
+  {
+    name: 'notjamiedimon',
+    avatar:
+      'https://pbs.twimg.com/profile_images/1821464105515163648/ddtnBp5f_400x400.jpg',
+    address: 'notjamiedimon.eth',
+    lido: 'https://research.lido.fi/t/notjamiedimon-delegate-thread/8174',
+    twitter: 'https://x.com/regentrading',
+  },
+  {
+    name: 'Irina',
+    avatar:
+      'https://dub1.discourse-cdn.com/business20/user_avatar/research.lido.fi/irina_everstake/288/2107_2.png',
+    address: '0x06A90756e57bC7A016Eed0aB23fC36d11C42bBa0',
+    lido: 'https://research.lido.fi/t/irina-delegate-thread/8217',
+    twitter: 'https://x.com/eth_everstake',
+  },
+  {
+    name: 'marcbcs',
+    avatar:
+      'https://dub1.discourse-cdn.com/business20/user_avatar/research.lido.fi/marcbcs/288/2659_2.png',
+    address: '0x98308b6dA79B47D15e9438CB66831563649Dbd94',
+    lido: 'https://research.lido.fi/t/marcbcs-delegate-thread/8209',
+    twitter: 'https://x.com/marcbcs',
+  },
+  {
+    name: 'Daedalus Collective',
+    avatar:
+      'https://europe1.discourse-cdn.com/business20/uploads/lido/original/2X/3/34aed82e52916083ae6b83fc17510409371527a6.png',
+    address: '0x04827a54F2e345467beAFEfB9EF76Cb2f2c62D83',
+    lido: 'https://research.lido.fi/t/daedalus-delegate-thread/8195',
+    twitter: 'https://x.com/daedalus_angels',
+  },
+  {
+    name: 'ProRelGuild',
+    avatar: null,
+    address: 'prorelguild.eth',
+    lido: 'https://research.lido.fi/t/prorelguild-delegate-thread/8186',
+    twitter: 'https://x.com/apegenija',
+  },
+  {
+    name: 'Today in DeFi',
+    avatar: null,
+    address: '0xf163D77B8EfC151757fEcBa3D463f3BAc7a4D808',
+    lido: 'https://research.lido.fi/t/today-in-defi-delegate-thread/8207',
+    twitter: 'https://x.com/todayindefi',
+  },
+  {
+    name: 'Next Finance Tech',
+    avatar:
+      'https://dub1.discourse-cdn.com/business20/user_avatar/research.lido.fi/nextfinancetech/288/4870_2.png',
+    address: '0x18c674F655594F15c490aeEac737895b7903E37f',
+    lido: 'https://research.lido.fi/t/next-finance-tech-delegate-thread/8204',
+    twitter: 'https://x.com/nxt_fintech',
+  },
+  {
+    name: 'cp0x',
+    avatar:
+      'https://dub1.discourse-cdn.com/business20/user_avatar/research.lido.fi/cp0x/288/4886_2.png',
+    address: '0x6f9BB7e454f5B3eb2310343f0E99269dC2BB8A1d',
+    lido: 'https://research.lido.fi/t/cp0x-delegate-thread/8193',
+    twitter: 'https://x.com/cp0xdotcom',
+  },
+  {
+    name: 'Simply Staking',
+    avatar:
+      'https://dub1.discourse-cdn.com/business20/user_avatar/research.lido.fi/damien/288/4853_2.png',
+    address: '0xCeDF324843775c9E7f695251001531798545614B',
+    lido: 'https://research.lido.fi/t/simply-staking-delegate-thread/8178',
+    twitter: 'https://x.com/SimplyStaking',
+  },
+  {
+    name: 'Boardroom',
+    avatar: null,
+    address: 'boardroomgov.eth',
+    lido: 'https://research.lido.fi/t/boardroom-delegate-thread/8200',
+    twitter: 'https://x.com/boardroom_info',
+  },
+  {
+    name: 'Lemma Solutions',
+    avatar:
+      'https://dub1.discourse-cdn.com/business20/user_avatar/research.lido.fi/lemma/288/4873_2.png',
+    address: '0x58B1b454Dbe5156ACc8FC2139E7238451b59f432',
+    lido: 'https://research.lido.fi/t/lemma-delegate-thread/8214',
+    twitter: null,
   },
 ]
