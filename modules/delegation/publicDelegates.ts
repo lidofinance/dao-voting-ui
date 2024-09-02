@@ -257,6 +257,6 @@ export const PUBLIC_DELEGATES = [
       'https://dub1.discourse-cdn.com/business20/user_avatar/research.lido.fi/lemma/288/4873_2.png',
     address: '0x58B1b454Dbe5156ACc8FC2139E7238451b59f432',
     lido: 'https://research.lido.fi/t/lemma-delegate-thread/8214',
-    twitter: null,
+    twitter: 'https://x.com/Lemma_Solutions',
   },
 ]
