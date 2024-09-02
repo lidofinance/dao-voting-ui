@@ -5,6 +5,7 @@ import {
   useContext,
   useCallback,
   useState,
+  useEffect,
 } from 'react'
 import { useGovernanceBalance } from 'modules/tokens/hooks/useGovernanceBalance'
 import { useDelegationInfo } from '../hooks/useDelegationInfo'
@@ -19,6 +20,8 @@ import {
 import { useDelegationFormSubmit } from '../hooks/useDelegationFormSubmit'
 import { useDelegationRevoke } from '../hooks/useDelegationRevoke'
 import { ToastSuccess } from '@lidofinance/lido-ui'
+import { isValidAddress } from 'modules/shared/utils/addressValidation'
+import { useDelegateFromPublicList } from './DelegateFromPublicListContext'
 
 //
 // Data context
@@ -116,16 +119,38 @@ const useDelegationFormActions = (
 //
 // Data provider
 //
-export const DelegationFormProvider: FC<{ mode: DelegationFormMode }> = ({
+export type DelegationFormProviderProps = {
+  mode: DelegationFormMode
+}
+
+export const DelegationFormProvider: FC<DelegationFormProviderProps> = ({
   children,
   mode,
 }) => {
   const networkData = useDelegationFormNetworkData()
+  const { selectedPublicDelegate, onPublicDelegateReset } =
+    useDelegateFromPublicList()
 
   const formObject = useForm<DelegationFormInput>({
-    defaultValues: { delegateAddress: null },
+    defaultValues: { delegateAddress: '' },
     mode: 'onChange',
   })
+
+  useEffect(() => {
+    const currentValue = formObject.getValues('delegateAddress')
+    if (
+      selectedPublicDelegate &&
+      isValidAddress(selectedPublicDelegate) &&
+      currentValue?.toLowerCase() !== selectedPublicDelegate.toLowerCase()
+    ) {
+      formObject.setValue('delegateAddress', selectedPublicDelegate, {
+        shouldValidate: true,
+      })
+      formObject.setFocus('delegateAddress')
+      onPublicDelegateReset()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedPublicDelegate])
 
   const {
     isSubmitting,

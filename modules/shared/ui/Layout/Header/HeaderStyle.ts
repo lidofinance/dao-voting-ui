@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components'
 import { Container, Text } from '@lidofinance/lido-ui'
-import { BREAKPOINT_MOBILE } from 'modules/globalStyles'
+import { BREAKPOINT_MOBILE, HEADER_HEIGHT } from 'modules/globalStyles'
 
 export const Wrap = styled(Container).attrs({
   as: 'header',
@@ -12,7 +12,7 @@ export const Wrap = styled(Container).attrs({
   right: 0;
   padding: 0 ${({ theme }) => theme.spaceMap.lg}px;
   display: flex;
-  height: 76px;
+  height: ${HEADER_HEIGHT};
   align-items: center;
   justify-content: space-between;
   background-color: var(--lido-color-foreground);
@@ -121,10 +121,6 @@ export const InputWrap = styled.div`
   width: 300px;
 
   @media (max-width: 1060px) {
-    width: 200px;
-  }
-
-  @media (max-width: 810px) {
     width: 200px;
   }
 `
@@ -289,6 +285,6 @@ export const MobileSpacer = styled.div`
 `
 
 export const HeaderSpacer = styled.div`
-  height: 76px;
+  height: ${HEADER_HEIGHT};
   margin-bottom: 30px;
 `

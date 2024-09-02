@@ -24,7 +24,7 @@ export function CopyOpenActions({ value, entity }: Props) {
         onClick={handleCopy}
         icon={<Copy />}
         size="xs"
-        variant="translucent"
+        variant="ghost"
         children={`Copy ${copyText}`}
         data-testid="copyAddressBtn"
       />

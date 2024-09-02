@@ -46,5 +46,7 @@ export const BadgeWrap = styled.div`
     font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
     font-weight: 500;
     background-color: rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
   }
 `

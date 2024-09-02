@@ -2,12 +2,15 @@ import { Button } from '@lidofinance/lido-ui'
 import styled from 'styled-components'
 
 export const Wrap = styled.div<{ $empty?: boolean }>`
-  border-radius: 20px;
+  border-radius: ${({ theme }) => theme.borderRadiusesMap.xl}px;
   background-color: var(--lido-color-foreground);
   padding: 32px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  max-width: 496px;
+  margin: 0 auto;
+  text-align: center;
 
   ${({ $empty }) =>
     $empty &&
@@ -44,7 +47,7 @@ export const AddressBadgeWrap = styled.span`
   }
 `
 
-export const DelegatorsListItem = styled.div`
+export const DelegatorsListItemStyled = styled.div`
   padding: 12px 20px;
   display: flex;
   align-items: center;

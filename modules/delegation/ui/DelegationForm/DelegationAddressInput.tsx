@@ -12,12 +12,11 @@ export function DelegationAddressInput() {
     aragonDelegateAddress,
     snapshotDelegateAddress,
     mode,
-    register,
   } = useDelegationFormData()
 
   return (
     <InputControl
-      {...register('delegateAddress')}
+      name="delegateAddress"
       label="Delegate address"
       disabled={
         !isWalletConnected || loading.isDelegationInfoLoading || isSubmitting

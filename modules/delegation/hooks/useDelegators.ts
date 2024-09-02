@@ -2,41 +2,53 @@ import { CHAINS } from '@lido-sdk/constants'
 import { useLidoSWR } from '@lido-sdk/react'
 import { ContractVoting } from 'modules/blockChain/contracts'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-import {
-  DELEGATORS_FETCH_SIZE,
-  DELEGATORS_FETCH_TOTAL,
-  VP_MIN_TO_SHOW,
-} from '../constants'
+import { DELEGATORS_FETCH_SIZE, DELEGATORS_FETCH_TOTAL } from '../constants'
 import { BigNumber } from 'ethers'
+import { useEnsResolvers } from 'modules/shared/hooks/useEnsResolvers'
 
+type DelegatorData = {
+  address: string
+  balance: BigNumber
+  ensName?: string | null
+}
+
+type DelegatorsData = {
+  nonZeroDelegators: DelegatorData[]
+  totalVotingPower: BigNumber
+  notFetchedDelegatorsCount: number
+}
+
+/*
+  SWR data hook to fetch first N delegators of the current wallet address.
+  Returns up to DELEGATORS_FETCH_TOTAL delegators with their voting power.
+  The list contains only delegators with voting power greater than 0.
+*/
 export function useDelegators() {
   const { walletAddress, chainId } = useWeb3()
   const voting = ContractVoting.useRpc()
-  return useLidoSWR(
-    walletAddress
-      ? [`swr:useDelegatorsPaginatedList`, chainId, walletAddress]
-      : null,
+  const { lookupAddress } = useEnsResolvers()
+
+  const { data, initialLoading, loading, error } = useLidoSWR<DelegatorsData>(
+    walletAddress ? [`swr:useDelegators`, chainId, walletAddress] : null,
     async (_key: string, _chainId: CHAINS, _walletAddress: string) => {
-      const delegatorsCount = (
+      const totalDelegatorsCount = (
         await voting.getDelegatedVotersCount(_walletAddress)
       ).toNumber()
 
-      if (delegatorsCount === 0) {
+      if (totalDelegatorsCount === 0) {
         return {
-          totalCount: 0,
-          fetchedCount: 0,
-          wealthyCount: 0,
-          list: [] as { address: string; balance: BigNumber }[],
-          fetchedValue: 0,
+          nonZeroDelegators: [] as DelegatorData[],
+          totalVotingPower: BigNumber.from(0),
+          notFetchedDelegatorsCount: 0,
         }
       }
 
-      const fetchLimit = Math.min(delegatorsCount, DELEGATORS_FETCH_TOTAL)
+      const fetchLimit = Math.min(totalDelegatorsCount, DELEGATORS_FETCH_TOTAL)
       const fetchCount = Math.ceil(fetchLimit / DELEGATORS_FETCH_SIZE)
       const fetchNumbers = Array(fetchCount).fill(0)
 
-      const delegators: { address: string; balance: BigNumber }[] = []
-      let fetchedValue = BigNumber.from(0)
+      const delegators: DelegatorData[] = []
+      let totalVotingPower = BigNumber.from(0)
 
       await Promise.all(
         fetchNumbers.map(async (_, fetchIndex) => {
@@ -59,23 +71,48 @@ export function useDelegators() {
               address: delegator,
               balance: delegatorsAtPageBalances[index],
             })
-            fetchedValue = fetchedValue.add(delegatorsAtPageBalances[index])
+            totalVotingPower = totalVotingPower.add(
+              delegatorsAtPageBalances[index],
+            )
           })
         }),
       )
 
-      const fetchedCount = delegators.length
-
-      const wealthyDelegators = delegators.filter(delegator =>
-        delegator.balance.gt(VP_MIN_TO_SHOW),
+      const nonZeroDelegators = delegators.filter(delegator =>
+        delegator.balance.gt(0),
       )
+
+      const nonZeroDelegatorsWithEns = await Promise.all(
+        nonZeroDelegators.map(async delegator => {
+          try {
+            const ensName = await lookupAddress(delegator.address)
+
+            return {
+              ...delegator,
+              ensName,
+            }
+          } catch (err) {
+            return delegator
+          }
+        }),
+      )
+
       return {
-        totalCount: delegatorsCount,
-        fetchedCount,
-        wealthyCount: wealthyDelegators.length,
-        list: wealthyDelegators,
-        fetchedValue,
+        nonZeroDelegators: nonZeroDelegatorsWithEns,
+        totalVotingPower,
+        notFetchedDelegatorsCount: totalDelegatorsCount - delegators.length,
       }
     },
   )
+
+  return {
+    data: {
+      nonZeroDelegators: data?.nonZeroDelegators ?? [],
+      totalVotingPower: data?.totalVotingPower ?? BigNumber.from(0),
+      notFetchedDelegatorsCount: data?.notFetchedDelegatorsCount ?? 0,
+    } as DelegatorsData,
+    initialLoading,
+    loading,
+    error,
+  }
 }
