@@ -245,6 +245,13 @@ export const PUBLIC_DELEGATES = [
     twitter: 'https://x.com/boardroom_info',
   },
   {
+    name: 'Proof Group',
+    avatar: null,
+    address: '0xc3A673736415BbF5ba8A8E0642eC3Ab16F4Ada24',
+    lido: 'https://research.lido.fi/t/proof-group-delegate-thread/8190',
+    twitter: 'https://x.com/njess',
+  },
+  {
     name: 'Lemma Solutions',
     avatar:
       'https://dub1.discourse-cdn.com/business20/user_avatar/research.lido.fi/lemma/288/4873_2.png',
