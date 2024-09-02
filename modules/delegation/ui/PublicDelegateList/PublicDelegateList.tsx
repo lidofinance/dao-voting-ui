@@ -1,4 +1,4 @@
-import { Text, useBreakpoint } from '@lidofinance/lido-ui'
+import { Text, Tooltip, useBreakpoint } from '@lidofinance/lido-ui'
 import {
   Header,
   HeaderTitleWithIcon,
@@ -37,12 +37,19 @@ export function PublicDelegateList() {
             <Text size="xxs" weight={700}>
               Delegate
             </Text>
-            <HeaderTitleWithIcon>
-              VP <AragonSvg />
-            </HeaderTitleWithIcon>
-            <Text size="xxs" weight={700}>
-              From
-            </Text>
+            <Tooltip placement="top" title="Voting Power">
+              <HeaderTitleWithIcon>
+                VP <AragonSvg />
+              </HeaderTitleWithIcon>
+            </Tooltip>
+            <Tooltip
+              placement="top"
+              title="Number of addresses that have delegated to this delegate"
+            >
+              <Text size="xxs" weight={700}>
+                From
+              </Text>
+            </Tooltip>
             <p />
             <p />
           </Header>

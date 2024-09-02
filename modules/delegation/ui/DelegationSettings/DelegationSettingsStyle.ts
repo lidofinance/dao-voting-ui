@@ -1,4 +1,8 @@
-import { BREAKPOINT_MD, BREAKPOINT_MOBILE } from 'modules/globalStyles'
+import {
+  BREAKPOINT_MD,
+  BREAKPOINT_MOBILE,
+  HEADER_HEIGHT,
+} from 'modules/globalStyles'
 import styled from 'styled-components'
 
 export const Wrap = styled.div`
@@ -30,12 +34,18 @@ export const FormWrap = styled.div<{ $customizable: boolean }>`
   gap: 24px;
   padding: 32px;
   max-width: 496px;
+  position: sticky;
+  top: calc(${HEADER_HEIGHT} + 20px);
 
   ${({ $customizable }) =>
     $customizable &&
     `
     padding: 32px 24px;
   `}
+
+  @media (max-width: ${BREAKPOINT_MOBILE}) {
+    position: static;
+  }
 
   @media (max-width: ${BREAKPOINT_MD}) {
     padding: 20px;

@@ -83,7 +83,7 @@ export function PublicDelegateListItem({
             disabled={!delegate.resolvedDelegateAddress}
             onClick={onPublicDelegateSelect(delegate.resolvedDelegateAddress!)}
           >
-            Delegate
+            Select
           </Button>
         )}
       </ListItem>
@@ -124,7 +124,7 @@ export function PublicDelegateListItem({
           disabled={!delegate.resolvedDelegateAddress}
           onClick={onPublicDelegateSelect(delegate.resolvedDelegateAddress!)}
         >
-          Delegate
+          Select
         </Button>
       )}
     </ListItem>

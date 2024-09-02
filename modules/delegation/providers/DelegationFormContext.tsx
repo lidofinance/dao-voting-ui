@@ -146,6 +146,7 @@ export const DelegationFormProvider: FC<DelegationFormProviderProps> = ({
       formObject.setValue('delegateAddress', selectedPublicDelegate, {
         shouldValidate: true,
       })
+      formObject.setFocus('delegateAddress')
       onPublicDelegateReset()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

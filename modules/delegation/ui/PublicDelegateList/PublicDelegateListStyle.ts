@@ -127,6 +127,7 @@ export const SocialButtons = styled.div`
   }
 
   @media (max-width: ${BREAKPOINT_MD}) {
+    margin-left: auto;
     & > span {
       height: 24px;
     }
@@ -150,7 +151,7 @@ export const DelegateNameAndAddress = styled.div`
   }
 
   @media (max-width: ${BREAKPOINT_MD}) {
-    max-width: 100%;
+    max-width: calc(100% - 110px);
     flex: 1;
   }
 `
