@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { Button, Text } from '@lidofinance/lido-ui'
 
 export const DelegationFormControllerStyled = styled.form<{
@@ -9,11 +9,11 @@ export const DelegationFormControllerStyled = styled.form<{
 
   ${({ $customMode }) =>
     $customMode &&
-    `
-    padding: 24px 16px;
-    background-color: var(--lido-color-accentControlBg);
-    border-radius: 20px;
-  `}
+    css`
+      padding: 24px 16px;
+      background-color: var(--lido-color-accentControlBg);
+      border-radius: ${({ theme }) => theme.borderRadiusesMap.xl}px;
+    `}
 `
 
 export const DelegationSubtitleStyled = styled.div`

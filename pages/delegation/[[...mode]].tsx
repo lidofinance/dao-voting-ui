@@ -9,7 +9,7 @@ import {
 
 const DelegationPage: FC<DelegationTabsLayoutProps> = ({ mode }) => {
   return (
-    <Container as="main" size="tight">
+    <Container as="main" size="full">
       <Head>
         <title>Delegation | Lido DAO Voting UI</title>
       </Head>

@@ -65,7 +65,7 @@ export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
     if (isSimple) {
       return `
       ${match.isRedelegate ? 'Redelegate' : 'Delegate'}
-      ${!match.isInputMatchAragon || !match.isInputMatchSnapshot ? ' on ' : ''} 
+      ${!match.isInputMatchAragon || !match.isInputMatchSnapshot ? ' on ' : ''}
       ${match.isInputMatchAragon ? '' : 'Aragon'}
       ${!match.isInputMatchAragon && !match.isInputMatchSnapshot ? ' & ' : ''}
       ${match.isInputMatchSnapshot ? '' : 'Snapshot'}`
@@ -128,7 +128,7 @@ export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
   if (!isWalletConnected) {
     return (
       <DelegateButton onClick={openConnectWalletModal} type="button">
-        Connect wallet to delegate
+        Connect wallet
       </DelegateButton>
     )
   }

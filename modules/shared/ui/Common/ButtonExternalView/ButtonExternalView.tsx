@@ -23,7 +23,7 @@ export function ButtonExternalView({
       onClick={handleClick}
       icon={<External />}
       size="xs"
-      variant="translucent"
+      variant="ghost"
       children={children}
       {...rest}
     />
