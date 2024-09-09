@@ -101,7 +101,8 @@ export const useProcessedPublicDelegatesList = () => {
         if (a.delegatedVotingPower.gt(b.delegatedVotingPower)) {
           return -1
         }
-        return 0
+
+        return a.name.localeCompare(b.name)
       })
     },
     {
