@@ -259,4 +259,28 @@ export const PUBLIC_DELEGATES = [
     lido: 'https://research.lido.fi/t/lemma-delegate-thread/8214',
     twitter: 'https://x.com/Lemma_Solutions',
   },
+  {
+    name: 'Nansen',
+    avatar:
+      'https://dub1.discourse-cdn.com/business20/user_avatar/research.lido.fi/nansen/288/4925_2.png',
+    address: 'nansengov.eth',
+    lido: 'https://research.lido.fi/t/nansen-delegate-thread/8303',
+    twitter: 'https://x.com/nansen_ai',
+  },
+  {
+    name: 'DAOplomats',
+    avatar:
+      'https://dub1.discourse-cdn.com/business20/user_avatar/research.lido.fi/daoplomats.eth/288/4877_2.png',
+    address: '0x057928bc52bD08e4D7cE24bF47E01cE99E074048',
+    lido: 'https://research.lido.fi/t/daoplomats-delegate-thread/8242',
+    twitter: 'https://x.com/DAOplomats',
+  },
+  {
+    name: 'PGov.eth',
+    avatar:
+      'https://dub1.discourse-cdn.com/business20/user_avatar/research.lido.fi/pgov/288/4894_2.png',
+    address: 'pgov.eth',
+    lido: 'https://research.lido.fi/t/pgov-delegate-thread/8232',
+    twitter: 'https://x.com/PGovTeam',
+  },
 ]
