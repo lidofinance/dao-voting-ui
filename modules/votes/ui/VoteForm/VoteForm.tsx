@@ -7,13 +7,12 @@ import { Card } from 'modules/shared/ui/Common/Card'
 import { Container, Text } from '@lidofinance/lido-ui'
 import { PageLoader } from 'modules/shared/ui/Common/PageLoader'
 import { VoteDetails } from 'modules/votes/ui/VoteDetails'
-import { TxRow } from 'modules/blockChain/ui/TxRow'
 import { VoteFormActions } from '../VoteFormActions'
 import { VoteFormMustConnect } from '../VoteFormMustConnect'
-import { VoteFormVoterState } from '../VoteFormVoterState'
-import { VoteVotersList } from '../VoteVotersList'
 import { Desc, ClearButton } from './VoteFormStyle'
 import { FetchErrorBanner } from 'modules/shared/ui/Common/FetchErrorBanner'
+import { VoteInfoDelegated } from 'modules/votes/ui/VoteInfoDelegated'
+import { VotePowerInfo } from '../VotePowerInfo'
 
 import { VoteStatus } from 'modules/votes/types'
 
@@ -27,26 +26,27 @@ export function VoteForm({ voteId }: Props) {
     vote,
     startDate,
     voteTime,
-    votePower,
-    canVote,
+    votePowerWei,
     canExecute,
     objectionPhaseTime,
     isLoading,
     isWalletConnected,
+    walletAddress,
     voterState,
     doRevalidate,
     eventStart,
     eventsVoted,
     eventExecuteVote,
+    eventsDelegatesVoted,
     status,
+    votePhase,
   } = useFormVoteInfo({ voteId })
   const { clearVoteId } = useVotePrompt()
 
-  const { txVote, txEnact, handleVote, handleEnact, isSubmitting } =
-    useFormVoteSubmit({
-      voteId,
-      onFinish: doRevalidate,
-    })
+  const { handleEnact, isSubmitting } = useFormVoteSubmit({
+    voteId,
+    onFinish: doRevalidate,
+  })
 
   useVotePassedCallback({
     startDate,
@@ -62,7 +62,7 @@ export function VoteForm({ voteId }: Props) {
 
   const isEnded =
     status === VoteStatus.Rejected || status === VoteStatus.Executed
-  const canEnact = Boolean(canExecute) && status === VoteStatus.Pending
+  const canEnact = Boolean(canExecute)
 
   const isEmpty = !voteId
   const isNotFound = swrVote.error?.reason === 'VOTING_NO_VOTE'
@@ -115,54 +115,33 @@ export function VoteForm({ voteId }: Props) {
             voteTime={voteTime!}
             objectionPhaseTime={objectionPhaseTime!}
             isEnded={isEnded}
-            creator={eventStart?.creator}
             metadata={eventStart?.metadata}
+            eventsVoted={eventsVoted}
+            eventsDelegatesVoted={eventsDelegatesVoted}
             executedTxHash={eventExecuteVote?.event.transactionHash}
+            votePhase={votePhase}
           />
 
           {!isWalletConnected && <VoteFormMustConnect />}
 
           {isWalletConnected && (
             <>
+              <VoteInfoDelegated
+                eventsVoted={eventsVoted}
+                eventsDelegatesVoted={eventsDelegatesVoted}
+                walletAddress={walletAddress}
+              />
+              <VotePowerInfo ownVotePower={votePowerWei} />
               <VoteFormActions
-                status={status}
-                canVote={canVote}
                 canEnact={canEnact}
                 voterState={voterState!}
                 isSubmitting={isSubmitting}
-                onVote={handleVote}
                 onEnact={handleEnact}
+                votePhase={votePhase}
+                votePowerWei={votePowerWei}
+                voteId={voteId}
               />
-
-              <VoteFormVoterState
-                status={status}
-                votePower={votePower!}
-                voterState={voterState!}
-                canVote={canVote}
-                canEnact={canEnact}
-                snapshotBlock={vote.snapshotBlock.toNumber()}
-                startDate={startDate!}
-                isEnded={isEnded}
-              />
-
-              {!txVote.isEmpty && (
-                <>
-                  <br />
-                  <TxRow label="Vote transaction" tx={txVote} />
-                </>
-              )}
-
-              {!txEnact.isEmpty && (
-                <>
-                  <br />
-                  <TxRow label="Vote enact" tx={txEnact} />
-                </>
-              )}
             </>
-          )}
-
-          {eventsVoted && eventsVoted.length > 0 && (
-            <VoteVotersList eventsVoted={eventsVoted} />
           )}
         </Card>
       )}

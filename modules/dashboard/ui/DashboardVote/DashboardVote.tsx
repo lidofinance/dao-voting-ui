@@ -44,11 +44,14 @@ export function DashboardVote({
   const {
     nayPct,
     yeaPct,
+    yeaNum,
+    nayNum,
     yeaPctOfTotalSupply,
     nayPctOfTotalSupplyFormatted,
     yeaPctOfTotalSupplyFormatted,
     startDate,
     endDate,
+    totalSupply,
   } = getVoteDetailsFormatted({ vote, voteTime })
 
   const handlePass = useCallback(() => {
@@ -89,18 +92,26 @@ export function DashboardVote({
           objectionPhaseTime={objectionPhaseTime}
           status={status}
           isEnded={isEnded}
+          yeaNum={yeaNum}
+          nayNum={nayNum}
+          totalSupply={totalSupply}
           fontSize="xxs"
+          minAcceptQuorum={weiToNum(vote.minAcceptQuorum)}
         />
-
         <VoteBody>
           <VoteTitle>Vote #{voteId}</VoteTitle>
           <VoteDescriptionWrap>
             <VoteDescription metadata={eventStart?.metadata} />
           </VoteDescriptionWrap>
         </VoteBody>
-
         <Footer>
           <VotesBarWrap>
+            <InfoRowFull title="Needed to quorum">
+              {neededToQuorum > 0 && !isEnded
+                ? `${neededToQuorumFormatted}%`
+                : '-'}
+            </InfoRowFull>
+
             <VoteYesNoBar
               yeaPct={yeaPct}
               nayPct={nayPct}
@@ -109,12 +120,6 @@ export function DashboardVote({
               showOnForeground
             />
           </VotesBarWrap>
-
-          <InfoRowFull title="Needed to quorum">
-            {neededToQuorum > 0 && !isEnded
-              ? `${neededToQuorumFormatted}%`
-              : '-'}
-          </InfoRowFull>
         </Footer>
       </Wrap>
     </Link>

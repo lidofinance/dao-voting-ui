@@ -11,15 +11,15 @@ type Props = {
 
 export function HeaderWallet({ trimAddressSymbols = 3 }: Props) {
   const { isWalletConnected, walletAddress } = useWeb3()
-  const openWalletModal = useWalletModal()
-  const openConnectWalletModal = useConnectWalletModal()
+  const { openModal: openWalletModal } = useWalletModal()
+  const { openModal: openConnectModal } = useConnectWalletModal()
 
   if (!isWalletConnected) {
     return (
       <Wrap>
         <Button
           size="sm"
-          onClick={openConnectWalletModal}
+          onClick={openConnectModal}
           style={{ width: '100%' }}
           data-testid="connectButton"
         >

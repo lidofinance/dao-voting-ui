@@ -26,8 +26,9 @@ import { useDelegateFromPublicList } from './DelegateFromPublicListContext'
 //
 // Data context
 //
-const DelegationFormDataContext =
-  createContext<DelegationFormDataContextValue | null>(null)
+const DelegationFormDataContext = createContext<
+  DelegationFormDataContextValue | undefined
+>(undefined)
 
 export const useDelegationFormData = () => {
   const value = useContext(DelegationFormDataContext)

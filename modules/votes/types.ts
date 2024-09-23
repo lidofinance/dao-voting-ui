@@ -15,7 +15,21 @@ export enum VoteStatus {
 }
 
 export enum VoterState {
-  NotVoted = 'NotVoted',
-  VotedYay = 'VotedYay',
-  VotedNay = 'VotedNay',
+  Absent,
+  Yea,
+  Nay,
+  DelegateYea,
+  DelegateNay,
+}
+
+/**
+ * VotePhase.Main if one can vote 'yes' or 'no',
+ * VotePhase.Objection if one can vote only 'no' or
+ * VotePhase.Closed if no votes are accepted
+ */
+
+export enum VotePhase {
+  Main,
+  Objection,
+  Closed,
 }

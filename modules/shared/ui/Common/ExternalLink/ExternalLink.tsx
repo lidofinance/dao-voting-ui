@@ -13,7 +13,7 @@ type Props = {
 }
 
 export function ExternalLink({ href = '', children }: Props) {
-  const openNavigationModal = useNavigationModal({ href })
+  const { openModal: openNavigationModal } = useNavigationModal({ href })
 
   return (
     <ExternalLinkWrap onClick={openNavigationModal}>
