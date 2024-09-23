@@ -7,3 +7,10 @@ export const TooltipText = styled(Text).attrs({
 })`
   color: var(--lido-color-contrast);
 `
+
+export const LinkWrap = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+  line-height: 1;
+`

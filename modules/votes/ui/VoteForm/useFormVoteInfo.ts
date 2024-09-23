@@ -9,11 +9,13 @@ import {
   ContractVoting,
   ContractGovernanceToken,
 } from 'modules/blockChain/contracts'
-import { VoterState } from 'modules/votes/types'
 import { getEventExecuteVote } from 'modules/votes/utils/getEventExecuteVote'
 import { getVoteStatus } from 'modules/votes/utils/getVoteStatus'
 import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
-import { getEventsCastVote } from 'modules/votes/utils/getEventsCastVote'
+import {
+  getEventsCastVote,
+  getEventsAttemptCastVoteAsDelegate,
+} from 'modules/votes/utils/getEventsCastVote'
 
 type Args = {
   voteId?: string
@@ -39,18 +41,20 @@ export function useFormVoteInfo({ voteId }: Args) {
       const connectArg = { chainId: _chainId, rpcUrl: _rpcUrl }
       const contractToken = ContractGovernanceToken.connectRpc(connectArg)
 
-      const [voteTime, objectionPhaseTime, vote, canExecute] =
+      const [voteTime, objectionPhaseTime, vote, canExecute, votePhase] =
         await Promise.all([
           contractVoting.voteTime(),
           contractVoting.objectionPhaseTime(),
           contractVoting.getVote(_voteId),
           contractVoting.canExecute(_voteId),
+          contractVoting.getVotePhase(_voteId),
         ])
 
       const snapshotBlock = vote.snapshotBlock.toNumber()
       const [
         eventStart,
         eventsVoted,
+        eventsDelegatesVoted,
         eventExecuteVote,
         canVote,
         voterState,
@@ -58,6 +62,11 @@ export function useFormVoteInfo({ voteId }: Args) {
       ] = await Promise.all([
         getEventStartVote(contractVoting, _voteId, snapshotBlock),
         getEventsCastVote(contractVoting, _voteId, snapshotBlock),
+        getEventsAttemptCastVoteAsDelegate(
+          contractVoting,
+          _voteId,
+          snapshotBlock,
+        ),
         getEventExecuteVote(contractVoting, _voteId, snapshotBlock),
         _walletAddress
           ? contractVoting.canVote(_voteId, _walletAddress)
@@ -82,7 +91,10 @@ export function useFormVoteInfo({ voteId }: Args) {
         votePower,
         eventStart,
         eventsVoted,
+        eventsDelegatesVoted,
         eventExecuteVote,
+        votePowerWei,
+        votePhase,
         status: getVoteStatus(vote, canExecute),
       }
     },
@@ -94,18 +106,12 @@ export function useFormVoteInfo({ voteId }: Args) {
   const voteTime = swrVote.data?.voteTime.toNumber()
   const objectionPhaseTime = swrVote.data?.objectionPhaseTime.toNumber()
   const votePower = swrVote.data?.votePower
+  const votePowerWei = swrVote.data?.votePowerWei
+  const voterState = swrVote.data?.voterState
   const canVote = Boolean(swrVote.data?.canVote)
   const canExecute = swrVote.data?.canExecute
   const isLoading = swrVote.initialLoading
-
-  const voterState =
-    swrVote.data?.voterState === undefined
-      ? null
-      : swrVote.data.voterState === 0
-      ? VoterState.NotVoted
-      : swrVote.data.voterState === 1
-      ? VoterState.VotedYay
-      : VoterState.VotedNay
+  const votePhase = swrVote.data?.votePhase
 
   const mutateFn = swrVote.mutate
   const doRevalidate = useCallback(() => {
@@ -137,10 +143,15 @@ export function useFormVoteInfo({ voteId }: Args) {
     canExecute,
     isLoading,
     isWalletConnected,
+    walletAddress,
     doRevalidate,
+    votePowerWei,
+    votePhase,
     eventStart: swrVote.data?.eventStart,
     eventsVoted: swrVote.data?.eventsVoted,
+    eventsDelegatesVoted: swrVote.data?.eventsDelegatesVoted,
     eventExecuteVote: swrVote.data?.eventExecuteVote,
     status: swrVote.data?.status,
+    mutate: mutateFn,
   }
 }

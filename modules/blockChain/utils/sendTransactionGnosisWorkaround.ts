@@ -14,7 +14,9 @@ export async function sendTransactionGnosisWorkaround(
 ): Promise<ResultTx> {
   if (!signer) throw Error('signer is required')
 
-  const pendingToastId = ToastInfo(`Confirm transaction in your wallet`, {})
+  const pendingToastId = isMultisig
+    ? ToastInfo(`Confirm transaction in your safe`, {})
+    : ToastInfo(`Confirm transaction in your wallet`, {})
 
   if (isMultisig) {
     const hash: string = await (signer as any).sendUncheckedTransaction(

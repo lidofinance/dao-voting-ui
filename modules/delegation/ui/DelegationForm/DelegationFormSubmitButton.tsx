@@ -14,7 +14,7 @@ type Props = {
 
 export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
   const { isWalletConnected } = useWeb3()
-  const openConnectWalletModal = useConnectWalletModal()
+  const { openModal: openConnectWalletModal } = useConnectWalletModal()
   const {
     mode,
     isSubmitting,
@@ -113,7 +113,7 @@ export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
     )
   }, [match])
 
-  const openConfirmReDelegateModal = useConfirmReDelegateModal({
+  const { openModal: openConfirmReDelegateModal } = useConfirmReDelegateModal({
     onAlternative: onCustomizeClick,
     onSubmit: submitFromModal,
     subtitle,
@@ -127,7 +127,7 @@ export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
 
   if (!isWalletConnected) {
     return (
-      <DelegateButton onClick={openConnectWalletModal} type="button">
+      <DelegateButton onClick={() => openConnectWalletModal()} type="button">
         Connect wallet
       </DelegateButton>
     )

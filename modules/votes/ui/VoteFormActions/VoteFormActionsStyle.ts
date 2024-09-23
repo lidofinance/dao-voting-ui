@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { VotePhasesTooltip } from '../VotePhasesTooltip'
 import { Button } from '@lidofinance/lido-ui'
 
@@ -20,21 +20,17 @@ export const PhasesTooltip = styled(VotePhasesTooltip)`
   }
 `
 
-type ButtonVoteProps = {
-  color: 'success' | 'error' | 'primary' | 'secondary'
+type ButtonProps = {
+  ref: React.RefObject<HTMLButtonElement>
 }
-export const ButtonVote = styled(Button)`
+
+export const VoteButtonStyled = styled(Button).attrs<ButtonProps>({
+  ref: (props: ButtonProps) => props.ref,
+})`
+  width: 100%;
   padding: 0 16px;
   text-align: start;
   height: 56px;
-
-  ${({ color }: ButtonVoteProps) => {
-    if (color === 'success') {
-      return css`
-        background-color: var(--lido-color-success);
-      `
-    }
-  }}
 
   & > span {
     display: flex;

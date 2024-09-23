@@ -14,6 +14,7 @@ export type Data = Record<string, any>
 
 type ModalContextValue = {
   openModal: (modal: Modal, initialData?: Data) => void
+  closeModal: () => void
 }
 
 // https://github.com/CharlesStover/use-force-update

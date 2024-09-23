@@ -48,6 +48,14 @@ export const BadgeFailed = styled(Badge)`
   }
 `
 
+export const BadgeNoQuorum = styled(Badge)`
+  & svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--lido-color-warning);
+  }
+`
+
 export const BadgeOngoing = styled(Badge)`
   color: #fff;
   font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
@@ -58,6 +66,7 @@ export const BadgeOngoing = styled(Badge)`
 
 type WrapProps = { variant: StyledStatusVariant; fontSize: VoteStatusFontSize }
 export const Wrap = styled.div<WrapProps>`
+  margin-top: 14px;
   display: flex;
   align-items: center;
   margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;

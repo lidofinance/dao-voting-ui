@@ -5,11 +5,6 @@ export const Wrap = styled.div`
   margin-top: ${({ theme }) => theme.spaceMap.lg}px;
 `
 
-export const TitleWrap = styled.div`
-  display: flex;
-  margin-bottom: 10px;
-`
-
 export const ListRow = styled.div`
   padding: 0 ${({ theme }) => theme.spaceMap.lg}px;
   display: flex;
@@ -58,6 +53,7 @@ export const ListRowCell = styled.div`
 export const AddressWrap = styled.div`
   display: flex;
   align-items: center;
+  gap: 8px;
 `
 
 export const Identicon = styled(IdenticonOriginal)`
@@ -65,19 +61,9 @@ export const Identicon = styled(IdenticonOriginal)`
   margin-right: ${({ theme }) => theme.spaceMap.sm}px;
 `
 
-export const CounterBadge = styled.div`
-  margin-left: ${({ theme }) => theme.spaceMap.sm}px;
-  padding: 0 ${({ theme }) => theme.spaceMap.sm}px;
-  width: fit-content;
-  color: var(--lido-color-text);
-  border-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
-  background-color: var(--lido-color-backgroundSecondary);
-`
-
 export const ShowMoreBtn = styled(ListRow)`
   justify-content: center;
-  font-weight: 700;
-  font-size: ${({ theme }) => theme.fontSizesMap.xs}px;
+  font-size: ${({ theme }) => theme.fontSizesMap.xxs}px;
   color: var(--lido-color-primary);
   cursor: pointer;
 `

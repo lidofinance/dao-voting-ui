@@ -18,8 +18,8 @@ export function useVoteTimeCountdown(startDate: number, duration: number) {
       diffFormatted: moment
         .duration(Math.abs(diff), 'seconds')
         // \xa0 is non-breaking space
-        .format('d[D] : h[H] : m[M] : s[S]', {
-          trim: 'all',
+        .format('HH: mm : ss', {
+          trim: 'final',
           minValue: 1,
         }),
     }

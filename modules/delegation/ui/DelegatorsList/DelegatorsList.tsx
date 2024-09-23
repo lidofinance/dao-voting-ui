@@ -2,11 +2,11 @@ import { Link, Text } from '@lidofinance/lido-ui'
 import { useMemo, useState } from 'react'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import {
+  CounterBadge,
   DeelgatorsListStyled,
   ShowMoreButton,
-  Wrap,
-  CounterBadge,
   TitleWrap,
+  Wrap,
 } from './DelegatorsListStyle'
 import { PageLoader } from 'modules/shared/ui/Common/PageLoader'
 import {
