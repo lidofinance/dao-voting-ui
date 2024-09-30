@@ -66,7 +66,6 @@ export const BadgeOngoing = styled(Badge)`
 
 type WrapProps = { variant: StyledStatusVariant; fontSize: VoteStatusFontSize }
 export const Wrap = styled.div<WrapProps>`
-  margin-top: 14px;
   display: flex;
   align-items: center;
   margin-bottom: ${({ theme }) => theme.spaceMap.lg}px;

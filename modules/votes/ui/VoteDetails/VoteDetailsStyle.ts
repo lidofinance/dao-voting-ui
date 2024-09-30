@@ -54,6 +54,7 @@ export const VoteHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  flex-wrap: wrap;
   gap: 8px;
   margin-bottom: ${({ theme }) => theme.spaceMap.sm}px;
 `
