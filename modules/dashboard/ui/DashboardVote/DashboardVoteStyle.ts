@@ -44,3 +44,8 @@ export const Footer = styled.div`
   margin-top: auto;
   margin-bottom: 0;
 `
+
+export const NeededToQuorum = styled.div`
+  display: flex;
+  justify-content: space-between;
+`

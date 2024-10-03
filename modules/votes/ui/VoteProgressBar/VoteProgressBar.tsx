@@ -2,7 +2,13 @@ import { Text } from '@lidofinance/lido-ui'
 import { ProgressBar } from 'modules/shared/ui/Common/ProgressBar/ProgressBar'
 import { VoteDetailsCountdown } from '../VoteDetailsCountdown'
 
-import { MainPhaseCountWrap, ProgressWrap, Wrap } from './VoteProgressBarStyle'
+import {
+  LabelWrap,
+  MainPhaseCountWrap,
+  ProgressBarWrap,
+  ProgressSection,
+  Wrap,
+} from './VoteProgressBarStyle'
 import { VotePhase } from 'modules/votes/types'
 import { useVoteTimeCountdown } from 'modules/votes/hooks/useVoteTimeCountdown'
 import { useEffect, useMemo, useState } from 'react'
@@ -81,66 +87,74 @@ export function VoteProgressBar({
   const formattedEndDate = useMemo(() => formatDate(endDate), [endDate])
 
   return (
-    <Wrap>
-      <ProgressWrap $alignDescription="flex-start" $width="65%">
-        <MainPhaseCountWrap>
-          <Text
-            color={votePhase === VotePhase.Main ? 'primary' : 'secondary'}
-            size="xxs"
-          >
-            Main phase{votePhase === VotePhase.Main ? ' ends in ' : ' ended'}
-          </Text>
-          <b>
-            <VoteDetailsCountdown
-              startDate={startDate}
-              voteTime={voteTime - objectionPhaseTime}
-              isEndedBeforeTime={isEnded}
-            />
-          </b>
-        </MainPhaseCountWrap>
-        <ProgressBar
-          progress={mainPhaseProgress}
-          fillerType={votePhase === VotePhase.Closed ? 'default' : 'active'}
-          backgroundType={
-            votePhase === VotePhase.Closed
-              ? 'default'
-              : votePhase === VotePhase.Main
-              ? 'primary'
-              : 'secondary'
-          }
-        />
-        <div>{formattedStartDate} </div>
-      </ProgressWrap>
-      <ProgressWrap $alignDescription="flex-end" $width="40%">
-        <Text
-          color={votePhase === VotePhase.Objection ? 'primary' : 'secondary'}
-          size="xxs"
-        >
-          {`Objection ${votePhase === VotePhase.Objection ? 'ends in ' : ''}`}
-
-          {votePhase === VotePhase.Objection && (
+    <>
+      <Wrap>
+        <LabelWrap>
+          <MainPhaseCountWrap>
+            <Text
+              color={votePhase === VotePhase.Main ? 'primary' : 'secondary'}
+              size="xxs"
+            >
+              Main phase{votePhase === VotePhase.Main ? ' ends in ' : ' ended'}
+            </Text>
             <b>
               <VoteDetailsCountdown
                 startDate={startDate}
-                voteTime={voteTime}
+                voteTime={voteTime - objectionPhaseTime}
                 isEndedBeforeTime={isEnded}
               />
             </b>
-          )}
-        </Text>
-        <ProgressBar
-          progress={objectionPhaseProgress}
-          fillerType={votePhase === VotePhase.Closed ? 'default' : 'active'}
-          backgroundType={
-            votePhase === VotePhase.Closed
-              ? 'default'
-              : votePhase === VotePhase.Objection
-              ? 'primary'
-              : 'secondary'
-          }
-        />
-        <div>{formattedEndDate}</div>
-      </ProgressWrap>
-    </Wrap>
+          </MainPhaseCountWrap>
+          <Text
+            color={votePhase === VotePhase.Objection ? 'primary' : 'secondary'}
+            size="xxs"
+          >
+            {`Objection phase ${
+              votePhase === VotePhase.Objection ? 'ends in ' : ''
+            }`}
+
+            {votePhase === VotePhase.Objection && (
+              <b>
+                <VoteDetailsCountdown
+                  startDate={startDate}
+                  voteTime={voteTime}
+                  isEndedBeforeTime={isEnded}
+                />
+              </b>
+            )}
+          </Text>
+        </LabelWrap>
+        <ProgressSection>
+          <ProgressBarWrap $alignDescription="flex-start" $width="60%">
+            <ProgressBar
+              progress={mainPhaseProgress}
+              fillerType={votePhase === VotePhase.Closed ? 'default' : 'active'}
+              backgroundType={
+                votePhase === VotePhase.Closed
+                  ? 'default'
+                  : votePhase === VotePhase.Main
+                  ? 'primary'
+                  : 'secondary'
+              }
+            />
+            <div>{formattedStartDate} </div>
+          </ProgressBarWrap>
+          <ProgressBarWrap $alignDescription="flex-end" $width="40%">
+            <ProgressBar
+              progress={objectionPhaseProgress}
+              fillerType={votePhase === VotePhase.Closed ? 'default' : 'active'}
+              backgroundType={
+                votePhase === VotePhase.Closed
+                  ? 'default'
+                  : votePhase === VotePhase.Objection
+                  ? 'primary'
+                  : 'secondary'
+              }
+            />
+            <div>{formattedEndDate}</div>
+          </ProgressBarWrap>
+        </ProgressSection>
+      </Wrap>
+    </>
   )
 }

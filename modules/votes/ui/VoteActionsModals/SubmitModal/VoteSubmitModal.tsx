@@ -57,9 +57,7 @@ export function VoteSubmitModal({ data: { mode }, ...modalProps }: ModalProps) {
 
   const canVoteWithDelegatedPower = eligibleDelegatedVoters.length > 0
 
-  const title = `Vote ${
-    mode === 'yay' ? '“Yes”' : '“No”'
-  } with Delegated ${governanceSymbol}`
+  const title = `Vote ${mode === 'yay' ? '“Yes”' : '“No”'} with Delegated VP`
 
   return (
     <Modal title={title} center {...modalProps}>
@@ -82,7 +80,7 @@ export function VoteSubmitModal({ data: { mode }, ...modalProps }: ModalProps) {
       )}
       {canVoteWithDelegatedPower && (
         <DelegatorsList
-          defaultExpanded
+          defaultExpanded={false}
           eligibleDelegatedVoters={eligibleDelegatedVoters}
           delegatorsVotedThemselves={delegatorsVotedThemselves}
           governanceSymbol={governanceSymbol}

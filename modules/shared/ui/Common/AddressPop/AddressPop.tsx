@@ -24,9 +24,14 @@ export function AddressPop({ children, ...badgeProps }: Props) {
     position: undefined,
   })
 
-  const handleOpen = useCallback(() => {
-    setState({ isOpened: true })
-  }, [setState])
+  const handleOpen = useCallback(
+    (event: React.MouseEvent) => {
+      // To avoid opening a vote when clicking on the pop from the dashboard
+      event.preventDefault()
+      setState({ isOpened: true })
+    },
+    [setState],
+  )
 
   useEffect(() => {
     const wrapEl = wrapRef.current

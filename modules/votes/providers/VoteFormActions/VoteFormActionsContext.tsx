@@ -11,7 +11,6 @@ import {
 } from 'modules/delegation/hooks/useEligibleDelegators'
 import { useFormVoteSubmit } from 'modules/votes/ui/VoteForm/useFormVoteSubmit'
 import { useFormVoteInfo } from 'modules/votes/ui/VoteForm/useFormVoteInfo'
-import { formatBalance } from 'modules/blockChain/utils/formatBalance'
 import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
 
 import { ResultTx } from 'modules/blockChain/types'
@@ -41,7 +40,7 @@ export type VoteFormActionsContextValue = {
   setSuccessTx: React.Dispatch<React.SetStateAction<ResultTx | null>>
   formVoteSubmitData: ReturnType<typeof useFormVoteSubmit>
   setVoteId: React.Dispatch<React.SetStateAction<string>>
-  ownVotePower: Number
+  votePower: Number | undefined
   handleVote: (mode: VoteMode | null) => Promise<void>
   handleDelegatesVote: (
     mode: VoteMode | null,
@@ -99,6 +98,7 @@ export const VoteFormActionsProvider: React.FC = ({ children }) => {
     eventsDelegatesVoted,
     voterState,
     votePhase,
+    votePower,
     mutate: doRevalidate,
   } = formVoteInfoData
 
@@ -152,8 +152,6 @@ export const VoteFormActionsProvider: React.FC = ({ children }) => {
     )
   }, [delegatedVotersAddresses, eventsVoted, eventsDelegatesVoted])
 
-  const ownVotePower = Number(formatBalance(formVoteInfoData.votePowerWei || 0))
-
   const eligibleDelegatedVoters = useMemo(
     () => eligibleDelegatorsData.eligibleDelegatedVoters,
     [eligibleDelegatorsData],
@@ -173,7 +171,7 @@ export const VoteFormActionsProvider: React.FC = ({ children }) => {
       formVoteInfoData,
       successTx,
       setSuccessTx,
-      ownVotePower,
+      votePower,
       handleVote,
       handleDelegatesVote,
       votedAs,
@@ -203,7 +201,7 @@ export const VoteFormActionsProvider: React.FC = ({ children }) => {
       formVoteInfoData,
       successTx,
       setSuccessTx,
-      ownVotePower,
+      votePower,
       handleVote,
       handleDelegatesVote,
       votedAs,
