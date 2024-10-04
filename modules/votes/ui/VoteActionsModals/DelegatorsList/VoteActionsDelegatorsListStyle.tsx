@@ -4,6 +4,7 @@ import { Accordion, Text } from '@lidofinance/lido-ui'
 export const SummaryWrap = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
 `
 
@@ -37,7 +38,7 @@ export const DelegatorsListItem = styled.div`
 `
 
 export const DelegatorsVotingPower = styled(Text).attrs({ size: 'xs' })`
-  min-width: 100px;
+  min-width: 82px;
   text-align: right;
 `
 

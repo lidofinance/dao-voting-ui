@@ -7,9 +7,25 @@ export const Actions = styled.div`
   display: flex;
   gap: 10px;
 
+  @media (max-width: 375px) {
+    flex-direction: column;
+  }
+
   > * {
     flex: 1 1 50%;
+
+    @media (max-width: 375px) {
+      flex-basis: auto;
+    }
   }
+`
+
+export const TxStatusWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: ${({ theme }) => theme.spaceMap.sm}px;
 `
 
 export const PhasesTooltip = styled(VotePhasesTooltip)`

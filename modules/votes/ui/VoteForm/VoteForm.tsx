@@ -14,7 +14,7 @@ import { FetchErrorBanner } from 'modules/shared/ui/Common/FetchErrorBanner'
 import { VoteInfoDelegated } from 'modules/votes/ui/VoteInfoDelegated'
 import { VotePowerInfo } from '../VotePowerInfo'
 
-import { VoteStatus } from 'modules/votes/types'
+import { VotePhase, VoteStatus } from 'modules/votes/types'
 
 type Props = {
   voteId?: string
@@ -27,6 +27,7 @@ export function VoteForm({ voteId }: Props) {
     startDate,
     voteTime,
     votePowerWei,
+    votePower,
     canExecute,
     objectionPhaseTime,
     isLoading,
@@ -122,7 +123,9 @@ export function VoteForm({ voteId }: Props) {
             votePhase={votePhase}
           />
 
-          {!isWalletConnected && <VoteFormMustConnect />}
+          {!isWalletConnected && votePhase !== VotePhase.Closed && (
+            <VoteFormMustConnect />
+          )}
 
           {isWalletConnected && (
             <>
@@ -131,7 +134,9 @@ export function VoteForm({ voteId }: Props) {
                 eventsDelegatesVoted={eventsDelegatesVoted}
                 walletAddress={walletAddress}
               />
-              <VotePowerInfo ownVotePower={votePowerWei} />
+              {votePhase !== VotePhase.Closed && (
+                <VotePowerInfo votePowerWei={votePowerWei} />
+              )}
               <VoteFormActions
                 canEnact={canEnact}
                 voterState={voterState!}
@@ -139,6 +144,7 @@ export function VoteForm({ voteId }: Props) {
                 onEnact={handleEnact}
                 votePhase={votePhase}
                 votePowerWei={votePowerWei}
+                votePower={votePower}
                 voteId={voteId}
               />
             </>

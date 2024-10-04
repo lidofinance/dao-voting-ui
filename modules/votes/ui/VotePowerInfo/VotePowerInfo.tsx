@@ -6,10 +6,10 @@ import { useDelegators } from 'modules/delegation/hooks/useDelegators'
 import { BigNumber } from 'ethers'
 
 interface Props {
-  ownVotePower: BigNumber | null | undefined
+  votePowerWei: BigNumber | null | undefined
 }
 
-export function VotePowerInfo({ ownVotePower }: Props) {
+export function VotePowerInfo({ votePowerWei }: Props) {
   const { data: govSymbol } = useGovernanceSymbol()
   const {
     data: { nonZeroDelegators, totalVotingPower },
@@ -22,7 +22,7 @@ export function VotePowerInfo({ ownVotePower }: Props) {
           My voting power
         </Text>
         <Amount>
-          {formatBalance(ownVotePower || BigNumber.from(0))} {govSymbol}
+          {formatBalance(votePowerWei || BigNumber.from(0))} {govSymbol}
         </Amount>
       </VotingPower>
       {nonZeroDelegators.length > 0 && (

@@ -108,14 +108,15 @@ export function DelegatorsList({
         <SummaryAmount>
           <Text size="xxs" strong>
             {formatBalance(selectedBalance)} {governanceSymbol}
-          </Text>{' '}
+          </Text>
           <Text size="xxs">
-            / {formatBalance(eligibleDelegatedVotingPower)}
-            {governanceSymbol}
+            {` / ${formatBalance(
+              eligibleDelegatedVotingPower,
+            )} ${governanceSymbol}`}
           </Text>
         </SummaryAmount>
         <Text size="xxs">
-          from {pluralize(eligibleDelegatedVoters.length, 'delegate')}
+          from {pluralize(eligibleDelegatedVoters.length, 'delegator')}
         </Text>
       </SummaryWrap>
     )

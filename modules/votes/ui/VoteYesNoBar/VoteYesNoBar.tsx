@@ -9,35 +9,43 @@ import {
 type Props = {
   yeaPct: number
   nayPct: number
+  yeaNum: number
+  nayNum: number
   yeaPctOfTotalSupply: React.ReactNode
   nayPctOfTotalSupply: React.ReactNode
   showOnForeground?: boolean
+  showNumber?: boolean
 }
 
 export function VoteYesNoBar({
   yeaPct,
   nayPct,
+  yeaNum,
+  nayNum,
   yeaPctOfTotalSupply,
   nayPctOfTotalSupply,
   showOnForeground,
+  showNumber,
 }: Props) {
+  const nayInfo = showNumber
+    ? `"No" — ${nayNum} (${nayPctOfTotalSupply}%)`
+    : `"No" — ${nayPctOfTotalSupply}%`
+
+  const yeaInfo = showNumber
+    ? `"Yes" — ${yeaNum} (${yeaPctOfTotalSupply}%)`
+    : `"Yes" — ${yeaPctOfTotalSupply}%`
+
   return (
     <>
       <VotesTitleWrap>
         <Text size="xxs">
-          <Text as="span" color="secondary" size="xxs">
-            No —{' '}
-          </Text>
           <Text as="span" size="xxs">
-            {nayPctOfTotalSupply}%
+            {nayInfo}
           </Text>
         </Text>
         <Text size="xxs" style={{ textAlign: 'right' }}>
-          <Text as="span" color="secondary" size="xxs">
-            Yes —{' '}
-          </Text>
           <Text as="span" size="xxs">
-            {yeaPctOfTotalSupply}%
+            {yeaInfo}
           </Text>
         </Text>
       </VotesTitleWrap>

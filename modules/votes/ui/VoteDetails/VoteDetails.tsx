@@ -112,9 +112,12 @@ export function VoteDetails({
           <VoteYesNoBar
             yeaPct={yeaPct}
             nayPct={nayPct}
+            yeaNum={yeaNum}
+            nayNum={nayNum}
             yeaPctOfTotalSupply={yeaPctOfTotalSupplyFormatted}
             nayPctOfTotalSupply={nayPctOfTotalSupplyFormatted}
             showOnForeground
+            showNumber
           />
         </BoxVotes>
       </DetailsBoxWrap>

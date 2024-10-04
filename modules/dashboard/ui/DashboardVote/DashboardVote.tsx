@@ -2,9 +2,9 @@ import { useCallback } from 'react'
 import { useVotePassedCallback } from 'modules/votes/hooks/useVotePassedCallback'
 
 import Link from 'next/link'
+import { Text } from '@lidofinance/lido-ui'
 import { VoteStatusBanner } from 'modules/votes/ui/VoteStatusBanner'
 import { VoteYesNoBar } from 'modules/votes/ui/VoteYesNoBar'
-import { InfoRowFull } from 'modules/shared/ui/Common/InfoRow'
 import { VoteDescription } from 'modules/votes/ui/VoteDescription'
 
 import {
@@ -14,9 +14,10 @@ import {
   VoteDescriptionWrap,
   VotesBarWrap,
   Footer,
+  NeededToQuorum,
 } from './DashboardVoteStyle'
 import type { StartVoteEventObject } from 'generated/AragonVotingAbi'
-import { Vote, VoteStatus } from 'modules/votes/types'
+import { Vote, VotePhase, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
 import { formatFloatPct } from 'modules/shared/utils/formatFloatPct'
@@ -106,15 +107,24 @@ export function DashboardVote({
         </VoteBody>
         <Footer>
           <VotesBarWrap>
-            <InfoRowFull title="Needed to quorum">
-              {neededToQuorum > 0 && !isEnded
-                ? `${neededToQuorumFormatted}%`
-                : '-'}
-            </InfoRowFull>
+            {vote.phase !== VotePhase.Closed && (
+              <NeededToQuorum>
+                <Text size="xxs" color="secondary">
+                  Needed to quorum
+                </Text>
+                <Text size="xxs">
+                  {neededToQuorum > 0 && !isEnded
+                    ? `${neededToQuorumFormatted}%`
+                    : '-'}
+                </Text>
+              </NeededToQuorum>
+            )}
 
             <VoteYesNoBar
               yeaPct={yeaPct}
               nayPct={nayPct}
+              yeaNum={yeaNum}
+              nayNum={nayNum}
               yeaPctOfTotalSupply={yeaPctOfTotalSupplyFormatted}
               nayPctOfTotalSupply={nayPctOfTotalSupplyFormatted}
               showOnForeground

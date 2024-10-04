@@ -1,5 +1,5 @@
-import { Button, PopupMenu, PopupMenuItem } from '@lidofinance/lido-ui'
-import { Actions } from './VoteFormActionsStyle'
+import { Button, PopupMenu, PopupMenuItem, Text } from '@lidofinance/lido-ui'
+import { Actions, TxStatusWrapper } from './VoteFormActionsStyle'
 import CheckSVG from 'assets/check.com.svg.react'
 import CrossSVG from 'assets/cross.com.svg.react'
 
@@ -28,6 +28,7 @@ type Props = {
   onEnact: () => void
   voteId: string
   votePowerWei: BigNumber | null | undefined
+  votePower: Number | undefined
 }
 
 type ModalData = {
@@ -46,6 +47,7 @@ export function VoteFormActions({
   onEnact,
   voteId,
   votePowerWei,
+  votePower,
 }: Props) {
   const {
     data: { eligibleDelegatedVoters, eligibleDelegatedVotingPower },
@@ -56,7 +58,6 @@ export function VoteFormActions({
     handleDelegatesVote,
     txVote,
     txDelegatesVote,
-    ownVotePower,
     setVoteId: setVoteFormActionsModalsVoteId,
     isSubmitting: isVoteSubmitting,
     eventsVoted,
@@ -103,14 +104,15 @@ export function VoteFormActions({
   const nayButtonRef = useRef(null)
   const yayButtonRef = useRef(null)
 
-  const canVoteWithOwnPower = ownVotePower > 0
+  const canVoteWithOwnPower = votePower !== undefined && votePower > 0
   const canVoteWithDelegatedPower = eligibleDelegatedVoters.length > 0
 
   const canVote = useMemo(
     () =>
       isValidPhaseToVote &&
-      (eligibleDelegatedVoters.length > 0 || Number(ownVotePower) > 0),
-    [isValidPhaseToVote, ownVotePower, eligibleDelegatedVoters],
+      (eligibleDelegatedVoters.length > 0 ||
+        (votePower !== undefined && votePower > 0)),
+    [isValidPhaseToVote, votePower, eligibleDelegatedVoters],
   )
 
   const preparedOwnVP = useMemo(
@@ -197,27 +199,9 @@ export function VoteFormActions({
     }
   }, [successTx, handleSubmit, voterState])
 
-  const nayButtonLabel = useMemo(() => {
-    switch (voterState) {
-      case VoterState.Nay:
-        return 'Voted No'
-      case VoterState.Yea:
-        return 'Change Vote to No'
-      default:
-        return 'Vote No'
-    }
-  }, [voterState])
+  const nayButtonLabel = 'No'
 
-  const yayButtonLabel = useMemo(() => {
-    switch (voterState) {
-      case VoterState.Yea:
-        return 'Voted Yes'
-      case VoterState.Nay:
-        return 'Change Vote to Yes'
-      default:
-        return 'Vote Yes'
-    }
-  }, [voterState])
+  const yayButtonLabel = 'Yes'
 
   const getDisableCondition = useCallback(
     (currentMode: VoteMode | null): boolean => {
@@ -313,15 +297,20 @@ export function VoteFormActions({
         )}
       </Actions>
       {!txVote.isEmpty && (
-        <>
+        <TxStatusWrapper>
+          <Text size="xxs" color="secondary">
+            Vote tx status (with own {governanceSymbol})
+          </Text>
           <TxRow tx={txVote} onClick={txVote.open} />
-        </>
+        </TxStatusWrapper>
       )}
-      <br />
       {!txDelegatesVote.isEmpty && (
-        <>
+        <TxStatusWrapper>
+          <Text size="xxs" color="secondary">
+            Vote tx status (with delegated VP)
+          </Text>
           <TxRow tx={txDelegatesVote} onClick={txDelegatesVote.open} />
-        </>
+        </TxStatusWrapper>
       )}
     </>
   )

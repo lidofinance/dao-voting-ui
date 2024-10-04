@@ -43,7 +43,7 @@ interface SnapshotData {
   eligibleDelegatedVotingPower: BigNumber
   votePhase: VotePhase | undefined
   votedByDelegate: EligibleDelegator[]
-  ownVotePower: Number
+  votePower: Number | undefined
   delegationInfo: Record<string, string | null> | undefined
   delegatedVotersAddresses: string[]
   eligibleDelegatedVoters: EligibleDelegator[]
@@ -70,7 +70,7 @@ export function VoteSuccessModal({
     votedByDelegate,
     handleVote,
     handleDelegatesVote,
-    ownVotePower,
+    votePower,
     voterState,
     delegationInfo,
     votePhase,
@@ -93,7 +93,7 @@ export function VoteSuccessModal({
       eligibleDelegatedVotingPower,
       votePhase,
       votedByDelegate,
-      ownVotePower,
+      votePower,
       delegationInfo,
       delegatedVotersAddresses,
       eligibleDelegatedVoters,
@@ -104,7 +104,7 @@ export function VoteSuccessModal({
       eligibleDelegatedVotingPower,
       votePhase,
       votedByDelegate,
-      ownVotePower,
+      votePower,
       delegationInfo,
       delegatedVotersAddresses,
       eligibleDelegatedVoters,
@@ -182,7 +182,9 @@ export function VoteSuccessModal({
     0
 
   const canVoteWithOwnPower =
-    currentSnapshot.ownVotePower > 0 && !hasVotedWithOwnVP
+    currentSnapshot.votePower !== undefined &&
+    currentSnapshot.votePower > 0 &&
+    !hasVotedWithOwnVP
 
   const handleEtherscan = useEtherscanOpen(
     successTx.hash,
@@ -199,7 +201,7 @@ export function VoteSuccessModal({
   )
 
   const voteOption = useMemo(() => {
-    return currentSnapshot.mode === 'yay' ? '"Yes"' : '"No"'
+    return currentSnapshot.mode === 'yay' ? '“Yes”' : '“No”'
   }, [currentSnapshot.mode])
 
   const title = useRef(
@@ -230,10 +232,6 @@ export function VoteSuccessModal({
       </LinkWrap>
       {(canVoteWithDelegatedPower || canVoteWithOwnPower) && (
         <>
-          <Text size="xxs" color="secondary">
-            You have voted with part of your delegated voting power. You can
-            still vote with the remaining delegated tokens.
-          </Text>
           <ExtraVotingWrap>
             <Text size="sm" strong>
               {extraVotingTitle}
@@ -287,7 +285,7 @@ export function VoteSuccessModal({
                     loading={txVote.isPending}
                     disabled={!txVote.isEmpty && txVote.tx?.type === 'safe'}
                   >
-                    My own ({currentSnapshot.ownVotePower} {governanceSymbol})
+                    My own ({currentSnapshot.votePower} {governanceSymbol})
                   </Button>
                 )}
                 {!txVote.isEmpty && canVoteWithOwnPower && (
@@ -319,7 +317,7 @@ export function VoteSuccessModal({
             {canVoteWithDelegatedPower && (
               <>
                 <DelegatorsList
-                  defaultExpanded
+                  defaultExpanded={false}
                   eligibleDelegatedVoters={
                     currentSnapshot.eligibleDelegatedVoters
                   }
