@@ -1,4 +1,4 @@
-import { Text } from '@lidofinance/lido-ui'
+import { Text, Tooltip } from '@lidofinance/lido-ui'
 import {
   VotesBarNay,
   VotesBarWrap,
@@ -27,12 +27,14 @@ export function VoteYesNoBar({
   showOnForeground,
   showNumber,
 }: Props) {
+  const roundDown = (n: number): number => Math.floor(n * 10) / 10
+
   const nayInfo = showNumber
-    ? `"No" — ${nayNum} (${nayPctOfTotalSupply}%)`
+    ? `"No" — ${roundDown(nayNum)} (${nayPctOfTotalSupply}%)`
     : `"No" — ${nayPctOfTotalSupply}%`
 
   const yeaInfo = showNumber
-    ? `"Yes" — ${yeaNum} (${yeaPctOfTotalSupply}%)`
+    ? `"Yes" — ${roundDown(yeaNum)} (${yeaPctOfTotalSupply}%)`
     : `"Yes" — ${yeaPctOfTotalSupply}%`
 
   return (
@@ -40,12 +42,16 @@ export function VoteYesNoBar({
       <VotesTitleWrap>
         <Text size="xxs">
           <Text as="span" size="xxs">
-            {nayInfo}
+            <Tooltip title={<span>{nayNum}</span>} placement="top">
+              <span>{nayInfo}</span>
+            </Tooltip>
           </Text>
         </Text>
         <Text size="xxs" style={{ textAlign: 'right' }}>
           <Text as="span" size="xxs">
-            {yeaInfo}
+            <Tooltip title={<span>{yeaNum}</span>} placement="top">
+              <span>{yeaInfo}</span>
+            </Tooltip>
           </Text>
         </Text>
       </VotesTitleWrap>
