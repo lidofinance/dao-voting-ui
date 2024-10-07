@@ -1,12 +1,7 @@
 const basePath = process.env.BASE_PATH || ''
-const publicMainnetRPCs = [
-  'https://api.noderpc.xyz/rpc-mainnet/public',
-  'https://ethereum.publicnode.com',
-  'https://nodes.mewapi.io/rpc/eth',
-]
 
 const rpcUrls_1 =
-  (process.env.EL_RPC_URLS_1 && process.env.EL_RPC_URLS_1.split(',')) || publicMainnetRPCs
+  (process.env.EL_RPC_URLS_1 && process.env.EL_RPC_URLS_1.split(','))
 const rpcUrls_5 =
   process.env.EL_RPC_URLS_5 && process.env.EL_RPC_URLS_5.split(',')
 const rpcUrls_17000 =
