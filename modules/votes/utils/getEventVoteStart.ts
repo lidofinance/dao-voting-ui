@@ -7,17 +7,17 @@ export async function getEventStartVote(
   contractVoting: AragonVotingAbi,
   voteId: string | number,
   block?: string | number,
-) {
+): Promise<StartVoteEventObject | null> {
   const filter = contractVoting.filters.StartVote(Number(voteId))
   const events = await contractVoting.queryFilter(
     filter,
     block ? Number(block) : undefined,
     block ? Number(block) + 1 : undefined,
   )
-  const event = events[0]
-  if (!events[0] || !event.decode) {
+
+  if (!events.length) {
     return null
   }
-  const decoded = event.decode(event.data, event.topics)
-  return decoded as StartVoteEventObject
+
+  return events[0].args
 }
