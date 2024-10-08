@@ -21,7 +21,6 @@ export function useEnsNames(addresses: string[]) {
       const res = await Promise.all(
         addresses.map(address => provider.lookupAddress(address)),
       )
-      console.info(res)
       return res
     },
   )
