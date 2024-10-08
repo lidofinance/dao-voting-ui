@@ -163,11 +163,10 @@ export const HashConsensusValidatorsExitBus: ChainAddressMap = {
   [CHAINS.Holesky]: '0xe77Cf1A027d7C10Ee6bb7Ede5E922a181FF40E8f',
 }
 
-// TODO: add once deployed on holesky
 export const TRPVestingEscrowFactory: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xDA1DF6442aFD2EC36aBEa91029794B9b2156ADD0',
   [CHAINS.Goerli]: '0x8D20FD1Ac547e035BF01089cFb92459054F82Ff7',
-  [CHAINS.Holesky]: '0x0000000000000000000000000000000000000000',
+  [CHAINS.Holesky]: '0x586f0b51d46ac8ac6058702d99cd066ae514e96b',
 }
 
 export const AccountingOracle: ChainAddressMap = {
@@ -182,11 +181,10 @@ export const ValidatorsExitBusOracle: ChainAddressMap = {
   [CHAINS.Holesky]: '0xffDDF7025410412deaa05E3E1cE68FE53208afcb',
 }
 
-// TODO: add once deployed on holesky
 export const MEVBoostRelayAllowedList: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xF95f069F9AD107938F6ba802a3da87892298610E',
   [CHAINS.Goerli]: '0xeabE95AC5f3D64aE16AcBB668Ed0efcd81B721Bc',
-  [CHAINS.Holesky]: '0x0000000000000000000000000000000000000000',
+  [CHAINS.Holesky]: '0x2d86C5855581194a386941806E38cA119E50aEA3',
 }
 
 export const WithdrawalQueueEarlyCommitment: ChainAddressMap = {
@@ -220,4 +218,50 @@ export const Snapshot: ChainAddressMap = {
 
 export const L1ERC20TokenBridge: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x76943C0D61395d8F2edF9060e1533529cAe05dE6',
+}
+
+// TODO: add address
+export const DepositSecurityModuleV2: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x1',
+}
+
+// TODO: add address
+export const OracleReportSanityCheckerV2: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x12',
+}
+
+// TODO: add address
+export const CSAccounting: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x123',
+  [CHAINS.Holesky]: '0xc093e53e8F4b55A223c18A2Da6fA00e60DD5EFE1',
+}
+
+// TODO: add address
+export const CSFeeDistributor: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x123',
+  [CHAINS.Holesky]: '0xD7ba648C8F72669C6aE649648B516ec03D07c8ED',
+}
+
+// TODO: add address
+export const CSFeeOracle: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x123',
+  [CHAINS.Holesky]: '0xaF57326C7d513085051b50912D51809ECC5d98Ee',
+}
+
+// TODO: add address
+export const CSHashConsensus: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x123',
+  [CHAINS.Holesky]: '0xbF38618Ea09B503c1dED867156A0ea276Ca1AE37',
+}
+
+// TODO: add address
+export const CSModule: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x123',
+  [CHAINS.Holesky]: '0x4562c3e63c2e586cD1651B958C22F88135aCAd4f',
+}
+
+// TODO: add address
+export const CSVerifier: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x123',
+  [CHAINS.Holesky]: '0xEaBA76fAf7A5473fAC6a2511d8115beAb43Cf8a7',
 }
