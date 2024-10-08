@@ -72,6 +72,8 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
       [KEYS.Burner]: abis.BurnerAbi__factory.abi,
       [KEYS.SimpleDVT]: abis.NodeOperatorsRegistryAbi__factory.abi,
       [KEYS.L1ERC20TokenBridge]: abis.L1ERC20TokenBridgeAbi__factory.abi,
+      [KEYS.OptimismL1CrossDomainMessengerProxy]:
+        abis.OptimismL1CrossDomainMessengerProxyAbi__factory.abi,
     })
 
     const etherscanDecoder = new abiProviders.Base({
