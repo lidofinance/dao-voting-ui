@@ -219,3 +219,49 @@ export const Snapshot: ChainAddressMap = {
 export const L1ERC20TokenBridge: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x76943C0D61395d8F2edF9060e1533529cAe05dE6',
 }
+
+// TODO: add address
+export const DepositSecurityModuleV2: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x1',
+}
+
+// TODO: add address
+export const OracleReportSanityCheckerV2: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x12',
+}
+
+// TODO: add address
+export const CSAccounting: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x123',
+  [CHAINS.Holesky]: '0xc093e53e8F4b55A223c18A2Da6fA00e60DD5EFE1',
+}
+
+// TODO: add address
+export const CSFeeDistributor: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x123',
+  [CHAINS.Holesky]: '0xD7ba648C8F72669C6aE649648B516ec03D07c8ED',
+}
+
+// TODO: add address
+export const CSFeeOracle: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x123',
+  [CHAINS.Holesky]: '0xaF57326C7d513085051b50912D51809ECC5d98Ee',
+}
+
+// TODO: add address
+export const CSHashConsensus: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x123',
+  [CHAINS.Holesky]: '0xbF38618Ea09B503c1dED867156A0ea276Ca1AE37',
+}
+
+// TODO: add address
+export const CSModule: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x123',
+  [CHAINS.Holesky]: '0x4562c3e63c2e586cD1651B958C22F88135aCAd4f',
+}
+
+// TODO: add address
+export const CSVerifier: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x123',
+  [CHAINS.Holesky]: '0xEaBA76fAf7A5473fAC6a2511d8115beAb43Cf8a7',
+}

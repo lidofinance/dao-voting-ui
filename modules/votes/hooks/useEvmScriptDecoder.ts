@@ -72,6 +72,16 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
       [KEYS.Burner]: abis.BurnerAbi__factory.abi,
       [KEYS.SimpleDVT]: abis.NodeOperatorsRegistryAbi__factory.abi,
       [KEYS.L1ERC20TokenBridge]: abis.L1ERC20TokenBridgeAbi__factory.abi,
+      [KEYS.DepositSecurityModuleV2]:
+        abis.DepositSecurityModuleV2Abi__factory.abi,
+      [KEYS.OracleReportSanityCheckerV2]:
+        abis.OracleReportSanityCheckerV2Abi__factory.abi,
+      [KEYS.CSAccounting]: abis.CSAccountingAbi__factory.abi,
+      [KEYS.CSFeeDistributor]: abis.CSFeeDistributorAbi__factory.abi,
+      [KEYS.CSFeeOracle]: abis.CSFeeOracleAbi__factory.abi,
+      [KEYS.CSHashConsensus]: abis.CSHashConsensusAbi__factory.abi,
+      [KEYS.CSModule]: abis.CSModuleAbi__factory.abi,
+      [KEYS.CSVerifier]: abis.CSVerifierAbi__factory.abi,
     })
 
     const etherscanDecoder = new abiProviders.Base({
