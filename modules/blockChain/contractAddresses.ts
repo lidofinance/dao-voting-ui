@@ -163,11 +163,10 @@ export const HashConsensusValidatorsExitBus: ChainAddressMap = {
   [CHAINS.Holesky]: '0xe77Cf1A027d7C10Ee6bb7Ede5E922a181FF40E8f',
 }
 
-// TODO: add once deployed on holesky
 export const TRPVestingEscrowFactory: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xDA1DF6442aFD2EC36aBEa91029794B9b2156ADD0',
   [CHAINS.Goerli]: '0x8D20FD1Ac547e035BF01089cFb92459054F82Ff7',
-  [CHAINS.Holesky]: '0x0000000000000000000000000000000000000000',
+  [CHAINS.Holesky]: '0x586f0b51d46ac8ac6058702d99cd066ae514e96b',
 }
 
 export const AccountingOracle: ChainAddressMap = {
