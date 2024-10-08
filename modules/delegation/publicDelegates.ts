@@ -76,7 +76,7 @@ export const PUBLIC_DELEGATES = [
   },
   {
     name: 'BlockworksResearch',
-    avatar: `${basePath}/delegates/tokenlogic.png`,
+    avatar: `${basePath}/delegates/blockworks.jpeg`,
     address: '0xfF4139e99Bd7c23F4611dc660c33c97A825EA67b',
     lido: 'https://research.lido.fi/t/blockworks-research-delegate-thread/8024',
     twitter: 'https://x.com/blockworksres',
