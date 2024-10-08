@@ -181,11 +181,10 @@ export const ValidatorsExitBusOracle: ChainAddressMap = {
   [CHAINS.Holesky]: '0xffDDF7025410412deaa05E3E1cE68FE53208afcb',
 }
 
-// TODO: add once deployed on holesky
 export const MEVBoostRelayAllowedList: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xF95f069F9AD107938F6ba802a3da87892298610E',
   [CHAINS.Goerli]: '0xeabE95AC5f3D64aE16AcBB668Ed0efcd81B721Bc',
-  [CHAINS.Holesky]: '0x0000000000000000000000000000000000000000',
+  [CHAINS.Holesky]: '0x2d86C5855581194a386941806E38cA119E50aEA3',
 }
 
 export const WithdrawalQueueEarlyCommitment: ChainAddressMap = {
