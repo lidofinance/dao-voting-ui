@@ -17,4 +17,6 @@ export type ResultTx =
 
 export type TxStatus = 'empty' | 'pending' | 'failed' | 'success'
 
-export type ChainAddressMap = Partial<Record<CHAINS, string>>
+type Address = `0x${string}`
+
+export type ChainAddressMap = Partial<Record<CHAINS, Address>>

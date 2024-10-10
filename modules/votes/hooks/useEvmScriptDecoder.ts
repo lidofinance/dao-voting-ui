@@ -3,13 +3,39 @@ import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useConfig } from 'modules/config/hooks/useConfig'
 
 import { Contract } from 'ethers'
-import { ABIProvider } from '@lidofinance/evm-script-decoder/lib/types'
+import {
+  ABIProvider,
+  ABIElement as ABIElementImported,
+} from '@lidofinance/evm-script-decoder/lib/types'
 import { EVMScriptDecoder, abiProviders } from '@lidofinance/evm-script-decoder'
 import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
 
 import * as abis from 'generated'
 import * as ADDR from 'modules/blockChain/contractAddresses'
 import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'
+
+type ContractName = keyof typeof ADDR
+
+// This is a little hack needed because some of local ABIs
+// doesn't meet the ABIElement type requirements
+type ABIElement = Omit<ABIElementImported, 'name' | 'type'> & {
+  name?: string
+  type?: string
+}
+
+// This object contains ABIs of contracts that are using the same ABI
+// but have different names than the ABI file
+const ABI_EXCEPTIONS = {
+  HashConsensusAccountingOracle: abis.HashConsensusAbi__factory.abi,
+  HashConsensusValidatorsExitBus: abis.HashConsensusAbi__factory.abi,
+  LidoAppRepo: abis.RepoAbi__factory.abi,
+  NodeOperatorsRegistryRepo: abis.RepoAbi__factory.abi,
+  OracleRepo: abis.RepoAbi__factory.abi,
+  SimpleDVT: abis.NodeOperatorsRegistryAbi__factory.abi,
+} as const
+
+type ExceptionContractName = keyof typeof ABI_EXCEPTIONS
+type GeneralContractName = Exclude<ContractName, ExceptionContractName>
 
 export function useEVMScriptDecoder(): EVMScriptDecoder {
   const { chainId } = useWeb3()
@@ -18,71 +44,34 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
   const { etherscanApiKey, useBundledAbi } = savedConfig
 
   return useGlobalMemo(() => {
-    const KEYS = Object.keys(ADDR).reduce(
-      (keys, contractName: keyof typeof ADDR) => ({
-        ...keys,
-        [contractName]: ADDR[contractName][chainId]!,
-      }),
-      {} as Record<keyof typeof ADDR, string>,
+    // Map of contract addresses to their ABIs on the current chain
+    // needed to initialize the localDecoder
+    const abiMap = Object.keys(ADDR).reduce(
+      (result, contractName: ContractName) => {
+        const address = ADDR[contractName][chainId]
+        if (!address) {
+          return result
+        }
+        let abi: ABIElement[] | undefined
+        if (contractName in ABI_EXCEPTIONS) {
+          abi = ABI_EXCEPTIONS[contractName as ExceptionContractName]
+        } else {
+          // This line will show a compiler-level error if there is a declared contract in ADDR
+          // that is not present neither in ABI_EXCEPTIONS nor in generated abis
+          abi = abis[`${contractName as GeneralContractName}Abi__factory`].abi
+        }
+
+        return {
+          ...result,
+          [address]: abi,
+        }
+      },
+      {} as Record<string, ABIElement[]>,
     )
 
-    const localDecoder = new abiProviders.Local({
-      [KEYS.AragonVoting]: abis.AragonVotingAbi__factory.abi as any,
-      [KEYS.GovernanceToken]: abis.MiniMeTokenAbi__factory.abi as any,
-      [KEYS.TokenManager]: abis.TokenManagerAbi__factory.abi,
-      [KEYS.AragonFinance]: abis.AragonFinanceAbi__factory.abi,
-      [KEYS.NodeOperatorsRegistry]: abis.NodeOperatorsRegistryAbi__factory.abi,
-      [KEYS.AragonAgent]: abis.AragonAgentAbi__factory.abi,
-      [KEYS.AragonACL]: abis.AragonACLAbi__factory.abi,
-      [KEYS.VotingRepo]: abis.VotingRepoAbi__factory.abi,
-      [KEYS.LidoDAO]: abis.LidoDAOAbi__factory.abi,
-      [KEYS.EasyTrack]: abis.EasyTrackAbi__factory.abi,
-      [KEYS.TokenRecovererForManagerContracts]:
-        abis.TokenRecovererForManagerContractsAbi__factory.abi,
-      [KEYS.LidoAppRepo]: abis.RepoAbi__factory.abi,
-      [KEYS.NodeOperatorsRegistryRepo]: abis.RepoAbi__factory.abi,
-      [KEYS.Steth]: abis.StethAbi__factory.abi,
-      [KEYS.OracleRepo]: abis.RepoAbi__factory.abi,
-      [KEYS.LegacyOracle]: abis.LegacyOracleAbi__factory.abi,
-      [KEYS.CompositePostRebaseBeaconReceiver]:
-        abis.CompositePostRebaseBeaconReceiverAbi__factory.abi,
-      [KEYS.DepositSecurityModule]: abis.DepositSecurityModuleAbi__factory.abi,
-      [KEYS.WithdrawalVault]: abis.WithdrawalVaultAbi__factory.abi,
-      [KEYS.ShapellaUpgradeTemplate]:
-        abis.ShapellaUpgradeTemplateAbi__factory.abi,
-      [KEYS.StakingRouter]: abis.StakingRouterAbi__factory.abi,
-      [KEYS.LidoLocator]: abis.LidoLocatorAbi__factory.abi,
-      [KEYS.WithdrawalQueueERC721]: abis.WithdrawalQueueERC721Abi__factory.abi,
-      [KEYS.OracleReportSanityChecker]:
-        abis.OracleReportSanityCheckerAbi__factory.abi,
-      [KEYS.HashConsensusAccountingOracle]: abis.HashConsensusAbi__factory.abi,
-      [KEYS.HashConsensusValidatorsExitBus]: abis.HashConsensusAbi__factory.abi,
-      [KEYS.AccountingOracle]: abis.AccountingOracleAbi__factory.abi,
-      [KEYS.ValidatorsExitBusOracle]:
-        abis.ValidatorsExitBusOracleAbi__factory.abi,
-      [KEYS.WithdrawalQueueEarlyCommitment]:
-        abis.WithdrawalQueueERC721Abi__factory.abi,
-      [KEYS.MEVBoostRelayAllowedList]:
-        abis.MEVBoostRelayAllowedListAbi__factory.abi,
-      [KEYS.OracleDaemonConfig]: abis.OracleDaemonConfigAbi__factory.abi,
-      [KEYS.TRPVestingEscrowFactory]:
-        abis.TRPVestingEscrowFactoryAbi__factory.abi,
-      [KEYS.ExecutionLayerRewardsVault]:
-        abis.ExecutionLayerRewardsVaultAbi__factory.abi,
-      [KEYS.Burner]: abis.BurnerAbi__factory.abi,
-      [KEYS.SimpleDVT]: abis.NodeOperatorsRegistryAbi__factory.abi,
-      [KEYS.L1ERC20TokenBridge]: abis.L1ERC20TokenBridgeAbi__factory.abi,
-      [KEYS.DepositSecurityModuleV2]:
-        abis.DepositSecurityModuleV2Abi__factory.abi,
-      [KEYS.OracleReportSanityCheckerV2]:
-        abis.OracleReportSanityCheckerV2Abi__factory.abi,
-      [KEYS.CSAccounting]: abis.CSAccountingAbi__factory.abi,
-      [KEYS.CSFeeDistributor]: abis.CSFeeDistributorAbi__factory.abi,
-      [KEYS.CSFeeOracle]: abis.CSFeeOracleAbi__factory.abi,
-      [KEYS.CSHashConsensus]: abis.CSHashConsensusAbi__factory.abi,
-      [KEYS.CSModule]: abis.CSModuleAbi__factory.abi,
-      [KEYS.CSVerifier]: abis.CSVerifierAbi__factory.abi,
-    })
+    const localDecoder = new abiProviders.Local(
+      abiMap as Record<string, ABIElementImported[]>,
+    )
 
     const etherscanDecoder = new abiProviders.Base({
       fetcher: async address => {
