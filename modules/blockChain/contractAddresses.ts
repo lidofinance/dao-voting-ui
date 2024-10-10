@@ -16,13 +16,13 @@ export const GovernanceToken: ChainAddressMap = {
 export const TokenManager: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xf73a1260d222f447210581ddf212d915c09a3249',
   [CHAINS.Goerli]: '0xDfe76d11b365f5e0023343A367f0b311701B3bc1',
-  [CHAINS.Holesky]: '0xFaa1692c6eea8eeF534e7819749aD93a1420379A ',
+  [CHAINS.Holesky]: '0xFaa1692c6eea8eeF534e7819749aD93a1420379A',
 }
 
 export const AragonFinance: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xb9e5cbb9ca5b0d659238807e84d0176930753d86',
   [CHAINS.Goerli]: '0x75c7b1D23f1cad7Fb4D60281d7069E46440BC179',
-  [CHAINS.Holesky]: '0xf0F281E5d7FBc54EAFcE0dA225CDbde04173AB16 ',
+  [CHAINS.Holesky]: '0xf0F281E5d7FBc54EAFcE0dA225CDbde04173AB16',
 }
 
 export const NodeOperatorsRegistry: ChainAddressMap = {
@@ -34,19 +34,19 @@ export const NodeOperatorsRegistry: ChainAddressMap = {
 export const AragonAgent: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x3e40D73EB977Dc6a537aF587D48316feE66E9C8c',
   [CHAINS.Goerli]: '0x4333218072D5d7008546737786663c38B4D561A4',
-  [CHAINS.Holesky]: '0xE92329EC7ddB11D25e25b3c21eeBf11f15eB325d ',
+  [CHAINS.Holesky]: '0xE92329EC7ddB11D25e25b3c21eeBf11f15eB325d',
 }
 
 export const AragonACL: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x9895F0F17cc1d1891b6f18ee0b483B6f221b37Bb',
   [CHAINS.Goerli]: '0xb3cf58412a00282934d3c3e73f49347567516e98',
-  [CHAINS.Holesky]: '0xfd1E42595CeC3E83239bf8dFc535250e7F48E0bC ',
+  [CHAINS.Holesky]: '0xfd1E42595CeC3E83239bf8dFc535250e7F48E0bC',
 }
 
 export const VotingRepo: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x4Ee3118E3858E8D7164A634825BfE0F73d99C792',
   [CHAINS.Goerli]: '0x14de4f901ce0b81f4efca594ad7b70935c276806',
-  [CHAINS.Holesky]: '0x2997EA0D07D79038D83Cb04b3BB9A2Bc512E3fDA ',
+  [CHAINS.Holesky]: '0x2997EA0D07D79038D83Cb04b3BB9A2Bc512E3fDA',
 }
 
 export const LidoDAO: ChainAddressMap = {
@@ -63,26 +63,24 @@ export const EasyTrack: ChainAddressMap = {
 
 export const TokenRecovererForManagerContracts: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x1bdfFe0EBef3FEAdF2723D3330727D73f538959C',
-  [CHAINS.Goerli]: '0x0000000000000000000000000000000000000000',
-  [CHAINS.Holesky]: '0x0000000000000000000000000000000000000000',
 }
 
 export const LidoAppRepo: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xF5Dc67E54FC96F993CD06073f71ca732C1E654B1',
   [CHAINS.Goerli]: '0xE9eDe497d2417fd980D8B5338232666641B9B9aC',
-  [CHAINS.Holesky]: '0xA37fb4C41e7D30af5172618a863BBB0f9042c604 ',
+  [CHAINS.Holesky]: '0xA37fb4C41e7D30af5172618a863BBB0f9042c604',
 }
 
 export const NodeOperatorsRegistryRepo: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x0D97E876ad14DB2b183CFeEB8aa1A5C788eB1831',
   [CHAINS.Goerli]: '0x5F867429616b380f1Ca7a7283Ff18C53a0033073',
-  [CHAINS.Holesky]: '0x4E8970d148CB38460bE9b6ddaab20aE2A74879AF ',
+  [CHAINS.Holesky]: '0x4E8970d148CB38460bE9b6ddaab20aE2A74879AF',
 }
 
 export const Steth: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
   [CHAINS.Goerli]: '0x1643e812ae58766192cf7d2cf9567df2c37e9b7f',
-  [CHAINS.Holesky]: '0x3F1c547b21f65e10480dE3ad8E19fAAC46C95034 ',
+  [CHAINS.Holesky]: '0x3F1c547b21f65e10480dE3ad8E19fAAC46C95034',
 }
 
 export const OracleRepo: ChainAddressMap = {
@@ -94,13 +92,12 @@ export const OracleRepo: ChainAddressMap = {
 export const LegacyOracle: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x442af784A788A5bd6F42A01Ebe9F287a871243fb',
   [CHAINS.Goerli]: '0x24d8451BC07e7aF4Ba94F69aCDD9ad3c6579D9FB',
-  [CHAINS.Holesky]: ' 0x072f72BE3AcFE2c52715829F2CD9061A6C8fF019',
+  [CHAINS.Holesky]: '0x072f72BE3AcFE2c52715829F2CD9061A6C8fF019',
 }
 
 export const CompositePostRebaseBeaconReceiver: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x55a7E1cbD678d9EbD50c7d69Dc75203B0dBdD431',
   [CHAINS.Goerli]: '0x5d2113f7691ac6Df5E3f41Fb938429ACEAD2C94f',
-  [CHAINS.Holesky]: '0x0000000000000000000000000000000000000000',
 }
 
 export const DepositSecurityModule: ChainAddressMap = {
@@ -118,7 +115,6 @@ export const WithdrawalVault: ChainAddressMap = {
 export const ShapellaUpgradeTemplate: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xa818ff9ec93122bf9401ab4340c42de638cd600a',
   [CHAINS.Goerli]: '0xD2fEf3d3544ddf64028784aC3f166413A2A61393',
-  [CHAINS.Holesky]: '0x0000000000000000000000000000000000000000',
 }
 
 export const StakingRouter: ChainAddressMap = {
@@ -185,12 +181,6 @@ export const MEVBoostRelayAllowedList: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xF95f069F9AD107938F6ba802a3da87892298610E',
   [CHAINS.Goerli]: '0xeabE95AC5f3D64aE16AcBB668Ed0efcd81B721Bc',
   [CHAINS.Holesky]: '0x2d86C5855581194a386941806E38cA119E50aEA3',
-}
-
-export const WithdrawalQueueEarlyCommitment: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x0000000000000000000000000000000000000000',
-  [CHAINS.Goerli]: '0xB0F260CC0906197ED75A5d722890bB9efe2c506A',
-  [CHAINS.Holesky]: '0x0000000000000000000000000000000000000000',
 }
 
 export const ExecutionLayerRewardsVault: ChainAddressMap = {
