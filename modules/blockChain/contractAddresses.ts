@@ -220,14 +220,12 @@ export const L1ERC20TokenBridge: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x76943C0D61395d8F2edF9060e1533529cAe05dE6',
 }
 
-// TODO: add address
 export const DepositSecurityModuleV2: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x1',
+  [CHAINS.Mainnet]: '0xffa96d84def2ea035c7ab153d8b991128e3d72fd',
 }
 
-// TODO: add address
 export const OracleReportSanityCheckerV2: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x12',
+  [CHAINS.Mainnet]: '0x6232397ebac4f5772e53285b26c47914e9461e75',
 }
 
 // TODO: add address
