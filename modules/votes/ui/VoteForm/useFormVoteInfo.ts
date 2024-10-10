@@ -51,9 +51,13 @@ export function useFormVoteInfo({ voteId }: Args) {
         ])
 
       const snapshotBlock = vote.snapshotBlock.toNumber()
+      const eventsVoted = await getEventsCastVote(
+        contractVoting,
+        _voteId,
+        snapshotBlock,
+      )
       const [
         eventStart,
-        eventsVoted,
         eventsDelegatesVoted,
         eventExecuteVote,
         canVote,
@@ -61,9 +65,9 @@ export function useFormVoteInfo({ voteId }: Args) {
         votePowerWei,
       ] = await Promise.all([
         getEventStartVote(contractVoting, _voteId, snapshotBlock),
-        getEventsCastVote(contractVoting, _voteId, snapshotBlock),
         getEventsAttemptCastVoteAsDelegate(
           contractVoting,
+          eventsVoted,
           _voteId,
           snapshotBlock,
         ),
