@@ -218,38 +218,32 @@ export const OracleReportSanityCheckerV2: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x6232397ebac4f5772e53285b26c47914e9461e75',
 }
 
-// TODO: add address
 export const CSAccounting: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x123',
+  [CHAINS.Mainnet]: '0x4d72BFF1BeaC69925F8Bd12526a39BAAb069e5Da',
   [CHAINS.Holesky]: '0xc093e53e8F4b55A223c18A2Da6fA00e60DD5EFE1',
 }
 
-// TODO: add address
 export const CSFeeDistributor: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x123',
+  [CHAINS.Mainnet]: '0xD99CC66fEC647E68294C6477B40fC7E0F6F618D0',
   [CHAINS.Holesky]: '0xD7ba648C8F72669C6aE649648B516ec03D07c8ED',
 }
 
-// TODO: add address
 export const CSFeeOracle: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x123',
+  [CHAINS.Mainnet]: '0x4D4074628678Bd302921c20573EEa1ed38DdF7FB',
   [CHAINS.Holesky]: '0xaF57326C7d513085051b50912D51809ECC5d98Ee',
 }
 
-// TODO: add address
 export const CSHashConsensus: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x123',
+  [CHAINS.Mainnet]: '0x71093efF8D8599b5fA340D665Ad60fA7C80688e4',
   [CHAINS.Holesky]: '0xbF38618Ea09B503c1dED867156A0ea276Ca1AE37',
 }
 
-// TODO: add address
 export const CSModule: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x123',
+  [CHAINS.Mainnet]: '0xdA7dE2ECdDfccC6c3AF10108Db212ACBBf9EA83F',
   [CHAINS.Holesky]: '0x4562c3e63c2e586cD1651B958C22F88135aCAd4f',
 }
 
-// TODO: add address
 export const CSVerifier: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x123',
+  [CHAINS.Mainnet]: '0x3Dfc50f22aCA652a0a6F28a0F892ab62074b5583',
   [CHAINS.Holesky]: '0xEaBA76fAf7A5473fAC6a2511d8115beAb43Cf8a7',
 }
