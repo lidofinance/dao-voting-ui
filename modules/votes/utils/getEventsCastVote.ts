@@ -1,8 +1,5 @@
 import type { AragonVotingAbi } from 'generated'
-import type {
-  CastVoteEventObject,
-  AttemptCastVoteAsDelegateEventObject,
-} from 'generated/AragonVotingAbi'
+import type { CastVoteEventObject } from 'generated/AragonVotingAbi'
 
 export function unifyEventsVotedWithLast(events: CastVoteEventObject[]) {
   return events.reverse().reduce(
@@ -31,9 +28,7 @@ export async function getEventsCastVote(
     filter,
     block ? Number(block) : undefined,
   )
-  const decoded = events.map(e =>
-    e.decode!(e.data, e.topics),
-  ) as CastVoteEventObject[]
+  const decoded = events.map(e => e.args) as CastVoteEventObject[]
   return unifyEventsVotedWithLast(decoded)
 }
 
@@ -67,11 +62,7 @@ export async function getEventsAttemptCastVoteAsDelegate(
   >()
 
   delegateEvents.forEach(event => {
-    const decodedEvent = event.decode!(
-      event.data,
-      event.topics,
-    ) as AttemptCastVoteAsDelegateEventObject
-    decodedEvent.voters.forEach(voter => {
+    event.args.voters.forEach(voter => {
       const voterLower = voter.toLowerCase()
       const existing = voterToLatestVote.get(voterLower)
       if (
@@ -84,18 +75,14 @@ export async function getEventsAttemptCastVoteAsDelegate(
           blockNumber: event.blockNumber,
           transactionIndex: event.transactionIndex,
           isDelegate: true,
-          delegate: decodedEvent.delegate,
+          delegate: event.args.delegate,
         })
       }
     })
   })
 
   castVoteEvents.forEach(event => {
-    const decodedEvent = event.decode!(
-      event.data,
-      event.topics,
-    ) as CastVoteEventObject
-    const voterLower = decodedEvent.voter.toLowerCase()
+    const voterLower = event.args.voter.toLowerCase()
     const existing = voterToLatestVote.get(voterLower)
     if (
       !existing ||
@@ -113,22 +100,18 @@ export async function getEventsAttemptCastVoteAsDelegate(
 
   return delegateEvents
     .map(event => {
-      const decodedEvent = event.decode!(
-        event.data,
-        event.topics,
-      ) as AttemptCastVoteAsDelegateEventObject
-      const filteredVoters = decodedEvent.voters.filter(voter => {
+      const filteredVoters = event.args.voters.filter(voter => {
         const latestVote = voterToLatestVote.get(voter.toLowerCase())
         return (
           latestVote &&
           latestVote.isDelegate &&
-          latestVote.delegate === decodedEvent.delegate &&
+          latestVote.delegate === event.args.delegate &&
           latestVote.blockNumber === event.blockNumber &&
           latestVote.transactionIndex === event.transactionIndex
         )
       })
       return {
-        ...decodedEvent,
+        ...event.args,
         voters: filteredVoters,
       }
     })

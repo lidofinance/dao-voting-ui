@@ -1,5 +1,6 @@
 import type {
   AragonVotingAbi,
+  ExecuteVoteEvent,
   ExecuteVoteEventObject,
 } from 'generated/AragonVotingAbi'
 
@@ -7,20 +8,22 @@ export async function getEventExecuteVote(
   contractVoting: AragonVotingAbi,
   voteId: string | number,
   block?: string | number,
-) {
+): Promise<{
+  event: ExecuteVoteEvent
+  decoded: ExecuteVoteEventObject
+} | null> {
   const filter = contractVoting.filters.ExecuteVote(Number(voteId))
   const events = await contractVoting.queryFilter(
     filter,
     block ? Number(block) : undefined,
   )
-  const event = events[0]
-  if (!events[0]) return undefined
-  if (!event.decode) {
-    throw new Error('ExecuteVote event decoding error')
+  if (!events.length) {
+    return null
   }
-  const decoded: ExecuteVoteEventObject = event.decode(event.data, event.topics)
+  const event = events[0]
+
   return {
     event,
-    decoded,
+    decoded: event.args,
   }
 }

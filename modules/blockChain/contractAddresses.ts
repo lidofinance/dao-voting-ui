@@ -210,6 +210,11 @@ export const L1ERC20TokenBridge: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x76943C0D61395d8F2edF9060e1533529cAe05dE6',
 }
 
+// Address reference: https://docs.optimism.io/chain/addresses#ethereum-l1
+export const OptimismL1CrossDomainMessengerProxy: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x25ace71c97B33Cc4729CF772ae268934F7ab5fA1',
+}
+
 export const DepositSecurityModuleV2: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xffa96d84def2ea035c7ab153d8b991128e3d72fd',
 }
