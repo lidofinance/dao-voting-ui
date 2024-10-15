@@ -30,6 +30,7 @@ const ABI_EXCEPTIONS = {
   HashConsensusValidatorsExitBus: abis.HashConsensusAbi__factory.abi,
   LidoAppRepo: abis.RepoAbi__factory.abi,
   NodeOperatorsRegistryRepo: abis.RepoAbi__factory.abi,
+  SimpleDVTRepo: abis.RepoAbi__factory.abi,
   OracleRepo: abis.RepoAbi__factory.abi,
   SimpleDVT: abis.NodeOperatorsRegistryAbi__factory.abi,
   SandboxNodeOperatorsRegistry: abis.NodeOperatorsRegistryAbi__factory.abi,
