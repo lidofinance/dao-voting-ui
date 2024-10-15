@@ -14,6 +14,9 @@ const patterns = [
   process.env.INFURA_API_KEY,
   process.env.ALCHEMY_API_KEY,
   process.env.ETHERSCAN_API_KEY,
+  process.env.WALLETCONNECT_PROJECT_ID,
+  ...(process.env.EL_RPC_URLS_1 || 'NO_EL_RPC_URLS_1').split(','),
+  ...(process.env.EL_RPC_URLS_17000 || 'NO_EL_RPC_URLS_17000').split(','),
 ]
 const mask = satanizer(patterns)
 
