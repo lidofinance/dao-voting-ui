@@ -250,7 +250,7 @@ export const CSModule: ChainAddressMap = {
 
 export const CSVerifier: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x3Dfc50f22aCA652a0a6F28a0F892ab62074b5583',
-  [CHAINS.Holesky]: '0xEaBA76fAf7A5473fAC6a2511d8115beAb43Cf8a7',
+  [CHAINS.Holesky]: '0x6FDAA094227CF8E1593f9fB9C1b867C1f846F916',
 }
 
 export const SandboxNodeOperatorsRegistry: ChainAddressMap = {
