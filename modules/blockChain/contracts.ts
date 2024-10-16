@@ -1,6 +1,6 @@
 import { createContractHelpers } from './utils/createContractHelpers'
 import {
-  MiniMeTokenAbi__factory,
+  GovernanceTokenAbi__factory,
   AragonVotingAbi__factory,
   SnapshotAbi__factory,
 } from 'generated'
@@ -12,7 +12,7 @@ export const ContractVoting = createContractHelpers({
 })
 
 export const ContractGovernanceToken = createContractHelpers({
-  factory: MiniMeTokenAbi__factory,
+  factory: GovernanceTokenAbi__factory,
   address: CONTRACT_ADDRESSES.GovernanceToken,
 })
 
