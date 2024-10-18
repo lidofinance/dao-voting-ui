@@ -1,6 +1,7 @@
 import clone from 'just-clone'
 import getConfig from 'next/config'
 import { CHAINS } from '@lido-sdk/constants'
+import { commonPatterns, satanizer } from '@lidofinance/satanizer'
 import { parseChainId } from 'modules/blockChain/chains'
 import { fetchWithFallback } from 'modules/network/utils/fetchWithFallback'
 import type { NextApiRequest, NextApiResponse } from 'next'
@@ -29,6 +30,17 @@ interface IStat {
   trace: string
   voteId: number
 }
+
+const patterns = [
+  ...commonPatterns,
+  process.env.INFURA_API_KEY,
+  process.env.ALCHEMY_API_KEY,
+  process.env.ETHERSCAN_API_KEY,
+  process.env.WALLETCONNECT_PROJECT_ID,
+  ...(process.env.EL_RPC_URLS_1 || 'NO_EL_RPC_URLS_1').split(','),
+  ...(process.env.EL_RPC_URLS_17000 || 'NO_EL_RPC_URLS_17000').split(','),
+]
+const mask = satanizer(patterns)
 
 const isStartFromTopic = (topic: string) => (req: IRpcRequest) =>
   req.method === 'eth_getLogs' && req.params[0]?.topics?.[0] === topic
@@ -75,7 +87,7 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
         AragonVoting[chainId] ?? '',
         AragonVotingAbi__factory.abi,
       )
-      const filter = contractVoting.filters.StartVote(Number(0))
+      const filter = contractVoting.filters.StartVote()
       const startVoteTopic = String(filter.topics?.[0])
       const voteEvents: IStat[] = req.body
         .filter(isStartFromTopic(startVoteTopic))
@@ -98,6 +110,7 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
       })
     } catch (err) {
       console.error(`Failed on empty log response verification`)
+      console.error(mask(err))
     }
 
     res.status(requested.status).json(responded)
