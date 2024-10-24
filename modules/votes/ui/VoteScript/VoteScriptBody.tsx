@@ -35,7 +35,7 @@ export function VoteScriptBody({ binary, decoded, parentId }: Props) {
       {decoded.calls.map((call, i) => {
         const id = i + 1
         const { address, abi, encodedCallData, decodedCallData } = call
-        const callString = formatCallString(id, abi, decodedCallData)
+        const callString = formatCallString(chainId, id, abi, decodedCallData)
         const nestedScriptsIdxs = abi?.inputs?.reduce(
           (r, c, j) => (c.name === '_evmScript' ? [...r, j] : r),
           [],
