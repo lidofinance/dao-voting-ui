@@ -14,8 +14,14 @@ import SnapshotSvg from 'assets/snapshot.com.svg.react'
 
 export function DelegationStatus() {
   const { isWalletConnected } = useWeb3()
-  const { mode, aragonDelegateAddress, snapshotDelegateAddress, loading } =
-    useDelegationFormData()
+  const {
+    mode,
+    aragonDelegateAddress,
+    snapshotDelegateAddress,
+    aragonPublicDelegate,
+    snapshotPublicDelegate,
+    loading,
+  } = useDelegationFormData()
 
   if (!isWalletConnected) {
     return null
@@ -31,6 +37,7 @@ export function DelegationStatus() {
           </StatusWithIcon>
           {aragonDelegateAddress ? (
             <DelegationAddressBadge
+              publicDelegate={aragonPublicDelegate}
               address={aragonDelegateAddress}
               type="aragon"
             />
@@ -48,6 +55,7 @@ export function DelegationStatus() {
           {snapshotDelegateAddress ? (
             <DelegationAddressBadge
               address={snapshotDelegateAddress}
+              publicDelegate={snapshotPublicDelegate}
               type="snapshot"
             />
           ) : (
@@ -62,12 +70,18 @@ export function DelegationStatus() {
 
   const delegateAddress =
     mode === 'aragon' ? aragonDelegateAddress : snapshotDelegateAddress
+  const publicDelegate =
+    mode === 'aragon' ? aragonPublicDelegate : snapshotPublicDelegate
 
   return (
     <DelegationStatusStyled>
       <StatusLabel>Delegated to</StatusLabel>
       {delegateAddress ? (
-        <DelegationAddressBadge address={delegateAddress} type={mode} />
+        <DelegationAddressBadge
+          address={delegateAddress}
+          publicDelegate={publicDelegate}
+          type={mode}
+        />
       ) : (
         <StatusValue>
           {loading.isDelegationInfoLoading ? 'Loading...' : 'Not delegated'}

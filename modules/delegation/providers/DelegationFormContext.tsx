@@ -65,7 +65,9 @@ const useDelegationFormNetworkData = (): DelegationFormNetworkData => {
 
   return {
     aragonDelegateAddress: delegationInfo?.aragonDelegateAddress,
+    aragonPublicDelegate: delegationInfo?.aragonPublicDelegate,
     snapshotDelegateAddress: delegationInfo?.snapshotDelegateAddress,
+    snapshotPublicDelegate: delegationInfo?.snapshotPublicDelegate,
     governanceBalanceStr: governanceBalance?.balanceStr,
     loading,
     revalidate,

@@ -12,7 +12,7 @@ import { AddressPop } from 'modules/shared/ui/Common/AddressPop'
 import { isValidAddress } from 'modules/shared/utils/addressValidation'
 import { formatBalance } from 'modules/blockChain/utils/formatBalance'
 import { ExternalLink } from 'modules/shared/ui/Common/ExternalLink'
-import { PublicDelegateAvatar } from './PublicDelegateAvatar'
+import { PublicDelegateAvatar } from '../PublicDelegateAvatar'
 import { useDelegateFromPublicList } from 'modules/delegation/providers/DelegateFromPublicListContext'
 
 import XSocialSvg from 'assets/x.social.com.svg.react'

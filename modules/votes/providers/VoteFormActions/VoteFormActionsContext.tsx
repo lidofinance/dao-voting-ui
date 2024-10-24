@@ -28,6 +28,7 @@ import {
   TransactionSender,
 } from 'modules/blockChain/hooks/useTransactionSender'
 import { useDelegationInfo } from 'modules/delegation/hooks/useDelegationInfo'
+import { DelegationInfo } from 'modules/delegation/types'
 
 export enum VotedAs {
   delegate = 'delegate',
@@ -40,7 +41,7 @@ export type VoteFormActionsContextValue = {
   setSuccessTx: React.Dispatch<React.SetStateAction<ResultTx | null>>
   formVoteSubmitData: ReturnType<typeof useFormVoteSubmit>
   setVoteId: React.Dispatch<React.SetStateAction<string>>
-  votePower: Number | undefined
+  votePower: number | undefined
   handleVote: (mode: VoteMode | null) => Promise<void>
   handleDelegatesVote: (
     mode: VoteMode | null,
@@ -61,7 +62,7 @@ export type VoteFormActionsContextValue = {
   votedByDelegate: EligibleDelegatorsData['eligibleDelegatedVoters']
   voterState: number | null | undefined
   isSubmitting: false | VoteMode
-  delegationInfo: Record<string, string | null> | undefined
+  delegationInfo: DelegationInfo | undefined
   votePhase: VotePhase | undefined
 }
 
