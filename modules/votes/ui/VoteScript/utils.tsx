@@ -2,8 +2,13 @@ import {
   ABIElement,
   EVMScriptDecoded,
 } from '@lidofinance/evm-script-decoder/lib/types'
+import { LIDO_ROLES } from 'modules/votes/constants'
+import { utils } from 'ethers'
+import { getContractName } from 'modules/config/utils/getContractName'
+import { CHAINS } from '@lido-sdk/constants'
 
 export const formatCallString = (
+  chainId: CHAINS,
   id: number,
   abi?: ABIElement,
   callData?: (string | EVMScriptDecoded)[],
@@ -32,6 +37,17 @@ export const formatCallString = (
         ) {
           callRes += `See parsed evm script at ${id}.${i + 1}`
         } else {
+          if (typeof data === 'string') {
+            const roleLabel = LIDO_ROLES[data]
+            if (roleLabel) {
+              callRes += `[${roleLabel}] `
+            } else if (utils.isAddress(data)) {
+              const contractName = getContractName(chainId, data)
+              if (contractName) {
+                callRes += `[${contractName}] `
+              }
+            }
+          }
           callRes += data
         }
         return callRes
