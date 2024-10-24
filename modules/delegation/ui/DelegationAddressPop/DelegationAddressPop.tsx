@@ -1,14 +1,23 @@
 import { useClickAway } from 'react-use'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useSimpleReducer } from 'modules/shared/hooks/useSimpleReducer'
 
 import { CopyOpenActions } from 'modules/shared/ui/Common/CopyOpenActions'
 import { IdenticonBadge, Text } from '@lidofinance/lido-ui'
 import UnionIcon from 'assets/union.com.svg.react'
 
-import { Wrap, Pop, BadgeWrap, IdenticonBadgeWrap, VotedBy } from './PopStyle'
+import {
+  Wrap,
+  Pop,
+  BadgeWrap,
+  IdenticonBadgeWrap,
+  VotedBy,
+  PublicDelegateWrap,
+} from './PopStyle'
 
 import { calcPopoverPosition } from './calcPopoverPosition'
+import { getPublicDelegateByAddress } from 'modules/delegation/utils/getPublicDelegateName'
+import { PublicDelegateAvatar } from '../PublicDelegateAvatar'
 
 type IdenticonBadgeProps = React.ComponentProps<typeof IdenticonBadge>
 
@@ -33,6 +42,11 @@ export function DelegationAddressPop({ children, ...badgeProps }: Props) {
   const handleOpen = useCallback(() => {
     setState({ isOpened: true })
   }, [setState])
+
+  const publicDelegate = useMemo(() => {
+    if (!delegateAddress) return null
+    return getPublicDelegateByAddress(delegateAddress)
+  }, [delegateAddress])
 
   useEffect(() => {
     const wrapEl = wrapRef.current
@@ -69,13 +83,25 @@ export function DelegationAddressPop({ children, ...badgeProps }: Props) {
                 <Text size="xxs">Voted By</Text>
               </VotedBy>
               <BadgeWrap>
-                <IdenticonBadgeWrap
-                  {...badgeProps}
-                  address={delegateAddress}
-                  diameter={30}
-                  symbols={80}
-                  onClick={handleOpen}
-                />
+                {publicDelegate ? (
+                  <PublicDelegateWrap>
+                    <Text color="secondary" size="xs" as="span">
+                      {publicDelegate.name}
+                    </Text>
+                    <PublicDelegateAvatar
+                      avatarSrc={publicDelegate.avatar}
+                      size={30}
+                    />
+                  </PublicDelegateWrap>
+                ) : (
+                  <IdenticonBadgeWrap
+                    {...badgeProps}
+                    address={delegateAddress}
+                    diameter={30}
+                    symbols={80}
+                    onClick={handleOpen}
+                  />
+                )}
               </BadgeWrap>
               <CopyOpenActions value={delegateAddress} entity="address" />
             </div>
