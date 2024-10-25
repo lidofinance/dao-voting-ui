@@ -1,11 +1,13 @@
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-
+import DgIcon from 'assets/dg.com.svg.react'
 import { Link } from '@lidofinance/lido-ui'
 import {
   CallTitle,
   CallWrapper,
   ScriptBox,
   NestedPadding,
+  DGBadge,
+  DGBadgeWrapper,
 } from './VoteScriptStyle'
 
 import { EVMScriptDecoded } from '@lidofinance/evm-script-decoder/lib/types'
@@ -35,6 +37,7 @@ export function VoteScriptBody({ binary, decoded, parentId }: Props) {
       {decoded.calls.map((call, i) => {
         const id = i + 1
         const { address, abi, encodedCallData, decodedCallData } = call
+
         const callString = formatCallString(id, abi, decodedCallData)
         const nestedScriptsIdxs = abi?.inputs?.reduce(
           (r, c, j) => (c.name === '_evmScript' ? [...r, j] : r),
@@ -44,6 +47,7 @@ export function VoteScriptBody({ binary, decoded, parentId }: Props) {
           nestedScriptsIdxs && nestedScriptsIdxs.length > 0
         const contractNameListed = getContractName(chainId, address)
 
+        const isUnderDG = contractNameListed === 'DualGovernance'
         return (
           <CallWrapper key={i}>
             <CallTitle size="xxs">
@@ -60,6 +64,15 @@ export function VoteScriptBody({ binary, decoded, parentId }: Props) {
             </CallTitle>
 
             <ScriptBox>{callString}</ScriptBox>
+
+            {isUnderDG && (
+              <DGBadgeWrapper>
+                <DGBadge>
+                  <DgIcon />
+                  Under Dual Governance
+                </DGBadge>
+              </DGBadgeWrapper>
+            )}
 
             {showNestedScripts && (
               <NestedPadding>
