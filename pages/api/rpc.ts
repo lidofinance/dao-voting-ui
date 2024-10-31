@@ -89,7 +89,10 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
       )
       const filter = contractVoting.filters.StartVote()
       const startVoteTopic = String(filter.topics?.[0])
-      const voteEvents: IStat[] = req.body
+
+      const requests = Array.isArray(req.body) ? req.body : [req.body]
+
+      const voteEvents: IStat[] = requests
         .filter(isStartFromTopic(startVoteTopic))
         .map((item: IRpcRequest) => ({
           req: item,
@@ -110,6 +113,13 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
       })
     } catch (err) {
       console.error(`Failed on empty log response verification`)
+      console.error(
+        mask({
+          date: requested.headers.get('date') ?? '',
+          trace: requested.headers.get('x-drpc-trace-id') ?? '',
+          requestCount: req.body?.length || 1,
+        }),
+      )
       console.error(mask(err))
     }
 
