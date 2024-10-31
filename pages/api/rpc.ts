@@ -122,8 +122,13 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
       )
       console.error(mask(err))
     }
-
-    res.status(requested.status).json(responded)
+    const { headers } = requested
+    res
+      .setHeader('x-drpc-trace-id', headers.get('x-drpc-trace-id') ?? '')
+      .setHeader('x-drpc-owner-tier', headers.get('x-drpc-owner-tier') ?? '')
+      .setHeader('x-drpc-date', headers.get('date') ?? '')
+      .status(requested.status)
+      .json(responded)
 
     console.info('Request to api/rpc successfully fullfilled', {
       ...requestInfo,
