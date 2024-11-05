@@ -30,8 +30,8 @@ interface IReqRes {
   res?: IRpcResponse
   date: string
   trace: string
-  topics0: string[]
-  voteId: number
+  reqTopics0: (string | null)[]
+  reqTopic1: number
 }
 
 const patterns = [
@@ -45,20 +45,23 @@ const patterns = [
 ]
 const mask = satanizer(patterns)
 
-const isLogs = (req: IRpcRequest) => req.method === 'eth_getLogs'
+const isGetLogs = (req: IRpcRequest) => req.method === 'eth_getLogs'
 
-const isReqTopic = (topic: string) => (item: IReqRes) =>
-  item.topics0.includes(topic)
+const isReqTopicExact = (topic: string) => (item: IReqRes) =>
+  item.reqTopics0.includes(topic) // ignore null topic
 
 const isResEventTopicWrong = (item: IReqRes) =>
-  item.topics0.length &&
-  !item.res?.result?.every(result => item.topics0.includes(result?.topics[0]))
+  item.reqTopics0.length &&
+  !item.reqTopics0.includes(null) &&
+  !item.res?.result?.every(result =>
+    item.reqTopics0.includes(result?.topics?.[0]),
+  )
 
 const isContainError = (item: IReqRes) => item.res?.error
 
-const getVoteIdFromRequest = (req: any) => Number(req?.params?.[0]?.topics?.[1])
+const getReqTopic1 = (req: any) => req?.params?.[0]?.topics?.[1]
 
-const getReqStartTopics = (req: any) => {
+const getReqTopics0 = (req: any) => {
   const topic = req?.params?.[0]?.topics?.[0]
   if (!topic) {
     return []
@@ -67,40 +70,38 @@ const getReqStartTopics = (req: any) => {
 }
 
 const hasNoResult = (item: IReqRes) => item.res?.result?.length === 0
-const hasVoteId = (item: IReqRes) => !isNaN(item.voteId)
+const hasVoteId = (item: IReqRes) => !isNaN(item.reqTopic1)
 
-const getIncorrectItems = (
+const getRequestsForRetry = (
   requests: IRpcRequest[],
   results: IRpcResponse[],
   headers: Headers,
   chainId: CHAINS,
 ) => {
   const incorrectRequests: IRpcRequest[] = []
+  const addToIncorrectRequests = (item: IReqRes, message: string) => {
+    incorrectRequests.push(item.req)
+    console.error(`Incorrect response: ${message}`, chainId, mask({ ...item }))
+  }
   try {
-    // prepare getLog data
+    // combine request, response and extra data
     const reqResp: IReqRes[] = requests
-      .filter(isLogs)
+      .filter(isGetLogs)
       .map((item: IRpcRequest) => ({
         req: item,
         res: results.find(resp => resp.id === item.id),
         date: headers.get('date') ?? '',
         trace: headers.get('x-drpc-trace-id') ?? '',
-        topics0: getReqStartTopics(item),
-        voteId: getVoteIdFromRequest(item),
+        reqTopics0: getReqTopics0(item),
+        reqTopic1: Number(getReqTopic1(item)), // check only as VoteId for now
       }))
 
     // expected match request topic0 and event topic0
     const resContainSideEvents = reqResp.filter(isResEventTopicWrong)
-    resContainSideEvents.forEach(item => {
-      incorrectRequests.push(item.req)
-      console.error({
-        message: `Incorrect response: req topic0 not match resp event topic0`,
-        chainId,
-        ...item,
-      })
-    })
+    resContainSideEvents.forEach(item =>
+      addToIncorrectRequests(item, `req topic0 not match resp event topic0`),
+    )
 
-    // get StartVote keccak
     const contractVoting = new ethers.Contract(
       AragonVoting[chainId] ?? '',
       AragonVotingAbi__factory.abi,
@@ -110,32 +111,25 @@ const getIncorrectItems = (
 
     // expected not empty response
     const resLostVoteEvents = reqResp
-      .filter(isReqTopic(startVoteTopic))
+      .filter(isReqTopicExact(startVoteTopic))
       .filter(hasNoResult)
       .filter(hasVoteId)
 
-    resLostVoteEvents.forEach(item => {
-      incorrectRequests.push(item.req)
-      console.error({
-        message: `Incorrect response: lost log event for vote #${item.voteId}`,
-        chainId,
-        ...item,
-      })
-    })
+    resLostVoteEvents.forEach(item =>
+      addToIncorrectRequests(
+        item,
+        `lost log event for vote #${item.reqTopic1}`,
+      ),
+    )
 
     // expected no errors
     const resContainError = reqResp.filter(isContainError)
-    resContainError.forEach(item => {
-      incorrectRequests.push(item.req)
-      console.error({
-        message: `Incorrect response: response contain error ${item.res?.error}`,
-        chainId,
-        ...item,
-      })
-    })
+    resContainError.forEach(item =>
+      addToIncorrectRequests(item, `response contain error ${item.res?.error}`),
+    )
   } catch (err) {
-    console.error(`Failed on 'getLogs' response verification`)
     console.error(
+      `Failed on 'getLogs' response verification`,
       mask({
         date: headers.get('date') ?? '',
         trace: headers.get('x-drpc-trace-id') ?? '',
@@ -144,7 +138,65 @@ const getIncorrectItems = (
     )
     console.error(mask(err))
   }
+
   return incorrectRequests
+}
+
+const prepareInit = (body: any) =>
+  ({
+    method: 'POST',
+    // Next by default parses our body for us, we don't want that here
+    body: JSON.stringify(body),
+    headers: {
+      'Content-type': 'application/json',
+    },
+  } as const)
+
+const parseResponse = async (response: Response) => {
+  const text = await response.text()
+  try {
+    const results: IRpcResponse[] = JSON.parse(text)
+    return results
+  } catch (err) {
+    // usually could happen when response status 400+
+    console.error(`Request failed status ${response.status} status ${text}`)
+    throw err
+  }
+}
+
+/**
+ * Try to do a simple check of the results of getLogs and replace it by fallback responses:
+ * - if getLogs return events with incorrect topic
+ * - if getLogs not return events where it should be
+ * - if getLogs return error
+ * */
+const correctGetLogs = async (
+  body: IRpcRequest[],
+  responses: IRpcResponse[],
+  headers: Headers,
+  chainId: CHAINS,
+  urls: string[],
+) => {
+  let responseHeaders = headers
+  let requests = body
+  const results = [...responses]
+  for (let ind = 1; ind < urls.length; ind++) {
+    requests = getRequestsForRetry(requests, results, responseHeaders, chainId)
+    if (!requests.length) {
+      break
+    }
+    const restUrls = urls.slice(ind)
+    const init = prepareInit(requests)
+    const response = await fetchWithFallback(restUrls, chainId, init)
+    responseHeaders = response.headers
+
+    const responseData: IRpcResponse[] = await response.json()
+    responseData.forEach(item => {
+      const index = results.findIndex(result => result.id === item.id)
+      responseData[index] = item
+    })
+  }
+  return results
 }
 
 export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
@@ -167,40 +219,19 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
 
   try {
     const chainId = parseChainId(String(req.query.chainId))
-    const fetchRPC = (urls: string[], body: any) =>
-      fetchWithFallback(urls, chainId, {
-        method: 'POST',
-        // Next by default parses our body for us, we don't want that here
-        body: JSON.stringify(body),
-        headers: {
-          'Content-type': 'application/json',
-        },
-      })
-
     const urls = RPC_URLS[chainId]
     const { body } = req
-    let requests: IRpcRequest[] = Array.isArray(body) ? body : [body]
-    const responseFirst = await fetchRPC(urls, requests)
-    let results: IRpcResponse[] = await responseFirst.json()
-    let responseHeaders = responseFirst.headers
+    // force to array of requests for universal processing before return
+    const requests: IRpcRequest[] = Array.isArray(body) ? body : [body]
+    const init = prepareInit(requests)
+    const response = await fetchWithFallback(urls, chainId, init)
+    let results = await parseResponse(response)
+    const { headers, status, ok } = response
 
-    // Unfortunately, a successful response does not guarantee that the received data is correct
-    // Try to do a simple check of the results of getLogs and request fallback if there is a suspicion of incorrectness
-    for (let ind = 1; ind < urls.length; ind++) {
-      requests = getIncorrectItems(requests, results, responseHeaders, chainId)
-      if (!requests.length) {
-        break
-      }
-      const response = await fetchRPC(urls.slice(ind), requests)
-      responseHeaders = response.headers
-
-      const responseData: IRpcResponse[] = await response.json()
-      responseData.forEach(item => {
-        const index = results.findIndex(result => result.id === item.id)
-        responseData[index] = item
-      })
+    if (ok) {
+      // Even if response is success does not guarantee that the received data will be correct
+      results = await correctGetLogs(requests, results, headers, chainId, urls)
     }
-    const { headers, status } = responseFirst
     res
       .setHeader('x-drpc-trace-id', headers.get('x-drpc-trace-id') ?? '')
       .setHeader('x-drpc-owner-tier', headers.get('x-drpc-owner-tier') ?? '')
