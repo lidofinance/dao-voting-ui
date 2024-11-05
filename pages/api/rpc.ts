@@ -21,13 +21,16 @@ interface IRpcRequest {
 interface IRpcResponse {
   jsonrpc: '2.0'
   id: number
-  result: any[]
+  result?: any[]
+  error?: string
 }
-interface IStat {
+
+interface IReqRes {
   req: IRpcRequest
   res?: IRpcResponse
   date: string
   trace: string
+  topics0: string[]
   voteId: number
 }
 
@@ -42,13 +45,107 @@ const patterns = [
 ]
 const mask = satanizer(patterns)
 
-const isStartFromTopic = (topic: string) => (req: IRpcRequest) =>
-  req.method === 'eth_getLogs' && req.params[0]?.topics?.[0] === topic
+const isLogs = (req: IRpcRequest) => req.method === 'eth_getLogs'
+
+const isReqTopic = (topic: string) => (item: IReqRes) =>
+  item.topics0.includes(topic)
+
+const isResEventTopicWrong = (item: IReqRes) =>
+  item.topics0.length &&
+  !item.res?.result?.every(result => item.topics0.includes(result?.topics[0]))
+
+const isContainError = (item: IReqRes) => item.res?.error
 
 const getVoteIdFromRequest = (req: any) => Number(req?.params?.[0]?.topics?.[1])
 
-const hasNoResult = (item: any) => item?.res?.result?.length === 0
-const hasVoteId = (item: any) => !isNaN(item.voteId)
+const getReqStartTopics = (req: any) => {
+  const topic = req?.params?.[0]?.topics?.[0]
+  if (!topic) {
+    return []
+  }
+  return Array.isArray(topic) ? topic : [topic]
+}
+
+const hasNoResult = (item: IReqRes) => item.res?.result?.length === 0
+const hasVoteId = (item: IReqRes) => !isNaN(item.voteId)
+
+const getIncorrectItems = (
+  requests: IRpcRequest[],
+  results: IRpcResponse[],
+  headers: Headers,
+  chainId: CHAINS,
+) => {
+  const incorrectRequests: IRpcRequest[] = []
+  try {
+    // prepare getLog data
+    const reqResp: IReqRes[] = requests
+      .filter(isLogs)
+      .map((item: IRpcRequest) => ({
+        req: item,
+        res: results.find(resp => resp.id === item.id),
+        date: headers.get('date') ?? '',
+        trace: headers.get('x-drpc-trace-id') ?? '',
+        topics0: getReqStartTopics(item),
+        voteId: getVoteIdFromRequest(item),
+      }))
+
+    // expected match request topic0 and event topic0
+    const resContainSideEvents = reqResp.filter(isResEventTopicWrong)
+    resContainSideEvents.forEach(item => {
+      incorrectRequests.push(item.req)
+      console.error({
+        message: `Incorrect response: req topic0 not match resp event topic0`,
+        chainId,
+        ...item,
+      })
+    })
+
+    // get StartVote keccak
+    const contractVoting = new ethers.Contract(
+      AragonVoting[chainId] ?? '',
+      AragonVotingAbi__factory.abi,
+    )
+    const filter = contractVoting.filters.StartVote()
+    const startVoteTopic = String(filter.topics?.[0])
+
+    // expected not empty response
+    const resLostVoteEvents = reqResp
+      .filter(isReqTopic(startVoteTopic))
+      .filter(hasNoResult)
+      .filter(hasVoteId)
+
+    resLostVoteEvents.forEach(item => {
+      incorrectRequests.push(item.req)
+      console.error({
+        message: `Incorrect response: lost log event for vote #${item.voteId}`,
+        chainId,
+        ...item,
+      })
+    })
+
+    // expected no errors
+    const resContainError = reqResp.filter(isContainError)
+    resContainError.forEach(item => {
+      incorrectRequests.push(item.req)
+      console.error({
+        message: `Incorrect response: response contain error ${item.res?.error}`,
+        chainId,
+        ...item,
+      })
+    })
+  } catch (err) {
+    console.error(`Failed on 'getLogs' response verification`)
+    console.error(
+      mask({
+        date: headers.get('date') ?? '',
+        trace: headers.get('x-drpc-trace-id') ?? '',
+        requestCount: requests.length || 1,
+      }),
+    )
+    console.error(mask(err))
+  }
+  return incorrectRequests
+}
 
 export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
   const RPC_URLS: Record<number, string[]> = {
@@ -70,65 +167,46 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
 
   try {
     const chainId = parseChainId(String(req.query.chainId))
-    const urls = RPC_URLS[chainId]
-
-    const requested = await fetchWithFallback(urls, chainId, {
-      method: 'POST',
-      // Next by default parses our body for us, we don't want that here
-      body: JSON.stringify(req.body),
-      headers: {
-        'Content-type': 'application/json',
-      },
-    })
-
-    const responded: IRpcResponse[] = await requested.json()
-    try {
-      const contractVoting = new ethers.Contract(
-        AragonVoting[chainId] ?? '',
-        AragonVotingAbi__factory.abi,
-      )
-      const filter = contractVoting.filters.StartVote()
-      const startVoteTopic = String(filter.topics?.[0])
-
-      const requests = Array.isArray(req.body) ? req.body : [req.body]
-
-      const voteEvents: IStat[] = requests
-        .filter(isStartFromTopic(startVoteTopic))
-        .map((item: IRpcRequest) => ({
-          req: item,
-          res: responded.find(resp => resp.id === item.id),
-          date: requested.headers.get('date') ?? '',
-          trace: requested.headers.get('x-drpc-trace-id') ?? '',
-          voteId: getVoteIdFromRequest(item),
-        }))
-
-      const lostVoteEvents = voteEvents.filter(hasNoResult).filter(hasVoteId)
-
-      lostVoteEvents.forEach(item => {
-        console.error({
-          message: `Lost log event for vote #${item.voteId}`,
-          chainId,
-          ...item,
-        })
+    const fetchRPC = (urls: string[], body: any) =>
+      fetchWithFallback(urls, chainId, {
+        method: 'POST',
+        // Next by default parses our body for us, we don't want that here
+        body: JSON.stringify(body),
+        headers: {
+          'Content-type': 'application/json',
+        },
       })
-    } catch (err) {
-      console.error(`Failed on empty log response verification`)
-      console.error(
-        mask({
-          date: requested.headers.get('date') ?? '',
-          trace: requested.headers.get('x-drpc-trace-id') ?? '',
-          requestCount: req.body?.length || 1,
-        }),
-      )
-      console.error(mask(err))
+
+    const urls = RPC_URLS[chainId]
+    const { body } = req
+    let requests: IRpcRequest[] = Array.isArray(body) ? body : [body]
+    const responseFirst = await fetchRPC(urls, requests)
+    let results: IRpcResponse[] = await responseFirst.json()
+    let responseHeaders = responseFirst.headers
+
+    // Unfortunately, a successful response does not guarantee that the received data is correct
+    // Try to do a simple check of the results of getLogs and request fallback if there is a suspicion of incorrectness
+    for (let ind = 1; ind < urls.length; ind++) {
+      requests = getIncorrectItems(requests, results, responseHeaders, chainId)
+      if (!requests.length) {
+        break
+      }
+      const response = await fetchRPC(urls.slice(ind), requests)
+      responseHeaders = response.headers
+
+      const responseData: IRpcResponse[] = await response.json()
+      responseData.forEach(item => {
+        const index = results.findIndex(result => result.id === item.id)
+        responseData[index] = item
+      })
     }
-    const { headers } = requested
+    const { headers, status } = responseFirst
     res
       .setHeader('x-drpc-trace-id', headers.get('x-drpc-trace-id') ?? '')
       .setHeader('x-drpc-owner-tier', headers.get('x-drpc-owner-tier') ?? '')
       .setHeader('x-drpc-date', headers.get('date') ?? '')
-      .status(requested.status)
-      .json(responded)
+      .status(status)
+      .json(Array.isArray(body) ? results : results[0])
 
     console.info('Request to api/rpc successfully fullfilled', {
       ...requestInfo,
