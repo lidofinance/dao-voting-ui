@@ -5,7 +5,6 @@ import {
   useContext,
   useCallback,
   useState,
-  useEffect,
 } from 'react'
 import { useGovernanceBalance } from 'modules/tokens/hooks/useGovernanceBalance'
 import { useDelegationInfo } from '../hooks/useDelegationInfo'
@@ -20,10 +19,9 @@ import {
 import { useDelegationFormSubmit } from '../hooks/useDelegationFormSubmit'
 import { useDelegationRevoke } from '../hooks/useDelegationRevoke'
 import { ToastSuccess } from '@lidofinance/lido-ui'
-import { isValidAddress } from 'modules/shared/utils/addressValidation'
-import { useDelegateFromPublicList } from './DelegateFromPublicListContext'
 import { useProcessedPublicDelegatesList } from '../ui/PublicDelegateList/useProcessedPublicDelegatesList'
-import { useRouter } from 'next/router'
+import { useDelegateFromPublicListUpdate } from '../hooks/useDelegateFromPublicListUpdate'
+import { useDelegateFromQueryUpdate } from '../hooks/useDelegateFromQueryUpdate'
 
 //
 // Data context
@@ -136,46 +134,15 @@ export const DelegationFormProvider: FC<DelegationFormProviderProps> = ({
   mode,
 }) => {
   const networkData = useDelegationFormNetworkData()
-  const { selectedPublicDelegate, onPublicDelegateReset } =
-    useDelegateFromPublicList()
-  const { query } = useRouter()
 
   const formObject = useForm<DelegationFormInput>({
     defaultValues: { delegateAddress: '' },
     mode: 'onChange',
   })
 
-  useEffect(() => {
-    const currentValue = formObject.getValues('delegateAddress')
-    if (
-      selectedPublicDelegate &&
-      isValidAddress(selectedPublicDelegate) &&
-      currentValue?.toLowerCase() !== selectedPublicDelegate.toLowerCase()
-    ) {
-      formObject.setValue('delegateAddress', selectedPublicDelegate, {
-        shouldValidate: true,
-      })
-      formObject.setFocus('delegateAddress')
-      onPublicDelegateReset()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedPublicDelegate])
+  useDelegateFromPublicListUpdate(formObject)
 
-  useEffect(() => {
-    const currentValue = formObject.getValues('delegateAddress')
-    const queryAddress = query.delegateAddress as string | undefined
-    if (
-      queryAddress &&
-      isValidAddress(queryAddress) &&
-      currentValue?.toLowerCase() !== queryAddress.toLowerCase()
-    ) {
-      formObject.setValue('delegateAddress', queryAddress, {
-        shouldValidate: true,
-      })
-      formObject.setFocus('delegateAddress')
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query.delegateAddress])
+  useDelegateFromQueryUpdate(formObject)
 
   const {
     isSubmitting,
