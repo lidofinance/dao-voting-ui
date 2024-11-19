@@ -1,10 +1,10 @@
 import type { AragonVotingAbi } from 'generated'
-import type { CastVoteEventObject } from 'generated/AragonVotingAbi'
+import type { CastVoteEvent } from 'generated/AragonVotingAbi'
 
-export function unifyEventsVotedWithLast(events: CastVoteEventObject[]) {
+export function unifyEventsVotedWithLast(events: CastVoteEvent[]) {
   return events.reverse().reduce(
     (all, curr) => {
-      const voter = curr.voter
+      const voter = curr.args.voter
       if (!all.already[voter]) {
         all.already[voter] = true
         all.res.push(curr)
@@ -13,7 +13,7 @@ export function unifyEventsVotedWithLast(events: CastVoteEventObject[]) {
     },
     {
       already: {} as Record<string, boolean>,
-      res: [] as CastVoteEventObject[],
+      res: [] as CastVoteEvent[],
     },
   ).res
 }
@@ -28,12 +28,13 @@ export async function getEventsCastVote(
     filter,
     block ? Number(block) : undefined,
   )
-  const decoded = events.map(e => e.args) as CastVoteEventObject[]
-  return unifyEventsVotedWithLast(decoded)
+
+  return unifyEventsVotedWithLast(events)
 }
 
 export async function getEventsAttemptCastVoteAsDelegate(
   contractVoting: AragonVotingAbi,
+  castVoteEvents: CastVoteEvent[],
   voteId: string | number,
   block?: string | number,
 ) {
@@ -42,12 +43,6 @@ export async function getEventsAttemptCastVoteAsDelegate(
   )
   const delegateEvents = await contractVoting.queryFilter(
     filter,
-    block ? Number(block) : undefined,
-  )
-
-  const castVoteFilter = contractVoting.filters.CastVote(Number(voteId))
-  const castVoteEvents = await contractVoting.queryFilter(
-    castVoteFilter,
     block ? Number(block) : undefined,
   )
 
