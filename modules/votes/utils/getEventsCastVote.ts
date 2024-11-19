@@ -1,10 +1,10 @@
 import type { AragonVotingAbi } from 'generated'
-import type { CastVoteEvent } from 'generated/AragonVotingAbi'
+import { CastVoteEvent } from '../types'
 
 export function unifyEventsVotedWithLast(events: CastVoteEvent[]) {
   return events.reverse().reduce(
     (all, curr) => {
-      const voter = curr.args.voter
+      const voter = curr.voter
       if (!all.already[voter]) {
         all.already[voter] = true
         all.res.push(curr)
@@ -28,8 +28,15 @@ export async function getEventsCastVote(
     filter,
     block ? Number(block) : undefined,
   )
+  const decoded = events.map(e => ({
+    blockNumber: e.blockNumber,
+    transactionIndex: e.transactionIndex,
+    voter: e.args.voter,
+    supports: e.args.supports,
+    stake: e.args.stake,
+  }))
 
-  return unifyEventsVotedWithLast(events)
+  return unifyEventsVotedWithLast(decoded)
 }
 
 export async function getEventsAttemptCastVoteAsDelegate(
@@ -77,7 +84,7 @@ export async function getEventsAttemptCastVoteAsDelegate(
   })
 
   castVoteEvents.forEach(event => {
-    const voterLower = event.args.voter.toLowerCase()
+    const voterLower = event.voter.toLowerCase()
     const existing = voterToLatestVote.get(voterLower)
     if (
       !existing ||

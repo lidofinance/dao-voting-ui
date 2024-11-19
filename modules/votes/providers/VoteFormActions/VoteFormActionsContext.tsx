@@ -14,14 +14,11 @@ import { useFormVoteInfo } from 'modules/votes/ui/VoteForm/useFormVoteInfo'
 import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
 
 import { ResultTx } from 'modules/blockChain/types'
-import { VoteMode, VotePhase } from 'modules/votes/types'
+import { CastVoteEvent, VoteMode, VotePhase } from 'modules/votes/types'
 
 import invariant from 'tiny-invariant'
 
-import {
-  AttemptCastVoteAsDelegateEventObject,
-  CastVoteEventObject,
-} from 'generated/AragonVotingAbi'
+import { AttemptCastVoteAsDelegateEventObject } from 'generated/AragonVotingAbi'
 import { BigNumber } from '@ethersproject/bignumber'
 import {
   FinishHandler,
@@ -51,13 +48,13 @@ export type VoteFormActionsContextValue = {
   mode: VoteMode | null
   txVote: TransactionSender
   txDelegatesVote: TransactionSender
-  eventsVoted: CastVoteEventObject[] | undefined
+  eventsVoted: CastVoteEvent[] | undefined
   eventsDelegatesVoted: AttemptCastVoteAsDelegateEventObject[] | undefined
   eligibleDelegatedVotingPower: BigNumber
   delegatedVotersAddresses: string[]
   eligibleDelegatedVoters: EligibleDelegatorsData['eligibleDelegatedVoters']
   eligibleDelegatedVotersAddresses: string[]
-  delegatorsVotedThemselves: CastVoteEventObject[] | undefined
+  delegatorsVotedThemselves: CastVoteEvent[] | undefined
   governanceSymbol: string | undefined
   votedByDelegate: EligibleDelegatorsData['eligibleDelegatedVoters']
   voterState: number | null | undefined

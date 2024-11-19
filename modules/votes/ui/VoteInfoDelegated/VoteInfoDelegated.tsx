@@ -5,14 +5,12 @@ import {
   VoteStatus,
 } from 'modules/votes/ui/VoteInfoDelegated/VoteInfoDelegatedStyle'
 import { useDelegateVoteInfo } from 'modules/delegation/hooks/useDelegateVoteInfo'
-import type {
-  AttemptCastVoteAsDelegateEventObject,
-  CastVoteEventObject,
-} from 'generated/AragonVotingAbi'
+import type { AttemptCastVoteAsDelegateEventObject } from 'generated/AragonVotingAbi'
+import { CastVoteEvent } from 'modules/votes/types'
 
 interface Props {
   walletAddress: string | null | undefined
-  eventsVoted: CastVoteEventObject[] | undefined
+  eventsVoted: CastVoteEvent[] | undefined
   eventsDelegatesVoted: AttemptCastVoteAsDelegateEventObject[] | undefined
 }
 

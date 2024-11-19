@@ -15,16 +15,14 @@ import { Tooltip, trimAddress, Text, Identicon } from '@lidofinance/lido-ui'
 
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { formatNumber } from 'modules/shared/utils/formatNumber'
-import type {
-  CastVoteEventObject,
-  AttemptCastVoteAsDelegateEventObject,
-} from 'generated/AragonVotingAbi'
+import type { AttemptCastVoteAsDelegateEventObject } from 'generated/AragonVotingAbi'
 import { formatBalance } from 'modules/blockChain/utils/formatBalance'
 import { getPublicDelegateByAddress } from 'modules/delegation/utils/getPublicDelegateName'
 import { PublicDelegateAvatar } from 'modules/delegation/ui/PublicDelegateAvatar'
+import { CastVoteEvent } from 'modules/votes/types'
 
 type Props = {
-  eventsVoted: CastVoteEventObject[]
+  eventsVoted: CastVoteEvent[]
   eventsDelegatesVoted: AttemptCastVoteAsDelegateEventObject[] | undefined
 }
 
