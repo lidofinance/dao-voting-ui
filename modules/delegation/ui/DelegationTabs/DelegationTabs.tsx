@@ -11,7 +11,7 @@ const NAV_ROUTES = [
 ]
 
 export type DelegationTabsLayoutProps = {
-  mode: 'delegation' | 'delegators'
+  mode: 'delegation' | 'customize' | 'delegators'
 }
 
 export const DelegationTabs = ({ mode }: DelegationTabsLayoutProps) => {
@@ -29,7 +29,11 @@ export const DelegationTabs = ({ mode }: DelegationTabsLayoutProps) => {
         {isDelegate && (
           <Switch checked={isDelegatorsMode} routes={NAV_ROUTES} />
         )}
-        {isDelegatorsMode ? <DelegatorsList /> : <DelegationSettings />}
+        {isDelegatorsMode ? (
+          <DelegatorsList />
+        ) : (
+          <DelegationSettings customizeMode={mode === 'customize'} />
+        )}
       </NoSSRWrapper>
     </>
   )
