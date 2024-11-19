@@ -23,6 +23,7 @@ import { ToastSuccess } from '@lidofinance/lido-ui'
 import { isValidAddress } from 'modules/shared/utils/addressValidation'
 import { useDelegateFromPublicList } from './DelegateFromPublicListContext'
 import { useProcessedPublicDelegatesList } from '../ui/PublicDelegateList/useProcessedPublicDelegatesList'
+import { useRouter } from 'next/router'
 
 //
 // Data context
@@ -137,6 +138,7 @@ export const DelegationFormProvider: FC<DelegationFormProviderProps> = ({
   const networkData = useDelegationFormNetworkData()
   const { selectedPublicDelegate, onPublicDelegateReset } =
     useDelegateFromPublicList()
+  const { query } = useRouter()
 
   const formObject = useForm<DelegationFormInput>({
     defaultValues: { delegateAddress: '' },
@@ -158,6 +160,22 @@ export const DelegationFormProvider: FC<DelegationFormProviderProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedPublicDelegate])
+
+  useEffect(() => {
+    const currentValue = formObject.getValues('delegateAddress')
+    const queryAddress = query.delegateAddress as string | undefined
+    if (
+      queryAddress &&
+      isValidAddress(queryAddress) &&
+      currentValue?.toLowerCase() !== queryAddress.toLowerCase()
+    ) {
+      formObject.setValue('delegateAddress', queryAddress, {
+        shouldValidate: true,
+      })
+      formObject.setFocus('delegateAddress')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query.delegateAddress])
 
   const {
     isSubmitting,
