@@ -22,6 +22,7 @@ import { useDelegationRevoke } from '../hooks/useDelegationRevoke'
 import { ToastSuccess } from '@lidofinance/lido-ui'
 import { isValidAddress } from 'modules/shared/utils/addressValidation'
 import { useDelegateFromPublicList } from './DelegateFromPublicListContext'
+import { useProcessedPublicDelegatesList } from '../ui/PublicDelegateList/useProcessedPublicDelegatesList'
 
 //
 // Data context
@@ -83,15 +84,18 @@ const useDelegationFormActions = (
   const setSubmitting = useCallback(() => setIsSubmitting(true), [])
   const resetSubmitting = useCallback(() => setIsSubmitting(false), [])
 
+  const { update } = useProcessedPublicDelegatesList()
+
   const handleFinish = useCallback(
     async (hasError?: boolean) => {
       await networkData.revalidate()
+      await update()
       resetSubmitting()
       if (!hasError) {
         ToastSuccess('Transaction submitted successfully')
       }
     },
-    [networkData, resetSubmitting],
+    [networkData, resetSubmitting, update],
   )
 
   const { txAragonDelegate, txSnapshotDelegate, submitDelegation } =
