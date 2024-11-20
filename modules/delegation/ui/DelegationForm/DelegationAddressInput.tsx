@@ -2,7 +2,6 @@ import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useDelegationFormData } from 'modules/delegation/providers/DelegationFormContext'
 import { validateAddress } from 'modules/delegation/utils/validateAddress'
 import { InputControl } from 'modules/shared/ui/Controls/Input'
-import { hasIncorrectLength } from 'modules/delegation/utils/hasIncorrectLength'
 
 export function DelegationAddressInput() {
   const { isWalletConnected, walletAddress } = useWeb3()
@@ -27,9 +26,7 @@ export function DelegationAddressInput() {
           if (value.length > 42) {
             return 'Address is too long'
           }
-          if (hasIncorrectLength(value)) {
-            return true
-          }
+
           const addressErr = validateAddress(value)
           if (addressErr) {
             return addressErr
