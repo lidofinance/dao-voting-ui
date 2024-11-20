@@ -1,0 +1,1212 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "dependencies",
+        "type": "tuple",
+        "internalType": "struct DualGovernance.ExternalDependencies",
+        "components": [
+          {
+            "name": "stETH",
+            "type": "address",
+            "internalType": "contract IStETH"
+          },
+          {
+            "name": "wstETH",
+            "type": "address",
+            "internalType": "contract IWstETH"
+          },
+          {
+            "name": "withdrawalQueue",
+            "type": "address",
+            "internalType": "contract IWithdrawalQueue"
+          },
+          {
+            "name": "timelock",
+            "type": "address",
+            "internalType": "contract ITimelock"
+          },
+          {
+            "name": "resealManager",
+            "type": "address",
+            "internalType": "contract IResealManager"
+          },
+          {
+            "name": "configProvider",
+            "type": "address",
+            "internalType": "contract IDualGovernanceConfigProvider"
+          }
+        ]
+      },
+      {
+        "name": "sanityCheckParams",
+        "type": "tuple",
+        "internalType": "struct DualGovernance.SanityCheckParams",
+        "components": [
+          {
+            "name": "minWithdrawalsBatchSize",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "minTiebreakerActivationTimeout",
+            "type": "uint32",
+            "internalType": "Duration"
+          },
+          {
+            "name": "maxTiebreakerActivationTimeout",
+            "type": "uint32",
+            "internalType": "Duration"
+          },
+          {
+            "name": "maxSealableWithdrawalBlockersCount",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ]
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "ESCROW_MASTER_COPY",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IEscrow"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "MAX_SEALABLE_WITHDRAWAL_BLOCKERS_COUNT",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "MAX_TIEBREAKER_ACTIVATION_TIMEOUT",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint32",
+        "internalType": "Duration"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "MIN_TIEBREAKER_ACTIVATION_TIMEOUT",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint32",
+        "internalType": "Duration"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "TIMELOCK",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract ITimelock"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "activateNextState",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "addTiebreakerSealableWithdrawalBlocker",
+    "inputs": [
+      {
+        "name": "sealableWithdrawalBlocker",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "canCancelAllPendingProposals",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "canScheduleProposal",
+    "inputs": [
+      {
+        "name": "proposalId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "canSubmitProposal",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "cancelAllPendingProposals",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "getConfigProvider",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IDualGovernanceConfigProvider"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getEffectiveState",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "effectiveState",
+        "type": "uint8",
+        "internalType": "enum State"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getPersistedState",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "persistedState",
+        "type": "uint8",
+        "internalType": "enum State"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getProposer",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "proposer",
+        "type": "tuple",
+        "internalType": "struct Proposers.Proposer",
+        "components": [
+          {
+            "name": "account",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "executor",
+            "type": "address",
+            "internalType": "address"
+          }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getProposers",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "proposers",
+        "type": "tuple[]",
+        "internalType": "struct Proposers.Proposer[]",
+        "components": [
+          {
+            "name": "account",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "executor",
+            "type": "address",
+            "internalType": "address"
+          }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getRageQuitEscrow",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getResealManager",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IResealManager"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getStateDetails",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "stateDetails",
+        "type": "tuple",
+        "internalType": "struct IDualGovernance.StateDetails",
+        "components": [
+          {
+            "name": "effectiveState",
+            "type": "uint8",
+            "internalType": "enum State"
+          },
+          {
+            "name": "persistedState",
+            "type": "uint8",
+            "internalType": "enum State"
+          },
+          {
+            "name": "persistedStateEnteredAt",
+            "type": "uint40",
+            "internalType": "Timestamp"
+          },
+          {
+            "name": "vetoSignallingActivatedAt",
+            "type": "uint40",
+            "internalType": "Timestamp"
+          },
+          {
+            "name": "vetoSignallingReactivationTime",
+            "type": "uint40",
+            "internalType": "Timestamp"
+          },
+          {
+            "name": "normalOrVetoCooldownExitedAt",
+            "type": "uint40",
+            "internalType": "Timestamp"
+          },
+          {
+            "name": "rageQuitRound",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "vetoSignallingDuration",
+            "type": "uint32",
+            "internalType": "Duration"
+          }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getTiebreakerDetails",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "tiebreakerState",
+        "type": "tuple",
+        "internalType": "struct ITiebreaker.TiebreakerDetails",
+        "components": [
+          {
+            "name": "isTie",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "tiebreakerCommittee",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "tiebreakerActivationTimeout",
+            "type": "uint32",
+            "internalType": "Duration"
+          },
+          {
+            "name": "sealableWithdrawalBlockers",
+            "type": "address[]",
+            "internalType": "address[]"
+          }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getVetoSignallingEscrow",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "isExecutor",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "isProposer",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "registerProposer",
+    "inputs": [
+      {
+        "name": "proposer",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "executor",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "removeTiebreakerSealableWithdrawalBlocker",
+    "inputs": [
+      {
+        "name": "sealableWithdrawalBlocker",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "resealSealable",
+    "inputs": [
+      {
+        "name": "sealable",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "scheduleProposal",
+    "inputs": [
+      {
+        "name": "proposalId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setConfigProvider",
+    "inputs": [
+      {
+        "name": "newConfigProvider",
+        "type": "address",
+        "internalType": "contract IDualGovernanceConfigProvider"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setResealCommittee",
+    "inputs": [
+      {
+        "name": "resealCommittee",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setResealManager",
+    "inputs": [
+      {
+        "name": "resealManager",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setTiebreakerActivationTimeout",
+    "inputs": [
+      {
+        "name": "tiebreakerActivationTimeout",
+        "type": "uint32",
+        "internalType": "Duration"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setTiebreakerCommittee",
+    "inputs": [
+      {
+        "name": "tiebreakerCommittee",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "submitProposal",
+    "inputs": [
+      {
+        "name": "calls",
+        "type": "tuple[]",
+        "internalType": "struct ExternalCall[]",
+        "components": [
+          {
+            "name": "target",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "value",
+            "type": "uint96",
+            "internalType": "uint96"
+          },
+          {
+            "name": "payload",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ]
+      },
+      {
+        "name": "metadata",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "proposalId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "tiebreakerResumeSealable",
+    "inputs": [
+      {
+        "name": "sealable",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "tiebreakerScheduleProposal",
+    "inputs": [
+      {
+        "name": "proposalId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "unregisterProposer",
+    "inputs": [
+      {
+        "name": "proposer",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "event",
+    "name": "CancelAllPendingProposalsExecuted",
+    "inputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "CancelAllPendingProposalsSkipped",
+    "inputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ConfigProviderSet",
+    "inputs": [
+      {
+        "name": "newConfigProvider",
+        "type": "address",
+        "indexed": false,
+        "internalType": "contract IDualGovernanceConfigProvider"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "DualGovernanceStateChanged",
+    "inputs": [
+      {
+        "name": "from",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "enum State"
+      },
+      {
+        "name": "to",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "enum State"
+      },
+      {
+        "name": "state",
+        "type": "tuple",
+        "indexed": false,
+        "internalType": "struct DualGovernanceStateMachine.Context",
+        "components": [
+          {
+            "name": "state",
+            "type": "uint8",
+            "internalType": "enum State"
+          },
+          {
+            "name": "enteredAt",
+            "type": "uint40",
+            "internalType": "Timestamp"
+          },
+          {
+            "name": "vetoSignallingActivatedAt",
+            "type": "uint40",
+            "internalType": "Timestamp"
+          },
+          {
+            "name": "signallingEscrow",
+            "type": "address",
+            "internalType": "contract IEscrow"
+          },
+          {
+            "name": "rageQuitRound",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "vetoSignallingReactivationTime",
+            "type": "uint40",
+            "internalType": "Timestamp"
+          },
+          {
+            "name": "normalOrVetoCooldownExitedAt",
+            "type": "uint40",
+            "internalType": "Timestamp"
+          },
+          {
+            "name": "rageQuitEscrow",
+            "type": "address",
+            "internalType": "contract IEscrow"
+          },
+          {
+            "name": "configProvider",
+            "type": "address",
+            "internalType": "contract IDualGovernanceConfigProvider"
+          }
+        ]
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "EscrowMasterCopyDeployed",
+    "inputs": [
+      {
+        "name": "escrowMasterCopy",
+        "type": "address",
+        "indexed": false,
+        "internalType": "contract IEscrow"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "NewSignallingEscrowDeployed",
+    "inputs": [
+      {
+        "name": "escrow",
+        "type": "address",
+        "indexed": true,
+        "internalType": "contract IEscrow"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ProposerRegistered",
+    "inputs": [
+      {
+        "name": "proposer",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "executor",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ProposerUnregistered",
+    "inputs": [
+      {
+        "name": "proposer",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "executor",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ResealCommitteeSet",
+    "inputs": [
+      {
+        "name": "resealCommittee",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ResealManagerSet",
+    "inputs": [
+      {
+        "name": "resealManager",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "SealableWithdrawalBlockerAdded",
+    "inputs": [
+      {
+        "name": "sealable",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "SealableWithdrawalBlockerRemoved",
+    "inputs": [
+      {
+        "name": "sealable",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "TiebreakerActivationTimeoutSet",
+    "inputs": [
+      {
+        "name": "newTiebreakerActivationTimeout",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "Duration"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "TiebreakerCommitteeSet",
+    "inputs": [
+      {
+        "name": "newTiebreakerCommittee",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "error",
+    "name": "AlreadyInitialized",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "CallerIsNotAdminExecutor",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CallerIsNotResealCommittee",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CallerIsNotTiebreakerCommittee",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DurationOverflow",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "DurationUnderflow",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ERC1167FailedCreateClone",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IndexOneBasedOverflow",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IndexOneBasedUnderflow",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidConfigProvider",
+    "inputs": [
+      {
+        "name": "configProvider",
+        "type": "address",
+        "internalType": "contract IDualGovernanceConfigProvider"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidExecutor",
+    "inputs": [
+      {
+        "name": "executor",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidProposerAccount",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidRageQuitEthWithdrawalsDelayRange",
+    "inputs": [
+      {
+        "name": "rageQuitEthWithdrawalsMinDelay",
+        "type": "uint32",
+        "internalType": "Duration"
+      },
+      {
+        "name": "rageQuitEthWithdrawalsMaxDelay",
+        "type": "uint32",
+        "internalType": "Duration"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidRageQuitSupportRange",
+    "inputs": [
+      {
+        "name": "firstSealRageQuitSupport",
+        "type": "uint128",
+        "internalType": "PercentD16"
+      },
+      {
+        "name": "secondSealRageQuitSupport",
+        "type": "uint128",
+        "internalType": "PercentD16"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidResealCommittee",
+    "inputs": [
+      {
+        "name": "resealCommittee",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidResealManager",
+    "inputs": [
+      {
+        "name": "resealManager",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidSealable",
+    "inputs": [
+      {
+        "name": "sealable",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidTiebreakerActivationTimeout",
+    "inputs": [
+      {
+        "name": "timeout",
+        "type": "uint32",
+        "internalType": "Duration"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidTiebreakerCommittee",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidVetoSignallingDurationRange",
+    "inputs": [
+      {
+        "name": "vetoSignallingMinDuration",
+        "type": "uint32",
+        "internalType": "Duration"
+      },
+      {
+        "name": "vetoSignallingMaxDuration",
+        "type": "uint32",
+        "internalType": "Duration"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "NotAdminProposer",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "PercentD16Underflow",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ProposalSchedulingBlocked",
+    "inputs": [
+      {
+        "name": "proposalId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ProposalSubmissionBlocked",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ProposerAlreadyRegistered",
+    "inputs": [
+      {
+        "name": "proposer",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ProposerNotRegistered",
+    "inputs": [
+      {
+        "name": "proposer",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ResealIsNotAllowedInNormalState",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "SealableWithdrawalBlockerAlreadyAdded",
+    "inputs": [
+      {
+        "name": "sealable",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "SealableWithdrawalBlockerNotFound",
+    "inputs": [
+      {
+        "name": "sealable",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "SealableWithdrawalBlockersLimitReached",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "TiebreakNotAllowed",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "TimestampOverflow",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "UnownedAdminExecutor",
+    "inputs": []
+  }
+]

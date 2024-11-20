@@ -117,3 +117,20 @@ export const ScriptLoaderWrap = styled.div`
     right: 50%;
   }
 `
+
+export const DGBadgeWrapper = styled.div`
+  text-align: right;
+`
+
+export const DGBadge = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-top: 16px;
+  border-radius: 6px;
+  background-color: #00a3ff1a;
+  color: #00a3ff;
+  padding: 2px 8px;
+  margin-left: auto;
+`
