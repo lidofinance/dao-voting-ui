@@ -37,14 +37,15 @@ import { TxRow } from 'modules/blockChain/ui/TxRow'
 import { openWindow } from 'modules/shared/utils/openWindow'
 import { VoteActionButtonObjectionTooltip } from 'modules/votes/ui/VoteActionButtonObjectionTooltip'
 import { EligibleDelegator } from 'modules/delegation/hooks/useEligibleDelegators'
+import { DelegationInfo } from 'modules/delegation/types'
 
 interface SnapshotData {
   mode: 'yay' | 'nay' | 'enact' | null
   eligibleDelegatedVotingPower: BigNumber
   votePhase: VotePhase | undefined
   votedByDelegate: EligibleDelegator[]
-  votePower: Number | undefined
-  delegationInfo: Record<string, string | null> | undefined
+  votePower: number | undefined
+  delegationInfo: DelegationInfo | undefined
   delegatedVotersAddresses: string[]
   eligibleDelegatedVoters: EligibleDelegator[]
   voterState: number | null | undefined

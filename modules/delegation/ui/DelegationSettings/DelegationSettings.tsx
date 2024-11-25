@@ -6,8 +6,12 @@ import { DelegationForm } from '../DelegationForm'
 import { PublicDelegateList } from '../PublicDelegateList'
 import { DelegateFromPublicListProvider } from '../../providers/DelegateFromPublicListContext'
 
-export function DelegationSettings() {
-  const [isSimpleModeOn, setIsSimpleModeOn] = useState(true)
+type Props = {
+  customizeMode: boolean
+}
+
+export function DelegationSettings({ customizeMode }: Props) {
+  const [isSimpleModeOn, setIsSimpleModeOn] = useState(!customizeMode)
   const isMobile = useBreakpoint('md')
 
   return (

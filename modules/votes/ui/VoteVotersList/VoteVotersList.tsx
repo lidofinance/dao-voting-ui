@@ -9,21 +9,20 @@ import {
   ListRow,
   ListRowCell,
   AddressWrap,
-  Identicon,
   ShowMoreBtn,
 } from './VoteVotersListStyle'
-import { Tooltip, trimAddress, Text } from '@lidofinance/lido-ui'
+import { Tooltip, trimAddress, Text, Identicon } from '@lidofinance/lido-ui'
 
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { formatNumber } from 'modules/shared/utils/formatNumber'
-import type {
-  CastVoteEventObject,
-  AttemptCastVoteAsDelegateEventObject,
-} from 'generated/AragonVotingAbi'
+import type { AttemptCastVoteAsDelegateEventObject } from 'generated/AragonVotingAbi'
 import { formatBalance } from 'modules/blockChain/utils/formatBalance'
+import { getPublicDelegateByAddress } from 'modules/delegation/utils/getPublicDelegateName'
+import { PublicDelegateAvatar } from 'modules/delegation/ui/PublicDelegateAvatar'
+import { CastVoteEvent } from 'modules/votes/types'
 
 type Props = {
-  eventsVoted: CastVoteEventObject[]
+  eventsVoted: CastVoteEvent[]
   eventsDelegatesVoted: AttemptCastVoteAsDelegateEventObject[] | undefined
 }
 
@@ -94,6 +93,8 @@ export function VoteVotersList({ eventsVoted, eventsDelegatesVoted }: Props) {
           const delegateAddress = delegateVotesMap.get(event.voter) || null
           const votedByDelegate = !!delegateAddress
 
+          const publicDelegate = getPublicDelegateByAddress(event.voter)
+
           return (
             <ListRow key={`${event.voter}-${i}}`}>
               <ListRowCell>
@@ -101,12 +102,23 @@ export function VoteVotersList({ eventsVoted, eventsDelegatesVoted }: Props) {
                   address={event.voter}
                   delegateAddress={delegateAddress}
                 >
-                  <AddressWrap>
-                    <Identicon address={event.voter} diameter={20} />
-                    {(ensNameList && ensNameList[i]) ||
-                      trimAddress(event.voter, 4)}
-                    {votedByDelegate && <UnionIcon />}
-                  </AddressWrap>
+                  {publicDelegate ? (
+                    <AddressWrap>
+                      <PublicDelegateAvatar
+                        avatarSrc={publicDelegate.avatar}
+                        size={20}
+                      />
+                      {publicDelegate.name}
+                      {votedByDelegate && <UnionIcon />}
+                    </AddressWrap>
+                  ) : (
+                    <AddressWrap>
+                      <Identicon address={event.voter} diameter={20} />
+                      {(ensNameList && ensNameList[i]) ||
+                        trimAddress(event.voter, 4)}
+                      {votedByDelegate && <UnionIcon />}
+                    </AddressWrap>
+                  )}
                 </DelegationAddressPop>
               </ListRowCell>
               <ListRowCell>{event.supports ? 'Yes' : 'No'}</ListRowCell>

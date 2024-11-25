@@ -26,3 +26,17 @@ export const VoteStatus = styled.div<StatusProps>`
     line-height: 1;
   }
 `
+
+export const AddressBadgeWrap = styled.span`
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 10px 2px 4px;
+  width: fit-content;
+  border-radius: ${({ theme }) => theme.borderRadiusesMap.xl}px;
+  background-color: var(--lido-color-backgroundSecondary);
+  & > div:nth-child(1) {
+    margin-right: 8px;
+  }
+`
