@@ -5,13 +5,6 @@ const basePath = getConfig().publicRuntimeConfig.basePath || ''
 // The list of public delegates was provided by DAO Ops workstream member
 export const PUBLIC_DELEGATES = [
   {
-    name: 'Matt Stam',
-    avatar: `${basePath}/delegates/matt.jpeg`,
-    address: '0x33379367200Ac200182ccD4abD71683F2D24e373',
-    lido: 'https://research.lido.fi/t/matt-stam-delegate-thread/8145',
-    twitter: 'https://x.com/mattstam_eth',
-  },
-  {
     name: 'Ignas',
     avatar: `${basePath}/delegates/ignas.png`,
     address: '0x3DDC7d25c7a1dc381443e491Bbf1Caa8928A05B0',
@@ -54,13 +47,6 @@ export const PUBLIC_DELEGATES = [
     twitter: 'https://x.com/A_Leutenegger',
   },
   {
-    name: 'Sov',
-    avatar: `${basePath}/delegates/sov.jpeg`,
-    address: '0x2D7d6Ec6198ADFD5850D00BD601958F6E316b05E',
-    lido: 'https://research.lido.fi/t/sov-delegate-thread/8069',
-    twitter: 'https://x.com/sovereignsignal',
-  },
-  {
     name: 'Polar',
     avatar: `${basePath}/delegates/polar.jpeg`,
     address: '0x1f76a6Bf03429480472B3695E08689219cE15ED6',
@@ -80,13 +66,6 @@ export const PUBLIC_DELEGATES = [
     address: '0xfF4139e99Bd7c23F4611dc660c33c97A825EA67b',
     lido: 'https://research.lido.fi/t/blockworks-research-delegate-thread/8024',
     twitter: 'https://x.com/blockworksres',
-  },
-  {
-    name: 'Blockful (Daniela Zschaber)',
-    avatar: `${basePath}/delegates/blockful.jpeg`,
-    address: '0x3b9F47629cD4D5903cF3eB897aaC4F6b41Dd2589',
-    lido: 'https://research.lido.fi/t/daniela-zschaber-representing-blockful-delegate-thread/8018',
-    twitter: 'https://x.com/danimimm',
   },
   {
     name: 'karpatkey',
@@ -124,27 +103,6 @@ export const PUBLIC_DELEGATES = [
     twitter: 'https://x.com/eboadom',
   },
   {
-    name: 'ReservoirDAO',
-    avatar: `${basePath}/delegates/reservoir.jpeg`,
-    address: '0x4f894Bfc9481110278C356adE1473eBe2127Fd3C',
-    lido: 'https://research.lido.fi/t/reservoirdao-alphagrowth-delegate-platform/8169',
-    twitter: 'https://x.com/alphagrowth1',
-  },
-  {
-    name: 'FranklinDAO',
-    avatar: `${basePath}/delegates/franklin.jpeg`,
-    address: '0x070341aA5Ed571f0FB2c4a5641409B1A46b4961b',
-    lido: 'https://research.lido.fi/t/franklin-dao-delegate-platform/8167',
-    twitter: 'https://x.com/franklin_dao',
-  },
-  {
-    name: 'Mog',
-    avatar: `${basePath}/delegates/mog.jpeg`,
-    address: '0x61Cc8f06F3B6e1a3Fba28CbEbc4c89304b1187D1',
-    lido: 'https://research.lido.fi/t/mog-delegate-thread/8164',
-    twitter: 'https://x.com/tungtdinh',
-  },
-  {
     name: 'Pol Lanski',
     avatar: `${basePath}/delegates/lanski.png`,
     address: '0xB6647e02AE6Dd74137cB80b1C24333852E4AF890',
@@ -166,39 +124,11 @@ export const PUBLIC_DELEGATES = [
     twitter: 'https://x.com/eth_everstake',
   },
   {
-    name: 'marcbcs',
-    avatar: `${basePath}/delegates/marcbcs.jpeg`,
-    address: '0x98308b6dA79B47D15e9438CB66831563649Dbd94',
-    lido: 'https://research.lido.fi/t/marcbcs-delegate-thread/8209',
-    twitter: 'https://x.com/marcbcs',
-  },
-  {
-    name: 'Daedalus Collective',
-    avatar: `${basePath}/delegates/daedalus.png`,
-    address: '0x04827a54F2e345467beAFEfB9EF76Cb2f2c62D83',
-    lido: 'https://research.lido.fi/t/daedalus-delegate-thread/8195',
-    twitter: 'https://x.com/daedalus_angels',
-  },
-  {
     name: 'ProRelGuild',
     avatar: null,
     address: '0x7A5959855B6508aF1055Af460331fB697dd08e22',
     lido: 'https://research.lido.fi/t/prorelguild-delegate-thread/8186',
     twitter: 'https://x.com/apegenija',
-  },
-  {
-    name: 'Today in DeFi',
-    avatar: null,
-    address: '0xf163D77B8EfC151757fEcBa3D463f3BAc7a4D808',
-    lido: 'https://research.lido.fi/t/today-in-defi-delegate-thread/8207',
-    twitter: 'https://x.com/todayindefi',
-  },
-  {
-    name: 'Next Finance Tech',
-    avatar: `${basePath}/delegates/nxt.jpeg`,
-    address: '0x18c674F655594F15c490aeEac737895b7903E37f',
-    lido: 'https://research.lido.fi/t/next-finance-tech-delegate-thread/8204',
-    twitter: 'https://x.com/nxt_fintech',
   },
   {
     name: 'cp0x',
@@ -215,25 +145,11 @@ export const PUBLIC_DELEGATES = [
     twitter: 'https://x.com/SimplyStaking',
   },
   {
-    name: 'Boardroom',
-    avatar: null,
-    address: '0x6De8448e7d5f58af394CC9540ABe703d0c955dFd',
-    lido: 'https://research.lido.fi/t/boardroom-delegate-thread/8200',
-    twitter: 'https://x.com/boardroom_info',
-  },
-  {
     name: 'Proof Group',
     avatar: null,
     address: '0xc3A673736415BbF5ba8A8E0642eC3Ab16F4Ada24',
     lido: 'https://research.lido.fi/t/proof-group-delegate-thread/8190',
     twitter: 'https://x.com/njess',
-  },
-  {
-    name: 'Lemma Solutions',
-    avatar: `${basePath}/delegates/lemma.jpeg`,
-    address: '0x58B1b454Dbe5156ACc8FC2139E7238451b59f432',
-    lido: 'https://research.lido.fi/t/lemma-delegate-thread/8214',
-    twitter: 'https://x.com/Lemma_Solutions',
   },
   {
     name: 'Nansen',
