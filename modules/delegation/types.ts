@@ -1,5 +1,13 @@
 import { TransactionSender } from 'modules/blockChain/hooks/useTransactionSender'
 import { UseFormRegister, UseFormWatch } from 'react-hook-form'
+import { PUBLIC_DELEGATES } from './publicDelegates'
+
+export type DelegationInfo = {
+  aragonDelegateAddress: string | null | undefined
+  aragonPublicDelegate: PublicDelegate | null | undefined
+  snapshotDelegateAddress: string | null | undefined
+  snapshotPublicDelegate: PublicDelegate | null | undefined
+}
 
 export type DelegationFormInput = {
   delegateAddress: string | null
@@ -11,12 +19,10 @@ export type DelegationFormLoading = {
 }
 
 export type DelegationFormNetworkData = {
-  aragonDelegateAddress?: string | null
-  snapshotDelegateAddress?: string | null
   governanceBalanceStr?: string
   loading: DelegationFormLoading
   revalidate: () => Promise<void>
-}
+} & DelegationInfo
 
 export type DelegationType = 'aragon' | 'snapshot'
 
@@ -32,3 +38,5 @@ export type DelegationFormDataContextValue = DelegationFormNetworkData & {
   register: UseFormRegister<DelegationFormInput>
   watch: UseFormWatch<DelegationFormInput>
 }
+
+export type PublicDelegate = typeof PUBLIC_DELEGATES[number]

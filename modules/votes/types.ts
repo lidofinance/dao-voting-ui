@@ -1,3 +1,4 @@
+import { BigNumber } from 'ethers'
 import { AragonVotingAbi } from 'generated'
 import { UnwrapPromise } from 'next/dist/lib/coalesced-function'
 
@@ -32,4 +33,12 @@ export enum VotePhase {
   Main,
   Objection,
   Closed,
+}
+
+export type CastVoteEvent = {
+  voter: string
+  supports: boolean
+  stake: BigNumber
+  blockNumber: number
+  transactionIndex: number
 }

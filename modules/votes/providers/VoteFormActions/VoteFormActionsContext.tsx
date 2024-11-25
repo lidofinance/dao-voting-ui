@@ -14,20 +14,18 @@ import { useFormVoteInfo } from 'modules/votes/ui/VoteForm/useFormVoteInfo'
 import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
 
 import { ResultTx } from 'modules/blockChain/types'
-import { VoteMode, VotePhase } from 'modules/votes/types'
+import { CastVoteEvent, VoteMode, VotePhase } from 'modules/votes/types'
 
 import invariant from 'tiny-invariant'
 
-import {
-  AttemptCastVoteAsDelegateEventObject,
-  CastVoteEventObject,
-} from 'generated/AragonVotingAbi'
+import { AttemptCastVoteAsDelegateEventObject } from 'generated/AragonVotingAbi'
 import { BigNumber } from '@ethersproject/bignumber'
 import {
   FinishHandler,
   TransactionSender,
 } from 'modules/blockChain/hooks/useTransactionSender'
 import { useDelegationInfo } from 'modules/delegation/hooks/useDelegationInfo'
+import { DelegationInfo } from 'modules/delegation/types'
 
 export enum VotedAs {
   delegate = 'delegate',
@@ -40,7 +38,7 @@ export type VoteFormActionsContextValue = {
   setSuccessTx: React.Dispatch<React.SetStateAction<ResultTx | null>>
   formVoteSubmitData: ReturnType<typeof useFormVoteSubmit>
   setVoteId: React.Dispatch<React.SetStateAction<string>>
-  votePower: Number | undefined
+  votePower: number | undefined
   handleVote: (mode: VoteMode | null) => Promise<void>
   handleDelegatesVote: (
     mode: VoteMode | null,
@@ -50,18 +48,18 @@ export type VoteFormActionsContextValue = {
   mode: VoteMode | null
   txVote: TransactionSender
   txDelegatesVote: TransactionSender
-  eventsVoted: CastVoteEventObject[] | undefined
+  eventsVoted: CastVoteEvent[] | undefined
   eventsDelegatesVoted: AttemptCastVoteAsDelegateEventObject[] | undefined
   eligibleDelegatedVotingPower: BigNumber
   delegatedVotersAddresses: string[]
   eligibleDelegatedVoters: EligibleDelegatorsData['eligibleDelegatedVoters']
   eligibleDelegatedVotersAddresses: string[]
-  delegatorsVotedThemselves: CastVoteEventObject[] | undefined
+  delegatorsVotedThemselves: CastVoteEvent[] | undefined
   governanceSymbol: string | undefined
   votedByDelegate: EligibleDelegatorsData['eligibleDelegatedVoters']
   voterState: number | null | undefined
   isSubmitting: false | VoteMode
-  delegationInfo: Record<string, string | null> | undefined
+  delegationInfo: DelegationInfo | undefined
   votePhase: VotePhase | undefined
 }
 

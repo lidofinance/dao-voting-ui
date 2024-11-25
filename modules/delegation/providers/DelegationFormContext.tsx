@@ -5,7 +5,6 @@ import {
   useContext,
   useCallback,
   useState,
-  useEffect,
 } from 'react'
 import { useGovernanceBalance } from 'modules/tokens/hooks/useGovernanceBalance'
 import { useDelegationInfo } from '../hooks/useDelegationInfo'
@@ -20,8 +19,9 @@ import {
 import { useDelegationFormSubmit } from '../hooks/useDelegationFormSubmit'
 import { useDelegationRevoke } from '../hooks/useDelegationRevoke'
 import { ToastSuccess } from '@lidofinance/lido-ui'
-import { isValidAddress } from 'modules/shared/utils/addressValidation'
-import { useDelegateFromPublicList } from './DelegateFromPublicListContext'
+import { useProcessedPublicDelegatesList } from '../ui/PublicDelegateList/useProcessedPublicDelegatesList'
+import { useDelegateFromPublicListUpdate } from '../hooks/useDelegateFromPublicListUpdate'
+import { useDelegateFromQueryUpdate } from '../hooks/useDelegateFromQueryUpdate'
 
 //
 // Data context
@@ -65,7 +65,9 @@ const useDelegationFormNetworkData = (): DelegationFormNetworkData => {
 
   return {
     aragonDelegateAddress: delegationInfo?.aragonDelegateAddress,
+    aragonPublicDelegate: delegationInfo?.aragonPublicDelegate,
     snapshotDelegateAddress: delegationInfo?.snapshotDelegateAddress,
+    snapshotPublicDelegate: delegationInfo?.snapshotPublicDelegate,
     governanceBalanceStr: governanceBalance?.balanceStr,
     loading,
     revalidate,
@@ -81,15 +83,18 @@ const useDelegationFormActions = (
   const setSubmitting = useCallback(() => setIsSubmitting(true), [])
   const resetSubmitting = useCallback(() => setIsSubmitting(false), [])
 
+  const { update } = useProcessedPublicDelegatesList()
+
   const handleFinish = useCallback(
     async (hasError?: boolean) => {
       await networkData.revalidate()
+      await update()
       resetSubmitting()
       if (!hasError) {
         ToastSuccess('Transaction submitted successfully')
       }
     },
-    [networkData, resetSubmitting],
+    [networkData, resetSubmitting, update],
   )
 
   const { txAragonDelegate, txSnapshotDelegate, submitDelegation } =
@@ -129,29 +134,15 @@ export const DelegationFormProvider: FC<DelegationFormProviderProps> = ({
   mode,
 }) => {
   const networkData = useDelegationFormNetworkData()
-  const { selectedPublicDelegate, onPublicDelegateReset } =
-    useDelegateFromPublicList()
 
   const formObject = useForm<DelegationFormInput>({
     defaultValues: { delegateAddress: '' },
     mode: 'onChange',
   })
 
-  useEffect(() => {
-    const currentValue = formObject.getValues('delegateAddress')
-    if (
-      selectedPublicDelegate &&
-      isValidAddress(selectedPublicDelegate) &&
-      currentValue?.toLowerCase() !== selectedPublicDelegate.toLowerCase()
-    ) {
-      formObject.setValue('delegateAddress', selectedPublicDelegate, {
-        shouldValidate: true,
-      })
-      formObject.setFocus('delegateAddress')
-      onPublicDelegateReset()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedPublicDelegate])
+  useDelegateFromPublicListUpdate(formObject)
+
+  useDelegateFromQueryUpdate(formObject)
 
   const {
     isSubmitting,

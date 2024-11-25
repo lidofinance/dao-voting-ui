@@ -60,6 +60,7 @@ export const VotedBy = styled.div`
   gap: 8px;
   margin-bottom: 8px;
   margin-top: 24px;
+  padding-left: 16px;
 `
 
 export const IdenticonBadgeWrap = styled(IdenticonBadge)<IdenticonBadgeProps>`
@@ -68,4 +69,17 @@ export const IdenticonBadgeWrap = styled(IdenticonBadge)<IdenticonBadgeProps>`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`
+
+export const PublicDelegateWrap = styled.div`
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: ${({ theme }) => theme.borderRadiusesMap.xl}px;
+
+  & > span {
+    padding: 0px 6px;
+    flex: 1;
+  }
 `

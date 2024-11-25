@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { Identicon as IdenticonOriginal } from '@lidofinance/lido-ui'
 
 export const Wrap = styled.div`
   margin-top: ${({ theme }) => theme.spaceMap.lg}px;
@@ -53,12 +52,7 @@ export const ListRowCell = styled.div`
 export const AddressWrap = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
-`
-
-export const Identicon = styled(IdenticonOriginal)`
-  flex: 0 0 auto;
-  margin-right: ${({ theme }) => theme.spaceMap.sm}px;
+  gap: ${({ theme }) => theme.spaceMap.md}px; ;
 `
 
 export const ShowMoreBtn = styled(ListRow)`

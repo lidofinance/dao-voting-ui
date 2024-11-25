@@ -1,12 +1,10 @@
 import { useMemo } from 'react'
-import type {
-  AttemptCastVoteAsDelegateEventObject,
-  CastVoteEventObject,
-} from 'generated/AragonVotingAbi'
+import type { AttemptCastVoteAsDelegateEventObject } from 'generated/AragonVotingAbi'
+import { CastVoteEvent } from 'modules/votes/types'
 
 interface Props {
   walletAddress: string | null | undefined
-  eventsVoted: CastVoteEventObject[] | undefined
+  eventsVoted: CastVoteEvent[] | undefined
   eventsDelegatesVoted: AttemptCastVoteAsDelegateEventObject[] | undefined
 }
 

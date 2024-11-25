@@ -28,7 +28,7 @@ type Props = {
   onEnact: () => void
   voteId: string
   votePowerWei: BigNumber | null | undefined
-  votePower: Number | undefined
+  votePower: number | undefined
 }
 
 type ModalData = {

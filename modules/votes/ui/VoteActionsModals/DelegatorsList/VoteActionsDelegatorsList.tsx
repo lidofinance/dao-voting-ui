@@ -16,13 +16,13 @@ import { formatBalance } from 'modules/blockChain/utils/formatBalance'
 import { useSimpleReducer } from 'modules/shared/hooks/useSimpleReducer'
 import { BigNumber } from 'ethers'
 import { EligibleDelegator } from 'modules/delegation/hooks/useEligibleDelegators'
-import { CastVoteEventObject } from 'generated/AragonVotingAbi'
+import { CastVoteEvent } from 'modules/votes/types'
 
 interface Props {
-  delegatorsVotedThemselves: CastVoteEventObject[] | undefined
+  delegatorsVotedThemselves: CastVoteEvent[] | undefined
   governanceSymbol: string | undefined
   onSelectedAddressesChange: (address: string[]) => void
-  eventsVoted: CastVoteEventObject[] | undefined
+  eventsVoted: CastVoteEvent[] | undefined
   eligibleDelegatedVoters: EligibleDelegator[]
   eligibleDelegatedVotingPower: BigNumber
   defaultExpanded: boolean

@@ -3,8 +3,6 @@ import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useDelegationFormData } from 'modules/delegation/providers/DelegationFormContext'
 import { useConnectWalletModal } from 'modules/wallet/ui/ConnectWalletModal'
 import { DelegateButton, HiddenButton } from './DelegationFormStyle'
-import { useFormState } from 'react-hook-form'
-import { hasIncorrectLength } from 'modules/delegation/utils/hasIncorrectLength'
 import { useConfirmReDelegateModal } from './ConfirmReDelegateModal'
 import { Text } from '@lidofinance/lido-ui'
 
@@ -29,7 +27,6 @@ export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
   }, [ref])
 
   const isSimple = mode === 'simple'
-  const { errors } = useFormState()
   const [delegateAddressInput] = watch(['delegateAddress'])
 
   const match = useMemo(() => {
@@ -133,18 +130,9 @@ export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
     )
   }
 
-  const isDisabled = Boolean(
-    hasIncorrectLength(delegateAddressInput ?? '') ||
-      errors['delegateAddress']?.message,
-  )
-
   if (!match.isRedelegate || !isSimple) {
     return (
-      <DelegateButton
-        type="submit"
-        loading={isSubmitting}
-        disabled={isDisabled}
-      >
+      <DelegateButton type="submit" loading={isSubmitting}>
         {buttonText}
       </DelegateButton>
     )
@@ -156,11 +144,10 @@ export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
         type="submit"
         loading={isSubmitting}
         onClick={onSubmitDialog}
-        disabled={isDisabled}
       >
         {buttonText}
       </DelegateButton>
-      <HiddenButton ref={ref} type="submit" disabled={isDisabled} />
+      <HiddenButton ref={ref} type="submit" />
     </>
   )
 }

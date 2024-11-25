@@ -10,6 +10,7 @@ import { DelegationFormSubmitButton } from './DelegationFormSubmitButton'
 import { DelegationFormFootNote } from './DelegationFormFootNote'
 import { DelegationFormController } from './DelegationFormController'
 import { DelegationTxStatus } from './DelegationTxStatus'
+import { DelegationFormPublicDelegateTooltip } from './DelegationFormPublicDelegateTooltip'
 
 type Props = DelegationFormProviderProps & {
   onCustomizeClick?: () => void
@@ -22,6 +23,7 @@ export function DelegationForm({ onCustomizeClick, ...providerProps }: Props) {
         <DelegationFormSubtitle />
         <DelegationStatus />
         <DelegationAddressInput />
+        <DelegationFormPublicDelegateTooltip />
         <DelegationFormBalance onCustomizeClick={onCustomizeClick} />
         <DelegationFormSubmitButton onCustomizeClick={onCustomizeClick} />
         <DelegationFormFootNote />

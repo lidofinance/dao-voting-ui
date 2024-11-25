@@ -1,9 +1,6 @@
 import { useMemo } from 'react'
 import { Text } from '@lidofinance/lido-ui'
-import type {
-  AttemptCastVoteAsDelegateEventObject,
-  CastVoteEventObject,
-} from 'generated/AragonVotingAbi'
+import type { AttemptCastVoteAsDelegateEventObject } from 'generated/AragonVotingAbi'
 import { VoteScript } from '../VoteScript'
 import { VoteYesNoBar } from '../VoteYesNoBar'
 import {
@@ -17,7 +14,7 @@ import {
 } from './VoteDetailsStyle'
 import { VoteDescription } from '../VoteDescription'
 
-import { Vote, VotePhase, VoteStatus } from 'modules/votes/types'
+import { CastVoteEvent, Vote, VotePhase, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
 import { VoteStatusChips } from '../VoteStatusChips'
@@ -32,7 +29,7 @@ type Props = {
   objectionPhaseTime: number
   metadata?: string
   isEnded: boolean
-  eventsVoted: CastVoteEventObject[] | undefined
+  eventsVoted: CastVoteEvent[] | undefined
   executedTxHash?: string
   eventsDelegatesVoted: AttemptCastVoteAsDelegateEventObject[] | undefined
   votePhase: VotePhase | undefined
