@@ -83,7 +83,7 @@ export const PUBLIC_DELEGATES = [
   },
   {
     name: 'DegentradingLSD',
-    avatar: `${basePath}/delegates/degentrading.png`,
+    avatar: `${basePath}/delegates/degentrading.jpg`,
     address: '0xbeb3364D14DbB4D9A406966B97B9FB3fF8aB7646',
     lido: 'https://research.lido.fi/t/degentradinglsd-delegate-thread/8149',
     twitter: 'https://x.com/degentradingLSD',
