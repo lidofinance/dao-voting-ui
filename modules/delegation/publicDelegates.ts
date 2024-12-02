@@ -89,13 +89,6 @@ export const PUBLIC_DELEGATES = [
     twitter: 'https://x.com/degentradingLSD',
   },
   {
-    name: 'NodeSoda',
-    avatar: `${basePath}/delegates/nodesoda.jpeg`,
-    address: '0x000b4369B71B6634F27F5De9Cbaaabb0D21B8be5',
-    lido: 'https://research.lido.fi/t/nodesoda-com-delegate-thread/8031',
-    twitter: 'https://x.com/pablolema85',
-  },
-  {
     name: 'eboadom (Ernesto)',
     avatar: `${basePath}/delegates/eboadom.png`,
     address: '0x5Ef980c7bdA50c81E8FB13DfF2b804113065ED1c',
@@ -145,13 +138,6 @@ export const PUBLIC_DELEGATES = [
     twitter: 'https://x.com/SimplyStaking',
   },
   {
-    name: 'Proof Group',
-    avatar: null,
-    address: '0xc3A673736415BbF5ba8A8E0642eC3Ab16F4Ada24',
-    lido: 'https://research.lido.fi/t/proof-group-delegate-thread/8190',
-    twitter: 'https://x.com/njess',
-  },
-  {
     name: 'Nansen',
     avatar: `${basePath}/delegates/nansen.png`,
     address: '0xa4181C75495f60106AE539B7C55c0D263f2fb737',
@@ -171,5 +157,12 @@ export const PUBLIC_DELEGATES = [
     address: '0x3FB19771947072629C8EEE7995a2eF23B72d4C8A',
     lido: 'https://research.lido.fi/t/pgov-delegate-thread/8232',
     twitter: 'https://x.com/PGovTeam',
+  },
+  {
+    name: 'marcbcs',
+    avatar: `${basePath}/delegates/marcbcs.jpeg`,
+    address: '0x98308b6dA79B47D15e9438CB66831563649Dbd94',
+    lido: 'https://research.lido.fi/t/marcbcs-delegate-thread/8209',
+    twitter: 'https://x.com/marcbcs',
   },
 ]
