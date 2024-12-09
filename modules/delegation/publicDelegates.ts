@@ -19,13 +19,6 @@ export const PUBLIC_DELEGATES = [
     twitter: 'https://x.com/wintermute_t',
   },
   {
-    name: 'WPRC (WhitePaper Reading Club)',
-    avatar: `${basePath}/delegates/wprc.png`,
-    address: '0x8Ab6612BbcF7E133A6BB03b3264718d30f25e0BA',
-    lido: 'https://research.lido.fi/t/whitepaper-reading-club-delegate-thread/8100',
-    twitter: 'https://x.com/wpreadingclub',
-  },
-  {
     name: 'Tane',
     avatar: `${basePath}/delegates/tane.png`,
     address: '0xB79294D00848a3A4C00c22D9367F19B4280689D7',
