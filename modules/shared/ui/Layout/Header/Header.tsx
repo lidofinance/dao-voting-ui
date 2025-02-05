@@ -45,6 +45,7 @@ import StarSvg from 'assets/star.com.svg.react'
 import SettingsSvg from 'assets/settings.com.svg.react'
 import DelegationSvg from 'assets/delegation.com.svg.react'
 import * as urls from 'modules/network/utils/urls'
+import { DualGovernanceStatusButton } from 'modules/dual-governance/ui/DualGovernanceStatusButton'
 
 function NavItem({
   link,
@@ -126,6 +127,7 @@ export function Header() {
         </InputWrap>
 
         <ActionsDesktop>
+          <DualGovernanceStatusButton />
           <Network>
             <NetworkBulb
               color={getChainColor(chainId)}
