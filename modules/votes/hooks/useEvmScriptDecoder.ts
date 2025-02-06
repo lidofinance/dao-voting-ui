@@ -13,15 +13,9 @@ import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
 import * as abis from 'generated'
 import * as ADDR from 'modules/blockChain/contractAddresses'
 import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'
+import { ABI } from 'modules/blockChain/types'
 
 type ContractName = keyof typeof ADDR
-
-// This is a little hack needed because some of local ABIs
-// doesn't meet the ABIElement type requirements
-type ABIElement = Omit<ABIElementImported, 'name' | 'type'> & {
-  name?: string
-  type?: string
-}
 
 // This object contains ABIs of contracts that are using the same ABI
 // but have different names than the ABI file
@@ -54,7 +48,7 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
         if (!address) {
           return result
         }
-        let abi: ABIElement[] | undefined
+        let abi: ABI | undefined
         if (contractName in ABI_EXCEPTIONS) {
           abi = ABI_EXCEPTIONS[contractName as ExceptionContractName]
         } else {
@@ -68,7 +62,7 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
           [address]: abi,
         }
       },
-      {} as Record<string, ABIElement[]>,
+      {} as Record<string, ABI>,
     )
 
     const localDecoder = new abiProviders.Local(

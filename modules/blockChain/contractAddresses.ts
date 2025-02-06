@@ -229,3 +229,7 @@ export const CSVerifier: ChainAddressMap = {
 export const SandboxNodeOperatorsRegistry: ChainAddressMap = {
   [CHAINS.Holesky]: '0xD6C2ce3BB8bea2832496Ac8b5144819719f343AC',
 }
+
+export const TimelockedGovernance: ChainAddressMap = {
+  [CHAINS.Holesky]: '0x2D99B1Fe6AFA9d102C7125908081414b5C3Cc759',
+}
