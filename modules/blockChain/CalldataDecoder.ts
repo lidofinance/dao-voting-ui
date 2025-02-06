@@ -1,4 +1,4 @@
-import { utils } from 'ethers'
+import { BigNumber, utils } from 'ethers'
 import { ABI } from './types'
 
 type FactoryMap = Record<string, { abi: ABI }>
@@ -11,6 +11,25 @@ type FunctionSignatureIndex = Record<
     }[]
   | undefined
 >
+
+type CalldataParam =
+  | string
+  | number
+  | BigNumber
+  | {
+      readonly [key: string]: CalldataParam
+    }[]
+// | CalldataParam[]
+
+export type CalldataParams = {
+  readonly [key: string]: CalldataParam
+}
+
+export type DecodedCalldata = {
+  contractName: string
+  functionName: string
+  params: CalldataParams
+}
 export class CalldataDecoder {
   private signatureIndex: FunctionSignatureIndex = {}
 
@@ -18,13 +37,9 @@ export class CalldataDecoder {
     this.buildSignatureIndex(factoryMap)
   }
 
-  public decode(calldata: string): {
-    contractName: string
-    functionName: string
-    params: utils.Result
-  } | null {
+  public decode(calldata: string): DecodedCalldata | null {
     if (!calldata.startsWith('0x')) {
-      throw new Error('Invalid calldata: must start with 0x')
+      return null
     }
 
     // Extract function selector (first 4 bytes after 0x)
