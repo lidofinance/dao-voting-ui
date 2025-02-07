@@ -229,3 +229,15 @@ export const CSVerifier: ChainAddressMap = {
 export const SandboxNodeOperatorsRegistry: ChainAddressMap = {
   [CHAINS.Holesky]: '0xD6C2ce3BB8bea2832496Ac8b5144819719f343AC',
 }
+
+export const TimelockedGovernance: ChainAddressMap = {
+  [CHAINS.Holesky]: '0x2D99B1Fe6AFA9d102C7125908081414b5C3Cc759',
+}
+
+export const EmergencyProtectedTimelock: ChainAddressMap = {
+  [CHAINS.Holesky]: '0xd70D836D60622D48648AA1dE759361D6B9a4Baa0',
+}
+
+export const DualGovernance: ChainAddressMap = {
+  [CHAINS.Holesky]: '0x5A2958dC9532bAaCdF8481C8278735B1b05FB199',
+}
