@@ -44,6 +44,7 @@ export class CalldataDecoder {
 
     // Extract function selector (first 4 bytes after 0x)
     const selector = calldata.slice(0, 10)
+    console.log('selector', selector)
     const potentialMatches = this.signatureIndex[selector]
 
     if (!potentialMatches) {
@@ -77,13 +78,14 @@ export class CalldataDecoder {
       for (const func of functionAbi) {
         const iface = new utils.Interface([func])
         const functionFragment = Object.values(iface.functions)[0]
+        console.log('functionFragment', functionFragment)
         const signature = iface.getSighash(functionFragment)
 
         if (!this.signatureIndex[signature]) {
           this.signatureIndex[signature] = []
         }
 
-        this.signatureIndex[signature].push({
+        this.signatureIndex[signature]!.push({
           factoryName: factoryName,
           abi: [func],
         })
