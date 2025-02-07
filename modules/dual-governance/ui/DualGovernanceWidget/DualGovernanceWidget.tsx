@@ -1,4 +1,7 @@
-import { getDualGovernanceStateLabel } from '../../utils'
+import {
+  addSpacesBeforeUpperCase,
+  getDualGovernanceStateLabel,
+} from '../../utils'
 import { DualGovernanceStatus } from '../../types'
 import {
   CheckLink,
@@ -15,73 +18,86 @@ export const DualGovernanceWidget = () => {
   const dgStatus: DualGovernanceStatus = STATUS
   const proposalsCount: number = PROPOSALS_COUNT
 
+  const hasProposals = proposalsCount > 0
+
   const showProposalsInfo =
-    dgStatus === DualGovernanceStatus.Deactivation ||
+    hasProposals &&
+    dgStatus !== DualGovernanceStatus.Normal &&
+    dgStatus !== DualGovernanceStatus.Cooldown
+
+  const showState =
     dgStatus === DualGovernanceStatus.VetoSignalling ||
-    dgStatus === DualGovernanceStatus.Warning
+    dgStatus === DualGovernanceStatus.Deactivation ||
+    dgStatus === DualGovernanceStatus.RageQuit
+
+  const showTimelock =
+    hasProposals &&
+    dgStatus !== DualGovernanceStatus.Normal &&
+    dgStatus !== DualGovernanceStatus.RageQuit
+
+  const showNextState =
+    dgStatus === DualGovernanceStatus.RageQuit ||
+    dgStatus === DualGovernanceStatus.Cooldown
+
   return (
     <DualGovernanceWidgetWrapper>
       {/* Governance State */}
       <p>
         <Label $size={14} $weight={700}>
-          Governance State
+          Governance
         </Label>
         <Label>
           <StatusBulb $status={dgStatus} />
           {getDualGovernanceStateLabel(dgStatus)}
         </Label>
       </p>
+      {showState && (
+        <p>
+          <Label>State</Label>
+          <Label>{addSpacesBeforeUpperCase(dgStatus)}</Label>
+        </p>
+      )}
       {/* Veto Support */}
       <p>
-        <Label>Veto support</Label>
+        <Label>Veto Support</Label>
         <p>
           <Label $color="secondary">103k</Label>
           <Label>1%</Label>
         </p>
       </p>
-      {/* Proposals */}
-      {showProposalsInfo && (
+
+      {/* Conditional information */}
+      {showTimelock && (
         <p>
-          <Label>
-            {dgStatus === DualGovernanceStatus.VetoSignalling
-              ? 'Blocked'
-              : 'Active'}{' '}
-            in DG
-          </Label>
-          <Label>
-            {proposalsCount} proposal{proposalsCount > 1 ? 's' : ''}
-          </Label>
+          <Label>Timelock till</Label>
+          <Label>Sep 3, 5:15 PM GMT+3</Label>
         </p>
       )}
-      {/* Conditional information */}
-      {dgStatus === DualGovernanceStatus.Warning && (
+      {showNextState && (
         <p>
-          <Label>DG Timelock ends</Label>
-          <Label>Sep 3, 5:15 PM GMT+3</Label>
+          <Label>Next state</Label>
+          <Label>Cooldown</Label>
         </p>
       )}
       {dgStatus === DualGovernanceStatus.Deactivation && (
         <p>
-          <Label>Deactivation ends</Label>
-          <Label>Sep 3, 5:15 PM GMT+3</Label>
+          <Label>stETH needed to Veto Signalling</Label>
+          <Label>118k</Label>
         </p>
       )}
-      {dgStatus === DualGovernanceStatus.VetoSignalling && (
-        <Label color="secondary">
-          RageQuit starts in 13:34:55 if 3.97% more stETH is added
-        </Label>
-      )}
-      {dgStatus === DualGovernanceStatus.Cooldown && (
+      {/* Proposals */}
+      {showProposalsInfo && (
         <p>
-          <Label>Cooldown ends</Label>
-          <Label>Sep 3, 5:15 PM GMT+3</Label>
+          <Label $color="secondary">
+            {proposalsCount} proposal{proposalsCount > 1 ? 's' : ''}
+            {dgStatus === DualGovernanceStatus.Deactivation
+              ? ' currently blocked in Dual Governance will remain so only if 118k stETH (1.3%) is added'
+              : ' pending in Dual Governance'}
+          </Label>
         </p>
-      )}
-      {dgStatus === DualGovernanceStatus.RageQuit && (
-        <Label>RageQuit in progress</Label>
       )}
       <CheckLink href={DG_LINK} target="_blank" rel="noreferrer">
-        Check
+        Go to Dual Governance
       </CheckLink>
     </DualGovernanceWidgetWrapper>
   )

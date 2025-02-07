@@ -21,5 +21,5 @@ export const DualGovernanceStatusButtonStyled = styled(ButtonIcon).attrs({
 
 export const PopoverStyled = styled(Popover)`
   width: 280px;
-  padding: 20px;
+  padding: 0 !important;
 `

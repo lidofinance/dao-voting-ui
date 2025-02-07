@@ -31,3 +31,7 @@ export const getBulbColor = (status: DualGovernanceStatus) => {
       return 'rgba(53, 192, 139, 1)'
   }
 }
+
+export const addSpacesBeforeUpperCase = (value: string) => {
+  return value.replace(/(?!^)[A-Z]/g, ' $&')
+}

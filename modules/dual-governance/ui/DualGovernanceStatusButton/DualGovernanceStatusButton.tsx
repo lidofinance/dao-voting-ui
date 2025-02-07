@@ -5,6 +5,7 @@ import {
 } from './DualGovernanceStatusButtonStyle'
 import { useRef, useState } from 'react'
 import { themeDark, ThemeProvider } from '@lidofinance/lido-ui'
+import { DualGovernanceWidget } from '../DualGovernanceWidget'
 
 const STATUS = DualGovernanceStatus.Normal
 
@@ -25,8 +26,7 @@ export const DualGovernanceStatusButton = () => {
           onClose={() => setIsPopupOpen(false)}
           anchorRef={anchorRef}
         >
-          aboba
-          {/* <DualGovernanceWidget /> */}
+          <DualGovernanceWidget />
         </PopoverStyled>
       </ThemeProvider>
     </div>
