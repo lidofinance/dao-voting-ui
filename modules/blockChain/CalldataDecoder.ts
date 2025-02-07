@@ -78,7 +78,6 @@ export class CalldataDecoder {
       for (const func of functionAbi) {
         const iface = new utils.Interface([func])
         const functionFragment = Object.values(iface.functions)[0]
-        console.log('functionFragment', functionFragment)
         const signature = iface.getSighash(functionFragment)
 
         if (!this.signatureIndex[signature]) {
