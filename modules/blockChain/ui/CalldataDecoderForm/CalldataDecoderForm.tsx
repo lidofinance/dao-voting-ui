@@ -1,108 +1,39 @@
-import { Block, Button, Text, Textarea } from '@lidofinance/lido-ui'
-import {
-  DecodedCalldata,
-  CalldataParams,
-  CalldataDecoder,
-} from 'modules/blockChain/CalldataDecoder'
+import { Button, Select, Text, Textarea, Option } from '@lidofinance/lido-ui'
+import { DecodedCalldata } from 'modules/blockChain/CalldataDecoder'
 import { useCalldataDecoder } from 'modules/blockChain/hooks/useCalldataDecoder'
-import { useCallback, useState } from 'react'
-import {
-  BlockHeader,
-  DecodedData,
-  KeyValue,
-  NestedBlock,
-  Wrapper,
-} from './CalldataDecoderFormStyle'
-import { ethers } from 'ethers'
-import { formatToken } from 'modules/tokens/utils/formatToken'
-
-const renderParams = (params: CalldataParams, decoder: CalldataDecoder) => {
-  return Object.keys(params).map(key => {
-    if (isNaN(Number(key))) {
-      const param = params[key]
-
-      const keyElement = (
-        <Text weight={500} size="xxs">
-          {key}
-        </Text>
-      )
-
-      if (ethers.BigNumber.isBigNumber(param)) {
-        return (
-          <KeyValue key={key}>
-            {keyElement}
-            <Text size="xxs" weight={600}>
-              {formatToken(param, 'ETH')}
-            </Text>
-          </KeyValue>
-        )
-      }
-
-      if (Array.isArray(param)) {
-        return (
-          <NestedBlock>
-            {keyElement}
-            {param.map((p, i) => (
-              <NestedBlock key={i}>
-                <Text size="xxs">calls[{i}]</Text>
-                {renderParams(p, decoder)}
-              </NestedBlock>
-            ))}
-          </NestedBlock>
-        )
-      }
-
-      if (typeof param === 'number') {
-        return (
-          <KeyValue key={key}>
-            {keyElement}
-            <Text size="xxs" weight={600}>
-              {param}
-            </Text>
-          </KeyValue>
-        )
-      }
-
-      if (param.startsWith('0x')) {
-        const decoded = decoder.decode(param)
-        if (decoded) {
-          return (
-            <NestedBlock key={key}>
-              {keyElement}
-              {renderParams(decoded.params, decoder)}
-            </NestedBlock>
-          )
-        }
-      }
-
-      return (
-        <KeyValue key={key}>
-          {keyElement}
-          <Text size="xxs" weight={600}>
-            {param}
-          </Text>
-        </KeyValue>
-      )
-    }
-  })
-}
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { BlockHeader, DecodedData, Wrapper } from './CalldataDecoderFormStyle'
+import { TextBlock } from './TextBlock'
+import { SimulateTxSection } from './SimulateTxSection'
+import { renderParams } from './utils'
 
 export const CalldataDecoderForm = () => {
   const [calldata, setCalldata] = useState('')
   const [errorMessage, setErrorMessage] = useState<string | undefined>()
   const [isLoading, setIsLoading] = useState(false)
-  const [decodedData, setDecodedData] = useState<DecodedCalldata>()
+  const [decodedMatches, setDecodedMatches] = useState<DecodedCalldata[]>()
+  const [selectedDecodedMatchIndex, setSelectedDecodedMatchIndex] = useState(0)
+
+  const selectedMatch = decodedMatches?.[selectedDecodedMatchIndex]
 
   const decoder = useCalldataDecoder()
+
+  useEffect(() => {
+    if (decodedMatches?.length) {
+      setDecodedMatches(undefined)
+      setSelectedDecodedMatchIndex(0)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [calldata])
 
   const handleDecode = useCallback(() => {
     setIsLoading(true)
     setErrorMessage(undefined)
     const decoded = decoder.decode(calldata)
-    if (!decoded) {
+    if (!decoded.length) {
       setErrorMessage('Failed to decode calldata')
     } else {
-      setDecodedData(decoded)
+      setDecodedMatches(decoded)
     }
     setIsLoading(false)
     try {
@@ -110,6 +41,17 @@ export const CalldataDecoderForm = () => {
       setErrorMessage(error.message)
     }
   }, [calldata, decoder])
+
+  const matchedContracts = useMemo(() => {
+    if (!decodedMatches) {
+      return []
+    }
+
+    return decodedMatches.map((match, index) => ({
+      name: match.contractName,
+      index,
+    }))
+  }, [decodedMatches])
 
   return (
     <Wrapper>
@@ -123,22 +65,52 @@ export const CalldataDecoderForm = () => {
       <Button onClick={handleDecode} loading={isLoading}>
         Decode
       </Button>
-      {errorMessage && (
-        <Block>
-          <Text color="error">Error: {errorMessage}</Text>
-        </Block>
+      {!!selectedMatch && (
+        <SimulateTxSection
+          selectedMatch={selectedMatch}
+          decoder={decoder}
+          onError={setErrorMessage}
+        />
       )}
-      {!!decodedData && (
+      {errorMessage && (
+        <TextBlock>
+          <Text color="error" size="md">
+            {errorMessage}
+          </Text>
+        </TextBlock>
+      )}
+      {matchedContracts.length > 0 && (
+        <TextBlock>
+          <Text size="sm">
+            Found {matchedContracts.length} match
+            {matchedContracts.length > 1 ? 'es' : ''}
+          </Text>
+          <Select
+            label="Matched contract"
+            value={selectedDecodedMatchIndex}
+            onChange={value => setSelectedDecodedMatchIndex(value as number)}
+            disabled={matchedContracts.length === 0 || isLoading}
+          >
+            {matchedContracts.map(contract => (
+              <Option key={contract.index} value={contract.index}>
+                {contract.name}
+              </Option>
+            ))}
+          </Select>
+        </TextBlock>
+      )}
+
+      {!!selectedMatch && (
         <DecodedData>
           <BlockHeader>
             <Text size="xl" weight={600}>
-              on [{decodedData.contractName}]
+              on [{selectedMatch.contractName}]
             </Text>
             <Text size="md">
-              call <b>{decodedData.functionName}</b>
+              call <b>{selectedMatch.functionName}</b>
             </Text>
           </BlockHeader>
-          <div>{renderParams(decodedData.params, decoder)}</div>
+          <div>{renderParams(selectedMatch.params, decoder)}</div>
         </DecodedData>
       )}
     </Wrapper>

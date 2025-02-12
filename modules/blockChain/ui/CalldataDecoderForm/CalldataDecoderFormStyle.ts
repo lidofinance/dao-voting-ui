@@ -46,3 +46,13 @@ export const NestedBlock = styled.div`
     border-color: var(--lido-color-primary);
   }
 `
+
+export const TextBlockStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--lido-color-foreground);
+  border-radius: 10px;
+  padding: 18px;
+  gap: 16px;
+`
