@@ -65,7 +65,7 @@ export const renderParams = (
             <NestedBlock key={key}>
               {keyElement}
               <Text color="secondary" size="xxs" weight={600}>
-                call {decoded.functionName} on {decoded.contractName}
+                call {decoded.functionName}
               </Text>
               {renderParams(decoded.params, decoder)}
             </NestedBlock>

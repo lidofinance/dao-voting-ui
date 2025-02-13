@@ -82,7 +82,7 @@ export const CalldataDecoderForm = () => {
       {matchedContracts.length > 0 && (
         <TextBlock>
           <Text size="sm">
-            Found {matchedContracts.length} match
+            Found {matchedContracts.length} ABI match
             {matchedContracts.length > 1 ? 'es' : ''}
           </Text>
           <Select
@@ -103,9 +103,6 @@ export const CalldataDecoderForm = () => {
       {!!selectedMatch && (
         <DecodedData>
           <BlockHeader>
-            <Text size="xl" weight={600}>
-              on [{selectedMatch.contractName}]
-            </Text>
             <Text size="md">
               call <b>{selectedMatch.functionName}</b>
             </Text>
