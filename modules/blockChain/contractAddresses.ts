@@ -226,6 +226,11 @@ export const CSVerifier: ChainAddressMap = {
   [CHAINS.Holesky]: '0x6FDAA094227CF8E1593f9fB9C1b867C1f846F916',
 }
 
+export const CSVerifierProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x3Dfc50f22aCA652a0a6F28a0F892ab62074b5583', // TODO: update address after deployment
+  [CHAINS.Holesky]: '0xc099dfd61f6e5420e0ca7e84d820daad17fc1d44',
+}
+
 export const SandboxNodeOperatorsRegistry: ChainAddressMap = {
   [CHAINS.Holesky]: '0xD6C2ce3BB8bea2832496Ac8b5144819719f343AC',
 }
