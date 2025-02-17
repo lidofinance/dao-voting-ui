@@ -228,7 +228,7 @@ export const CSVerifier: ChainAddressMap = {
 
 export const CSVerifierProposed: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x3Dfc50f22aCA652a0a6F28a0F892ab62074b5583', // TODO: update address after deployment
-  [CHAINS.Holesky]: '0xc099dfd61f6e5420e0ca7e84d820daad17fc1d44',
+  [CHAINS.Holesky]: '0xC099dfD61F6E5420e0Ca7e84D820daAd17Fc1D44',
 }
 
 export const SandboxNodeOperatorsRegistry: ChainAddressMap = {
