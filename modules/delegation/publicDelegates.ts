@@ -110,25 +110,11 @@ export const PUBLIC_DELEGATES = [
     twitter: 'https://x.com/eth_everstake',
   },
   {
-    name: 'ProRelGuild',
-    avatar: null,
-    address: '0x7A5959855B6508aF1055Af460331fB697dd08e22',
-    lido: 'https://research.lido.fi/t/prorelguild-delegate-thread/8186',
-    twitter: 'https://x.com/apegenija',
-  },
-  {
     name: 'cp0x',
     avatar: `${basePath}/delegates/cp0x.jpeg`,
     address: '0x6f9BB7e454f5B3eb2310343f0E99269dC2BB8A1d',
     lido: 'https://research.lido.fi/t/cp0x-delegate-thread/8193',
     twitter: 'https://x.com/cp0xdotcom',
-  },
-  {
-    name: 'Simply Staking',
-    avatar: `${basePath}/delegates/simplystaking.png`,
-    address: '0xCeDF324843775c9E7f695251001531798545614B',
-    lido: 'https://research.lido.fi/t/simply-staking-delegate-thread/8178',
-    twitter: 'https://x.com/SimplyStaking',
   },
   {
     name: 'Nansen',
@@ -157,5 +143,19 @@ export const PUBLIC_DELEGATES = [
     address: '0x98308b6dA79B47D15e9438CB66831563649Dbd94',
     lido: 'https://research.lido.fi/t/marcbcs-delegate-thread/8209',
     twitter: 'https://x.com/marcbcs',
+  },
+  {
+    name: 'Governance Grove',
+    avatar: null,
+    address: '0x8Ab6612BbcF7E133A6BB03b3264718d30f25e0BA',
+    lido: 'https://research.lido.fi/t/governance-grove-delegate-thread/9379',
+    twitter: 'https://x.com/stakesaurus',
+  },
+  {
+    name: 'Deucee Deuce',
+    avatar: `${basePath}/delegates/deucee.jpeg`,
+    address: '0x27D36879e84A94455F54E22250F6f7dc8163f70A',
+    lido: 'https://research.lido.fi/t/deuceedeuce-delegate-thread-alignment-engineering/9381',
+    twitter: 'https://x.com/BartekDeuce',
   },
 ]
