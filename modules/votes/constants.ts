@@ -115,4 +115,5 @@ export const LIDO_ROLES: Partial<Record<string, string>> = {
   [keccakRole('SET_BOND_CURVE_ROLE')]: 'SET BOND CURVE ROLE',
   [keccakRole('MANAGE_BOND_CURVES_ROLE')]: 'MANAGE BOND CURVES ROLE',
   [keccakRole('CONTRACT_MANAGER_ROLE')]: 'CONTRACT MANAGER ROLE',
+  [keccakRole('VERIFIER_ROLE')]: 'VERIFIER ROLE',
 }
