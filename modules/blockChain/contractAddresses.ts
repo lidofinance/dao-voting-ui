@@ -226,6 +226,23 @@ export const CSVerifier: ChainAddressMap = {
   [CHAINS.Holesky]: '0x6FDAA094227CF8E1593f9fB9C1b867C1f846F916',
 }
 
+export const CSVerifierProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x3Dfc50f22aCA652a0a6F28a0F892ab62074b5583', // TODO: update address after deployment
+  [CHAINS.Holesky]: '0xC099dfD61F6E5420e0Ca7e84D820daAd17Fc1D44',
+}
+
 export const SandboxNodeOperatorsRegistry: ChainAddressMap = {
   [CHAINS.Holesky]: '0xD6C2ce3BB8bea2832496Ac8b5144819719f343AC',
+}
+
+export const TimelockedGovernance: ChainAddressMap = {
+  [CHAINS.Holesky]: '0x2D99B1Fe6AFA9d102C7125908081414b5C3Cc759',
+}
+
+export const EmergencyProtectedTimelock: ChainAddressMap = {
+  [CHAINS.Holesky]: '0xd70D836D60622D48648AA1dE759361D6B9a4Baa0',
+}
+
+export const DualGovernance: ChainAddressMap = {
+  [CHAINS.Holesky]: '0xb291a7f092d5cce0a3c93ea21bda3431129db202',
 }
