@@ -246,3 +246,21 @@ export const EmergencyProtectedTimelock: ChainAddressMap = {
 export const DualGovernance: ChainAddressMap = {
   [CHAINS.Holesky]: '0xb291a7f092d5cce0a3c93ea21bda3431129db202',
 }
+
+export const GateSeal: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x79243345eDbe01A7E42EDfF5900156700d22611c',
+  [CHAINS.Holesky]: '0xA34d620EA9F3e86bf8B8a7699B4dE44CD9D3202d',
+}
+
+export const GateSealProposed: ChainAddressMap = {
+  [CHAINS.Holesky]: '0xAE6eCd77DCC656c5533c4209454Fd56fB46e1778',
+}
+
+export const CSMGateSeal: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x5cFCa30450B1e5548F140C24A47E36c10CE306F0',
+  [CHAINS.Holesky]: '0x41F2677fae0222cF1f08Cd1c0AAa607B469654Ce',
+}
+
+export const CSMGateSealProposed: ChainAddressMap = {
+  [CHAINS.Holesky]: '0xf1C03536dbC77B1bD493a2D1C0b1831Ea78B540a',
+}
