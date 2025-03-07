@@ -227,7 +227,6 @@ export const CSVerifier: ChainAddressMap = {
 }
 
 export const CSVerifierProposed: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x3Dfc50f22aCA652a0a6F28a0F892ab62074b5583', // TODO: update address after deployment
   [CHAINS.Holesky]: '0xC099dfD61F6E5420e0Ca7e84D820daAd17Fc1D44',
 }
 
@@ -253,6 +252,7 @@ export const GateSeal: ChainAddressMap = {
 }
 
 export const GateSealProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xc515a119a9fAA8B48a8FE2Ee1526A0D55ed201D9', // TODO: update with new address
   [CHAINS.Holesky]: '0xAE6eCd77DCC656c5533c4209454Fd56fB46e1778',
 }
 
@@ -262,5 +262,6 @@ export const CSMGateSeal: ChainAddressMap = {
 }
 
 export const CSMGateSealProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x63a26b87a935c6c95cF28A0d1b9CF5B34A020008',
   [CHAINS.Holesky]: '0xf1C03536dbC77B1bD493a2D1C0b1831Ea78B540a',
 }
