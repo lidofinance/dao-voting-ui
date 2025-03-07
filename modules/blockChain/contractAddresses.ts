@@ -252,7 +252,7 @@ export const GateSeal: ChainAddressMap = {
 }
 
 export const GateSealProposed: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0xc515a119a9fAA8B48a8FE2Ee1526A0D55ed201D9', // TODO: update with new address
+  [CHAINS.Mainnet]: '0x16Dbd4B85a448bE564f1742d5c8cCdD2bB3185D0',
   [CHAINS.Holesky]: '0xAE6eCd77DCC656c5533c4209454Fd56fB46e1778',
 }
 
