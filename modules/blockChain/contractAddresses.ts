@@ -227,7 +227,6 @@ export const CSVerifier: ChainAddressMap = {
 }
 
 export const CSVerifierProposed: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x3Dfc50f22aCA652a0a6F28a0F892ab62074b5583', // TODO: update address after deployment
   [CHAINS.Holesky]: '0xC099dfD61F6E5420e0Ca7e84D820daAd17Fc1D44',
 }
 
@@ -245,4 +244,24 @@ export const EmergencyProtectedTimelock: ChainAddressMap = {
 
 export const DualGovernance: ChainAddressMap = {
   [CHAINS.Holesky]: '0xb291a7f092d5cce0a3c93ea21bda3431129db202',
+}
+
+export const GateSeal: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x79243345eDbe01A7E42EDfF5900156700d22611c',
+  [CHAINS.Holesky]: '0xA34d620EA9F3e86bf8B8a7699B4dE44CD9D3202d',
+}
+
+export const GateSealProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xf9C9fDB4A5D2AA1D836D5370AB9b28BC1847e178',
+  [CHAINS.Holesky]: '0xAE6eCd77DCC656c5533c4209454Fd56fB46e1778',
+}
+
+export const CSMGateSeal: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x5cFCa30450B1e5548F140C24A47E36c10CE306F0',
+  [CHAINS.Holesky]: '0x41F2677fae0222cF1f08Cd1c0AAa607B469654Ce',
+}
+
+export const CSMGateSealProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x16Dbd4B85a448bE564f1742d5c8cCdD2bB3185D0',
+  [CHAINS.Holesky]: '0xf1C03536dbC77B1bD493a2D1C0b1831Ea78B540a',
 }
