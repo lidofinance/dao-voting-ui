@@ -108,7 +108,7 @@ export function VoteForm({ voteId }: Props) {
       )}
 
       {isFound && (
-        <Card>
+        <Card data-testid="voteCard">
           <VoteDetails
             vote={vote}
             voteId={voteId}

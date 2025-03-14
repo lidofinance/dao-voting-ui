@@ -63,7 +63,7 @@ export function VoteStatusBanner({
   )
 
   return (
-    <Wrap fontSize={fontSize} variant={variant}>
+    <Wrap data-testid="voteCardHeader" fontSize={fontSize} variant={variant}>
       {status === VoteStatus.ActiveMain && (
         <>
           <BadgeOngoing>1</BadgeOngoing>

@@ -81,8 +81,8 @@ export function VoteDetails({
 
   return (
     <>
-      <VoteHeader>
-        <VoteTitle>Vote #{voteId}</VoteTitle>
+      <VoteHeader data-testid="voteHeader">
+        <VoteTitle data-testid="voteTitle">Vote #{voteId}</VoteTitle>
         <VoteStatusChips
           totalSupply={totalSupply}
           nayNum={nayNum}
@@ -96,16 +96,20 @@ export function VoteDetails({
           <Text as="span" color="secondary" size="xxs">
             {'Block '}
           </Text>
-          <Text as="span" color="default" size="xxs">
+          <Text as="span" color="default" size="xxs" data-testid="blockNumber">
             #{vote.snapshotBlock.toString()}
           </Text>
         </BlockWrap>
       </VoteHeader>
       {votePhase === VotePhase.Closed && (
-        <Text color="secondary" size="xxs">{`Ended ${formattedEndDate}`}</Text>
+        <Text
+          color="secondary"
+          size="xxs"
+          data-testid="voteDate"
+        >{`Ended ${formattedEndDate}`}</Text>
       )}
       <DetailsBoxWrap>
-        <BoxVotes>
+        <BoxVotes data-testid="voteDetails">
           <VoteYesNoBar
             yeaPct={yeaPct}
             nayPct={nayPct}
@@ -137,12 +141,12 @@ export function VoteDetails({
       <SectionHeading>Proposal</SectionHeading>
       {metadata && (
         <DetailsBoxWrap>
-          <DescriptionWrap>
+          <DescriptionWrap data-testid="voteDescription">
             <VoteDescription metadata={metadata} allowMD />
           </DescriptionWrap>
         </DetailsBoxWrap>
       )}
-      <DetailsBoxWrap>
+      <DetailsBoxWrap data-testid="voteScript">
         <VoteScript script={vote.script} metadata={metadata} />
       </DetailsBoxWrap>
     </>
