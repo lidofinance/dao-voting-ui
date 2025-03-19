@@ -41,14 +41,14 @@ export function VoteYesNoBar({
     <>
       <VotesTitleWrap>
         <Text size="xxs">
-          <Text as="span" size="xxs">
+          <Text data-testid="votesNo" as="span" size="xxs">
             <Tooltip title={<span>{nayNum}</span>} placement="top">
               <span>{nayInfo}</span>
             </Tooltip>
           </Text>
         </Text>
         <Text size="xxs" style={{ textAlign: 'right' }}>
-          <Text as="span" size="xxs">
+          <Text as="span" size="xxs" data-testid="votesYes">
             <Tooltip title={<span>{yeaNum}</span>} placement="top">
               <span>{yeaInfo}</span>
             </Tooltip>
@@ -56,7 +56,10 @@ export function VoteYesNoBar({
         </Text>
       </VotesTitleWrap>
 
-      <VotesBarWrap showOnForeground={showOnForeground}>
+      <VotesBarWrap
+        data-testid="votesYesNoBar"
+        showOnForeground={showOnForeground}
+      >
         <VotesBarNay style={{ width: `${nayPct}%` }} />
         <VotesBarYea style={{ width: `${yeaPct}%` }} />
       </VotesBarWrap>

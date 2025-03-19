@@ -276,12 +276,18 @@ export function VoteFormActions({
           open={isMenuOpen}
         >
           {canVoteWithOwnPower && (
-            <PopupMenuItem onClick={() => handleVoteClick()}>
+            <PopupMenuItem
+              data-testid="myOwnVPBtn"
+              onClick={() => handleVoteClick()}
+            >
               {`My own (${preparedOwnVP})`}
             </PopupMenuItem>
           )}
           {eligibleDelegatedVotingPower.gt(0) && (
-            <PopupMenuItem onClick={handleOpenModal}>
+            <PopupMenuItem
+              data-testid="delegatedVPBtn"
+              onClick={handleOpenModal}
+            >
               {`Delegated (${preparedDelegatedVP})`}
             </PopupMenuItem>
           )}
@@ -297,7 +303,7 @@ export function VoteFormActions({
         )}
       </Actions>
       {!txVote.isEmpty && (
-        <TxStatusWrapper>
+        <TxStatusWrapper data-testid="txStatusOwn">
           <Text size="xxs" color="secondary">
             Vote tx status (with own {governanceSymbol})
           </Text>
@@ -305,7 +311,7 @@ export function VoteFormActions({
         </TxStatusWrapper>
       )}
       {!txDelegatesVote.isEmpty && (
-        <TxStatusWrapper>
+        <TxStatusWrapper data-testid="txStatusDelegated">
           <Text size="xxs" color="secondary">
             Vote tx status (with delegated VP)
           </Text>

@@ -18,6 +18,7 @@ export const VoteButton = forwardRef<HTMLButtonElement, Props>(
   ) => {
     return (
       <VoteButtonStyled
+        data-testid={`voteButton${label}`}
         ref={ref}
         loading={isSubmitting === voteType}
         color="secondary"

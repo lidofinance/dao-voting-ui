@@ -92,6 +92,7 @@ export function VoteProgressBar({
         <LabelWrap>
           <MainPhaseCountWrap>
             <Text
+              data-testid="voteBarMainPhase"
               color={votePhase === VotePhase.Main ? 'primary' : 'secondary'}
               size="xxs"
             >
@@ -106,6 +107,7 @@ export function VoteProgressBar({
             </b>
           </MainPhaseCountWrap>
           <Text
+            data-testid="voteBarObjectionPhase"
             color={votePhase === VotePhase.Objection ? 'primary' : 'secondary'}
             size="xxs"
           >
@@ -137,7 +139,7 @@ export function VoteProgressBar({
                   : 'secondary'
               }
             />
-            <div>{formattedStartDate} </div>
+            <div data-testid="voteStartDate"> {formattedStartDate} </div>
           </ProgressBarWrap>
           <ProgressBarWrap $alignDescription="flex-end" $width="40%">
             <ProgressBar
@@ -151,7 +153,7 @@ export function VoteProgressBar({
                   : 'secondary'
               }
             />
-            <div>{formattedEndDate}</div>
+            <div data-testid="voteEndDate">{formattedEndDate}</div>
           </ProgressBarWrap>
         </ProgressSection>
       </Wrap>

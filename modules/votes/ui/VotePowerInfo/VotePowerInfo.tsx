@@ -21,7 +21,7 @@ export function VotePowerInfo({ votePowerWei }: Props) {
         <Text as="span" color="secondary" size="xxs">
           My voting power
         </Text>
-        <Amount>
+        <Amount data-testid="myVPAmount">
           {formatBalance(votePowerWei || BigNumber.from(0))} {govSymbol}
         </Amount>
       </VotingPower>
@@ -30,7 +30,7 @@ export function VotePowerInfo({ votePowerWei }: Props) {
           <Text as="span" color="secondary" size="xxs">
             Delegated voting power
           </Text>
-          <Amount>
+          <Amount data-testid="delegatedVPAmount">
             {formatBalance(totalVotingPower)} {govSymbol}
           </Amount>
         </VotingPower>

@@ -74,7 +74,7 @@ export function VoteVotersList({ eventsVoted, eventsDelegatesVoted }: Props) {
             <Text size="xxs" strong>
               Voter &nbsp;
             </Text>
-            <Text size="xxs" color="secondary">
+            <Text data-testid="votersAmount" size="xxs" color="secondary">
               {eventsVoted.length}
             </Text>
           </ListRowCell>
@@ -96,14 +96,14 @@ export function VoteVotersList({ eventsVoted, eventsDelegatesVoted }: Props) {
           const publicDelegate = getPublicDelegateByAddress(event.voter)
 
           return (
-            <ListRow key={`${event.voter}-${i}}`}>
+            <ListRow data-testid="votersRow" key={`${event.voter}-${i}}`}>
               <ListRowCell>
                 <DelegationAddressPop
                   address={event.voter}
                   delegateAddress={delegateAddress}
                 >
                   {publicDelegate ? (
-                    <AddressWrap>
+                    <AddressWrap data-testid="voterAddress">
                       <PublicDelegateAvatar
                         avatarSrc={publicDelegate.avatar}
                         size={20}
@@ -121,13 +121,15 @@ export function VoteVotersList({ eventsVoted, eventsDelegatesVoted }: Props) {
                   )}
                 </DelegationAddressPop>
               </ListRowCell>
-              <ListRowCell>{event.supports ? 'Yes' : 'No'}</ListRowCell>
+              <ListRowCell data-testid="voteStats">
+                {event.supports ? 'Yes' : 'No'}
+              </ListRowCell>
               <ListRowCell>
                 <Tooltip
                   placement="top"
                   title={formatNumber(weiToNum(event.stake), 6)}
                 >
-                  <div>
+                  <div data-testid="votingPower">
                     {formatBalance(event.stake)} {govSymbol}
                   </div>
                 </Tooltip>
@@ -136,12 +138,15 @@ export function VoteVotersList({ eventsVoted, eventsDelegatesVoted }: Props) {
           )
         })}
         {eventsVoted.length > limit && (
-          <ShowMoreBtn onClick={handleShowMore}>Show more</ShowMoreBtn>
+          <ShowMoreBtn data-testid="showMoreBtn" onClick={handleShowMore}>
+            Show more
+          </ShowMoreBtn>
         )}
-        {eventsVoted.length > INITIAL_PAGE_SIZE &&
-          eventsVoted.length < limit && (
-            <ShowMoreBtn onClick={handleShowLess}>Show less</ShowMoreBtn>
-          )}
+        {eventsVoted.length > INITIAL_PAGE_SIZE && eventsVoted.length < limit && (
+          <ShowMoreBtn data-testid="showLessBtn" onClick={handleShowLess}>
+            Show less
+          </ShowMoreBtn>
+        )}
       </>
     </Wrap>
   )

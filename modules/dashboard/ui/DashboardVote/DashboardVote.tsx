@@ -85,7 +85,7 @@ export function DashboardVote({
     status === VoteStatus.Rejected || status === VoteStatus.Executed
   return (
     <Link passHref href={urls.vote(voteId)}>
-      <Wrap>
+      <Wrap data-testid={`voteCardPreview-${voteId}`}>
         <VoteStatusBanner
           startDate={startDate}
           endDate={endDate}
@@ -101,7 +101,7 @@ export function DashboardVote({
         />
         <VoteBody>
           <VoteTitle>Vote #{voteId}</VoteTitle>
-          <VoteDescriptionWrap>
+          <VoteDescriptionWrap data-testid="voteDescription">
             <VoteDescription metadata={eventStart?.metadata} />
           </VoteDescriptionWrap>
         </VoteBody>

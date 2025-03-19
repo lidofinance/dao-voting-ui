@@ -83,7 +83,7 @@ export function VoteStatusChips({
   }
 
   return (
-    <VoteStatusWrap>
+    <VoteStatusWrap data-testid="voteStatus">
       {votePhase === VotePhase.Closed && statusChip}
 
       {votePhase !== VotePhase.Closed && winningOptionChip}
