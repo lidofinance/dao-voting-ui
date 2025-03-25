@@ -116,11 +116,13 @@ export function VoteForm({ voteId }: Props) {
             voteTime={voteTime!}
             objectionPhaseTime={objectionPhaseTime!}
             isEnded={isEnded}
-            metadata={eventStart?.metadata}
+            metadata={eventStart?.decoded.metadata}
             eventsVoted={eventsVoted}
             eventsDelegatesVoted={eventsDelegatesVoted}
             executedTxHash={eventExecuteVote?.event.transactionHash}
+            executedAt={eventExecuteVote?.executedAt}
             votePhase={votePhase}
+            startedTxHash={eventStart?.event.transactionHash}
           />
 
           {!isWalletConnected && votePhase !== VotePhase.Closed && (

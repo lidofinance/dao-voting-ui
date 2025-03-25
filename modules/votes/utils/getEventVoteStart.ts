@@ -1,5 +1,6 @@
 import type {
   AragonVotingAbi,
+  StartVoteEvent,
   StartVoteEventObject,
 } from 'generated/AragonVotingAbi'
 
@@ -7,7 +8,10 @@ export async function getEventStartVote(
   contractVoting: AragonVotingAbi,
   voteId: string | number,
   block?: string | number,
-): Promise<StartVoteEventObject | null> {
+): Promise<{
+  event: StartVoteEvent
+  decoded: StartVoteEventObject
+} | null> {
   const filter = contractVoting.filters.StartVote(Number(voteId))
   const events = await contractVoting.queryFilter(
     filter,
@@ -19,5 +23,10 @@ export async function getEventStartVote(
     return null
   }
 
-  return events[0].args
+  const event = events[0]
+
+  return {
+    event,
+    decoded: event.args,
+  }
 }

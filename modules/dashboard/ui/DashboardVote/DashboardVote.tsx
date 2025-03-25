@@ -26,11 +26,11 @@ import * as urls from 'modules/network/utils/urls'
 type Props = {
   voteId: number
   vote: Vote
-  eventStart: StartVoteEventObject | null
+  eventStart: { decoded: StartVoteEventObject } | null
   status: VoteStatus
   voteTime: number
   objectionPhaseTime: number
-  executedAt: number | null
+  executedAt?: number
   onPass: () => void
 }
 
@@ -103,7 +103,7 @@ export function DashboardVote({
         <VoteBody>
           <VoteTitle>Vote #{voteId}</VoteTitle>
           <VoteDescriptionWrap data-testid="voteDescription">
-            <VoteDescription metadata={eventStart?.metadata} />
+            <VoteDescription metadata={eventStart?.decoded.metadata} />
           </VoteDescriptionWrap>
         </VoteBody>
         <Footer>

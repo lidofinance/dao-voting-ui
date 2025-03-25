@@ -84,13 +84,11 @@ export function DashboardGrid({ currentPage }: Props) {
           dataItem.voteId,
           snapshotBlock,
         )
-        const executeBlock = await eventExecute?.event.getBlock()
 
-        const executedAt = executeBlock?.timestamp ?? null
         return {
           ...dataItem,
           eventStart,
-          executedAt,
+          executedAt: eventExecute?.executedAt,
         }
       })
 

@@ -18,7 +18,7 @@ import { convertStatusToStyledVariant, VoteStatusFontSize } from './types'
 
 type Props = {
   startDate: number
-  executedAt: number | null
+  executedAt: number | undefined
   voteTime: number
   objectionPhaseTime: number
   isEnded: boolean
