@@ -18,7 +18,7 @@ import { convertStatusToStyledVariant, VoteStatusFontSize } from './types'
 
 type Props = {
   startDate: number
-  endDate: number
+  executedAt: number | null
   voteTime: number
   objectionPhaseTime: number
   isEnded: boolean
@@ -32,7 +32,7 @@ type Props = {
 
 export function VoteStatusBanner({
   startDate,
-  endDate,
+  executedAt,
   voteTime,
   objectionPhaseTime,
   isEnded,
@@ -56,11 +56,11 @@ export function VoteStatusBanner({
     return yeaQuorum > minAcceptQuorum || nayQuorum > minAcceptQuorum
   }, [totalSupply, yeaNum, nayNum, minAcceptQuorum])
 
-  const endDateEl = (
+  const endDateEl = executedAt ? (
     <InfoText variant={variant}>
-      <FormattedDate date={endDate} format="DD MMM YYYY, HH:mm" />
+      <FormattedDate date={executedAt} format="DD MMM YYYY" />
     </InfoText>
-  )
+  ) : null
 
   return (
     <Wrap data-testid="voteCardHeader" fontSize={fontSize} variant={variant}>
@@ -98,7 +98,6 @@ export function VoteStatusBanner({
             <DoneIconSVG />
           </BadgePassed>
           <BannerText variant={variant}>Passed (pending)</BannerText>
-          {endDateEl}
         </>
       )}
 
@@ -128,7 +127,6 @@ export function VoteStatusBanner({
             <ClearIconSVG />
           </BadgeFailed>
           <BannerText variant={variant}>Rejected</BannerText>
-          {endDateEl}
         </>
       )}
 
@@ -138,7 +136,6 @@ export function VoteStatusBanner({
             <ClearIconSVG />
           </BadgeNoQuorum>
           <BannerText variant={variant}>No quorum</BannerText>
-          {endDateEl}
         </>
       )}
     </Wrap>
