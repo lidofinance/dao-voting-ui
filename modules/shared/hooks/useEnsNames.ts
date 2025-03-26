@@ -17,7 +17,7 @@ export function useEnsNames(addresses: string[]) {
     async () => {
       const rpcUrl = getRpcUrl(chainId)
       const provider = getStaticRpcBatchProvider(chainId, rpcUrl)
-      if (chainId === CHAINS.Holesky) {
+      if (chainId === CHAINS.Holesky || chainId === CHAINS.Hoodi) {
         provider.network.ensAddress = ENS_NAME_ADDRESS
       }
       const res = await Promise.all(
