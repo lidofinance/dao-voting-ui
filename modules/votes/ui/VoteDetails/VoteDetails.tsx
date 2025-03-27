@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Text } from '@lidofinance/lido-ui'
+import { Link, Text } from '@lidofinance/lido-ui'
 import type { AttemptCastVoteAsDelegateEventObject } from 'generated/AragonVotingAbi'
 import { VoteScript } from '../VoteScript'
 import { VoteYesNoBar } from '../VoteYesNoBar'
@@ -10,6 +10,7 @@ import {
   DetailsBoxWrap,
   SectionHeading,
   VoteHeader,
+  VoteTimestamps,
   VoteTitle,
 } from './VoteDetailsStyle'
 import { VoteDescription } from '../VoteDescription'
@@ -20,6 +21,24 @@ import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsForma
 import { VoteStatusChips } from '../VoteStatusChips'
 import { VoteVotersList } from '../VoteVotersList'
 import { VoteProgressBar } from 'modules/votes/ui/VoteProgressBar'
+import { getEtherscanTxLink } from '@lido-sdk/helpers'
+import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
+
+const localeDateOptions = {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit',
+  hour12: false,
+  timeZoneName: 'short',
+}
+
+const formatDate = (date: number) =>
+  new Date(date * 1000).toLocaleDateString(
+    'en-US',
+    localeDateOptions as Intl.DateTimeFormatOptions,
+  )
 
 type Props = {
   vote: Vote
@@ -30,19 +49,11 @@ type Props = {
   metadata?: string
   isEnded: boolean
   eventsVoted: CastVoteEvent[] | undefined
+  executedAt?: number
   executedTxHash?: string
+  startedTxHash?: string
   eventsDelegatesVoted: AttemptCastVoteAsDelegateEventObject[] | undefined
   votePhase: VotePhase | undefined
-}
-
-const localeDateOptions = {
-  month: 'long',
-  day: 'numeric',
-  year: 'numeric',
-  hour: 'numeric',
-  minute: '2-digit',
-  hour12: false,
-  timeZoneName: 'short',
 }
 
 export function VoteDetails({
@@ -55,9 +66,12 @@ export function VoteDetails({
   isEnded,
   eventsVoted,
   executedTxHash,
+  startedTxHash,
   eventsDelegatesVoted,
+  executedAt,
   votePhase,
 }: Props) {
+  const { chainId } = useWeb3()
   const {
     totalSupply,
     nayNum,
@@ -67,22 +81,18 @@ export function VoteDetails({
     nayPctOfTotalSupplyFormatted,
     yeaPctOfTotalSupplyFormatted,
     startDate,
-    endDate,
-  } = getVoteDetailsFormatted({ vote, voteTime })
+  } = getVoteDetailsFormatted(vote)
 
-  const formattedEndDate = useMemo(
-    () =>
-      new Date(endDate * 1000).toLocaleDateString(
-        'en-US',
-        localeDateOptions as Intl.DateTimeFormatOptions,
-      ),
-    [endDate],
-  )
+  const formattedDate = useMemo(() => {
+    if (!executedAt) return `Started ${formatDate(startDate)}`
+
+    return `Enacted ${formatDate(executedAt)}`
+  }, [executedAt, startDate])
 
   return (
     <>
-      <VoteHeader>
-        <VoteTitle>Vote #{voteId}</VoteTitle>
+      <VoteHeader data-testid="voteHeader">
+        <VoteTitle data-testid="voteTitle">Vote #{voteId}</VoteTitle>
         <VoteStatusChips
           totalSupply={totalSupply}
           nayNum={nayNum}
@@ -96,16 +106,25 @@ export function VoteDetails({
           <Text as="span" color="secondary" size="xxs">
             {'Block '}
           </Text>
-          <Text as="span" color="default" size="xxs">
-            #{vote.snapshotBlock.toString()}
+          <Text as="span" color="default" size="xxs" data-testid="blockNumber">
+            {startedTxHash ? (
+              <Link href={getEtherscanTxLink(chainId, startedTxHash)}>
+                #{vote.snapshotBlock.toString()}
+              </Link>
+            ) : (
+              `#${vote.snapshotBlock.toString()}`
+            )}
           </Text>
         </BlockWrap>
       </VoteHeader>
-      {votePhase === VotePhase.Closed && (
-        <Text color="secondary" size="xxs">{`Ended ${formattedEndDate}`}</Text>
-      )}
+      <VoteTimestamps>
+        <Text color="secondary" size="xxs" data-testid="voteDate">
+          {formattedDate}
+        </Text>
+      </VoteTimestamps>
+
       <DetailsBoxWrap>
-        <BoxVotes>
+        <BoxVotes data-testid="voteDetails">
           <VoteYesNoBar
             yeaPct={yeaPct}
             nayPct={nayPct}
@@ -121,7 +140,6 @@ export function VoteDetails({
       {(votePhase === VotePhase.Main || votePhase === VotePhase.Objection) && (
         <VoteProgressBar
           startDate={startDate}
-          endDate={endDate}
           voteTime={voteTime}
           objectionPhaseTime={objectionPhaseTime}
           isEnded={isEnded}
@@ -137,12 +155,12 @@ export function VoteDetails({
       <SectionHeading>Proposal</SectionHeading>
       {metadata && (
         <DetailsBoxWrap>
-          <DescriptionWrap>
+          <DescriptionWrap data-testid="voteDescription">
             <VoteDescription metadata={metadata} allowMD />
           </DescriptionWrap>
         </DetailsBoxWrap>
       )}
-      <DetailsBoxWrap>
+      <DetailsBoxWrap data-testid="voteScript">
         <VoteScript script={vote.script} metadata={metadata} />
       </DetailsBoxWrap>
     </>

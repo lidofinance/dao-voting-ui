@@ -13,6 +13,7 @@ import { ContractVoting } from 'modules/blockChain/contracts'
 import { getVoteStatus } from 'modules/votes/utils/getVoteStatus'
 import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
 import * as urls from 'modules/network/utils/urls'
+import { getEventExecuteVote } from 'modules/votes/utils/getEventExecuteVote'
 
 const PAGE_SIZE = 20
 
@@ -71,19 +72,24 @@ export function DashboardGrid({ currentPage }: Props) {
 
       const votesList = await Promise.all(requests)
 
-      const eventsPromises = votesList.map(dataItem => {
-        const fetch = async () => {
-          const eventStart = await getEventStartVote(
-            contractVoting,
-            dataItem.voteId,
-            dataItem.vote.snapshotBlock.toNumber(),
-          )
-          return {
-            ...dataItem,
-            eventStart,
-          }
+      const eventsPromises = votesList.map(async dataItem => {
+        const snapshotBlock = dataItem.vote.snapshotBlock.toNumber()
+        const eventStart = await getEventStartVote(
+          contractVoting,
+          dataItem.voteId,
+          snapshotBlock,
+        )
+        const eventExecute = await getEventExecuteVote(
+          contractVoting,
+          dataItem.voteId,
+          snapshotBlock,
+        )
+
+        return {
+          ...dataItem,
+          eventStart,
+          executedAt: eventExecute?.executedAt,
         }
-        return fetch()
       })
 
       const votesWithEvents = await Promise.all(eventsPromises)

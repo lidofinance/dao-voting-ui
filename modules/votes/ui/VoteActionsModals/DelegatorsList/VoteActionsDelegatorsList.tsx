@@ -103,9 +103,9 @@ export function DelegatorsList({
 
   function Summary() {
     return (
-      <SummaryWrap>
+      <SummaryWrap data-testid="delegatorsInfo">
         <Text size="xxs">Selected</Text>
-        <SummaryAmount>
+        <SummaryAmount data-testid="delegatorsVPAmount">
           <Text size="xxs" strong>
             {formatBalance(selectedBalance)} {governanceSymbol}
           </Text>
@@ -115,7 +115,7 @@ export function DelegatorsList({
             )} ${governanceSymbol}`}
           </Text>
         </SummaryAmount>
-        <Text size="xxs">
+        <Text size="xxs" data-testid="delegatorsNumber">
           from {pluralize(eligibleDelegatedVoters.length, 'delegator')}
         </Text>
       </SummaryWrap>
@@ -124,18 +124,25 @@ export function DelegatorsList({
 
   return (
     <AccordionWrap defaultExpanded={defaultExpanded} summary={<Summary />}>
-      <ListWrap>
+      <ListWrap data-testid="delegatorsList">
         {eligibleDelegatedVoters.map(delegator => (
-          <DelegatorsListItem key={delegator.address}>
+          <DelegatorsListItem
+            key={delegator.address}
+            data-testid="delegatorsListRow"
+          >
             <AddressWrap>
               <Checkbox
+                data-testid="delegatorCheckbox"
                 checked={Boolean(checkedItems[delegator.address])}
                 onChange={e =>
                   handleCheckboxChange(delegator.address, e.target.checked)
                 }
               />
-              <AddressPop address={delegator.address}>
-                <AddressBadgeWrap>
+              <AddressPop
+                address={delegator.address}
+                data-testid="delegatorAddressPopUp"
+              >
+                <AddressBadgeWrap data-testid="delegatorAddress">
                   <Text as="span" size="xxs">
                     {trimAddress(delegator.address, 4)}
                   </Text>
@@ -149,7 +156,7 @@ export function DelegatorsList({
                   : 'No (You)'}
               </Text>
             )}
-            <DelegatorsVotingPower>
+            <DelegatorsVotingPower data-testid="delegatorVP">
               {formatBalance(delegator.votingPower)} {governanceSymbol}
             </DelegatorsVotingPower>
           </DelegatorsListItem>
