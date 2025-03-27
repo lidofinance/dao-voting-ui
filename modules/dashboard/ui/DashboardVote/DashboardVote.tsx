@@ -26,10 +26,11 @@ import * as urls from 'modules/network/utils/urls'
 type Props = {
   voteId: number
   vote: Vote
-  eventStart: StartVoteEventObject | null
+  eventStart: { decoded: StartVoteEventObject } | null
   status: VoteStatus
   voteTime: number
   objectionPhaseTime: number
+  executedAt?: number
   onPass: () => void
 }
 
@@ -40,6 +41,7 @@ export function DashboardVote({
   status,
   voteTime,
   objectionPhaseTime,
+  executedAt,
   onPass,
 }: Props) {
   const {
@@ -51,9 +53,8 @@ export function DashboardVote({
     nayPctOfTotalSupplyFormatted,
     yeaPctOfTotalSupplyFormatted,
     startDate,
-    endDate,
     totalSupply,
-  } = getVoteDetailsFormatted({ vote, voteTime })
+  } = getVoteDetailsFormatted(vote)
 
   const handlePass = useCallback(() => {
     // TODO:
@@ -88,7 +89,7 @@ export function DashboardVote({
       <Wrap data-testid={`voteCardPreview-${voteId}`}>
         <VoteStatusBanner
           startDate={startDate}
-          endDate={endDate}
+          executedAt={executedAt}
           voteTime={voteTime}
           objectionPhaseTime={objectionPhaseTime}
           status={status}
@@ -102,7 +103,7 @@ export function DashboardVote({
         <VoteBody>
           <VoteTitle>Vote #{voteId}</VoteTitle>
           <VoteDescriptionWrap data-testid="voteDescription">
-            <VoteDescription metadata={eventStart?.metadata} />
+            <VoteDescription metadata={eventStart?.decoded.metadata} />
           </VoteDescriptionWrap>
         </VoteBody>
         <Footer>

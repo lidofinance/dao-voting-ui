@@ -15,7 +15,6 @@ import { useEffect, useMemo, useState } from 'react'
 
 interface Props {
   startDate: number
-  endDate: number
   voteTime: number
   objectionPhaseTime: number
   isEnded: boolean
@@ -24,7 +23,6 @@ interface Props {
 
 export function VoteProgressBar({
   startDate,
-  endDate,
   voteTime,
   objectionPhaseTime,
   isEnded,
@@ -84,7 +82,10 @@ export function VoteProgressBar({
   }
 
   const formattedStartDate = useMemo(() => formatDate(startDate), [startDate])
-  const formattedEndDate = useMemo(() => formatDate(endDate), [endDate])
+  const formattedEndDate = useMemo(() => {
+    const endDate = startDate + voteTime
+    return formatDate(endDate)
+  }, [startDate, voteTime])
 
   return (
     <>
