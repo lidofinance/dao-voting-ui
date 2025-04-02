@@ -62,3 +62,9 @@ export const VoteHeader = styled.div`
 export const BlockWrap = styled.div`
   text-align: right;
 `
+
+export const VoteTimestamps = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`
