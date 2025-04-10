@@ -1,9 +1,12 @@
 import { CHAINS } from '@lido-sdk/constants'
 
 export const getGnosisSafeLink = (chainId: CHAINS, address: string) => {
-  if (chainId === CHAINS.Holesky) {
-    return `https://holesky-safe.protofire.io/transactions/queue?safe=holesky:${address}`
+  switch (chainId) {
+    case CHAINS.Holesky:
+      return `https://holesky-safe.protofire.io/transactions/queue?safe=holesky:${address}`
+    case CHAINS.Hoodi:
+      return `https://app.safe.protofire.io/transactions/queue?safe=hoodi:${address}`
+    default:
+      return `https://app.safe.global/transactions/queue?safe=eth:${address}`
   }
-
-  return `https://app.safe.global/transactions/queue?safe=eth:${address}`
 }
