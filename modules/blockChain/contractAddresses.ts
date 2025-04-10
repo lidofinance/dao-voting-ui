@@ -3,29 +3,26 @@ import { ChainAddressMap } from './types'
 
 export const AragonVoting: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x2e59A20f205bB85a89C53f1936454680651E618e',
-  [CHAINS.Holesky]: {
-    test: '0xdA7d2573Df555002503F29aA4003e398d28cc00f',
-    actual: '0xdA7d2573Df555002503F29aA4003e398d28cc00f',
+  [CHAINS.Holesky]: '0xdA7d2573Df555002503F29aA4003e398d28cc00f',
+  [CHAINS.Hoodi]: {
+    actual: '0x49B3512c44891bef83F8967d075121Bd1b07a01B',
+    test: '0x7fC42659B2D4506ce15327883e1106A6EBa6d6A7',
   },
-  [CHAINS.Hoodi]: '0x49B3512c44891bef83F8967d075121Bd1b07a01B',
 }
 
 export const GovernanceToken: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32',
-  [CHAINS.Holesky]: {
-    test: '0x14ae7daeecdf57034f3E9db8564e46Dba8D97344',
-    actual: '0x14ae7daeecdf57034f3E9db8564e46Dba8D97344',
+  [CHAINS.Holesky]: '0x14ae7daeecdf57034f3E9db8564e46Dba8D97344',
+  [CHAINS.Hoodi]: {
+    actual: '0xEf2573966D009CcEA0Fc74451dee2193564198dc',
+    test: '0xB8799DAc7A87a3580D6984c8f4cC596520dCf2F2',
   },
-  [CHAINS.Hoodi]: '0xEf2573966D009CcEA0Fc74451dee2193564198dc',
 }
 
 // https://docs.snapshot.org/user-guides/delegation
 export const Snapshot: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x469788fE6E9E9681C6ebF3bF78e7Fd26Fc015446',
-  [CHAINS.Holesky]: {
-    test: '0x575e8c7DD6422e574A0E3e8cf6B23db1F01584CD',
-    actual: '0x575e8c7DD6422e574A0E3e8cf6B23db1F01584CD',
-  },
+  [CHAINS.Holesky]: '0x575e8c7DD6422e574A0E3e8cf6B23db1F01584CD',
   [CHAINS.Hoodi]: '0x2230be05E8083C11761AE9F98ee309118951b96d',
 }
 
