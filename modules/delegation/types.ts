@@ -14,7 +14,7 @@ export type DelegationFormInput = {
 }
 
 export type DelegationFormLoading = {
-  isGovernanceBalanceLoading: boolean
+  isTokenDataLoading: boolean
   isDelegationInfoLoading: boolean
 }
 

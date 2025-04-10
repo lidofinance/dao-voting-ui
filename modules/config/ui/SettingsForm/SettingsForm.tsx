@@ -14,19 +14,21 @@ import { Button, Container, ToastSuccess } from '@lidofinance/lido-ui'
 import { Actions, DescriptionText, DescriptionTitle } from './StyledFormStyle'
 import { ethers } from 'ethers'
 import { getChainName } from 'modules/blockChain/chains'
-import { ContractVoting } from 'modules/blockChain/contracts'
 import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'
 import { isUrl } from 'modules/shared/utils/isUrl'
+import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 
 type FormValues = {
   rpcUrl: string
   etherscanApiKey: string
   useBundledAbi: boolean
+  useTestContracts: boolean
 }
 
 export function SettingsForm() {
   const { savedConfig, setSavedConfig } = useConfig()
   const { chainId } = useWeb3()
+  const { ldoHelpers } = useContractHelpers()
 
   const formMethods = useForm<FormValues>({
     mode: 'onChange',
@@ -35,6 +37,7 @@ export function SettingsForm() {
       rpcUrl: savedConfig.rpcUrls[chainId] || '',
       etherscanApiKey: savedConfig.etherscanApiKey || '',
       useBundledAbi: savedConfig.useBundledAbi,
+      useTestContracts: savedConfig.useTestContracts,
     },
   })
 
@@ -48,6 +51,7 @@ export function SettingsForm() {
         },
         etherscanApiKey: formValues.etherscanApiKey,
         useBundledAbi: formValues.useBundledAbi,
+        useTestContracts: formValues.useTestContracts,
       })
     },
     [chainId, setSavedConfig],
@@ -76,8 +80,8 @@ export function SettingsForm() {
         }
 
         // Doing a random request to check rpc url is fetchable
-        const voting = ContractVoting.connectRpc({ chainId, rpcUrl })
-        await voting.voteTime()
+        const ldo = ldoHelpers.connectRpc({ chainId, rpc: rpcUrl })
+        await ldo.decimals()
 
         // All fine
         return true
@@ -85,7 +89,7 @@ export function SettingsForm() {
         return 'Given url is not working'
       }
     },
-    [chainId],
+    [chainId, ldoHelpers],
   )
 
   const validateEtherscanKey = useCallback(
@@ -94,10 +98,10 @@ export function SettingsForm() {
       const errMsg = 'Etherscan api can not be accessed with given key now'
       try {
         // Doing a random request to check etherscan key is viable
-        const address = ContractVoting.address[chainId] as string
+
         await fetcherEtherscan<string>({
           chainId,
-          address,
+          address: ldoHelpers.address,
           module: 'contract',
           action: 'getabi',
           apiKey: etherscanApiKey,
@@ -108,7 +112,7 @@ export function SettingsForm() {
         return errMsg
       }
     },
-    [chainId],
+    [chainId, ldoHelpers.address],
   )
 
   const handleReset = useCallback(() => {

@@ -3,12 +3,27 @@ import { ChainAddressMap } from './types'
 
 export const AragonVoting: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x2e59A20f205bB85a89C53f1936454680651E618e',
-  [CHAINS.Holesky]: '0xdA7d2573Df555002503F29aA4003e398d28cc00f',
+  [CHAINS.Holesky]: {
+    test: '0xdA7d2573Df555002503F29aA4003e398d28cc00f',
+    actual: '0xdA7d2573Df555002503F29aA4003e398d28cc00f',
+  },
 }
 
 export const GovernanceToken: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32',
-  [CHAINS.Holesky]: '0x14ae7daeecdf57034f3E9db8564e46Dba8D97344',
+  [CHAINS.Holesky]: {
+    test: '0x14ae7daeecdf57034f3E9db8564e46Dba8D97344',
+    actual: '0x14ae7daeecdf57034f3E9db8564e46Dba8D97344',
+  },
+}
+
+// https://docs.snapshot.org/user-guides/delegation
+export const Snapshot: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x469788fE6E9E9681C6ebF3bF78e7Fd26Fc015446',
+  [CHAINS.Holesky]: {
+    test: '0x575e8c7DD6422e574A0E3e8cf6B23db1F01584CD',
+    actual: '0x575e8c7DD6422e574A0E3e8cf6B23db1F01584CD',
+  },
 }
 
 export const TokenManager: ChainAddressMap = {
@@ -171,12 +186,6 @@ export const SimpleDVT: ChainAddressMap = {
 export const SimpleDVTRepo: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x2325b0a607808dE42D918DB07F925FFcCfBb2968',
   [CHAINS.Holesky]: '0x889dB59baf032E1dfD4fCA720e0833c24f1404C6',
-}
-
-// https://docs.snapshot.org/user-guides/delegation
-export const Snapshot: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x469788fE6E9E9681C6ebF3bF78e7Fd26Fc015446',
-  [CHAINS.Holesky]: '0x575e8c7DD6422e574A0E3e8cf6B23db1F01584CD',
 }
 
 export const L1ERC20TokenBridge: ChainAddressMap = {

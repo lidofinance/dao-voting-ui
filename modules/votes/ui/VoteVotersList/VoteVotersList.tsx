@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 import { useEnsNames } from 'modules/shared/hooks/useEnsNames'
-import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
 import UnionIcon from 'assets/union.com.svg.react'
 import { DelegationAddressPop } from 'modules/delegation/ui/DelegationAddressPop'
 
@@ -20,6 +19,7 @@ import { formatBalance } from 'modules/blockChain/utils/formatBalance'
 import { getPublicDelegateByAddress } from 'modules/delegation/utils/getPublicDelegateName'
 import { PublicDelegateAvatar } from 'modules/delegation/ui/PublicDelegateAvatar'
 import { CastVoteEvent } from 'modules/votes/types'
+import { useGovernanceTokenData } from 'modules/tokens/hooks/useGovernanceTokenData'
 
 type Props = {
   eventsVoted: CastVoteEvent[]
@@ -47,7 +47,7 @@ const INITIAL_PAGE_SIZE = 2
 const PAGE_SIZE = 10
 
 export function VoteVotersList({ eventsVoted, eventsDelegatesVoted }: Props) {
-  const { data: govSymbol } = useGovernanceSymbol()
+  const { data: tokenData } = useGovernanceTokenData()
 
   const addresses = useMemo(() => eventsVoted.map(e => e.voter), [eventsVoted])
   const delegateVotesMap = useMemo(
@@ -130,7 +130,7 @@ export function VoteVotersList({ eventsVoted, eventsDelegatesVoted }: Props) {
                   title={formatNumber(weiToNum(event.stake), 6)}
                 >
                   <div data-testid="votingPower">
-                    {formatBalance(event.stake)} {govSymbol}
+                    {formatBalance(event.stake)} {tokenData?.symbol}
                   </div>
                 </Tooltip>
               </ListRowCell>

@@ -102,8 +102,13 @@ const getRequestsForRetry = (
       addToIncorrectRequests(item, `req topic0 not match resp event topic0`),
     )
 
+    const votingAddresses = AragonVoting[chainId]
+    const votingAddress =
+      typeof votingAddresses === 'string'
+        ? votingAddresses
+        : votingAddresses?.actual
     const contractVoting = new ethers.Contract(
-      AragonVoting[chainId] ?? '',
+      votingAddress!,
       AragonVotingAbi__factory.abi,
     )
     const filter = contractVoting.filters.StartVote()

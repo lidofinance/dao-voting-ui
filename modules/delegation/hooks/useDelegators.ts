@@ -1,10 +1,10 @@
 import { CHAINS } from '@lido-sdk/constants'
 import { useLidoSWR } from '@lido-sdk/react'
-import { ContractVoting } from 'modules/blockChain/contracts'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { DELEGATORS_FETCH_SIZE, DELEGATORS_FETCH_TOTAL } from '../constants'
 import { BigNumber } from 'ethers'
 import { useEnsResolvers } from 'modules/shared/hooks/useEnsResolvers'
+import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 
 type DelegatorData = {
   address: string
@@ -25,7 +25,8 @@ type DelegatorsData = {
 */
 export function useDelegators() {
   const { walletAddress, chainId } = useWeb3()
-  const voting = ContractVoting.useRpc()
+  const { votingHelpers } = useContractHelpers()
+  const voting = votingHelpers.useRpc()
   const { lookupAddress } = useEnsResolvers()
 
   const { data, initialLoading, loading, error } = useLidoSWR<DelegatorsData>(
