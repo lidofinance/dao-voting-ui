@@ -17,6 +17,7 @@ import { getChainName } from 'modules/blockChain/chains'
 import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'
 import { isUrl } from 'modules/shared/utils/isUrl'
 import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
+import { isTestnet as getIsTestnet } from 'modules/blockChain/utils/isTestnet'
 
 type FormValues = {
   rpcUrl: string
@@ -123,6 +124,8 @@ export function SettingsForm() {
     ToastSuccess('Settings have been reset')
   }, [setValue, saveSettings, getValues])
 
+  const isTestnet = getIsTestnet(chainId)
+
   return (
     <Container as="main" size="tight">
       <Card data-testid="settingsSection">
@@ -147,6 +150,14 @@ export function SettingsForm() {
               Use built-in ABIs
             </CheckboxLabelWrap>
           </Fieldset>
+          {isTestnet && (
+            <Fieldset data-testid="testContractsBlock">
+              <CheckboxLabelWrap>
+                <CheckboxControl name="useTestContracts" />
+                Use test contracts
+              </CheckboxLabelWrap>
+            </Fieldset>
+          )}
           <Actions>
             <Button
               fullwidth
@@ -205,6 +216,18 @@ export function SettingsForm() {
             having trouble viewing the action items, uncheck this box to load
             ABIs from Etherscan.
           </p>
+          {isTestnet && (
+            <>
+              <DescriptionTitle>
+                What does &ldquo;Use test contracts&rdquo; parameter?
+              </DescriptionTitle>
+              <p>
+                There may be more than one contract instance on the testnet.
+                This parameter allows you to choose between the test and main
+                contract.
+              </p>
+            </>
+          )}
         </DescriptionText>
       </Card>
     </Container>
