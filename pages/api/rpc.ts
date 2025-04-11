@@ -10,7 +10,7 @@ import { AragonVoting } from '../../modules/blockChain/contractAddresses'
 import { AragonVotingAbi__factory } from '../../generated'
 
 const { serverRuntimeConfig } = getConfig()
-const { rpcUrls_1, rpcUrls_17000 } = serverRuntimeConfig
+const { rpcUrls_1, rpcUrls_17000, rpcUrls_560048 } = serverRuntimeConfig
 
 interface IRpcRequest {
   method: string
@@ -42,6 +42,7 @@ const patterns = [
   process.env.WALLETCONNECT_PROJECT_ID,
   ...(process.env.EL_RPC_URLS_1 || 'NO_EL_RPC_URLS_1').split(','),
   ...(process.env.EL_RPC_URLS_17000 || 'NO_EL_RPC_URLS_17000').split(','),
+  ...(process.env.EL_RPC_URLS_560048 || 'NO_EL_RPC_URLS_560048').split(','),
 ]
 const mask = satanizer(patterns)
 
@@ -102,8 +103,13 @@ const getRequestsForRetry = (
       addToIncorrectRequests(item, `req topic0 not match resp event topic0`),
     )
 
+    const votingAddresses = AragonVoting[chainId]
+    const votingAddress =
+      typeof votingAddresses === 'string'
+        ? votingAddresses
+        : votingAddresses?.actual
     const contractVoting = new ethers.Contract(
-      AragonVoting[chainId] ?? '',
+      votingAddress!,
       AragonVotingAbi__factory.abi,
     )
     const filter = contractVoting.filters.StartVote()
@@ -203,6 +209,7 @@ export default async function rpc(req: NextApiRequest, res: NextApiResponse) {
   const RPC_URLS: Record<number, string[]> = {
     [CHAINS.Mainnet]: rpcUrls_1,
     [CHAINS.Holesky]: rpcUrls_17000,
+    [CHAINS.Hoodi]: rpcUrls_560048,
   }
 
   const requestInfo = {

@@ -18,9 +18,11 @@ export type ResultTx =
 
 export type TxStatus = 'empty' | 'pending' | 'failed' | 'success'
 
-type Address = `0x${string}`
+export type Address = `0x${string}`
 
-export type ChainAddressMap = Partial<Record<CHAINS, Address>>
+export type ChainAddressMap = Partial<
+  Record<CHAINS, Address | { test: Address; actual: Address }>
+>
 
 // This is a little hack needed because some of local ABIs
 // doesn't meet the ABIElement type requirements

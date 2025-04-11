@@ -27,9 +27,7 @@ export function DelegationFormBalance({ onCustomizeClick }: Props) {
       <Balance>
         <Text>Your voting power</Text>
         <Text weight={700}>
-          {loading.isGovernanceBalanceLoading
-            ? 'Loading...'
-            : governanceBalanceStr}
+          {loading.isTokenDataLoading ? 'Loading...' : governanceBalanceStr}
         </Text>
       </Balance>
       {onCustomizeClick && (

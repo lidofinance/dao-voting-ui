@@ -15,12 +15,12 @@ import {
 } from 'modules/delegation/constants'
 import { InfoLabel } from 'modules/shared/ui/Common/InfoRow'
 import { getEtherscanAddressLink } from '@lido-sdk/helpers'
-import { AragonVoting } from 'modules/blockChain/contractAddresses'
 import { formatBalance } from 'modules/blockChain/utils/formatBalance'
 import { useDelegators } from 'modules/delegation/hooks/useDelegators'
 import { ExternalLink } from 'modules/shared/ui/Common/ExternalLink'
-import { useGovernanceBalance } from 'modules/tokens/hooks/useGovernanceBalance'
+import { useGovernanceTokenData } from 'modules/tokens/hooks/useGovernanceTokenData'
 import { DelegatorsListItem } from './DelegatorsListItem'
+import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 
 const DAO_OPS_FORUM_LINK =
   'https://research.lido.fi/new-message?groupname=DAO_Ops'
@@ -28,7 +28,8 @@ const DAO_OPS_FORUM_LINK =
 export function DelegatorsList() {
   const { isWalletConnected, chainId } = useWeb3()
   const [pageCount, setPageCount] = useState(1)
-  const { data: governanceToken } = useGovernanceBalance()
+  const { votingHelpers } = useContractHelpers()
+  const { data: governanceToken } = useGovernanceTokenData()
 
   const { data, initialLoading } = useDelegators()
 
@@ -103,7 +104,7 @@ export function DelegatorsList() {
           in the list. To see all your delegators, use the{' '}
           <Link
             href={
-              getEtherscanAddressLink(chainId, AragonVoting[chainId] ?? '') +
+              getEtherscanAddressLink(chainId, votingHelpers.address) +
               '#readProxyContract'
             }
           >

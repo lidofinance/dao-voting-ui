@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useDisconnect, useConnectorInfo } from 'reef-knot/web3-react'
-import { useGovernanceBalance } from 'modules/tokens/hooks/useGovernanceBalance'
+import { useGovernanceTokenData } from 'modules/tokens/hooks/useGovernanceTokenData'
 import { useConfig } from 'modules/config/hooks/useConfig'
 import { CopyOpenActions } from 'modules/shared/ui/Common/CopyOpenActions'
 import {
@@ -27,7 +27,7 @@ function WalletModalContent() {
     () => trimAddress(walletAddress ?? '', 6),
     [walletAddress],
   )
-  const { data: governanceBalance, initialLoading } = useGovernanceBalance()
+  const { data: tokenData, initialLoading } = useGovernanceTokenData()
 
   return (
     <>
@@ -37,10 +37,10 @@ function WalletModalContent() {
           weight={500}
           children={initialLoading ? 'Loading...' : 'Balance'}
         />
-        {governanceBalance?.balanceStr ? (
+        {tokenData?.balanceStr ? (
           <Text size="xxs" weight={500}>
             &nbsp;
-            {governanceBalance.balanceStr}
+            {tokenData.balanceStr}
           </Text>
         ) : null}
       </Row>

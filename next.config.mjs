@@ -4,14 +4,16 @@ const rpcUrls_1 =
   process.env.EL_RPC_URLS_1 && process.env.EL_RPC_URLS_1.split(',')
 const rpcUrls_17000 =
   process.env.EL_RPC_URLS_17000 && process.env.EL_RPC_URLS_17000.split(',')
+const rpcUrls_560048 =
+  process.env.EL_RPC_URLS_560048 && process.env.EL_RPC_URLS_560048.split(',')
 
 const etherscanApiKey = process.env.ETHERSCAN_API_KEY
 
 // Mainnet is the default chain
 const _defaultChain = '1'
 
-// Keep both Mainnet and Holesky as defaults
-const defaultSupportedChains = '1,17000'
+// Keep Mainnet, Holesky and Hoodi as defaults
+const defaultSupportedChains = '1,17000,560048'
 
 const defaultChain = process.env.DEFAULT_CHAIN || _defaultChain
 const supportedChains = process.env.SUPPORTED_CHAINS || defaultSupportedChains
@@ -112,6 +114,7 @@ export default {
     basePath,
     rpcUrls_1,
     rpcUrls_17000,
+    rpcUrls_560048,
     etherscanApiKey,
     cspTrustedHosts,
     cspReportOnly,

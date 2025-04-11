@@ -10,6 +10,7 @@ type SavedConfig = {
   rpcUrls: Partial<Record<CHAINS, string>>
   etherscanApiKey: string
   useBundledAbi: boolean
+  useTestContracts: boolean
 }
 
 type ConfigContext = EnvConfigParsed & {
@@ -29,6 +30,7 @@ const DEFAULT_STATE = {
   rpcUrls: {},
   etherscanApiKey: '',
   useBundledAbi: true,
+  useTestContracts: false,
 }
 
 export function ConfigProvider({ children, envConfig }: Props) {

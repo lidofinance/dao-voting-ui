@@ -6,7 +6,7 @@ import {
   useCallback,
   useState,
 } from 'react'
-import { useGovernanceBalance } from 'modules/tokens/hooks/useGovernanceBalance'
+import { useGovernanceTokenData } from 'modules/tokens/hooks/useGovernanceTokenData'
 import { useDelegationInfo } from '../hooks/useDelegationInfo'
 import invariant from 'tiny-invariant'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -40,10 +40,8 @@ export const useDelegationFormData = () => {
 }
 
 const useDelegationFormNetworkData = (): DelegationFormNetworkData => {
-  const {
-    data: governanceBalance,
-    initialLoading: isGovernanceBalanceLoading,
-  } = useGovernanceBalance()
+  const { data: governanceBalance, initialLoading: isTokenDataLoading } =
+    useGovernanceTokenData()
 
   const {
     data: delegationInfo,
@@ -58,9 +56,9 @@ const useDelegationFormNetworkData = (): DelegationFormNetworkData => {
   const loading = useMemo(
     () => ({
       isDelegationInfoLoading,
-      isGovernanceBalanceLoading,
+      isTokenDataLoading,
     }),
-    [isDelegationInfoLoading, isGovernanceBalanceLoading],
+    [isDelegationInfoLoading, isTokenDataLoading],
   )
 
   return {

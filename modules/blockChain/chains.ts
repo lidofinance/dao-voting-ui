@@ -4,6 +4,7 @@ import { CHAINS } from '@lido-sdk/constants'
 export const ChainNames = {
   [CHAINS.Mainnet]: 'Mainnet',
   [CHAINS.Holesky]: 'Holesky',
+  [CHAINS.Hoodi]: 'Hoodi',
 } as const
 
 export const parseChainId = (chainId: number | string) => {

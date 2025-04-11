@@ -15,9 +15,9 @@ export const useEnsResolvers = () => {
 
   const lookupAddress = useCallback(
     async (address: string) => {
-      // ENS name is not supported on Holesky for our current setup
+      // ENS name is not supported on Holesky and Hoodi for our current setup
       // TODO: revisit this after package upgrade
-      if (chainId === CHAINS.Holesky) {
+      if (chainId === CHAINS.Holesky || chainId === CHAINS.Hoodi) {
         return null
       }
 
@@ -28,9 +28,9 @@ export const useEnsResolvers = () => {
 
   const resolveName = useCallback(
     async (address: string) => {
-      // ENS name is not supported on Holesky for our current setup
+      // ENS name is not supported on Holesky and Hoodi for our current setup
       // TODO: revisit this after package upgrade
-      if (chainId === CHAINS.Holesky) {
+      if (chainId === CHAINS.Holesky || chainId === CHAINS.Hoodi) {
         return null
       }
 
