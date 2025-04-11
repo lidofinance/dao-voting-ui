@@ -219,7 +219,8 @@ export function SettingsForm() {
           {isTestnet && (
             <>
               <DescriptionTitle>
-                What does &ldquo;Use test contracts&rdquo; parameter?
+                What is the purpose of the &rdquo;Use test contracts&rdquo;
+                parameter?
               </DescriptionTitle>
               <p>
                 There may be more than one contract instance on the testnet.
