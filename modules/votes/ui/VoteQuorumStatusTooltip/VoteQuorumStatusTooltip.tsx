@@ -1,7 +1,7 @@
 import { Tooltip, PopoverPlacements } from '@lidofinance/lido-ui'
 
 import { TooltipText } from 'modules/votes/ui/VoteQuorumStatusTooltip/VoteQuorumStatusTooltipStyle'
-import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
+import { useGovernanceTokenData } from 'modules/tokens/hooks/useGovernanceTokenData'
 
 type Props = {
   placement: PopoverPlacements
@@ -16,14 +16,14 @@ export function VoteQuorumStatusTooltip({
   minQuorumSupply,
   children,
 }: Props) {
-  const { data: governanceSymbol } = useGovernanceSymbol()
+  const { data: tokenData } = useGovernanceTokenData()
 
   return (
     <Tooltip
       placement={placement}
       title={
         <TooltipText>
-          To reach quorum, more than 5% of the total {governanceSymbol} supply
+          To reach quorum, more than 5% of the total {tokenData?.symbol} supply
           must vote for one option.
           <br />
           Total Supply: {totalSupply.toLocaleString()}

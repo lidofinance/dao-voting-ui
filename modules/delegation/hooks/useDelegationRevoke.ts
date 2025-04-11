@@ -1,11 +1,10 @@
 import { useCallback } from 'react'
 import invariant from 'tiny-invariant'
-import { ContractSnapshot, ContractVoting } from 'modules/blockChain/contracts'
 import { useTransactionSender } from 'modules/blockChain/hooks/useTransactionSender'
-import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { DelegationFormNetworkData, DelegationType } from '../types'
 import { estimateDelegationGasLimit } from '../utils/estimateDelegationGasLimit'
 import { SNAPSHOT_LIDO_SPACE_NAME } from '../constants'
+import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 
 type Args = {
   networkData: DelegationFormNetworkData
@@ -20,15 +19,18 @@ export function useDelegationRevoke({
   onError,
   onFinish,
 }: Args) {
-  const { chainId, library } = useWeb3()
-  const voting = ContractVoting.useWeb3()
+  const { votingHelpers, snapshotHelpers } = useContractHelpers()
+  const voting = votingHelpers.useWeb3()
+  const snapshot = snapshotHelpers.useWeb3()
 
   const populateAragonRevoke = useCallback(async () => {
     const gasLimit = await estimateDelegationGasLimit(
       voting.estimateGas.unassignDelegate(),
     )
 
-    const tx = await voting.populateTransaction.unassignDelegate({ gasLimit })
+    const tx = await voting.populateTransaction.unassignDelegate({
+      gasLimit,
+    })
     return tx
   }, [voting.estimateGas, voting.populateTransaction])
 
@@ -37,9 +39,6 @@ export function useDelegationRevoke({
   })
 
   const populateSnapshotRevoke = useCallback(async () => {
-    invariant(library, 'Snapshot delegation: user is not connected')
-
-    const snapshot = ContractSnapshot.connect({ chainId, library })
     const gasLimit = await estimateDelegationGasLimit(
       snapshot.estimateGas.clearDelegate(SNAPSHOT_LIDO_SPACE_NAME),
     )
@@ -49,7 +48,7 @@ export function useDelegationRevoke({
       { gasLimit },
     )
     return tx
-  }, [chainId, library])
+  }, [snapshot.estimateGas, snapshot.populateTransaction])
 
   const txSnapshotRevoke = useTransactionSender(populateSnapshotRevoke, {
     onError,

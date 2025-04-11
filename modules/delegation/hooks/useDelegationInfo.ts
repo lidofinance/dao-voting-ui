@@ -1,16 +1,17 @@
 import { CHAINS } from '@lido-sdk/constants'
 import { useLidoSWRImmutable } from '@lido-sdk/react'
 import { constants } from 'ethers'
-import { ContractSnapshot, ContractVoting } from 'modules/blockChain/contracts'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { SNAPSHOT_LIDO_SPACE_NAME } from '../constants'
 import { getPublicDelegateByAddress } from '../utils/getPublicDelegateName'
 import { DelegationInfo, PublicDelegate } from '../types'
+import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 
 export const useDelegationInfo = () => {
   const { walletAddress, chainId } = useWeb3()
-  const voting = ContractVoting.useRpc()
-  const snapshot = ContractSnapshot.useRpc()
+  const { votingHelpers, snapshotHelpers } = useContractHelpers()
+  const voting = votingHelpers.useRpc()
+  const snapshot = snapshotHelpers.useRpc()
 
   return useLidoSWRImmutable(
     walletAddress ? ['swr:useDelegationInfo', chainId, walletAddress] : null,

@@ -105,7 +105,7 @@ export class CalldataDecoder {
     matchedCalldata: DecodedCalldata,
     from?: string,
   ): Promise<SimulationResult> {
-    const contractAddress =
+    let contractAddress =
       addressMaps[matchedCalldata.contractName][this.chainId]
 
     if (!contractAddress) {
@@ -116,6 +116,10 @@ export class CalldataDecoder {
           isCustomError: true,
         },
       }
+    }
+
+    if (typeof contractAddress !== 'string') {
+      contractAddress = contractAddress.actual
     }
 
     const abi = this.abiMap[matchedCalldata.factoryName]

@@ -1,6 +1,5 @@
 import { useCallback } from 'react'
 import invariant from 'tiny-invariant'
-import { ContractSnapshot, ContractVoting } from 'modules/blockChain/contracts'
 import { useTransactionSender } from 'modules/blockChain/hooks/useTransactionSender'
 import {
   DelegationFormInput,
@@ -11,6 +10,7 @@ import { NonNullableMembers } from 'modules/shared/utils/utilTypes'
 import { estimateDelegationGasLimit } from '../utils/estimateDelegationGasLimit'
 import { SNAPSHOT_LIDO_SPACE_NAME } from '../constants'
 import type { ResultTx } from '../../blockChain/types'
+import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 
 type Args = {
   networkData: DelegationFormNetworkData
@@ -35,8 +35,9 @@ export function useDelegationFormSubmit({
   onError,
   onFinish,
 }: Args) {
-  const voting = ContractVoting.useWeb3()
-  const snapshot = ContractSnapshot.useWeb3()
+  const { votingHelpers, snapshotHelpers } = useContractHelpers()
+  const voting = votingHelpers.useWeb3()
+  const snapshot = snapshotHelpers.useWeb3()
 
   const populateAragonDelegate = useCallback(
     async (args: FormData) => {
