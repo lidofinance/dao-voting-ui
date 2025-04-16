@@ -11,7 +11,6 @@ import {
 } from 'modules/delegation/hooks/useEligibleDelegators'
 import { useFormVoteSubmit } from 'modules/votes/ui/VoteForm/useFormVoteSubmit'
 import { useFormVoteInfo } from 'modules/votes/ui/VoteForm/useFormVoteInfo'
-import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
 
 import { ResultTx } from 'modules/blockChain/types'
 import { CastVoteEvent, VoteMode, VotePhase } from 'modules/votes/types'
@@ -26,6 +25,7 @@ import {
 } from 'modules/blockChain/hooks/useTransactionSender'
 import { useDelegationInfo } from 'modules/delegation/hooks/useDelegationInfo'
 import { DelegationInfo } from 'modules/delegation/types'
+import { useGovernanceTokenData } from 'modules/tokens/hooks/useGovernanceTokenData'
 
 export enum VotedAs {
   delegate = 'delegate',
@@ -89,7 +89,7 @@ export const VoteFormActionsProvider: React.FC = ({ children }) => {
 
   const { data: delegationInfo } = useDelegationInfo()
 
-  const { data: governanceSymbol } = useGovernanceSymbol()
+  const { data: tokenData } = useGovernanceTokenData()
 
   const {
     eventsVoted,
@@ -185,7 +185,7 @@ export const VoteFormActionsProvider: React.FC = ({ children }) => {
       eligibleDelegatedVotersAddresses:
         eligibleDelegatorsData.eligibleDelegatedVotersAddresses,
       delegatorsVotedThemselves,
-      governanceSymbol,
+      governanceSymbol: tokenData?.symbol,
       votedByDelegate,
       voterState,
       isSubmitting,
@@ -211,12 +211,12 @@ export const VoteFormActionsProvider: React.FC = ({ children }) => {
       delegatedVotersAddresses,
       delegatorsVotedThemselves,
       eligibleDelegatedVoters,
-      governanceSymbol,
       votedByDelegate,
       voterState,
       isSubmitting,
       delegationInfo,
       votePhase,
+      tokenData?.symbol,
     ],
   )
 

@@ -15,10 +15,10 @@ import { getUseModal } from 'modules/modal/useModal'
 import { VoteSubmitModal } from 'modules/votes/ui/VoteActionsModals/SubmitModal/VoteSubmitModal'
 import { VoteSuccessModal } from 'modules/votes/ui/VoteActionsModals/SuccessModal/VoteSuccessModal'
 import { ResultTx } from 'modules/blockChain/types'
-import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
 import { TxRow } from 'modules/blockChain/ui/TxRow'
 import { DelegatorsList } from 'modules/votes/ui/VoteActionsModals/DelegatorsList/VoteActionsDelegatorsList'
 import { VoteActionButtonObjectionTooltip } from 'modules/votes/ui/VoteActionButtonObjectionTooltip'
+import { useGovernanceTokenData } from 'modules/tokens/hooks/useGovernanceTokenData'
 
 type Props = {
   canEnact: boolean
@@ -74,7 +74,7 @@ export function VoteFormActions({
   const { openModal: openSuccessModal, closeModal: SuccessModal } =
     useSuccessModal()
 
-  const { data: governanceSymbol } = useGovernanceSymbol()
+  const { data: tokenData } = useGovernanceTokenData()
 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeVoteType, setActiveVoteType] = useState<VoteMode | null>(null)
@@ -116,13 +116,13 @@ export function VoteFormActions({
   )
 
   const preparedOwnVP = useMemo(
-    () => `${formatBalance(votePowerWei || 0)} ${governanceSymbol}`,
-    [governanceSymbol, votePowerWei],
+    () => `${formatBalance(votePowerWei || 0)} ${tokenData?.symbol}`,
+    [tokenData?.symbol, votePowerWei],
   )
 
   const preparedDelegatedVP = useMemo(
-    () => `${formatBalance(eligibleDelegatedVotingPower)} ${governanceSymbol}`,
-    [governanceSymbol, eligibleDelegatedVotingPower],
+    () => `${formatBalance(eligibleDelegatedVotingPower)} ${tokenData?.symbol}`,
+    [tokenData?.symbol, eligibleDelegatedVotingPower],
   )
 
   const switchModal = useCallback(
@@ -245,7 +245,7 @@ export function VoteFormActions({
         <DelegatorsList
           eligibleDelegatedVoters={eligibleDelegatedVoters}
           delegatorsVotedThemselves={delegatorsVotedThemselves}
-          governanceSymbol={governanceSymbol}
+          governanceSymbol={tokenData?.symbol}
           eligibleDelegatedVotingPower={eligibleDelegatedVotingPower}
           onSelectedAddressesChange={handleSelectedAddressesChange}
           eventsVoted={eventsVoted}
@@ -305,7 +305,7 @@ export function VoteFormActions({
       {!txVote.isEmpty && (
         <TxStatusWrapper data-testid="txStatusOwn">
           <Text size="xxs" color="secondary">
-            Vote tx status (with own {governanceSymbol})
+            Vote tx status (with own {tokenData?.symbol})
           </Text>
           <TxRow tx={txVote} onClick={txVote.open} />
         </TxStatusWrapper>

@@ -9,11 +9,11 @@ import { DashboardVoteSkeleton } from '../DashboardVoteSkeleton'
 import { SkeletonBar } from 'modules/shared/ui/Skeletons/SkeletonBar'
 import { GridWrap, PaginationWrap } from './DashboardGridStyle'
 import { FetchErrorBanner } from 'modules/shared/ui/Common/FetchErrorBanner'
-import { ContractVoting } from 'modules/blockChain/contracts'
 import { getVoteStatus } from 'modules/votes/utils/getVoteStatus'
 import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
 import * as urls from 'modules/network/utils/urls'
 import { getEventExecuteVote } from 'modules/votes/utils/getEventExecuteVote'
+import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 
 const PAGE_SIZE = 20
 
@@ -23,30 +23,36 @@ type Props = {
 
 export function DashboardGrid({ currentPage }: Props) {
   const { chainId } = useWeb3()
-  const contractVoting = ContractVoting.useRpc()
+  const { votingHelpers } = useContractHelpers()
+  const voting = votingHelpers.useRpc()
 
   const handleChangePage = (nextPage: number) => {
     Router.push(urls.dashboardPage(nextPage))
   }
 
-  const infoSwr = useSWR(`dashboard-general-info-${chainId}`, async () => {
-    const [votesTotalBn, voteTime, objectionPhaseTime] = await Promise.all([
-      contractVoting.votesLength(),
-      contractVoting.voteTime(),
-      contractVoting.objectionPhaseTime(),
-    ])
+  const infoSwr = useSWR(
+    `dashboard-general-info-${chainId}-${voting.address}`,
+    async () => {
+      const [votesTotalBn, voteTime, objectionPhaseTime] = await Promise.all([
+        voting.votesLength(),
+        voting.voteTime(),
+        voting.objectionPhaseTime(),
+      ])
 
-    return {
-      voteTime: voteTime.toNumber(),
-      votesTotal: votesTotalBn.toNumber(),
-      objectionPhaseTime: objectionPhaseTime.toNumber(),
-    }
-  })
+      return {
+        voteTime: voteTime.toNumber(),
+        votesTotal: votesTotalBn.toNumber(),
+        objectionPhaseTime: objectionPhaseTime.toNumber(),
+      }
+    },
+  )
 
   const { voteTime, votesTotal, objectionPhaseTime } = infoSwr.data || {}
 
   const swrVotes = useSWR(
-    votesTotal ? `dashboard-page-${currentPage}-${chainId}` : null,
+    votesTotal
+      ? `dashboard-page-${currentPage}-${chainId}-${voting.address}`
+      : null,
     async () => {
       if (!votesTotal) return null
 
@@ -57,8 +63,8 @@ export function DashboardGrid({ currentPage }: Props) {
       const requests = ids.map(voteId => {
         const fetch = async () => {
           const [vote, canExecute] = await Promise.all([
-            contractVoting.getVote(voteId),
-            contractVoting.canExecute(voteId),
+            voting.getVote(voteId),
+            voting.canExecute(voteId),
           ])
           return {
             voteId,
@@ -75,12 +81,12 @@ export function DashboardGrid({ currentPage }: Props) {
       const eventsPromises = votesList.map(async dataItem => {
         const snapshotBlock = dataItem.vote.snapshotBlock.toNumber()
         const eventStart = await getEventStartVote(
-          contractVoting,
+          voting,
           dataItem.voteId,
           snapshotBlock,
         )
         const eventExecute = await getEventExecuteVote(
-          contractVoting,
+          voting,
           dataItem.voteId,
           snapshotBlock,
         )
@@ -121,11 +127,11 @@ export function DashboardGrid({ currentPage }: Props) {
       await revalidateInfo()
       await revalidateVotes()
     }
-    contractVoting.on('StartVote', handleNewVote)
+    voting.on('StartVote', handleNewVote)
     return () => {
-      contractVoting.off('StartVote', handleNewVote)
+      voting.off('StartVote', handleNewVote)
     }
-  }, [contractVoting, revalidateInfo, revalidateVotes, currentPage])
+  }, [voting, revalidateInfo, revalidateVotes, currentPage])
 
   if (isOutOfPageBoundy) {
     return null
