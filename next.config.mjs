@@ -101,11 +101,6 @@ export default {
             key: 'Access-Control-Allow-Headers',
             value: 'X-Requested-With, content-type, Authorization',
           },
-          {
-            key: 'Content-Security-Policy',
-            value:
-              'frame-ancestors "self" https://app.safe.global https://app.safe.protofire.io;',
-          },
         ],
       },
       {
