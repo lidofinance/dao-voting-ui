@@ -87,6 +87,28 @@ export default {
   async headers() {
     return [
       {
+        source: '/manifest.json',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET',
+          },
+          {
+            key: 'Access-Control-Allow-Headers',
+            value: 'X-Requested-With, content-type, Authorization',
+          },
+          {
+            key: 'Content-Security-Policy',
+            value:
+              'frame-ancestors "self" https://app.safe.global https://app.safe.protofire.io;',
+          },
+        ],
+      },
+      {
         // Apply these headers to all routes in your application.
         source: '/(.*)',
         headers: [
