@@ -14,8 +14,10 @@ import * as abis from 'generated'
 import * as ADDR from 'modules/blockChain/contractAddresses'
 import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'
 import { ABI } from 'modules/blockChain/types'
-
-type ContractName = keyof typeof ADDR
+import {
+  ContractName,
+  useGetContractAddress,
+} from 'modules/blockChain/hooks/useGetContractAddress'
 
 // This object contains ABIs of contracts that are using the same ABI
 // but have different names than the ABI file
@@ -28,6 +30,10 @@ const ABI_EXCEPTIONS = {
   OracleRepo: abis.RepoAbi__factory.abi,
   SimpleDVT: abis.NodeOperatorsRegistryAbi__factory.abi,
   SandboxNodeOperatorsRegistry: abis.NodeOperatorsRegistryAbi__factory.abi,
+  CSVerifierProposed: abis.CSVerifierAbi__factory.abi,
+  GateSealProposed: abis.GateSealAbi__factory.abi,
+  CSMGateSeal: abis.GateSealAbi__factory.abi,
+  CSMGateSealProposed: abis.GateSealAbi__factory.abi,
 } as const
 
 type ExceptionContractName = keyof typeof ABI_EXCEPTIONS
@@ -36,6 +42,7 @@ type GeneralContractName = Exclude<ContractName, ExceptionContractName>
 export function useEVMScriptDecoder(): EVMScriptDecoder {
   const { chainId } = useWeb3()
   const { getRpcUrl, savedConfig } = useConfig()
+  const getContractAddress = useGetContractAddress()
   const rpcUrl = getRpcUrl(chainId)
   const { etherscanApiKey, useBundledAbi } = savedConfig
 
@@ -44,7 +51,7 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
     // needed to initialize the localDecoder
     const abiMap = Object.keys(ADDR).reduce(
       (result, contractName: ContractName) => {
-        const address = ADDR[contractName][chainId]
+        const address = getContractAddress(contractName)
         if (!address) {
           return result
         }

@@ -15,7 +15,6 @@ import { useEffect, useMemo, useState } from 'react'
 
 interface Props {
   startDate: number
-  endDate: number
   voteTime: number
   objectionPhaseTime: number
   isEnded: boolean
@@ -24,7 +23,6 @@ interface Props {
 
 export function VoteProgressBar({
   startDate,
-  endDate,
   voteTime,
   objectionPhaseTime,
   isEnded,
@@ -84,7 +82,10 @@ export function VoteProgressBar({
   }
 
   const formattedStartDate = useMemo(() => formatDate(startDate), [startDate])
-  const formattedEndDate = useMemo(() => formatDate(endDate), [endDate])
+  const formattedEndDate = useMemo(() => {
+    const endDate = startDate + voteTime
+    return formatDate(endDate)
+  }, [startDate, voteTime])
 
   return (
     <>
@@ -92,6 +93,7 @@ export function VoteProgressBar({
         <LabelWrap>
           <MainPhaseCountWrap>
             <Text
+              data-testid="voteBarMainPhase"
               color={votePhase === VotePhase.Main ? 'primary' : 'secondary'}
               size="xxs"
             >
@@ -106,6 +108,7 @@ export function VoteProgressBar({
             </b>
           </MainPhaseCountWrap>
           <Text
+            data-testid="voteBarObjectionPhase"
             color={votePhase === VotePhase.Objection ? 'primary' : 'secondary'}
             size="xxs"
           >
@@ -137,7 +140,7 @@ export function VoteProgressBar({
                   : 'secondary'
               }
             />
-            <div>{formattedStartDate} </div>
+            <div data-testid="voteStartDate"> {formattedStartDate} </div>
           </ProgressBarWrap>
           <ProgressBarWrap $alignDescription="flex-end" $width="40%">
             <ProgressBar
@@ -151,7 +154,7 @@ export function VoteProgressBar({
                   : 'secondary'
               }
             />
-            <div>{formattedEndDate}</div>
+            <div data-testid="voteEndDate">{formattedEndDate}</div>
           </ProgressBarWrap>
         </ProgressSection>
       </Wrap>

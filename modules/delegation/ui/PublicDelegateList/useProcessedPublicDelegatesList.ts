@@ -1,6 +1,6 @@
 import { useLidoSWRImmutable } from '@lido-sdk/react'
 import { BigNumber } from 'ethers'
-import { ContractVoting } from 'modules/blockChain/contracts'
+import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { DELEGATORS_FETCH_TOTAL } from 'modules/delegation/constants'
 import { PUBLIC_DELEGATES } from 'modules/delegation/publicDelegates'
@@ -18,12 +18,13 @@ export type ProcessedDelegate = typeof PUBLIC_DELEGATES[number] & {
 
 export const useProcessedPublicDelegatesList = () => {
   const { chainId } = useWeb3()
-  const voting = ContractVoting.useRpc()
+  const { votingHelpers } = useContractHelpers()
+  const voting = votingHelpers.useRpc()
 
   const { resolveName } = useEnsResolvers()
 
   return useLidoSWRImmutable<ProcessedDelegate[]>(
-    [`swr:useProcessedPublicDelegatesList`, chainId],
+    [`swr:useProcessedPublicDelegatesList`, chainId, voting.address],
     async () => {
       const parsedList: ProcessedDelegate[] = await Promise.all(
         PUBLIC_DELEGATES.map(async delegate => {
