@@ -266,12 +266,12 @@ export const CSModule: ChainAddressMap = {
 
 export const CSVerifier: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x3Dfc50f22aCA652a0a6F28a0F892ab62074b5583',
-  [CHAINS.Holesky]: '0x6FDAA094227CF8E1593f9fB9C1b867C1f846F916',
+  [CHAINS.Holesky]: '0xC099dfD61F6E5420e0Ca7e84D820daAd17Fc1D44',
   [CHAINS.Hoodi]: '0xB6bafBD970a4537077dE59cebE33081d794513d6',
 }
 
 export const CSVerifierProposed: ChainAddressMap = {
-  [CHAINS.Holesky]: '0xC099dfD61F6E5420e0Ca7e84D820daAd17Fc1D44',
+  [CHAINS.Mainnet]: '0x0c345dFa318f9F4977cdd4f33d80F9D0ffA38e8B',
 }
 
 export const SandboxNodeOperatorsRegistry: ChainAddressMap = {
@@ -292,22 +292,12 @@ export const DualGovernance: ChainAddressMap = {
 }
 
 export const GateSeal: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x79243345eDbe01A7E42EDfF5900156700d22611c',
-  [CHAINS.Holesky]: '0xA34d620EA9F3e86bf8B8a7699B4dE44CD9D3202d',
-}
-
-export const GateSealProposed: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xf9C9fDB4A5D2AA1D836D5370AB9b28BC1847e178',
   [CHAINS.Holesky]: '0xAE6eCd77DCC656c5533c4209454Fd56fB46e1778',
   [CHAINS.Hoodi]: '0x2168Ea6D948Ab49c3D34c667A7e02F92369F3A9C',
 }
 
 export const CSMGateSeal: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x5cFCa30450B1e5548F140C24A47E36c10CE306F0',
-  [CHAINS.Holesky]: '0x41F2677fae0222cF1f08Cd1c0AAa607B469654Ce',
-}
-
-export const CSMGateSealProposed: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x16Dbd4B85a448bE564f1742d5c8cCdD2bB3185D0',
   [CHAINS.Holesky]: '0xf1C03536dbC77B1bD493a2D1C0b1831Ea78B540a',
   [CHAINS.Hoodi]: '0xEe1f7f0ebB5900F348f2CfbcC641FB1681359B8a',
