@@ -1,18 +1,19 @@
 import { useLidoSWR } from '@lido-sdk/react'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { CHAINS } from '@lido-sdk/constants'
+
 import {
-  ContractDualGovernance,
-  ContractEmergencyProtectedTimelock,
-  ContractStEth,
-} from 'modules/blockChain/contracts'
-import {
+  DGConfigProviderAbi__factory,
   DGEscrowAbi__factory,
   DualGovernanceAbi,
   EmergencyProtectedTimelockAbi,
 } from 'generated'
 import { useConfig } from 'modules/config/hooks/useConfig'
 import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
+import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
+import { DualGovernanceStatus } from 'modules/dual-governance/types'
+
+const NORMAL_WARNING_STATE_THRESHOLD_PERCENT = 33
 
 const getActiveProposalsCount = async (
   dualGovernanceContract: DualGovernanceAbi,
@@ -38,9 +39,14 @@ const getActiveProposalsCount = async (
 
 export const useDualGovernanceState = () => {
   const { chainId } = useWeb3()
-  const dualGovernance = ContractDualGovernance.useRpc()
-  const stEth = ContractStEth.useRpc()
-  const emergencyProtectedTimelock = ContractEmergencyProtectedTimelock.useRpc()
+  const {
+    dualGovernanceHelpers,
+    stEthHelpers,
+    emergencyProtectedTimelockHelpers,
+  } = useContractHelpers()
+  const dualGovernance = dualGovernanceHelpers.useRpc()
+  const stEth = stEthHelpers.useRpc()
+  const emergencyProtectedTimelock = emergencyProtectedTimelockHelpers.useRpc()
   const { getRpcUrl } = useConfig()
 
   return useLidoSWR(
@@ -51,11 +57,18 @@ export const useDualGovernanceState = () => {
 
       const vetoSignallingAddress =
         await dualGovernance.getVetoSignallingEscrow()
+      const configAddress = await dualGovernance.getConfigProvider()
 
       const VetoSignallingEscrow = DGEscrowAbi__factory.connect(
         vetoSignallingAddress,
         library,
       )
+
+      const dgConfig = DGConfigProviderAbi__factory.connect(
+        configAddress,
+        library,
+      )
+
       const lockedAssets =
         await VetoSignallingEscrow.getSignallingEscrowDetails()
 
@@ -73,18 +86,33 @@ export const useDualGovernanceState = () => {
 
       const rageQuitSupport = await VetoSignallingEscrow.getRageQuitSupport()
 
-      const effectiveState = await dualGovernance.getEffectiveState()
+      let dgStatus = await dualGovernance.getPersistedState()
+      const nextDgStatus = await dualGovernance.getEffectiveState()
 
       const proposalsCount = await getActiveProposalsCount(
         dualGovernance,
         emergencyProtectedTimelock,
       )
 
+      const dualGovernanceConfig = await dgConfig.getDualGovernanceConfig()
+
+      const { firstSealRageQuitSupport } = dualGovernanceConfig
+
+      const warningStateThreshold = firstSealRageQuitSupport
+        .mul(NORMAL_WARNING_STATE_THRESHOLD_PERCENT)
+        .div(100)
+
+      if (rageQuitSupport >= warningStateThreshold) {
+        dgStatus = DualGovernanceStatus.Warning
+      }
+
       return {
         totalStEthInEscrow,
         rageQuitSupport,
-        effectiveState,
+        dgStatus,
         proposalsCount,
+        firstSealRageQuitSupport,
+        nextDgStatus,
         // timelock till
         // proposals count
       }

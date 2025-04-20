@@ -1,6 +1,7 @@
 import {
-  addSpacesBeforeUpperCase,
-  getDualGovernanceStateLabel,
+  getDualGovernanceStatusLabel,
+  getDualGovernanceLink,
+  stringifyDualGovernanceStatus,
 } from '../../utils'
 import { DualGovernanceStatus } from '../../types'
 import {
@@ -9,25 +10,36 @@ import {
   Label,
   StatusBulb,
 } from './DualGovernanceWidgetStyle'
-
-const STATUS: any = DualGovernanceStatus.Normal
-const PROPOSALS_COUNT = 3
-const DG_LINK = 'https://dg-holesky.testnet.fi/'
+import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
+import { useDualGovernanceState } from './useDualGovernanceState'
 
 export const DualGovernanceWidget = () => {
-  const dgStatus: DualGovernanceStatus = STATUS
-  const proposalsCount: number = PROPOSALS_COUNT
+  const { chainId } = useWeb3()
 
-  const hasProposals = proposalsCount > 0
+  const { data: dgState, initialLoading } = useDualGovernanceState()
+
+  const hasProposals = !!dgState?.proposalsCount
+
+  if (initialLoading || !dgState) {
+    return null
+  }
+
+  const {
+    dgStatus,
+    proposalsCount,
+    totalStEthInEscrow,
+    firstSealRageQuitSupport,
+    nextDgStatus,
+  } = dgState
 
   const showProposalsInfo =
     hasProposals &&
     dgStatus !== DualGovernanceStatus.Normal &&
-    dgStatus !== DualGovernanceStatus.Cooldown
+    dgStatus !== DualGovernanceStatus.VetoCooldown
 
   const showState =
     dgStatus === DualGovernanceStatus.VetoSignalling ||
-    dgStatus === DualGovernanceStatus.Deactivation ||
+    dgStatus === DualGovernanceStatus.VetoSignallingDeactivation ||
     dgStatus === DualGovernanceStatus.RageQuit
 
   const showTimelock =
@@ -37,7 +49,7 @@ export const DualGovernanceWidget = () => {
 
   const showNextState =
     dgStatus === DualGovernanceStatus.RageQuit ||
-    dgStatus === DualGovernanceStatus.Cooldown
+    dgStatus === DualGovernanceStatus.VetoCooldown
 
   return (
     <DualGovernanceWidgetWrapper>
@@ -48,21 +60,21 @@ export const DualGovernanceWidget = () => {
         </Label>
         <Label>
           <StatusBulb $status={dgStatus} />
-          {getDualGovernanceStateLabel(dgStatus)}
+          {getDualGovernanceStatusLabel(dgStatus)}
         </Label>
       </p>
       {showState && (
         <p>
           <Label>State</Label>
-          <Label>{addSpacesBeforeUpperCase(dgStatus)}</Label>
+          <Label>{stringifyDualGovernanceStatus(dgStatus)}</Label>
         </p>
       )}
       {/* Veto Support */}
       <p>
         <Label>Veto Support</Label>
         <p>
-          <Label $color="secondary">103k</Label>
-          <Label>1%</Label>
+          <Label $color="secondary">{totalStEthInEscrow.toString()}</Label>
+          <Label>{firstSealRageQuitSupport.toString()}%</Label>
         </p>
       </p>
 
@@ -70,16 +82,17 @@ export const DualGovernanceWidget = () => {
       {showTimelock && (
         <p>
           <Label>Timelock till</Label>
+          {/* TODO  */}
           <Label>Sep 3, 5:15 PM GMT+3</Label>
         </p>
       )}
       {showNextState && (
         <p>
           <Label>Next state</Label>
-          <Label>Cooldown</Label>
+          <Label>{getDualGovernanceStatusLabel(nextDgStatus)}</Label>
         </p>
       )}
-      {dgStatus === DualGovernanceStatus.Deactivation && (
+      {dgStatus === DualGovernanceStatus.VetoSignallingDeactivation && (
         <p>
           <Label>stETH needed to Veto Signalling</Label>
           <Label>118k</Label>
@@ -90,13 +103,17 @@ export const DualGovernanceWidget = () => {
         <p>
           <Label $color="secondary">
             {proposalsCount} proposal{proposalsCount > 1 ? 's' : ''}
-            {dgStatus === DualGovernanceStatus.Deactivation
+            {dgStatus === DualGovernanceStatus.VetoSignallingDeactivation
               ? ' currently blocked in Dual Governance will remain so only if 118k stETH (1.3%) is added'
               : ' pending in Dual Governance'}
           </Label>
         </p>
       )}
-      <CheckLink href={DG_LINK} target="_blank" rel="noreferrer">
+      <CheckLink
+        href={getDualGovernanceLink(chainId)}
+        target="_blank"
+        rel="noreferrer"
+      >
         Go to Dual Governance
       </CheckLink>
     </DualGovernanceWidgetWrapper>
