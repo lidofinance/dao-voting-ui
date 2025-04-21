@@ -20,6 +20,8 @@ export function getContractName(chainId: CHAINS, address: string) {
   )
 
   if (!name) {
-    return 'Unknown contract'
+    return null
   }
+
+  return name
 }
