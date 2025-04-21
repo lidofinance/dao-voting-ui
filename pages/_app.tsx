@@ -22,6 +22,7 @@ import { AppWagmiConfig } from 'modules/wagmiConfig'
 import { UiProvider } from 'modules/shared/ui/UiProvider'
 import { useConfig } from 'modules/config/hooks/useConfig'
 import { TestModeBanner } from 'modules/blockChain/ui/TestModeBanner'
+import { isTestnet } from 'modules/blockChain/utils/isTestnet'
 
 // Visualize route changes
 nprogress()
@@ -98,7 +99,9 @@ function AppRoot({ Component, pageProps }: AppProps) {
       </Head>
       <PageLayout>
         {isUnsupported && <NetworkSwitcher />}
-        {savedConfig.useTestContracts && <TestModeBanner />}
+        {savedConfig.useTestContracts && isTestnet(chainId) && (
+          <TestModeBanner />
+        )}
         <Component {...pageProps} />
       </PageLayout>
       <ToastContainer />
