@@ -1,5 +1,10 @@
 import { CHAINS } from '@lido-sdk/constants'
-import { DualGovernanceStatus } from './types'
+import {
+  DualGovernanceConfig,
+  DualGovernanceStateDetails,
+  DualGovernanceStatus,
+} from './types'
+import { BigNumber, utils } from 'ethers'
 
 export const getDualGovernanceStatusLabel = (status: DualGovernanceStatus) => {
   switch (status) {
@@ -37,8 +42,10 @@ export const stringifyDualGovernanceStatus = (status: DualGovernanceStatus) => {
   }
 }
 
-export const getBulbColor = (status: DualGovernanceStatus) => {
+export const getDualGovernanceBannerColor = (status: DualGovernanceStatus) => {
   switch (status) {
+    case DualGovernanceStatus.Unset:
+      return 'gray' // TODO - add a color for this status
     case DualGovernanceStatus.VetoSignalling:
     case DualGovernanceStatus.RageQuit:
       return 'rgba(214, 72, 90, 1)'
@@ -62,5 +69,83 @@ export const getDualGovernanceLink = (chainId: CHAINS) => {
       return 'https://dg-hoodi.testnet.fi/'
     default:
       return 'https://dg.lido.fi/'
+  }
+}
+
+export const formatNumber = (value: number) => {
+  if (isNaN(value)) {
+    return 'N/A'
+  }
+
+  const formattedNumber = value.toLocaleString('en-US', {
+    notation: 'standard',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  })
+
+  return formattedNumber
+}
+
+export const parsePercent16 = (value: BigNumber | null | undefined) => {
+  if (value === null || value === undefined) return NaN
+
+  return parseFloat(utils.formatUnits(value, 16))
+}
+
+export const formatPercent16 = (value: BigNumber | null | undefined) => {
+  return formatNumber(parsePercent16(value))
+}
+
+export const getAmountUntilVetoSignalling = (
+  stateDetails: DualGovernanceStateDetails,
+  dgConfigDetails: DualGovernanceConfig,
+  stEthTotalSupply: BigNumber,
+) => {
+  const currentTimestamp = Math.floor(Date.now() / 1000)
+  const { persistedStateEnteredAt } = stateDetails
+  const {
+    firstSealRageQuitSupport,
+    secondSealRageQuitSupport,
+    vetoSignallingMinDuration,
+    vetoSignallingMaxDuration,
+  } = dgConfigDetails
+
+  const timestampDiff =
+    currentTimestamp - persistedStateEnteredAt - vetoSignallingMinDuration
+
+  if (timestampDiff < 0) {
+    // edge case
+    return null
+  }
+
+  // We use this timestamp to add a hardcoded gap of 3 hours to the approximate VetoSignalling restart date
+  const futureTimestamp = currentTimestamp + 3 * 3600
+
+  const firstThreshold = parsePercent16(firstSealRageQuitSupport)
+  const secondThreshold = parsePercent16(secondSealRageQuitSupport)
+
+  const thresholdDiff = secondThreshold - firstThreshold
+  const durationDiff = vetoSignallingMaxDuration - vetoSignallingMinDuration
+
+  const totalSupplyPercentage =
+    (thresholdDiff *
+      (currentTimestamp + futureTimestamp + persistedStateEnteredAt)) /
+    durationDiff
+
+  if (totalSupplyPercentage > secondThreshold || totalSupplyPercentage < 0) {
+    // edge case
+    return null
+  }
+
+  const formattedValue = formatNumber(
+    parseFloat(
+      utils.formatEther(stEthTotalSupply.mul(totalSupplyPercentage).div(100)),
+    ),
+  )
+  const formattedPercentage = formatNumber(totalSupplyPercentage)
+
+  return {
+    percentage: formattedPercentage,
+    value: formattedValue,
   }
 }

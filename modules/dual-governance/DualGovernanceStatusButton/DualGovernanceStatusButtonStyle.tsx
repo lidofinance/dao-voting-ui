@@ -1,21 +1,18 @@
 import { ButtonIcon, Popover } from '@lidofinance/lido-ui'
 import styled from 'styled-components'
-import { DGIcon } from './DGIcon'
-import { getBulbColor } from '../../utils'
-import { DualGovernanceStatus } from '../../types'
+import { getDualGovernanceBannerColor } from '../utils'
+import { DualGovernanceStatus } from '../types'
 
 export const DualGovernanceStatusButtonStyled = styled(ButtonIcon).attrs({
-  icon: DGIcon,
   color: 'secondary',
   size: 'sm',
   variant: 'ghost',
-})<{ $status: DualGovernanceStatus }>`
+})<{ $status: DualGovernanceStatus; $loading?: boolean }>`
   border: 1px solid rgba(0, 10, 61, 0.12);
   margin-right: 12px;
-  // border-radius: 10px;
 
   & svg {
-    fill: ${({ $status }) => getBulbColor($status)};
+    fill: ${({ $status }) => getDualGovernanceBannerColor($status)};
   }
 `
 

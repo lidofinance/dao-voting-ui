@@ -1,5 +1,5 @@
-import { getBulbColor } from '../../utils'
-import { DualGovernanceStatus } from '../../types'
+import { getDualGovernanceBannerColor } from '../utils'
+import { DualGovernanceStatus } from '../types'
 import styled from 'styled-components'
 
 export const DualGovernanceWidgetWrapper = styled.div`
@@ -26,7 +26,7 @@ export const StatusBulb = styled.div<StatusBulbProps>`
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: ${({ $status }) => getBulbColor($status)};
+  background-color: ${({ $status }) => getDualGovernanceBannerColor($status)};
 `
 
 type LabelProps = {
