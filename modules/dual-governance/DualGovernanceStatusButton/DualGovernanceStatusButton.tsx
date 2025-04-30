@@ -7,7 +7,7 @@ import {
 import { DualGovernanceWidget } from '../DualGovernanceWidget'
 import { useDualGovernanceState } from '../useDualGovernanceState'
 import { Loader } from '@lidofinance/lido-ui'
-import { DGIcon } from './DGIcon'
+import { DGIcon } from '../DGIcon'
 
 export const DualGovernanceStatusButton = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false)

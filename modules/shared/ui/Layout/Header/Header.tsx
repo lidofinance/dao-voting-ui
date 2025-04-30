@@ -136,8 +136,8 @@ export function Header() {
               {getChainName(chainId)}
             </Text>
           </Network>
-          <DualGovernanceStatusButton />
           <NoSSRWrapper>
+            <DualGovernanceStatusButton />
             <HeaderWallet />
           </NoSSRWrapper>
           <ThemeTogglerWrap>
