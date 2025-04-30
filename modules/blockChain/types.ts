@@ -32,3 +32,5 @@ export type ABIElement = Omit<ABIElementImported, 'name' | 'type'> & {
 }
 
 export type ABI = ABIElement[]
+
+export type AbiMap = Record<string, ABI | undefined>
