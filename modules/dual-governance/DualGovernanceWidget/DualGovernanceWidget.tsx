@@ -43,8 +43,9 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
     status === DualGovernanceStatus.RageQuit
 
   const showNextState =
-    status === DualGovernanceStatus.RageQuit ||
-    status === DualGovernanceStatus.VetoCooldown
+    status !== nextStatus &&
+    (status === DualGovernanceStatus.RageQuit ||
+      status === DualGovernanceStatus.VetoCooldown)
 
   return (
     <DualGovernanceWidgetWrapper>
@@ -65,23 +66,25 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
         </p>
       )}
       {/* Veto Support */}
-      <p>
-        <Label>Veto Support</Label>
+      {status !== DualGovernanceStatus.RageQuit && (
         <p>
-          {!totalStEthInEscrow.isZero() && (
-            <Label $color="secondary">
-              {formatBalance(totalStEthInEscrow)}
-            </Label>
-          )}
-          <Label>{formatPercent16(rageQuitSupportPercent)}%</Label>
+          <Label>Veto Support</Label>
+          <p>
+            {!totalStEthInEscrow.isZero() && (
+              <Label $color="secondary">
+                {formatBalance(totalStEthInEscrow)} stETH
+              </Label>
+            )}
+            <Label>{formatPercent16(rageQuitSupportPercent)}%</Label>
+          </p>
         </p>
-      </p>
+      )}
 
       {/* Conditional information */}
       {showNextState && (
         <p>
           <Label>Next state</Label>
-          <Label>{getDualGovernanceStatusLabel(nextStatus)}</Label>
+          <Label>{stringifyDualGovernanceStatus(nextStatus)}</Label>
         </p>
       )}
       {amountUntilVetoSignalling && (
@@ -94,10 +97,21 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
       {showProposalsInfo && (
         <p>
           <Label $color="secondary">
-            {activeProposalsCount} proposal{activeProposalsCount > 1 ? 's' : ''}
-            {amountUntilVetoSignalling
-              ? ` currently blocked in Dual Governance will remain so only if ${amountUntilVetoSignalling.value} stETH (${amountUntilVetoSignalling.percentage}%) TODO is added`
-              : ' pending in Dual Governance'}
+            {amountUntilVetoSignalling ? (
+              <>
+                {activeProposalsCount} proposal
+                {activeProposalsCount > 1 ? 's' : ''}{' '}
+                {activeProposalsCount > 1 ? 'are ' : 'is '}currently blocked in
+                Dual Governance will remain so only if
+                {amountUntilVetoSignalling.value} stETH (
+                {amountUntilVetoSignalling.percentage}%) is added
+              </>
+            ) : (
+              <>
+                {activeProposalsCount} pending proposal
+                {activeProposalsCount > 1 ? 's' : ''} in Dual Governance
+              </>
+            )}
           </Label>
         </p>
       )}

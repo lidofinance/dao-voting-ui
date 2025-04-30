@@ -32,7 +32,7 @@ export const useDualGovernanceState = () => {
     ['swr:useDualGovernanceState', chainId],
     async (_: any, _chainId: CHAINS) => {
       const rpcUrl = getRpcUrl(_chainId)
-      const library = getStaticRpcBatchProvider(_chainId, rpcUrl)
+      const provider = getStaticRpcBatchProvider(_chainId, rpcUrl)
 
       const vetoSignallingAddress =
         await dualGovernance.getVetoSignallingEscrow()
@@ -41,12 +41,12 @@ export const useDualGovernanceState = () => {
 
       const vetoSignallingEscrow = DGEscrowAbi__factory.connect(
         vetoSignallingAddress,
-        library,
+        provider,
       )
 
       const dualGovernanceConfig = DGConfigProviderAbi__factory.connect(
         configAddress,
-        library,
+        provider,
       )
 
       const lockedAssets =
@@ -96,7 +96,10 @@ export const useDualGovernanceState = () => {
         .mul(WARNING_STATE_THRESHOLD_PERCENT)
         .div(100)
 
-      if (rageQuitSupportPercent >= warningStateThreshold) {
+      if (
+        status === DualGovernanceStatus.Normal &&
+        rageQuitSupportPercent.gte(warningStateThreshold)
+      ) {
         status = DualGovernanceStatus.Warning
       }
 
