@@ -46,6 +46,7 @@ import SettingsSvg from 'assets/settings.com.svg.react'
 import DelegationSvg from 'assets/delegation.com.svg.react'
 import * as urls from 'modules/network/utils/urls'
 import { DualGovernanceStatusButton } from 'modules/dual-governance/DualGovernanceStatusButton'
+import { isTestnet } from 'modules/blockChain/utils/isTestnet'
 
 function NavItem({
   link,
@@ -137,7 +138,7 @@ export function Header() {
             </Text>
           </Network>
           <NoSSRWrapper>
-            <DualGovernanceStatusButton />
+            {isTestnet(chainId) && <DualGovernanceStatusButton />}
             <HeaderWallet />
           </NoSSRWrapper>
           <ThemeTogglerWrap>

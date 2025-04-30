@@ -92,7 +92,10 @@ export const NodeOperatorsRegistryRepo: ChainAddressMap = {
 
 export const Steth: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
-  [CHAINS.Holesky]: '0x3F1c547b21f65e10480dE3ad8E19fAAC46C95034',
+  [CHAINS.Holesky]: {
+    test: '0x7a955618ff2ad00d58e5c38205bc1f0b33bc5494',
+    actual: '0x3F1c547b21f65e10480dE3ad8E19fAAC46C95034',
+  },
   [CHAINS.Hoodi]: {
     test: '0x3508A952176b3c15387C97BE809eaffB1982176a',
     actual: '0x4ecAC76fEd32DADd892aB0697f47622FdcB0F955',
@@ -145,7 +148,10 @@ export const LidoLocator: ChainAddressMap = {
 
 export const WithdrawalQueueERC721: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x889edC2eDab5f40e902b864aD4d7AdE8E412F9B1',
-  [CHAINS.Holesky]: '0xc7cc160b58F8Bb0baC94b80847E2CF2800565C50',
+  [CHAINS.Holesky]: {
+    test: '0x27f793CE9306341a8F4Fd6cDadb0c9785D46978a',
+    actual: '0xc7cc160b58F8Bb0baC94b80847E2CF2800565C50',
+  },
   [CHAINS.Hoodi]: '0xfe56573178f1bcdf53F01A6E9977670dcBBD9186',
 }
 
@@ -282,20 +288,27 @@ export const SandboxNodeOperatorsRegistry: ChainAddressMap = {
   [CHAINS.Hoodi]: '0x682E94d2630846a503BDeE8b6810DF71C9806891',
 }
 
-export const TimelockedGovernance: ChainAddressMap = {
+export const EmergencyTimelockedGovernance: ChainAddressMap = {
   [CHAINS.Holesky]: '0x2D99B1Fe6AFA9d102C7125908081414b5C3Cc759',
+  [CHAINS.Hoodi]: '0x69E8e916c4A19F42C13C802abDF2767E1fB4F059',
 }
 
 export const EmergencyProtectedTimelock: ChainAddressMap = {
-  [CHAINS.Holesky]: '0xd70D836D60622D48648AA1dE759361D6B9a4Baa0',
+  [CHAINS.Holesky]: {
+    test: '0xd70D836D60622D48648AA1dE759361D6B9a4Baa0',
+    actual: '0xe9c5FfEAd0668AFdBB9aac16163840d649DB76DD',
+  },
   [CHAINS.Hoodi]: {
     test: '0x1e43c35B1087e7f767Dc36E1E6783A3132497A41',
-    actual: '0x1e43c35B1087e7f767Dc36E1E6783A3132497A41',
+    actual: '0x0A5E22782C0Bd4AddF10D771f0bF0406B038282d',
   },
 }
 
 export const DualGovernance: ChainAddressMap = {
-  [CHAINS.Holesky]: '0x490bf377734CA134A8E207525E8576745652212e',
+  [CHAINS.Holesky]: {
+    test: '0x5A2958dC9532bAaCdF8481C8278735B1b05FB199',
+    actual: '0x490bf377734CA134A8E207525E8576745652212e',
+  },
   [CHAINS.Hoodi]: {
     test: '0x8648E40335337a8c68C1aC5617dCaE24d3dC8408',
     actual: '0x4d12b9f6aCAB54FF6a3a776BA3b8724D9B77845F',
