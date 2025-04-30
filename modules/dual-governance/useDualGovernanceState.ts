@@ -34,6 +34,9 @@ export const useDualGovernanceState = () => {
       const rpcUrl = getRpcUrl(_chainId)
       const provider = getStaticRpcBatchProvider(_chainId, rpcUrl)
 
+      const isEmergencyModeActive =
+        await emergencyProtectedTimelock.isEmergencyModeActive()
+
       const vetoSignallingAddress =
         await dualGovernance.getVetoSignallingEscrow()
       const configAddress = await dualGovernance.getConfigProvider()
@@ -101,6 +104,10 @@ export const useDualGovernanceState = () => {
         rageQuitSupportPercent.gte(warningStateThreshold)
       ) {
         status = DualGovernanceStatus.Warning
+      }
+
+      if (isEmergencyModeActive) {
+        status = DualGovernanceStatus.EmergencyMode
       }
 
       let amountUntilVetoSignalling: {

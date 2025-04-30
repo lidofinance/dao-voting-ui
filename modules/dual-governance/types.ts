@@ -8,6 +8,7 @@ export enum DualGovernanceStatus {
   VetoCooldown,
   RageQuit,
   Warning, // UI only state
+  EmergencyMode, // UI only state
 }
 
 export type DualGovernanceConfig = {

@@ -11,6 +11,7 @@ export const getDualGovernanceStatusLabel = (status: DualGovernanceStatus) => {
     case DualGovernanceStatus.VetoSignalling:
     case DualGovernanceStatus.RageQuit:
     case DualGovernanceStatus.VetoSignallingDeactivation:
+    case DualGovernanceStatus.EmergencyMode:
       return 'Blocked'
     case DualGovernanceStatus.VetoCooldown:
       return 'Cooldown'
@@ -23,6 +24,8 @@ export const getDualGovernanceStatusLabel = (status: DualGovernanceStatus) => {
 
 export const stringifyDualGovernanceStatus = (status: DualGovernanceStatus) => {
   switch (status) {
+    case DualGovernanceStatus.EmergencyMode:
+      return 'Emergency Mode'
     case DualGovernanceStatus.Unset:
       return 'Unset'
     case DualGovernanceStatus.Normal:
@@ -48,6 +51,7 @@ export const getDualGovernanceBannerColor = (status: DualGovernanceStatus) => {
       return 'gray' // TODO - add a color for this status
     case DualGovernanceStatus.VetoSignalling:
     case DualGovernanceStatus.RageQuit:
+    case DualGovernanceStatus.EmergencyMode:
       return 'rgba(214, 72, 90, 1)'
     case DualGovernanceStatus.VetoSignallingDeactivation:
       return 'rgba(252, 97, 62, 1)'
