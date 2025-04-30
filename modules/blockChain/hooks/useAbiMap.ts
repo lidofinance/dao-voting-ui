@@ -36,22 +36,24 @@ export function useAbiMap(): AbiMap {
     // Map of contract addresses to their ABIs on the current chain
     // needed to initialize the localDecoder
     return Object.keys(ADDR).reduce((result, contractName: ContractName) => {
-      const address = getContractAddress(contractName)
-      if (!address) {
-        return result
-      }
-      let abi: ABI | undefined
-      if (contractName in ABI_EXCEPTIONS) {
-        abi = ABI_EXCEPTIONS[contractName as ExceptionContractName]
-      } else {
-        // This line will show a compiler-level error if there is a declared contract in ADDR
-        // that is not present neither in ABI_EXCEPTIONS nor in generated abis
-        abi = abis[`${contractName as GeneralContractName}Abi__factory`].abi
-      }
+      try {
+        const address = getContractAddress(contractName)
 
-      return {
-        ...result,
-        [address]: abi,
+        let abi: ABI | undefined
+        if (contractName in ABI_EXCEPTIONS) {
+          abi = ABI_EXCEPTIONS[contractName as ExceptionContractName]
+        } else {
+          // This line will show a compiler-level error if there is a declared contract in ADDR
+          // that is not present neither in ABI_EXCEPTIONS nor in generated abis
+          abi = abis[`${contractName as GeneralContractName}Abi__factory`].abi
+        }
+
+        return {
+          ...result,
+          [address]: abi,
+        }
+      } catch (error) {
+        return result
       }
     }, {} as Record<string, ABI>)
   }, `contracts-abi-map-${chainId}`)

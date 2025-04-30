@@ -23,32 +23,32 @@ export const useContractHelpers = () => {
     return {
       votingHelpers: createContractHelpers({
         factory: AragonVotingAbi__factory,
-        address: getContractAddress('AragonVoting')!,
+        address: getContractAddress('AragonVoting'),
         rpcUrl,
       }),
       ldoHelpers: createContractHelpers({
         factory: GovernanceTokenAbi__factory,
-        address: getContractAddress('GovernanceToken')!,
+        address: getContractAddress('GovernanceToken'),
         rpcUrl,
       }),
       snapshotHelpers: createContractHelpers({
         factory: SnapshotAbi__factory,
-        address: getContractAddress('Snapshot')!,
+        address: getContractAddress('Snapshot'),
         rpcUrl,
       }),
       dualGovernanceHelpers: createContractHelpers({
         factory: DualGovernanceAbi__factory,
-        address: getContractAddress('DualGovernance')!,
+        address: getContractAddress('DualGovernance'),
         rpcUrl,
       }),
       stEthHelpers: createContractHelpers({
         factory: StethAbi__factory,
-        address: getContractAddress('Steth')!,
+        address: getContractAddress('Steth'),
         rpcUrl,
       }),
       emergencyProtectedTimelockHelpers: createContractHelpers({
         factory: EmergencyProtectedTimelockAbi__factory,
-        address: getContractAddress('EmergencyProtectedTimelock')!,
+        address: getContractAddress('EmergencyProtectedTimelock'),
         rpcUrl,
       }),
     }

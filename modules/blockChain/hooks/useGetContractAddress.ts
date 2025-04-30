@@ -3,6 +3,7 @@ import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import * as ADDR from 'modules/blockChain/contractAddresses'
 import { useCallback } from 'react'
 import { isTestnet } from '../utils/isTestnet'
+import { getChainName } from '../chains'
 
 export type ContractName = keyof typeof ADDR
 
@@ -17,7 +18,11 @@ export const useGetContractAddress = () => {
       const address = ADDR[contractName][chainId]
 
       if (!address) {
-        return null
+        throw new Error(
+          `Contract address for ${contractName} not found for ${getChainName(
+            chainId,
+          )}`,
+        )
       }
 
       if (typeof address === 'string') {

@@ -132,7 +132,7 @@ export function VoteScript({ script, metadata = '' }: Props) {
         decodedEvmScript,
         _callDataDecoder,
         _evmDecoder,
-        dualGovernanceAddress!,
+        dualGovernanceAddress,
       )
       return parsedScriptForDg
     },
