@@ -93,7 +93,10 @@ export const NodeOperatorsRegistryRepo: ChainAddressMap = {
 export const Steth: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
   [CHAINS.Holesky]: '0x3F1c547b21f65e10480dE3ad8E19fAAC46C95034',
-  [CHAINS.Hoodi]: '0x3508A952176b3c15387C97BE809eaffB1982176a',
+  [CHAINS.Hoodi]: {
+    test: '0x3508A952176b3c15387C97BE809eaffB1982176a',
+    actual: '0x4ecAC76fEd32DADd892aB0697f47622FdcB0F955',
+  },
 }
 
 export const OracleRepo: ChainAddressMap = {
@@ -285,6 +288,10 @@ export const TimelockedGovernance: ChainAddressMap = {
 
 export const EmergencyProtectedTimelock: ChainAddressMap = {
   [CHAINS.Holesky]: '0xd70D836D60622D48648AA1dE759361D6B9a4Baa0',
+  [CHAINS.Hoodi]: {
+    test: '0x1e43c35B1087e7f767Dc36E1E6783A3132497A41',
+    actual: '0x1e43c35B1087e7f767Dc36E1E6783A3132497A41',
+  },
 }
 
 export const DualGovernance: ChainAddressMap = {

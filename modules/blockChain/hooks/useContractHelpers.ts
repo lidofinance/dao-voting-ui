@@ -1,8 +1,11 @@
 import { createContractHelpers } from 'modules/blockChain/utils/createContractHelpers'
 import {
   AragonVotingAbi__factory,
+  DualGovernanceAbi__factory,
+  EmergencyProtectedTimelockAbi__factory,
   GovernanceTokenAbi__factory,
   SnapshotAbi__factory,
+  StethAbi__factory,
 } from 'generated'
 import { useConfig } from 'modules/config/hooks/useConfig'
 import { useGlobalMemo } from 'modules/shared/hooks/useGlobalMemo'
@@ -31,6 +34,21 @@ export const useContractHelpers = () => {
       snapshotHelpers: createContractHelpers({
         factory: SnapshotAbi__factory,
         address: getContractAddress('Snapshot')!,
+        rpcUrl,
+      }),
+      dualGovernanceHelpers: createContractHelpers({
+        factory: DualGovernanceAbi__factory,
+        address: getContractAddress('DualGovernance')!,
+        rpcUrl,
+      }),
+      stEthHelpers: createContractHelpers({
+        factory: StethAbi__factory,
+        address: getContractAddress('Steth')!,
+        rpcUrl,
+      }),
+      emergencyProtectedTimelockHelpers: createContractHelpers({
+        factory: EmergencyProtectedTimelockAbi__factory,
+        address: getContractAddress('EmergencyProtectedTimelock')!,
         rpcUrl,
       }),
     }
