@@ -288,7 +288,11 @@ export const EmergencyProtectedTimelock: ChainAddressMap = {
 }
 
 export const DualGovernance: ChainAddressMap = {
-  [CHAINS.Holesky]: '0xb291a7f092d5cce0a3c93ea21bda3431129db202',
+  [CHAINS.Holesky]: '0x490bf377734CA134A8E207525E8576745652212e',
+  [CHAINS.Hoodi]: {
+    test: '0x8648E40335337a8c68C1aC5617dCaE24d3dC8408',
+    actual: '0x4d12b9f6aCAB54FF6a3a776BA3b8724D9B77845F',
+  },
 }
 
 export const GateSeal: ChainAddressMap = {

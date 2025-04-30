@@ -1,25 +1,17 @@
 import { BigNumber, Contract, utils } from 'ethers'
-import { ABI } from './types'
+import { ABI, AbiMap } from './types'
 import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
 import { CHAINS } from '@lido-sdk/constants'
 import { StaticJsonRpcBatchProvider } from '@lido-sdk/providers/dist/esm/staticJsonRpcBatchProvider'
 import { getPanicReason } from './utils/getPanicReason'
-import * as addressMaps from 'modules/blockChain/contractAddresses'
 import { isAddress } from 'ethers/lib/utils'
+import { getContractName } from 'modules/config/utils/getContractName'
+import { ABIElement as ABIElementImported } from '@lidofinance/evm-script-decoder/lib/types'
 
-type ContractName = keyof typeof addressMaps
-
-type FactoryName = `${ContractName}Abi__factory`
-
-const getContractName = (factoryName: FactoryName): ContractName =>
-  factoryName.split('Abi__factory')[0] as ContractName
-
-type FactoryMap = Record<string, { abi: ABI }>
-
-type FunctionSignatureIndex = Record<
+type FunctionSignatureMap = Record<
   string,
   | {
-      factoryName: FactoryName
+      contractAddress: string
       abi: ABI
     }[]
   | undefined
@@ -50,21 +42,23 @@ export type CalldataParams = {
 }
 
 export type DecodedCalldata = {
-  factoryName: FactoryName
-  contractName: ContractName
+  contractAddress: string
   functionName: string
   params: CalldataParams
+  contractName?: string
+  abi?: ABIElementImported
 }
 export class CalldataDecoder {
-  private signatureIndex: FunctionSignatureIndex = {}
+  private signatureMap: FunctionSignatureMap = {}
   private provider: StaticJsonRpcBatchProvider
   private chainId: CHAINS
-  private abiMap: Record<string, ABI> = {}
+  private abiMap: AbiMap
 
-  constructor(factoryMap: FactoryMap, chainId: CHAINS, rpcUrl: string) {
-    this.buildSignatureIndex(factoryMap)
+  constructor(abiMap: AbiMap, chainId: CHAINS, rpcUrl: string) {
     this.provider = getStaticRpcBatchProvider(chainId, rpcUrl)
     this.chainId = chainId
+    this.abiMap = abiMap
+    this.buildSignatureMap()
   }
 
   public decode(calldata: string): DecodedCalldata[] {
@@ -74,7 +68,7 @@ export class CalldataDecoder {
 
     // Extract function selector (first 4 bytes after 0x)
     const selector = calldata.slice(0, 10)
-    const potentialMatches = this.signatureIndex[selector]
+    const potentialMatches = this.signatureMap[selector]
 
     if (!potentialMatches) {
       return []
@@ -88,8 +82,9 @@ export class CalldataDecoder {
         const iface = new utils.Interface(match.abi)
         const decoded = iface.parseTransaction({ data: calldata })
         matches.push({
-          factoryName: match.factoryName,
-          contractName: getContractName(match.factoryName),
+          contractAddress: match.contractAddress,
+          contractName:
+            getContractName(this.chainId, match.contractAddress) ?? 'Unknown',
           functionName: decoded.name,
           params: decoded.args,
         })
@@ -101,29 +96,68 @@ export class CalldataDecoder {
     return matches
   }
 
+  public decodeWithAddress(
+    address: string,
+    calldata: string,
+  ): DecodedCalldata | null {
+    if (!calldata.startsWith('0x')) {
+      return null
+    }
+
+    const abi = this.getAbiByAddress(address)
+
+    if (!abi) {
+      return null
+    }
+
+    try {
+      const iface = new utils.Interface(abi)
+      const decoded = iface.parseTransaction({ data: calldata })
+
+      const functionSig = calldata.slice(0, 10)
+      const matchedAbiElement = abi.find(abiElement => {
+        if (abiElement.type !== 'function') return false
+
+        // Generate the function selector for this ABI element
+        try {
+          const fragment = utils.FunctionFragment.from(abiElement)
+          const selector = utils.id(fragment.format()).slice(0, 10)
+          return selector === functionSig
+        } catch {
+          return false
+        }
+      })
+      return {
+        contractAddress: address,
+        contractName: getContractName(this.chainId, address) ?? 'Unknown',
+        functionName: decoded.name,
+        params: decoded.args,
+        abi: matchedAbiElement as ABIElementImported,
+      }
+    } catch {
+      return null
+    }
+  }
+
   public async simulateTransaction(
     matchedCalldata: DecodedCalldata,
     from?: string,
   ): Promise<SimulationResult> {
-    let contractAddress =
-      addressMaps[matchedCalldata.contractName][this.chainId]
-
-    if (!contractAddress) {
+    const abi = this.getAbiByAddress(matchedCalldata.contractAddress)
+    if (!abi) {
       return {
         success: false,
         error: {
-          reason: `Contract address not found for ${matchedCalldata.contractName}`,
-          isCustomError: true,
+          reason: `ABI not found for ${matchedCalldata.contractAddress}`,
+          isCustomError: false,
         },
       }
     }
-
-    if (typeof contractAddress !== 'string') {
-      contractAddress = contractAddress.actual
-    }
-
-    const abi = this.abiMap[matchedCalldata.factoryName]
-    const contract = new Contract(contractAddress, abi, this.provider)
+    const contract = new Contract(
+      matchedCalldata.contractAddress,
+      abi,
+      this.provider,
+    )
 
     try {
       if (from?.length && !isAddress(from)) {
@@ -200,29 +234,34 @@ export class CalldataDecoder {
     }
   }
 
-  private buildSignatureIndex(factoryMap: FactoryMap): void {
-    for (const [factoryName, factory] of Object.entries(factoryMap)) {
+  private buildSignatureMap(): void {
+    for (const [address, abi] of Object.entries(this.abiMap)) {
       // Only index function entries
-      const functionAbi = factory.abi.filter(item => item.type === 'function')
+      const functionAbi = abi!.filter(item => item.type === 'function')
 
       for (const func of functionAbi) {
         const iface = new utils.Interface([func])
         const functionFragment = Object.values(iface.functions)[0]
         const signature = iface.getSighash(functionFragment)
 
-        if (!this.signatureIndex[signature]) {
-          this.signatureIndex[signature] = []
+        if (!this.signatureMap[signature]) {
+          this.signatureMap[signature] = []
         }
 
-        this.signatureIndex[signature]!.push({
-          factoryName: factoryName as FactoryName,
+        this.signatureMap[signature]!.push({
+          contractAddress: address,
           abi: [func],
         })
       }
     }
+  }
 
-    Object.entries(factoryMap).map(([factoryName, factory]) => {
-      this.abiMap[factoryName] = factory.abi
-    })
+  private getAbiByAddress(address: string): ABI | undefined {
+    const abi = this.abiMap[address]
+    if (!abi) {
+      console.error(`ABI not found for ${address}`)
+      return
+    }
+    return abi
   }
 }

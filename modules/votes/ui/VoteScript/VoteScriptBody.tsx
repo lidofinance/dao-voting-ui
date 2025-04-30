@@ -22,7 +22,7 @@ type Props = {
 export function VoteScriptBody({ binary, decoded, parentId }: Props) {
   const { chainId } = useWeb3()
 
-  if (!decoded?.calls.length) {
+  if (!decoded?.calls) {
     return (
       <CallWrapper>
         <ScriptBox>{binary}</ScriptBox>
@@ -37,7 +37,8 @@ export function VoteScriptBody({ binary, decoded, parentId }: Props) {
         const { address, abi, encodedCallData, decodedCallData } = call
         const callString = formatCallString(chainId, id, abi, decodedCallData)
         const nestedScriptsIdxs = abi?.inputs?.reduce(
-          (r, c, j) => (c.name === '_evmScript' ? [...r, j] : r),
+          (r, c, j) =>
+            c.name === '_evmScript' || c.name === 'calls' ? [...r, j] : r,
           [],
         )
         const showNestedScripts =
