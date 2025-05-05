@@ -284,16 +284,19 @@ export const CSVerifierProposed: ChainAddressMap = {
 }
 
 export const SandboxNodeOperatorsRegistry: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x0000000000000000000000000000000000000000',
   [CHAINS.Holesky]: '0xD6C2ce3BB8bea2832496Ac8b5144819719f343AC',
   [CHAINS.Hoodi]: '0x682E94d2630846a503BDeE8b6810DF71C9806891',
 }
 
 export const EmergencyTimelockedGovernance: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x0000000000000000000000000000000000000000',
   [CHAINS.Holesky]: '0x2D99B1Fe6AFA9d102C7125908081414b5C3Cc759',
   [CHAINS.Hoodi]: '0x69E8e916c4A19F42C13C802abDF2767E1fB4F059',
 }
 
 export const EmergencyProtectedTimelock: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x0000000000000000000000000000000000000000',
   [CHAINS.Holesky]: {
     test: '0xd70D836D60622D48648AA1dE759361D6B9a4Baa0',
     actual: '0xe9c5FfEAd0668AFdBB9aac16163840d649DB76DD',
@@ -305,7 +308,7 @@ export const EmergencyProtectedTimelock: ChainAddressMap = {
 }
 
 export const DualGovernance: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x00',
+  [CHAINS.Mainnet]: '0x0000000000000000000000000000000000000000',
   [CHAINS.Holesky]: {
     test: '0x5A2958dC9532bAaCdF8481C8278735B1b05FB199',
     actual: '0x490bf377734CA134A8E207525E8576745652212e',
