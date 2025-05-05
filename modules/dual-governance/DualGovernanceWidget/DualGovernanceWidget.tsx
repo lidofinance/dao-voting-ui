@@ -67,7 +67,7 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
       )}
       {/* Veto Support */}
       {status !== DualGovernanceStatus.RageQuit && (
-        <p>
+        <div>
           <Label>Veto Support</Label>
           <p>
             {!totalStEthInEscrow.isZero() && (
@@ -77,7 +77,7 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
             )}
             <Label>{formatPercent16(rageQuitSupportPercent)}%</Label>
           </p>
-        </p>
+        </div>
       )}
 
       {/* Conditional information */}

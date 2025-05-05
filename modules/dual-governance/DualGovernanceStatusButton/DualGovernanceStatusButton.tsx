@@ -6,7 +6,7 @@ import {
 } from './DualGovernanceStatusButtonStyle'
 import { DualGovernanceWidget } from '../DualGovernanceWidget'
 import { useDualGovernanceState } from '../useDualGovernanceState'
-import { Loader } from '@lidofinance/lido-ui'
+import { Box, Loader } from '@lidofinance/lido-ui'
 import { DGIcon } from '../DGIcon'
 
 export const DualGovernanceStatusButton = () => {
@@ -21,7 +21,7 @@ export const DualGovernanceStatusButton = () => {
   }
 
   return (
-    <div>
+    <Box position="relative">
       <DualGovernanceStatusButtonStyled
         $status={data?.status ?? DualGovernanceStatus.Unset}
         disabled={initialLoading}
@@ -31,6 +31,7 @@ export const DualGovernanceStatusButton = () => {
       />
       {!!data && (
         <PopoverStyled
+          placement="bottomRight"
           open={isPopupOpen}
           onClose={() => setIsPopupOpen(false)}
           anchorRef={anchorRef}
@@ -38,6 +39,6 @@ export const DualGovernanceStatusButton = () => {
           <DualGovernanceWidget dualGovernanceState={data} />
         </PopoverStyled>
       )}
-    </div>
+    </Box>
   )
 }
