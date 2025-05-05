@@ -54,13 +54,17 @@ export const VoteScriptBodyWrap = styled.div`
   background-color: var(--lido-color-backgroundSecondary);
 `
 
-export const CallWrapper = styled.div`
+export const CallWrapper = styled.div<{ $withDg?: boolean }>`
   padding: ${({ theme }) => theme.spaceMap.lg}px;
   word-break: break-all;
 
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--lido-color-border);
-  }
+  ${({ $withDg }) =>
+    $withDg &&
+    css`
+      display: flex;
+      flex-direction: column;
+      background-color: rgba(0, 163, 255, 0.08);
+    `}
 `
 
 export const CallTitle = styled(Text)`
@@ -72,12 +76,15 @@ export const CallTitle = styled(Text)`
 
 export const NestedPadding = styled.div`
   margin-top: 10px;
-  border-left: 2px solid var(--lido-color-borderLight);
+  border-left: 1px solid var(--lido-color-border);
 
   & > ${CallWrapper} {
     padding-top: 0;
     padding-bottom: 0;
     padding-right: 0;
+    &:not(:last-child) {
+      margin-bottom: 12px;
+    }
   }
 `
 
@@ -115,5 +122,26 @@ export const ScriptLoaderWrap = styled.div`
     position: absolute;
     top: 50%;
     right: 50%;
+  }
+`
+
+export const DGBadge = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 4px 6px;
+  background-color: rgba(0, 163, 255, 0.1);
+  border-radius: 5px;
+  gap: 4px;
+  align-self: flex-end;
+  user-select: none;
+  margin-bottom: 12px;
+
+  & > svg {
+    width: 16px;
+    height: 16px;
+
+    path {
+      fill: var(--lido-color-primary);
+    }
   }
 `

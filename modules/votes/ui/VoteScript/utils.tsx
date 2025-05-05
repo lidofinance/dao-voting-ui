@@ -31,20 +31,25 @@ export const formatCallString = (
     res += callData
       .map((data, i) => {
         let callRes = `[${i + 1}] `
-        if (
-          typeof data === 'object' &&
-          abi?.inputs?.[i].name === '_evmScript'
-        ) {
-          callRes += `See parsed evm script at ${id}.${i + 1}`
+        if (typeof data === 'object') {
+          if (abi?.inputs?.[i].name === '_evmScript') {
+            callRes += `See parsed evm script at ${id}.${i + 1}`
+          } else if (abi?.inputs?.[i].name === 'calls') {
+            callRes += `See parsed calls below`
+          }
         } else {
           if (typeof data === 'string') {
-            const roleLabel = LIDO_ROLES[data]
-            if (roleLabel) {
-              callRes += `[${roleLabel}] `
-            } else if (utils.isAddress(data)) {
-              const contractName = getContractName(chainId, data)
-              if (contractName) {
-                callRes += `[${contractName}] `
+            if (data === '') {
+              callRes += '[empty string]'
+            } else {
+              const roleLabel = LIDO_ROLES[data]
+              if (roleLabel) {
+                callRes += `[${roleLabel}] `
+              } else if (utils.isAddress(data)) {
+                const contractName = getContractName(chainId, data)
+                if (contractName) {
+                  callRes += `[${contractName}] `
+                }
               }
             }
           }

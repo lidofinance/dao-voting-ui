@@ -37,7 +37,7 @@
     "@lido-sdk/helpers": "^1.7.1",
     "@lido-sdk/providers": "^1.5.1",
     "@lido-sdk/react": "^2.0.12",
-    "@lidofinance/evm-script-decoder": "0.2.2",
+    "@lidofinance/evm-script-decoder": "0.2.3",
     "@lidofinance/lido-ui": "3.8.1",
     "@lidofinance/next-cache-files-middleware": "^0.33.0",
     "@lidofinance/satanizer": "^0.35.0",

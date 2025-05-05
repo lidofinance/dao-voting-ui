@@ -1,15 +1,16 @@
 import { useGlobalMemo } from 'modules/shared/hooks/useGlobalMemo'
 import { CalldataDecoder } from '../CalldataDecoder'
-import * as factories from 'generated/factories'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useConfig } from 'modules/config/hooks/useConfig'
+import { useAbiMap } from './useAbiMap'
 
 export function useCalldataDecoder(): CalldataDecoder {
   const { chainId } = useWeb3()
   const { getRpcUrl } = useConfig()
+  const abiMap = useAbiMap()
 
   return useGlobalMemo(() => {
     const rpcUrl = getRpcUrl(chainId)
-    return new CalldataDecoder(factories, chainId, rpcUrl)
+    return new CalldataDecoder(abiMap, chainId, rpcUrl)
   }, `calldata-decoder`)
 }
