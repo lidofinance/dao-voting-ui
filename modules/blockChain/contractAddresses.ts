@@ -305,6 +305,7 @@ export const EmergencyProtectedTimelock: ChainAddressMap = {
 }
 
 export const DualGovernance: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x00',
   [CHAINS.Holesky]: {
     test: '0x5A2958dC9532bAaCdF8481C8278735B1b05FB199',
     actual: '0x490bf377734CA134A8E207525E8576745652212e',
