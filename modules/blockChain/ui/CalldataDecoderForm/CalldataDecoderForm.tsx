@@ -4,7 +4,7 @@ import { useCalldataDecoder } from 'modules/blockChain/hooks/useCalldataDecoder'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { BlockHeader, DecodedData, Wrapper } from './CalldataDecoderFormStyle'
 import { TextBlock } from './TextBlock'
-import { SimulateTxSection } from './SimulateTxSection'
+import { SimulateTxForm } from './SimulateTxForm'
 import { renderParams } from './utils'
 
 export const CalldataDecoderForm = () => {
@@ -65,25 +65,11 @@ export const CalldataDecoderForm = () => {
       <Button onClick={handleDecode} loading={isLoading}>
         Decode
       </Button>
-      {!!selectedMatch && (
-        <SimulateTxSection
-          selectedMatch={selectedMatch}
-          decoder={decoder}
-          onError={setErrorMessage}
-        />
-      )}
-      {errorMessage && (
-        <TextBlock>
-          <Text color="error" size="md">
-            {errorMessage}
-          </Text>
-        </TextBlock>
-      )}
       {matchedContracts.length > 0 && (
         <TextBlock>
           <Text size="sm">
-            Found {matchedContracts.length} ABI match
-            {matchedContracts.length > 1 ? 'es' : ''}
+            Found {matchedContracts.length} contract match
+            {matchedContracts.length > 1 ? 'es' : ''} by ABI
           </Text>
           <Select
             label="Matched contract"
@@ -99,10 +85,25 @@ export const CalldataDecoderForm = () => {
           </Select>
         </TextBlock>
       )}
+      {!!selectedMatch && (
+        <SimulateTxForm
+          decoder={decoder}
+          decodedCalldata={selectedMatch}
+          onError={setErrorMessage}
+        />
+      )}
+      {errorMessage && (
+        <TextBlock>
+          <Text color="error" size="md">
+            {errorMessage}
+          </Text>
+        </TextBlock>
+      )}
 
       {!!selectedMatch && (
-        <DecodedData>
+        <DecodedData paddingLess>
           <BlockHeader>
+            <Text size="sm">Decoded result</Text>
             <Text size="md">
               call <b>{selectedMatch.functionName}</b>
             </Text>

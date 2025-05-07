@@ -48,7 +48,16 @@ export type DecodedCalldata = {
   params: CalldataParams
   contractName?: string
   abi?: ABIElementImported
+  rawCalldata: string
 }
+
+type SimulateArgs = {
+  to: string
+  decodedCalldata: DecodedCalldata
+  from?: string
+  value?: string
+}
+
 export class CalldataDecoder {
   private signatureMap: FunctionSignatureMap = {}
   private provider: StaticJsonRpcBatchProvider
@@ -95,6 +104,7 @@ export class CalldataDecoder {
             getContractName(this.chainId, match.contractAddress) ?? 'Unknown',
           functionName: decoded.name,
           params: decoded.args,
+          rawCalldata: calldata,
         })
       } catch {
         continue
@@ -141,43 +151,54 @@ export class CalldataDecoder {
         functionName: decoded.name,
         params: decoded.args,
         abi: matchedAbiElement as ABIElementImported,
+        rawCalldata: calldata,
       }
     } catch {
       return null
     }
   }
 
-  public async simulateTransaction(
-    matchedCalldata: DecodedCalldata,
-    from?: string,
-  ): Promise<SimulationResult> {
-    const abi = await this.getAbiByAddress(matchedCalldata.contractAddress)
-    if (!abi) {
+  public async simulateTransaction({
+    to,
+    decodedCalldata,
+    from,
+    value,
+  }: SimulateArgs): Promise<SimulationResult> {
+    if (!isAddress(to)) {
       return {
         success: false,
         error: {
-          reason: `ABI not found for ${matchedCalldata.contractAddress}`,
+          reason: `Invalid 'to' address: ${to}`,
           isCustomError: false,
         },
       }
     }
-    const contract = new Contract(
-      matchedCalldata.contractAddress,
-      abi,
-      this.provider,
-    )
+
+    const abi = await this.getAbiByAddress(decodedCalldata.contractAddress)
+    if (!abi) {
+      return {
+        success: false,
+        error: {
+          reason: `ABI not found for address from decoded calldata: ${decodedCalldata.contractAddress}`,
+          isCustomError: false,
+        },
+      }
+    }
+
+    const contract = new Contract(to, abi, this.provider)
 
     try {
       if (from?.length && !isAddress(from)) {
-        throw new Error('Invalid from address')
+        throw new Error('Invalid `from` address')
       }
 
-      const paramsArray = Array.isArray(matchedCalldata.params)
-        ? matchedCalldata.params
-        : Object.values(matchedCalldata.params)
+      const paramsArray = Array.isArray(decodedCalldata.params)
+        ? decodedCalldata.params
+        : Object.values(decodedCalldata.params)
 
-      await contract.callStatic[matchedCalldata.functionName](...paramsArray, {
+      await contract.callStatic[decodedCalldata.functionName](...paramsArray, {
         from,
+        value: value ? BigNumber.from(value) : undefined,
       })
     } catch (error: any) {
       console.error('Simulation error:', error)
