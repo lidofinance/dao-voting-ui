@@ -28,7 +28,7 @@ export function DelegationAddressInput() {
           }
 
           const addressErr = validateAddress(value)
-          if (addressErr) {
+          if (addressErr !== true) {
             return addressErr
           }
           const loweredValue = value.toLowerCase()
