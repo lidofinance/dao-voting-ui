@@ -60,31 +60,33 @@ const parseDGCalls = async (
                 payload,
               )
 
-              if (decodedCallData) {
-                if (typeof decodedCallData.params['_evmScript'] === 'string') {
-                  const decodedEvmScript =
-                    await evmScriptDecoder.decodeEVMScript(
-                      decodedCallData.params['_evmScript'],
-                    )
-                  internalCalls.push(...decodedEvmScript.calls)
-                } else {
-                  // format like evm script call
-                  const formattedCall: EVMScriptCall = {
-                    methodId: '',
-                    callDataLength: 0,
-                    address: to,
-                    abi: decodedCallData.abi,
-                    encodedCallData: payload,
-                    decodedCallData: Object.keys(decodedCallData.params)
-                      .map(key => {
-                        if (!isNaN(Number(key))) {
-                          return decodedCallData.params[key]
-                        }
-                      })
-                      .filter(Boolean),
-                  }
-                  internalCalls.push(formattedCall)
+              if (
+                decodedCallData &&
+                typeof decodedCallData.params['_evmScript'] === 'string'
+              ) {
+                const decodedEvmScript = await evmScriptDecoder.decodeEVMScript(
+                  decodedCallData.params['_evmScript'],
+                )
+                internalCalls.push(...decodedEvmScript.calls)
+              } else {
+                // format like evm script call
+                const formattedCall: EVMScriptCall = {
+                  methodId: '',
+                  callDataLength: 0,
+                  address: to,
+                  abi: decodedCallData?.abi,
+                  encodedCallData: payload,
+                  decodedCallData: decodedCallData
+                    ? Object.keys(decodedCallData.params)
+                        .map(key => {
+                          if (!isNaN(Number(key))) {
+                            return decodedCallData.params[key]
+                          }
+                        })
+                        .filter(Boolean)
+                    : undefined,
                 }
+                internalCalls.push(formattedCall)
               }
             }
           }
