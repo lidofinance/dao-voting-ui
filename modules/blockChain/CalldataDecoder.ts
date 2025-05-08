@@ -7,6 +7,7 @@ import { getPanicReason } from './utils/getPanicReason'
 import { isAddress } from 'ethers/lib/utils'
 import { getContractName } from 'modules/config/utils/getContractName'
 import { ABIElement as ABIElementImported } from '@lidofinance/evm-script-decoder/lib/types'
+import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'
 
 type FunctionSignatureMap = Record<
   string,
@@ -53,11 +54,18 @@ export class CalldataDecoder {
   private provider: StaticJsonRpcBatchProvider
   private chainId: CHAINS
   private abiMap: AbiMap
+  private etherscanApiKey: string | undefined
 
-  constructor(abiMap: AbiMap, chainId: CHAINS, rpcUrl: string) {
+  constructor(
+    abiMap: AbiMap,
+    chainId: CHAINS,
+    rpcUrl: string,
+    etherscanApiKey?: string,
+  ) {
     this.provider = getStaticRpcBatchProvider(chainId, rpcUrl)
     this.chainId = chainId
     this.abiMap = abiMap
+    this.etherscanApiKey = etherscanApiKey
     this.buildSignatureMap()
   }
 
@@ -96,15 +104,15 @@ export class CalldataDecoder {
     return matches
   }
 
-  public decodeWithAddress(
+  public async decodeWithAddress(
     address: string,
     calldata: string,
-  ): DecodedCalldata | null {
+  ): Promise<DecodedCalldata | null> {
     if (!calldata.startsWith('0x')) {
       return null
     }
 
-    const abi = this.getAbiByAddress(address)
+    const abi = await this.getAbiByAddress(address)
 
     if (!abi) {
       return null
@@ -143,7 +151,7 @@ export class CalldataDecoder {
     matchedCalldata: DecodedCalldata,
     from?: string,
   ): Promise<SimulationResult> {
-    const abi = this.getAbiByAddress(matchedCalldata.contractAddress)
+    const abi = await this.getAbiByAddress(matchedCalldata.contractAddress)
     if (!abi) {
       return {
         success: false,
@@ -256,12 +264,25 @@ export class CalldataDecoder {
     }
   }
 
-  private getAbiByAddress(address: string): ABI | undefined {
+  private async getAbiByAddress(address: string): Promise<ABI | undefined> {
     const abi = this.abiMap[address]
     if (!abi) {
-      console.error(`ABI not found for ${address}`)
-      return
+      try {
+        // Try to fetch the ABI from etherscan
+        const res = await fetcherEtherscan<string>({
+          chainId: this.chainId,
+          address,
+          module: 'contract',
+          action: 'getabi',
+          apiKey: this.etherscanApiKey,
+        })
+        return JSON.parse(res)
+      } catch (error) {
+        console.error(`Error fetching ABI for ${address}:`, error)
+        return
+      }
     }
+
     return abi
   }
 }
