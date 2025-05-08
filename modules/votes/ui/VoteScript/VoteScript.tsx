@@ -55,7 +55,7 @@ const parseDGCalls = async (
             const [to, , payload] = item
 
             if (payload && to) {
-              const decodedCallData = calldataDecoder.decodeWithAddress(
+              const decodedCallData = await calldataDecoder.decodeWithAddress(
                 to,
                 payload,
               )
