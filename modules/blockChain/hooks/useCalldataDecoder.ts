@@ -6,11 +6,16 @@ import { useAbiMap } from './useAbiMap'
 
 export function useCalldataDecoder(): CalldataDecoder {
   const { chainId } = useWeb3()
-  const { getRpcUrl } = useConfig()
+  const { getRpcUrl, savedConfig } = useConfig()
   const abiMap = useAbiMap()
 
   return useGlobalMemo(() => {
     const rpcUrl = getRpcUrl(chainId)
-    return new CalldataDecoder(abiMap, chainId, rpcUrl)
+    return new CalldataDecoder(
+      abiMap,
+      chainId,
+      rpcUrl,
+      savedConfig.etherscanApiKey,
+    )
   }, `calldata-decoder`)
 }
