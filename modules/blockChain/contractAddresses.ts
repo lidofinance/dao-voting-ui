@@ -302,7 +302,7 @@ export const EmergencyProtectedTimelock: ChainAddressMap = {
     actual: '0xe9c5FfEAd0668AFdBB9aac16163840d649DB76DD',
   },
   [CHAINS.Hoodi]: {
-    test: '0x1e43c35B1087e7f767Dc36E1E6783A3132497A41',
+    test: '0xbcdD50FEAE9584308c12321b8A0f68Fe81EC04a8',
     actual: '0x0A5E22782C0Bd4AddF10D771f0bF0406B038282d',
   },
 }
@@ -314,7 +314,7 @@ export const DualGovernance: ChainAddressMap = {
     actual: '0x490bf377734CA134A8E207525E8576745652212e',
   },
   [CHAINS.Hoodi]: {
-    test: '0x8648E40335337a8c68C1aC5617dCaE24d3dC8408',
+    test: '0x3Dec3C5Ef9C53234B55705DDC892b106A1C47bCa',
     actual: '0x4d12b9f6aCAB54FF6a3a776BA3b8724D9B77845F',
   },
 }
@@ -339,22 +339,22 @@ export const DualGovernanceRolesValidator: ChainAddressMap = {
   [CHAINS.Hoodi]: '0x9CCe5BfAcDcf80DAd2287106b57197284DacaE3F',
 }
 
-// export const DualGovernanceTimeConstraints: ChainAddressMap = {
-//   [CHAINS.Hoodi]: '0xB26Fd3b50280AbC55c572EE73071778A51088408',
-// }
+export const DualGovernanceTimeConstraints: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0xB26Fd3b50280AbC55c572EE73071778A51088408',
+}
 
 export const DualGovernanceAdminExecutor: ChainAddressMap = {
-  [CHAINS.Hoodi]: '0x0eCc17597D292271836691358B22340b78F3035B',
+  [CHAINS.Hoodi]: '0x8ef12c8bB0f544e4741cC594d07739e670c37959',
 }
 
 export const DualGovernanceEscrow: ChainAddressMap = {
-  [CHAINS.Hoodi]: '0x0AB2eBf304E41bcc5Db37Bf0a3fdB83faa19324e',
+  [CHAINS.Hoodi]: '0x5e2EE9DCBE8C9433F22Dd3c5EFDe0Af6DC293405',
 }
 
 export const DualGovernanceResealManager: ChainAddressMap = {
-  [CHAINS.Hoodi]: '0x05172CbCDb7307228F781436b327679e4DAE166B',
+  [CHAINS.Hoodi]: '0x758f8625E8e79B3Aec176126c63e617af511171F',
 }
 
 export const DualGovernanceTieBreakerCore: ChainAddressMap = {
-  [CHAINS.Hoodi]: '0x1648dF6CeA35eA413d6bF611aFd6eB9aFE21339A',
+  [CHAINS.Hoodi]: '0x08f3c3B1CF5f030DC1749458277334505aa2092b',
 }
