@@ -302,7 +302,7 @@ export const EmergencyProtectedTimelock: ChainAddressMap = {
     actual: '0xe9c5FfEAd0668AFdBB9aac16163840d649DB76DD',
   },
   [CHAINS.Hoodi]: {
-    test: '0x1e43c35B1087e7f767Dc36E1E6783A3132497A41',
+    test: '0xbcdD50FEAE9584308c12321b8A0f68Fe81EC04a8',
     actual: '0x0A5E22782C0Bd4AddF10D771f0bF0406B038282d',
   },
 }
@@ -314,7 +314,7 @@ export const DualGovernance: ChainAddressMap = {
     actual: '0x490bf377734CA134A8E207525E8576745652212e',
   },
   [CHAINS.Hoodi]: {
-    test: '0x8648E40335337a8c68C1aC5617dCaE24d3dC8408',
+    test: '0x3Dec3C5Ef9C53234B55705DDC892b106A1C47bCa',
     actual: '0x4d12b9f6aCAB54FF6a3a776BA3b8724D9B77845F',
   },
 }
