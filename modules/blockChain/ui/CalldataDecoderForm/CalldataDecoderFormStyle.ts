@@ -10,6 +10,7 @@ export const Wrapper = styled.div`
 export const DecodedData = styled(Block)`
   padding: 18px;
   border-radius: 10px;
+  word-break: break-all;
   p {
     font-family: SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono,
       Courier New, monospace !important;
