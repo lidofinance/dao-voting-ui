@@ -1,6 +1,6 @@
 import { constants, utils } from 'ethers'
 
-export function validateAddress(value: string): string | null {
+export function validateAddress(value: string): string | true {
   if (!utils.isAddress(value) && utils.isAddress(`${value}`.toLowerCase())) {
     return 'Address checksum is not valid'
   }
@@ -13,5 +13,5 @@ export function validateAddress(value: string): string | null {
     return 'Address must not be zero address'
   }
 
-  return null
+  return true
 }
