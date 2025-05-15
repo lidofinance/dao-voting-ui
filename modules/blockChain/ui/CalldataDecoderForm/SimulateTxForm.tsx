@@ -72,7 +72,13 @@ export const SimulateTxForm = ({
         decodedCalldata,
       })
       if (simulationResult.error) {
-        onError(`Simulation error: ${simulationResult.error.reason}`)
+        onError(
+          `Simulation error: ${simulationResult.error.reason}, ${
+            simulationResult.error.errorArgs
+              ? `Args: [${simulationResult.error.errorArgs}]`
+              : ''
+          }`,
+        )
         return
       }
       setIsSuccess(true)
