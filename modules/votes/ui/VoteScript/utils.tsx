@@ -35,7 +35,14 @@ export const formatCallString = (
           if (abi?.inputs?.[i].name === '_evmScript') {
             callRes += `See parsed evm script at ${id}.${i + 1}`
           } else if (abi?.inputs?.[i].name === 'calls') {
-            callRes += `See parsed calls below`
+            if ('calls' in data) {
+              const callsLength = data.calls.length
+              callRes += `See ${callsLength} parsed call${
+                callsLength === 1 ? '' : 's'
+              } at ${id}.${i + 1} — ${id}.${i + 1 + callsLength - 1}`
+            } else {
+              callRes += `See parsed calls below`
+            }
           }
         } else {
           if (typeof data === 'string') {
