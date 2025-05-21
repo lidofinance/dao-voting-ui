@@ -64,7 +64,7 @@ export const PUBLIC_DELEGATES = [
     name: 'kpk',
     avatar: `${basePath}/delegates/kpk.png`,
     address: '0x8787FC2De4De95c53e5E3a4e5459247D9773ea52',
-    lido: 'https://research.lido.fi/t/karpatkey-delegate-thread/8011',
+    lido: 'https://research.lido.fi/t/kpk-delegate-thread/8011',
     twitter: 'https://x.com/kpk_io',
   },
   {
