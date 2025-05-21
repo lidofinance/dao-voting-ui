@@ -10,7 +10,13 @@ import {
   CheckboxControl,
   CheckboxLabelWrap,
 } from 'modules/shared/ui/Controls/Checkbox'
-import { Button, Container, ToastSuccess } from '@lidofinance/lido-ui'
+import {
+  Button,
+  Container,
+  Link,
+  Text,
+  ToastSuccess,
+} from '@lidofinance/lido-ui'
 import { Actions, DescriptionText, DescriptionTitle } from './StyledFormStyle'
 import { ethers } from 'ethers'
 import { getChainName } from 'modules/blockChain/chains'
@@ -18,6 +24,8 @@ import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'
 import { isUrl } from 'modules/shared/utils/isUrl'
 import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 import { isTestnet as getIsTestnet } from 'modules/blockChain/utils/isTestnet'
+import { useTestContractsInfo } from './useTestContractsInfo'
+import { getEtherscanAddressLink } from '@lido-sdk/helpers'
 
 type FormValues = {
   rpcUrl: string
@@ -30,6 +38,7 @@ export function SettingsForm() {
   const { savedConfig, setSavedConfig } = useConfig()
   const { chainId } = useWeb3()
   const { ldoHelpers } = useContractHelpers()
+  const testContractsInfo = useTestContractsInfo()
 
   const formMethods = useForm<FormValues>({
     mode: 'onChange',
@@ -231,6 +240,22 @@ export function SettingsForm() {
           )}
         </DescriptionText>
       </Card>
+      {isTestnet && savedConfig.useTestContracts && testContractsInfo.length && (
+        <>
+          <br />
+          <Card>
+            <DescriptionTitle>Contracts with test addresses</DescriptionTitle>
+            {testContractsInfo.map(contract => (
+              <div key={contract.address}>
+                <Text size="sm">{contract.name}</Text>
+                <Link href={getEtherscanAddressLink(chainId, contract.address)}>
+                  {contract.address}
+                </Link>
+              </div>
+            ))}
+          </Card>
+        </>
+      )}
     </Container>
   )
 }

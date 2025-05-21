@@ -93,7 +93,7 @@ export const CalldataDecoderForm = () => {
           >
             {matchedContracts.map(contract => (
               <Option key={contract.index} value={contract.index}>
-                {contract.name}
+                {contract.name ?? 'Unknown contract'}
               </Option>
             ))}
           </Select>

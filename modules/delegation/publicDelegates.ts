@@ -61,11 +61,11 @@ export const PUBLIC_DELEGATES = [
     twitter: 'https://x.com/blockworksres',
   },
   {
-    name: 'karpatkey',
-    avatar: `${basePath}/delegates/karpatkey.png`,
+    name: 'kpk',
+    avatar: `${basePath}/delegates/kpk.png`,
     address: '0x8787FC2De4De95c53e5E3a4e5459247D9773ea52',
-    lido: 'https://research.lido.fi/t/karpatkey-delegate-thread/8011',
-    twitter: 'https://x.com/karpatkey',
+    lido: 'https://research.lido.fi/t/kpk-delegate-thread/8011',
+    twitter: 'https://x.com/kpk_io',
   },
   {
     name: 'StableLab',
@@ -75,32 +75,11 @@ export const PUBLIC_DELEGATES = [
     twitter: 'https://x.com/Stablelab',
   },
   {
-    name: 'DegentradingLSD',
-    avatar: `${basePath}/delegates/degentrading.jpg`,
-    address: '0xbeb3364D14DbB4D9A406966B97B9FB3fF8aB7646',
-    lido: 'https://research.lido.fi/t/degentradinglsd-delegate-thread/8149',
-    twitter: 'https://x.com/degentradingLSD',
-  },
-  {
-    name: 'eboadom (Ernesto)',
-    avatar: `${basePath}/delegates/eboadom.png`,
-    address: '0x5Ef980c7bdA50c81E8FB13DfF2b804113065ED1c',
-    lido: 'https://research.lido.fi/t/eboadom-delegate-thread/8079',
-    twitter: 'https://x.com/eboadom',
-  },
-  {
     name: 'Pol Lanski',
     avatar: `${basePath}/delegates/lanski.png`,
     address: '0xB6647e02AE6Dd74137cB80b1C24333852E4AF890',
     lido: 'https://research.lido.fi/t/pol-lanski-delegate-thread/8155',
     twitter: 'https://x.com/Pol_Lanski',
-  },
-  {
-    name: 'notjamiedimon',
-    avatar: `${basePath}/delegates/notjamiedimon.jpg`,
-    address: '0xCE3b1e215f379A5edDbc1ee80a6dE089c0b92e55',
-    lido: 'https://research.lido.fi/t/notjamiedimon-delegate-thread/8174',
-    twitter: 'https://x.com/regentrading',
   },
   {
     name: 'Irina',
@@ -146,7 +125,7 @@ export const PUBLIC_DELEGATES = [
   },
   {
     name: 'Governance Grove',
-    avatar: null,
+    avatar: `${basePath}/delegates/grove.png`,
     address: '0x8Ab6612BbcF7E133A6BB03b3264718d30f25e0BA',
     lido: 'https://research.lido.fi/t/governance-grove-delegate-thread/9379',
     twitter: 'https://x.com/stakesaurus',
