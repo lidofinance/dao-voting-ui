@@ -1,5 +1,4 @@
-import { FC } from 'react'
-import { GetStaticPaths, GetStaticProps } from 'next'
+import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { Container } from '@lidofinance/lido-ui'
 import {
@@ -7,7 +6,9 @@ import {
   DelegationTabsLayoutProps,
 } from 'modules/delegation/ui/DelegationTabs'
 
-const DelegationPage: FC<DelegationTabsLayoutProps> = ({ mode }) => {
+type DelegationMode = 'delegators' | 'customize'
+
+export default function DelegationPage({ mode }: { mode: DelegationMode }) {
   return (
     <Container as="main" size="full">
       <Head>
@@ -18,30 +19,16 @@ const DelegationPage: FC<DelegationTabsLayoutProps> = ({ mode }) => {
   )
 }
 
-export default DelegationPage
-
 type DelegationModePageParams = {
   mode: ['delegators'] | ['customize'] | undefined
 }
-
-export const getStaticPaths: GetStaticPaths<DelegationModePageParams> = () => {
-  return {
-    paths: [
-      { params: { mode: undefined } },
-      { params: { mode: ['customize'] } },
-      { params: { mode: ['delegators'] } },
-    ],
-    fallback: false, // return 404 on non match
-  }
-}
-
-// we need [[...]] pattern for / and /unwrap
-export const getStaticProps: GetStaticProps<
+export const getServerSideProps: GetServerSideProps<
   DelegationTabsLayoutProps,
   DelegationModePageParams
-> = ({ params }) => {
-  const mode = params?.mode
-  if (!mode) return { props: { mode: 'delegation' }, revalidate: 60 }
+  // eslint-disable-next-line @typescript-eslint/require-await
+> = async props => {
+  const mode = props.params?.mode
+  if (!mode) return { props: { mode: 'delegation' } }
 
   return { props: { mode: mode[0] }, revalidate: 60 }
 }
