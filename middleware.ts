@@ -28,6 +28,7 @@ export const config = {
     '/dashboard/:page*',
     '/delegation',
     '/delegation/delegators',
+    '/calldata-decoder',
   ],
 }
 
