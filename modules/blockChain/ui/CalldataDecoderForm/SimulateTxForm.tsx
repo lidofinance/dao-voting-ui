@@ -103,6 +103,16 @@ export const SimulateTxForm = ({
           rules={{
             validate: value => {
               if (!value) return true
+              if (typeof value === 'string') {
+                if (value.startsWith('hoe:') || value.startsWith('eth:')) {
+                  const addressPart = value.substring(value.indexOf(':') + 1)
+                  const addressErr = validateAddress(addressPart)
+                  if (addressErr) {
+                    return addressErr
+                  }
+                  return true
+                }
+              }
               const addressErr = validateAddress(value)
               if (addressErr) {
                 return addressErr

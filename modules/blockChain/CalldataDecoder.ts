@@ -33,6 +33,7 @@ type SimulationResult = {
 type CalldataParam =
   | string
   | number
+  | boolean
   | BigNumber
   | {
       readonly [key: string]: CalldataParam
