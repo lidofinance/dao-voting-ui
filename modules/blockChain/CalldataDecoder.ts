@@ -7,6 +7,7 @@ import { getPanicReason } from './utils/getPanicReason'
 import { isAddress } from 'ethers/lib/utils'
 import { getContractName } from 'modules/config/utils/getContractName'
 import { ABIElement as ABIElementImported } from '@lidofinance/evm-script-decoder/lib/types'
+import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'
 
 type FunctionSignatureMap = Record<
   string,
@@ -32,6 +33,7 @@ type SimulationResult = {
 type CalldataParam =
   | string
   | number
+  | boolean
   | BigNumber
   | {
       readonly [key: string]: CalldataParam
@@ -47,17 +49,33 @@ export type DecodedCalldata = {
   params: CalldataParams
   contractName?: string
   abi?: ABIElementImported
+  rawCalldata: string
 }
+
+type SimulateArgs = {
+  to: string
+  decodedCalldata: DecodedCalldata
+  from?: string
+  value?: string
+}
+
 export class CalldataDecoder {
   private signatureMap: FunctionSignatureMap = {}
   private provider: StaticJsonRpcBatchProvider
   private chainId: CHAINS
   private abiMap: AbiMap
+  private etherscanApiKey: string | undefined
 
-  constructor(abiMap: AbiMap, chainId: CHAINS, rpcUrl: string) {
+  constructor(
+    abiMap: AbiMap,
+    chainId: CHAINS,
+    rpcUrl: string,
+    etherscanApiKey?: string,
+  ) {
     this.provider = getStaticRpcBatchProvider(chainId, rpcUrl)
     this.chainId = chainId
     this.abiMap = abiMap
+    this.etherscanApiKey = etherscanApiKey
     this.buildSignatureMap()
   }
 
@@ -87,6 +105,7 @@ export class CalldataDecoder {
             getContractName(this.chainId, match.contractAddress) ?? 'Unknown',
           functionName: decoded.name,
           params: decoded.args,
+          rawCalldata: calldata,
         })
       } catch {
         continue
@@ -96,15 +115,15 @@ export class CalldataDecoder {
     return matches
   }
 
-  public decodeWithAddress(
+  public async decodeWithAddress(
     address: string,
     calldata: string,
-  ): DecodedCalldata | null {
+  ): Promise<DecodedCalldata | null> {
     if (!calldata.startsWith('0x')) {
       return null
     }
 
-    const abi = this.getAbiByAddress(address)
+    const abi = await this.getAbiByAddress(address)
 
     if (!abi) {
       return null
@@ -133,43 +152,54 @@ export class CalldataDecoder {
         functionName: decoded.name,
         params: decoded.args,
         abi: matchedAbiElement as ABIElementImported,
+        rawCalldata: calldata,
       }
     } catch {
       return null
     }
   }
 
-  public async simulateTransaction(
-    matchedCalldata: DecodedCalldata,
-    from?: string,
-  ): Promise<SimulationResult> {
-    const abi = this.getAbiByAddress(matchedCalldata.contractAddress)
-    if (!abi) {
+  public async simulateTransaction({
+    to,
+    decodedCalldata,
+    from,
+    value,
+  }: SimulateArgs): Promise<SimulationResult> {
+    if (!isAddress(to)) {
       return {
         success: false,
         error: {
-          reason: `ABI not found for ${matchedCalldata.contractAddress}`,
+          reason: `Invalid 'to' address: ${to}`,
           isCustomError: false,
         },
       }
     }
-    const contract = new Contract(
-      matchedCalldata.contractAddress,
-      abi,
-      this.provider,
-    )
+
+    const abi = await this.getAbiByAddress(decodedCalldata.contractAddress)
+    if (!abi) {
+      return {
+        success: false,
+        error: {
+          reason: `ABI not found for address from decoded calldata: ${decodedCalldata.contractAddress}`,
+          isCustomError: false,
+        },
+      }
+    }
+
+    const contract = new Contract(to, abi, this.provider)
 
     try {
       if (from?.length && !isAddress(from)) {
-        throw new Error('Invalid from address')
+        throw new Error('Invalid `from` address')
       }
 
-      const paramsArray = Array.isArray(matchedCalldata.params)
-        ? matchedCalldata.params
-        : Object.values(matchedCalldata.params)
+      const paramsArray = Array.isArray(decodedCalldata.params)
+        ? decodedCalldata.params
+        : Object.values(decodedCalldata.params)
 
-      await contract.callStatic[matchedCalldata.functionName](...paramsArray, {
+      await contract.callStatic[decodedCalldata.functionName](...paramsArray, {
         from,
+        value: value ? BigNumber.from(value) : undefined,
       })
     } catch (error: any) {
       console.error('Simulation error:', error)
@@ -256,12 +286,25 @@ export class CalldataDecoder {
     }
   }
 
-  private getAbiByAddress(address: string): ABI | undefined {
+  private async getAbiByAddress(address: string): Promise<ABI | undefined> {
     const abi = this.abiMap[address]
     if (!abi) {
-      console.error(`ABI not found for ${address}`)
-      return
+      try {
+        // Try to fetch the ABI from etherscan
+        const res = await fetcherEtherscan<string>({
+          chainId: this.chainId,
+          address,
+          module: 'contract',
+          action: 'getabi',
+          apiKey: this.etherscanApiKey,
+        })
+        return JSON.parse(res)
+      } catch (error) {
+        console.error(`Error fetching ABI for ${address}:`, error)
+        return
+      }
     }
+
     return abi
   }
 }

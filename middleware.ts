@@ -9,6 +9,7 @@ export const CACHE_ALLOWED_LIST_FILES_PATHS = [
   { path: /dashboard\/(.+)/, headers: CACHE_HEADERS_HTML_PAGE },
   { path: '/delegation', headers: CACHE_HEADERS_HTML_PAGE },
   { path: '/delegation/delegators', headers: CACHE_HEADERS_HTML_PAGE },
+  { path: '/calldata-decoder', headers: CACHE_HEADERS_HTML_PAGE },
 ]
 
 // use only for cache files
@@ -27,6 +28,7 @@ export const config = {
     '/dashboard/:page*',
     '/delegation',
     '/delegation/delegators',
+    '/calldata-decoder',
   ],
 }
 

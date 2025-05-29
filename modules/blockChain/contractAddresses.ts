@@ -330,3 +330,31 @@ export const CSMGateSeal: ChainAddressMap = {
   [CHAINS.Holesky]: '0xf1C03536dbC77B1bD493a2D1C0b1831Ea78B540a',
   [CHAINS.Hoodi]: '0xEe1f7f0ebB5900F348f2CfbcC641FB1681359B8a',
 }
+
+export const DualGovernanceLaunchVerifier: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0x98FC7b149767302647D8e1dA1463F0051978826B',
+}
+
+export const DualGovernanceRolesValidator: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0x9CCe5BfAcDcf80DAd2287106b57197284DacaE3F',
+}
+
+export const DualGovernanceTimeConstraints: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0xB26Fd3b50280AbC55c572EE73071778A51088408',
+}
+
+export const DualGovernanceAdminExecutor: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0x8ef12c8bB0f544e4741cC594d07739e670c37959',
+}
+
+export const DualGovernanceEscrow: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0x5e2EE9DCBE8C9433F22Dd3c5EFDe0Af6DC293405',
+}
+
+export const DualGovernanceResealManager: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0x758f8625E8e79B3Aec176126c63e617af511171F',
+}
+
+export const DualGovernanceTieBreakerCore: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0x08f3c3B1CF5f030DC1749458277334505aa2092b',
+}
