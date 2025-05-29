@@ -57,7 +57,7 @@ export const renderParams = (
         )
       }
 
-      if (param.startsWith('0x')) {
+      if (typeof param === 'string' && param.startsWith('0x')) {
         const matches = decoder.decode(param)
         if (matches.length) {
           const decoded = matches[0]
