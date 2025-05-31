@@ -5,7 +5,6 @@ type WalletModalForEthProps = React.ComponentProps<typeof WalletsModalForEth>
 
 const HIDDEN_WALLETS: WalletModalForEthProps['hiddenWallets'] = [
   'Opera Wallet',
-  'Coinbase',
   'Trust',
   'ImToken',
   'Coin98',
@@ -21,6 +20,11 @@ const HIDDEN_WALLETS: WalletModalForEthProps['hiddenWallets'] = [
   'tally',
   'zengo',
   'zerion',
+  'bitget',
+  'bitkeep',
+  'taho',
+  'coin',
+  'coin98',
 ]
 
 type Props = WalletModalForEthProps & {}

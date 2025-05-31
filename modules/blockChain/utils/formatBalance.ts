@@ -1,17 +1,11 @@
-import { BigNumber } from '@ethersproject/bignumber'
-import { formatEther } from '@ethersproject/units'
-import { Zero } from '@ethersproject/constants'
+import { weiToNum } from './parseWei'
+import { BigNumberish } from 'ethers'
 
-export const formatBalance = (
-  balance: BigNumber = Zero,
-  maxDecimalDigits = 4,
-) => {
-  const balanceString = formatEther(balance)
+const formatter = Intl.NumberFormat('en', {
+  notation: 'compact',
+  maximumSignificantDigits: 3,
+})
 
-  if (balanceString.includes('.')) {
-    const parts = balanceString.split('.')
-    return parts[0] + '.' + parts[1].slice(0, maxDecimalDigits)
-  }
-
-  return balanceString
+export const formatBalance = (amount: BigNumberish) => {
+  return formatter.format(weiToNum(amount))
 }

@@ -4,9 +4,9 @@ import {
   FinishHandler,
 } from 'modules/blockChain/hooks/useTransactionSender'
 
-import { ContractVoting } from 'modules/blockChain/contracts'
 import type { VoteMode } from '../../types'
 import { estimateGasFallback } from 'modules/shared/utils/estimateGasFallback'
+import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 
 type Args = {
   voteId?: string
@@ -14,7 +14,8 @@ type Args = {
 }
 
 export function useFormVoteSubmit({ voteId, onFinish }: Args) {
-  const contractVoting = ContractVoting.useWeb3()
+  const { votingHelpers } = useContractHelpers()
+  const voting = votingHelpers.useWeb3()
   const [isSubmitting, setSubmitting] = useState<false | VoteMode>(false)
 
   const handleFinish = useCallback(
@@ -32,13 +33,9 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
   const populateVote = useCallback(
     async (args: { voteId: string; mode: VoteMode }) => {
       const gasLimit = await estimateGasFallback(
-        contractVoting.estimateGas.vote(
-          args.voteId,
-          args.mode === 'yay',
-          false,
-        ),
+        voting.estimateGas.vote(args.voteId, args.mode === 'yay', false),
       )
-      const tx = await contractVoting.populateTransaction.vote(
+      const tx = await voting.populateTransaction.vote(
         args.voteId,
         args.mode === 'yay',
         false,
@@ -46,8 +43,9 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
       )
       return tx
     },
-    [contractVoting],
+    [voting],
   )
+
   const txVote = useTransactionSender(populateVote, {
     onError: handleError,
     onFinish: handleFinish,
@@ -68,17 +66,60 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
     [voteId, txVote],
   )
 
-  const populateEnact = useCallback(async () => {
-    if (!voteId) throw new Error('voteId is required')
-    const gasLimit = await estimateGasFallback(
-      contractVoting.estimateGas.executeVote(voteId),
-      2000000,
-    )
-    const tx = await contractVoting.populateTransaction.executeVote(voteId, {
-      gasLimit,
-    })
-    return tx
-  }, [voteId, contractVoting])
+  const populateDelegatesVote = useCallback(
+    async (args: { voteId: string; mode: VoteMode; voters: string[] }) => {
+      const gasLimit = await estimateGasFallback(
+        voting.estimateGas.attemptVoteForMultiple(
+          args.voteId,
+          args.mode === 'yay',
+          args.voters,
+        ),
+      )
+
+      const tx = await voting.populateTransaction.attemptVoteForMultiple(
+        args.voteId,
+        args.mode === 'yay',
+        args.voters,
+        { gasLimit },
+      )
+
+      return tx
+    },
+    [voting],
+  )
+  const txDelegatesVote = useTransactionSender(populateDelegatesVote, {
+    onError: handleError,
+    onFinish: handleFinish,
+  })
+
+  const handleDelegatesVote = useCallback(
+    async (mode: VoteMode, voters: string[]) => {
+      if (!voteId) return
+
+      try {
+        setSubmitting(mode)
+        await txDelegatesVote.send({ voteId, mode, voters })
+      } catch (err) {
+        console.error(err)
+        setSubmitting(false)
+      }
+    },
+    [voteId, txDelegatesVote],
+  )
+
+  const populateEnact = useCallback(
+    async (args: { voteId: string }) => {
+      const gasLimit = await estimateGasFallback(
+        voting.estimateGas.executeVote(args.voteId),
+        2000000,
+      )
+      const tx = await voting.populateTransaction.executeVote(args.voteId, {
+        gasLimit,
+      })
+      return tx
+    },
+    [voting],
+  )
   const txEnact = useTransactionSender(populateEnact, {
     onError: handleError,
     onFinish: handleFinish,
@@ -97,8 +138,10 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
 
   return {
     txVote,
+    txDelegatesVote,
     txEnact,
     handleVote,
+    handleDelegatesVote,
     handleEnact,
     isSubmitting,
     populateEnact,

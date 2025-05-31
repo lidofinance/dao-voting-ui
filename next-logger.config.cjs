@@ -17,6 +17,10 @@ const patterns = [
   process.env.TENDERLY_USER,
   process.env.TENDERLY_PROJECT,
   process.env.TENDERLY_API_KEY,
+  process.env.WALLETCONNECT_PROJECT_ID,
+  ...(process.env.EL_RPC_URLS_1 || 'NO_EL_RPC_URLS_1').split(','),
+  ...(process.env.EL_RPC_URLS_17000 || 'NO_EL_RPC_URLS_17000').split(','),
+  ...(process.env.EL_RPC_URLS_560048 || 'NO_EL_RPC_URLS_560048').split(','),
 ]
 const mask = satanizer(patterns)
 

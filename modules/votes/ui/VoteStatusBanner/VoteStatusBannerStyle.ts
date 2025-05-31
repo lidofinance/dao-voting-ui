@@ -48,6 +48,14 @@ export const BadgeFailed = styled(Badge)`
   }
 `
 
+export const BadgeNoQuorum = styled(Badge)`
+  & svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--lido-color-warning);
+  }
+`
+
 export const BadgeOngoing = styled(Badge)`
   color: #fff;
   font-size: ${({ theme }) => theme.fontSizesMap.xs}px;

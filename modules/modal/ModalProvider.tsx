@@ -10,10 +10,11 @@ import type { ModalProps } from '@lidofinance/lido-ui'
 
 export type Modal = React.ComponentType<ModalProps>
 
-export type Data = Record<string, string>
+export type Data = Record<string, any>
 
 type ModalContextValue = {
   openModal: (modal: Modal, initialData?: Data) => void
+  closeModal: () => void
 }
 
 // https://github.com/CharlesStover/use-force-update

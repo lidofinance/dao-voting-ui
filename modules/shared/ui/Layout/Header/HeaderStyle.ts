@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components'
 import { Container, Text } from '@lidofinance/lido-ui'
-import { BREAKPOINT_MOBILE } from 'modules/globalStyles'
+import { BREAKPOINT_MOBILE, HEADER_HEIGHT } from 'modules/globalStyles'
 
 export const Wrap = styled(Container).attrs({
   as: 'header',
@@ -12,11 +12,10 @@ export const Wrap = styled(Container).attrs({
   right: 0;
   padding: 0 ${({ theme }) => theme.spaceMap.lg}px;
   display: flex;
-  height: 76px;
+  height: ${HEADER_HEIGHT};
   align-items: center;
   justify-content: space-between;
   background-color: var(--lido-color-foreground);
-  border-bottom: 1px solid var(--lido-color-border);
   z-index: 99;
   margin-bottom: ${({ theme }) => theme.spaceMap.xxl}px;
 
@@ -31,8 +30,8 @@ export const Nav = styled.div`
   width: 30%;
 `
 
-export const Logo = styled.div`
-  margin-right: ${({ theme }) => theme.spaceMap.lg}px;
+export const Logo = styled.a`
+  margin-right: 50px;
   font-size: 0;
   z-index: 99;
 `
@@ -69,7 +68,10 @@ export const NavLink = styled.a<NavLinkProps>`
 
   & svg {
     display: block;
-    fill: currentColor;
+    &,
+    & path {
+      fill: currentColor;
+    }
   }
 
   ${({ isActive }) =>
@@ -118,17 +120,13 @@ export const ActionsDesktop = styled.div`
 export const InputWrap = styled.div`
   width: 300px;
 
-  @media (max-width: 900px) {
-    width: 220px;
-  }
-
-  @media (max-width: 810px) {
+  @media (max-width: 1060px) {
     width: 200px;
   }
 `
 
 export const Network = styled.div`
-  margin-right: ${({ theme }) => theme.spaceMap.sm}px;
+  margin-right: 12px;
   display: flex;
   align-items: center;
 `
@@ -149,7 +147,7 @@ export const ThemeTogglerWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: ${({ theme }) => theme.spaceMap.sm}px;
+  margin-left: 12px;
   width: 44px;
   height: 44px;
   border: 1px solid var(--lido-color-border);
@@ -225,7 +223,7 @@ const menuAppearing = keyframes`
 export const MobileMenu = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 90px ${({ theme }) => theme.spaceMap.lg}px 0;
+  padding: 220px ${({ theme }) => theme.spaceMap.lg}px 0;
   position: fixed;
   overflow: auto;
   top: 0;
@@ -287,6 +285,6 @@ export const MobileSpacer = styled.div`
 `
 
 export const HeaderSpacer = styled.div`
-  height: 76px;
+  height: ${HEADER_HEIGHT};
   margin-bottom: 30px;
 `

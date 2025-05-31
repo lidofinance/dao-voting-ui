@@ -1,11 +1,10 @@
 import { useCallback } from 'react'
 import { useVotePassedCallback } from 'modules/votes/hooks/useVotePassedCallback'
-import { useVoteDetailsFormatted } from 'modules/votes/hooks/useVoteDetailsFormatted'
 
 import Link from 'next/link'
+import { Text } from '@lidofinance/lido-ui'
 import { VoteStatusBanner } from 'modules/votes/ui/VoteStatusBanner'
 import { VoteYesNoBar } from 'modules/votes/ui/VoteYesNoBar'
-import { InfoRowFull } from 'modules/shared/ui/Common/InfoRow'
 import { VoteDescription } from 'modules/votes/ui/VoteDescription'
 
 import {
@@ -15,18 +14,22 @@ import {
   VoteDescriptionWrap,
   VotesBarWrap,
   Footer,
+  NeededToQuorum,
 } from './DashboardVoteStyle'
 import type { StartVoteEventObject } from 'generated/AragonVotingAbi'
-import { Vote, VoteStatus } from 'modules/votes/types'
+import { Vote, VotePhase, VoteStatus } from 'modules/votes/types'
+import { weiToNum } from 'modules/blockChain/utils/parseWei'
+import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
 import * as urls from 'modules/network/utils/urls'
 
 type Props = {
   voteId: number
   vote: Vote
-  eventStart: StartVoteEventObject
+  eventStart: { decoded: StartVoteEventObject } | null
   status: VoteStatus
   voteTime: number
   objectionPhaseTime: number
+  executedAt?: number
   onPass: () => void
 }
 
@@ -37,18 +40,21 @@ export function DashboardVote({
   status,
   voteTime,
   objectionPhaseTime,
+  executedAt,
   onPass,
 }: Props) {
   const {
     nayPct,
     yeaPct,
+    yeaNum,
+    nayNum,
     nayPctOfTotalSupplyFormatted,
     yeaPctOfTotalSupplyFormatted,
     neededToQuorum,
     neededToQuorumFormatted,
     startDate,
-    endDate,
-  } = useVoteDetailsFormatted({ vote, voteTime })! // we are sure that we have non-undefined `vote` and `voteTime` here
+    totalSupply,
+  } = getVoteDetailsFormatted(vote)
 
   const handlePass = useCallback(() => {
     // TODO:
@@ -73,45 +79,53 @@ export function DashboardVote({
 
   const isEnded =
     status === VoteStatus.Rejected || status === VoteStatus.Executed
-
-  const { metadata } = eventStart
-
   return (
     <Link passHref href={urls.vote(voteId)}>
-      <Wrap>
+      <Wrap data-testid={`voteCardPreview-${voteId}`}>
         <VoteStatusBanner
           startDate={startDate}
-          endDate={endDate}
+          executedAt={executedAt}
           voteTime={voteTime}
           objectionPhaseTime={objectionPhaseTime}
           status={status}
           isEnded={isEnded}
+          yeaNum={yeaNum}
+          nayNum={nayNum}
+          totalSupply={totalSupply}
           fontSize="xxs"
+          minAcceptQuorum={weiToNum(vote.minAcceptQuorum)}
         />
-
         <VoteBody>
           <VoteTitle>Vote #{voteId}</VoteTitle>
-          <VoteDescriptionWrap>
-            <VoteDescription metadata={metadata} />
+          <VoteDescriptionWrap data-testid="voteDescription">
+            <VoteDescription metadata={eventStart?.decoded.metadata} />
           </VoteDescriptionWrap>
         </VoteBody>
-
         <Footer>
           <VotesBarWrap>
+            {vote.phase !== VotePhase.Closed && (
+              <NeededToQuorum>
+                <Text size="xxs" color="secondary">
+                  Needed to quorum
+                </Text>
+                <Text size="xxs">
+                  {neededToQuorum > 0 && !isEnded
+                    ? `${neededToQuorumFormatted}%`
+                    : '-'}
+                </Text>
+              </NeededToQuorum>
+            )}
+
             <VoteYesNoBar
               yeaPct={yeaPct}
               nayPct={nayPct}
+              yeaNum={yeaNum}
+              nayNum={nayNum}
               yeaPctOfTotalSupply={yeaPctOfTotalSupplyFormatted}
               nayPctOfTotalSupply={nayPctOfTotalSupplyFormatted}
               showOnForeground
             />
           </VotesBarWrap>
-
-          <InfoRowFull title="Needed to quorum">
-            {neededToQuorum > 0 && !isEnded
-              ? `${neededToQuorumFormatted}%`
-              : '-'}
-          </InfoRowFull>
         </Footer>
       </Wrap>
     </Link>

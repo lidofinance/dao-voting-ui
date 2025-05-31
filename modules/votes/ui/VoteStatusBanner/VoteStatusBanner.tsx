@@ -1,9 +1,11 @@
+import { useMemo } from 'react'
 import {
   Wrap,
   BannerText,
   InfoText,
   BadgePassed,
   BadgeFailed,
+  BadgeNoQuorum,
   BadgeOngoing,
 } from './VoteStatusBannerStyle'
 import { FormattedDate } from 'modules/shared/ui/Utils/FormattedDate'
@@ -16,33 +18,52 @@ import { convertStatusToStyledVariant, VoteStatusFontSize } from './types'
 
 type Props = {
   startDate: number
-  endDate: number
+  executedAt: number | undefined
   voteTime: number
   objectionPhaseTime: number
   isEnded: boolean
   fontSize: VoteStatusFontSize
   status: VoteStatus
+  yeaNum: number
+  nayNum: number
+  totalSupply: number
+  minAcceptQuorum: number
 }
 
 export function VoteStatusBanner({
   startDate,
-  endDate,
+  executedAt,
   voteTime,
   objectionPhaseTime,
   isEnded,
   fontSize,
   status,
+  yeaNum,
+  nayNum,
+  totalSupply,
+  minAcceptQuorum,
 }: Props) {
   const variant = convertStatusToStyledVariant(status)
 
-  const endDateEl = (
+  const quorumIsReached = useMemo(() => {
+    if (totalSupply === 0) {
+      return false
+    }
+
+    const yeaQuorum = yeaNum / totalSupply
+    const nayQuorum = nayNum / totalSupply
+
+    return yeaQuorum > minAcceptQuorum || nayQuorum > minAcceptQuorum
+  }, [totalSupply, yeaNum, nayNum, minAcceptQuorum])
+
+  const endDateEl = executedAt ? (
     <InfoText variant={variant}>
-      <FormattedDate date={endDate} format="DD MMM YYYY, HH:mm" />
+      <FormattedDate date={executedAt} format="DD MMM YYYY" />
     </InfoText>
-  )
+  ) : null
 
   return (
-    <Wrap fontSize={fontSize} variant={variant}>
+    <Wrap data-testid="voteCardHeader" fontSize={fontSize} variant={variant}>
       {status === VoteStatus.ActiveMain && (
         <>
           <BadgeOngoing>1</BadgeOngoing>
@@ -77,7 +98,6 @@ export function VoteStatusBanner({
             <DoneIconSVG />
           </BadgePassed>
           <BannerText variant={variant}>Passed (pending)</BannerText>
-          {endDateEl}
         </>
       )}
 
@@ -101,13 +121,21 @@ export function VoteStatusBanner({
         </>
       )}
 
-      {status === VoteStatus.Rejected && (
+      {status === VoteStatus.Rejected && quorumIsReached && (
         <>
           <BadgeFailed>
             <ClearIconSVG />
           </BadgeFailed>
           <BannerText variant={variant}>Rejected</BannerText>
-          {endDateEl}
+        </>
+      )}
+
+      {status === VoteStatus.Rejected && !quorumIsReached && (
+        <>
+          <BadgeNoQuorum>
+            <ClearIconSVG />
+          </BadgeNoQuorum>
+          <BannerText variant={variant}>No quorum</BannerText>
         </>
       )}
     </Wrap>

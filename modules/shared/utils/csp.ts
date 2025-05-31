@@ -14,7 +14,7 @@ const reportOnly = cspReportOnly === 'true'
 export const contentSecurityPolicy = {
   directives: {
     styleSrc: ["'self'", 'https://fonts.googleapis.com', "'unsafe-inline'"],
-    fontSrc: ["'self'", 'https://fonts.gstatic.com', ...trustedHosts],
+    fontSrc: ["'self'", 'data:', 'https://fonts.gstatic.com', ...trustedHosts],
     imgSrc: [
       "'self'",
       'data:',
@@ -33,9 +33,12 @@ export const contentSecurityPolicy = {
       'https://*.infura.io',
       'https://*.alchemyapi.io',
       'https://*.alchemy.com',
+      'https://*.drpc.org',
       'https://*.etherscan.io/api',
       'https://*.ipfs.w3s.link',
       'https://*.ipfs.dweb.link',
+      'wss://*.walletlink.org',
+      'https://*.coinbase.com',
       ...trustedHosts,
     ],
     prefetchSrc: ["'self'", ...trustedHosts],

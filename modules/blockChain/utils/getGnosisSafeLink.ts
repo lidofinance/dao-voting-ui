@@ -1,14 +1,12 @@
-import get from 'lodash/get'
 import { CHAINS } from '@lido-sdk/constants'
 
-const PREFIXES = {
-  [CHAINS.Mainnet]: 'eth',
-  [CHAINS.Goerli]: 'gor',
-} as const
-
-export const getGnosisSafeLink = (chainId: CHAINS, address: string) =>
-  `https://app.safe.global/transactions/history?safe=${get(
-    PREFIXES,
-    chainId,
-    '?',
-  )}:${address}`
+export const getGnosisSafeLink = (chainId: CHAINS, address: string) => {
+  switch (chainId) {
+    case CHAINS.Holesky:
+      return `https://holesky-safe.protofire.io/transactions/queue?safe=holesky:${address}`
+    case CHAINS.Hoodi:
+      return `https://app.safe.protofire.io/transactions/queue?safe=hoodi:${address}`
+    default:
+      return `https://app.safe.global/transactions/queue?safe=eth:${address}`
+  }
+}

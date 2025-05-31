@@ -1,3 +1,4 @@
+import { BigNumber } from 'ethers'
 import { AragonVotingAbi } from 'generated'
 import { UnwrapPromise } from 'next/dist/lib/coalesced-function'
 
@@ -15,7 +16,29 @@ export enum VoteStatus {
 }
 
 export enum VoterState {
-  NotVoted = 'NotVoted',
-  VotedYay = 'VotedYay',
-  VotedNay = 'VotedNay',
+  Absent,
+  Yea,
+  Nay,
+  DelegateYea,
+  DelegateNay,
+}
+
+/**
+ * VotePhase.Main if one can vote 'yes' or 'no',
+ * VotePhase.Objection if one can vote only 'no' or
+ * VotePhase.Closed if no votes are accepted
+ */
+
+export enum VotePhase {
+  Main,
+  Objection,
+  Closed,
+}
+
+export type CastVoteEvent = {
+  voter: string
+  supports: boolean
+  stake: BigNumber
+  blockNumber: number
+  transactionIndex: number
 }

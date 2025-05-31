@@ -1,4 +1,4 @@
-import { Text } from '@lidofinance/lido-ui'
+import { Text, Tooltip } from '@lidofinance/lido-ui'
 import {
   VotesBarNay,
   VotesBarWrap,
@@ -9,40 +9,57 @@ import {
 type Props = {
   yeaPct: number
   nayPct: number
+  yeaNum: number
+  nayNum: number
   yeaPctOfTotalSupply: React.ReactNode
   nayPctOfTotalSupply: React.ReactNode
   showOnForeground?: boolean
+  showNumber?: boolean
 }
 
 export function VoteYesNoBar({
   yeaPct,
   nayPct,
+  yeaNum,
+  nayNum,
   yeaPctOfTotalSupply,
   nayPctOfTotalSupply,
   showOnForeground,
+  showNumber,
 }: Props) {
+  const roundDown = (n: number): number => Math.floor(n * 10) / 10
+
+  const nayInfo = showNumber
+    ? `"No" — ${roundDown(nayNum)} (${nayPctOfTotalSupply}%)`
+    : `"No" — ${nayPctOfTotalSupply}%`
+
+  const yeaInfo = showNumber
+    ? `"Yes" — ${roundDown(yeaNum)} (${yeaPctOfTotalSupply}%)`
+    : `"Yes" — ${yeaPctOfTotalSupply}%`
+
   return (
     <>
       <VotesTitleWrap>
         <Text size="xxs">
-          <Text as="span" color="secondary" size="xxs">
-            No —{' '}
-          </Text>
-          <Text as="span" size="xxs">
-            {nayPctOfTotalSupply}%
+          <Text data-testid="votesNo" as="span" size="xxs">
+            <Tooltip title={<span>{nayNum}</span>} placement="top">
+              <span>{nayInfo}</span>
+            </Tooltip>
           </Text>
         </Text>
         <Text size="xxs" style={{ textAlign: 'right' }}>
-          <Text as="span" color="secondary" size="xxs">
-            Yes —{' '}
-          </Text>
-          <Text as="span" size="xxs">
-            {yeaPctOfTotalSupply}%
+          <Text as="span" size="xxs" data-testid="votesYes">
+            <Tooltip title={<span>{yeaNum}</span>} placement="top">
+              <span>{yeaInfo}</span>
+            </Tooltip>
           </Text>
         </Text>
       </VotesTitleWrap>
 
-      <VotesBarWrap showOnForeground={showOnForeground}>
+      <VotesBarWrap
+        data-testid="votesYesNoBar"
+        showOnForeground={showOnForeground}
+      >
         <VotesBarNay style={{ width: `${nayPct}%` }} />
         <VotesBarYea style={{ width: `${yeaPct}%` }} />
       </VotesBarWrap>

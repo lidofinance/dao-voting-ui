@@ -7,12 +7,7 @@ import { useErrorMessage } from 'modules/blockChain/hooks/useErrorMessage'
 import { useSupportedChains } from 'reef-knot/web3-react'
 import { PageLayout } from 'modules/shared/ui/Layout/PageLayout'
 import { GlobalStyle } from 'modules/globalStyles'
-import {
-  toast,
-  CookieThemeProvider,
-  ToastContainer,
-  ToastError,
-} from '@lidofinance/lido-ui'
+import { toast, ToastContainer, ToastError } from '@lidofinance/lido-ui'
 import { ConfigProvider } from 'modules/config/providers/configProvider'
 import { ModalProvider } from 'modules/modal/ModalProvider'
 import { NetworkSwitcher } from 'modules/blockChain/ui/NetworkSwitcher'
@@ -24,6 +19,10 @@ import { withCsp } from 'modules/shared/utils/csp'
 import { CustomAppProps } from 'modules/shared/utils/utilTypes'
 import { AppProviderWeb3 } from 'modules/web3Provider'
 import { AppWagmiConfig } from 'modules/wagmiConfig'
+import { UiProvider } from 'modules/shared/ui/UiProvider'
+import { useConfig } from 'modules/config/hooks/useConfig'
+import { TestModeBanner } from 'modules/blockChain/ui/TestModeBanner'
+import { isTestnet } from 'modules/blockChain/utils/isTestnet'
 
 // Visualize route changes
 nprogress()
@@ -32,6 +31,7 @@ const basePath = getConfig().publicRuntimeConfig.basePath || ''
 
 function AppRoot({ Component, pageProps }: AppProps) {
   const { chainId } = useWeb3()
+  const { savedConfig } = useConfig()
   const { isUnsupported } = useSupportedChains()
   const error = useErrorMessage()
 
@@ -99,6 +99,9 @@ function AppRoot({ Component, pageProps }: AppProps) {
       </Head>
       <PageLayout>
         {isUnsupported && <NetworkSwitcher />}
+        {savedConfig.useTestContracts && isTestnet(chainId) && (
+          <TestModeBanner />
+        )}
         <Component {...pageProps} />
       </PageLayout>
       <ToastContainer />
@@ -110,7 +113,7 @@ const AppRootMemo = memo(AppRoot)
 
 function App({ envConfig, ...appProps }: CustomAppProps) {
   return (
-    <CookieThemeProvider>
+    <UiProvider>
       <GlobalStyle />
       <ConfigProvider envConfig={envConfig}>
         <AppWagmiConfig>
@@ -123,7 +126,7 @@ function App({ envConfig, ...appProps }: CustomAppProps) {
           </AppProviderWeb3>
         </AppWagmiConfig>
       </ConfigProvider>
-    </CookieThemeProvider>
+    </UiProvider>
   )
 }
 

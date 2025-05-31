@@ -1,10 +1,22 @@
 const basePath = process.env.BASE_PATH || ''
-const infuraApiKey = process.env.INFURA_API_KEY
-const alchemyApiKey = process.env.ALCHEMY_API_KEY
+
+const rpcUrls_1 =
+  process.env.EL_RPC_URLS_1 && process.env.EL_RPC_URLS_1.split(',')
+const rpcUrls_17000 =
+  process.env.EL_RPC_URLS_17000 && process.env.EL_RPC_URLS_17000.split(',')
+const rpcUrls_560048 =
+  process.env.EL_RPC_URLS_560048 && process.env.EL_RPC_URLS_560048.split(',')
+
 const etherscanApiKey = process.env.ETHERSCAN_API_KEY
 
-const defaultChain = process.env.DEFAULT_CHAIN || '1'
-const supportedChains = process.env.SUPPORTED_CHAINS || '1,4,5'
+// Mainnet is the default chain
+const _defaultChain = '1'
+
+// Keep Mainnet, Holesky and Hoodi as defaults
+const defaultSupportedChains = '1,17000,560048'
+
+const defaultChain = process.env.DEFAULT_CHAIN || _defaultChain
+const supportedChains = process.env.SUPPORTED_CHAINS || defaultSupportedChains
 
 const cspTrustedHosts = process.env.CSP_TRUSTED_HOSTS
 const cspReportOnly = process.env.CSP_REPORT_ONLY
@@ -19,7 +31,7 @@ const tendrerlyAccessKey = process.env.TENDERLY_ACCESS_KEY
 
 export default {
   basePath,
-  webpack5: true,
+  // webpack5: true,
   experimental: {
     // Fixes a build error with importing Pure ESM modules, e.g. reef-knot
     // Some docs are here:
@@ -28,6 +40,9 @@ export default {
     // <https://github.com/vercel/next.js/blob/v12.3.4/packages/next/build/webpack-config.ts#L417>
     // Presumably, it is true by default in next v13 and won't be needed
     esmExternals: true,
+  },
+  compiler: {
+    styledComponents: true,
   },
   webpack(config) {
     config.module.rules.push({
@@ -76,6 +91,23 @@ export default {
   async headers() {
     return [
       {
+        source: '/manifest.json',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET',
+          },
+          {
+            key: 'Access-Control-Allow-Headers',
+            value: 'X-Requested-With, content-type, Authorization',
+          },
+        ],
+      },
+      {
         // Apply these headers to all routes in your application.
         source: '/(.*)',
         headers: [
@@ -99,24 +131,11 @@ export default {
       },
     ]
   },
-  devServer(configFunction) {
-    return function (proxy, allowedHost) {
-      const config = configFunction(proxy, allowedHost)
-
-      config.headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET',
-        'Access-Control-Allow-Headers':
-          'X-Requested-With, content-type, Authorization',
-      }
-
-      return config
-    }
-  },
   serverRuntimeConfig: {
     basePath,
-    infuraApiKey,
-    alchemyApiKey,
+    rpcUrls_1,
+    rpcUrls_17000,
+    rpcUrls_560048,
     etherscanApiKey,
     cspTrustedHosts,
     cspReportOnly,

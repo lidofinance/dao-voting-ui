@@ -3,12 +3,7 @@ import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { formatFloatPct } from 'modules/shared/utils/formatFloatPct'
 import { formatNumber } from 'modules/shared/utils/formatNumber'
 
-type Args = {
-  vote: Vote
-  voteTime: number
-}
-
-export function getVoteDetailsFormatted({ vote, voteTime }: Args) {
+export function getVoteDetailsFormatted(vote: Vote) {
   const totalSupply = weiToNum(vote.votingPower)
   const totalSupplyFormatted = formatNumber(totalSupply, 4)
   const nayNum = weiToNum(vote.nay)
@@ -29,7 +24,6 @@ export function getVoteDetailsFormatted({ vote, voteTime }: Args) {
     : 0
 
   const startDate = vote.startDate.toNumber()
-  const endDate = startDate + voteTime
 
   const neededToQuorum = weiToNum(vote.minAcceptQuorum) - yeaPctOfTotalSupply
   const neededToQuorumFormatted = formatFloatPct(neededToQuorum, {
@@ -50,6 +44,5 @@ export function getVoteDetailsFormatted({ vote, voteTime }: Args) {
     neededToQuorum,
     neededToQuorumFormatted,
     startDate,
-    endDate,
   }
 }

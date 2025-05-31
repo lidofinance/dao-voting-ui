@@ -1,8 +1,7 @@
 import { useCallback, useMemo } from 'react'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useDisconnect, useConnectorInfo } from 'reef-knot/web3-react'
-import { useGovernanceBalance } from 'modules/tokens/hooks/useGovernanceBalance'
-import { useGovernanceSymbol } from 'modules/tokens/hooks/useGovernanceSymbol'
+import { useGovernanceTokenData } from 'modules/tokens/hooks/useGovernanceTokenData'
 import { useConfig } from 'modules/config/hooks/useConfig'
 import { CopyOpenActions } from 'modules/shared/ui/Common/CopyOpenActions'
 import {
@@ -20,7 +19,6 @@ import {
   Row,
   Address,
 } from './WalletModalStyle'
-import { formatToken } from 'modules/tokens/utils/formatToken'
 import { useDisconnect as useDisconnectWagmi } from 'wagmi'
 
 function WalletModalContent() {
@@ -29,8 +27,7 @@ function WalletModalContent() {
     () => trimAddress(walletAddress ?? '', 6),
     [walletAddress],
   )
-  const governanceBalance = useGovernanceBalance()
-  const { data: governanceSymbol } = useGovernanceSymbol()
+  const { data: tokenData, initialLoading } = useGovernanceTokenData()
 
   return (
     <>
@@ -38,14 +35,14 @@ function WalletModalContent() {
         <Text
           size="xxs"
           weight={500}
-          children={`${governanceSymbol} Balance:`}
+          children={initialLoading ? 'Loading...' : 'Balance'}
         />
-        <Text size="xxs" weight={500}>
-          &nbsp;
-          {governanceBalance.initialLoading || !governanceBalance.data
-            ? 'Loading...'
-            : formatToken(governanceBalance.data, governanceSymbol || '')}
-        </Text>
+        {tokenData?.balanceStr ? (
+          <Text size="xxs" weight={500}>
+            &nbsp;
+            {tokenData.balanceStr}
+          </Text>
+        ) : null}
       </Row>
 
       <Row>
@@ -82,8 +79,15 @@ export function WalletModal(props: ModalProps) {
     <Modal title="Account" {...props}>
       <Content>
         <Connected>
-          <Connector>Connected with {providerName}</Connector>
-          <Disconnect size="xs" variant="outlined" onClick={handleDisconnect}>
+          <Connector data-testid="providerName">
+            Connected with {providerName}
+          </Connector>
+          <Disconnect
+            size="xs"
+            variant="outlined"
+            onClick={handleDisconnect}
+            data-testid="disconnectBtn"
+          >
             Disconnect
           </Disconnect>
         </Connected>

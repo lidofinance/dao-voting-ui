@@ -1,5 +1,6 @@
 import type {
   AragonVotingAbi,
+  StartVoteEvent,
   StartVoteEventObject,
 } from 'generated/AragonVotingAbi'
 
@@ -7,17 +8,25 @@ export async function getEventStartVote(
   contractVoting: AragonVotingAbi,
   voteId: string | number,
   block?: string | number,
-) {
+): Promise<{
+  event: StartVoteEvent
+  decoded: StartVoteEventObject
+} | null> {
   const filter = contractVoting.filters.StartVote(Number(voteId))
   const events = await contractVoting.queryFilter(
     filter,
     block ? Number(block) : undefined,
     block ? Number(block) + 1 : undefined,
   )
-  const event = events[0]
-  if (!events[0] || !event.decode) {
-    throw new Error('Start vote event parsing error')
+
+  if (!events.length) {
+    return null
   }
-  const decoded = event.decode(event.data, event.topics)
-  return decoded as StartVoteEventObject
+
+  const event = events[0]
+
+  return {
+    event,
+    decoded: event.args,
+  }
 }

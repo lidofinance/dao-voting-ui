@@ -9,7 +9,7 @@ on:
         required: false
         type: choice
         options:
-          - staging
+          - staging-critical
           - testnet
 
   pull_request:
@@ -19,6 +19,7 @@ on:
       - main
 
 permissions:
+  contents: read
   pull-requests: read
 
 jobs:
@@ -45,7 +46,7 @@ jobs:
           TARGET: ${{ github.head_ref || steps.ref.outputs.short_ref }}
           TARGET_WORKFLOW: "preview_stand_deploy.yaml"
           INPUTS_REPO_NAME: ${{ github.repository }}
-          INPUTS_PR_ID: ${{ steps.pr.outputs.number }}
+          INPUTS_PR_ID: ${{ github.event.pull_request.number || steps.pr.outputs.number }}
           INPUTS_INVENTORY: "${{ inputs.inventory || 'testnet' }}"
 
       - name: Define repo short name

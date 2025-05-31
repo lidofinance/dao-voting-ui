@@ -13,6 +13,9 @@ export const MarkdownWrap = styled.div`
   & img {
     max-width: 100%;
   }
+  & ol {
+    padding-left: 20px;
+  }
   & blockquote {
     padding: 0 1em;
     border-left: 0.25em solid var(--lido-color-border);

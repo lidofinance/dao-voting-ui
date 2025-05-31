@@ -12,6 +12,7 @@ import {
   Light,
   useThemeToggle,
   Text,
+  LidoLogo,
 } from '@lidofinance/lido-ui'
 import { HeaderVoteInput } from 'modules/votes/ui/HeaderVoteInput'
 import {
@@ -40,16 +41,19 @@ import {
 
 import { getChainName } from 'modules/blockChain/chains'
 import { getChainColor } from '@lido-sdk/constants'
-import LidoLogoSvg from 'assets/logo.com.svg.react'
 import StarSvg from 'assets/star.com.svg.react'
 import SettingsSvg from 'assets/settings.com.svg.react'
+import DelegationSvg from 'assets/delegation.com.svg.react'
 import * as urls from 'modules/network/utils/urls'
+import { DualGovernanceStatusButton } from 'modules/dual-governance/DualGovernanceStatusButton'
+import { isTestnet } from 'modules/blockChain/utils/isTestnet'
 
 function NavItem({
   link,
   activeOn,
   onClick,
   children,
+  ...rest
 }: {
   link: string
   activeOn?: (string | { url: string; exact: boolean })[]
@@ -70,7 +74,7 @@ function NavItem({
 
   return (
     <Link passHref href={link}>
-      <NavLink isActive={isActive} onClick={onClick}>
+      <NavLink isActive={isActive} onClick={onClick} {...rest}>
         <NavLinkInner>{children}</NavLinkInner>
       </NavLink>
     </Link>
@@ -95,8 +99,8 @@ export function Header() {
     <>
       <Wrap>
         <Nav>
-          <Logo>
-            <LidoLogoSvg />
+          <Logo data-testid="lidoLogo" href="https://lido.fi">
+            <LidoLogo />
           </Logo>
           <NavItems>
             <NavItem
@@ -106,10 +110,16 @@ export function Header() {
                 urls.voteIndex,
                 urls.dashboardIndex,
               ]}
+              data-testid="navVote"
             >
               Vote
             </NavItem>
-            <NavItem link={urls.settings}>Settings</NavItem>
+            <NavItem link={urls.delegation} data-testid="navDelegation">
+              Delegation
+            </NavItem>
+            <NavItem link={urls.settings} data-testid="navSettings">
+              Settings
+            </NavItem>
           </NavItems>
         </Nav>
 
@@ -119,12 +129,16 @@ export function Header() {
 
         <ActionsDesktop>
           <Network>
-            <NetworkBulb color={getChainColor(chainId)} />
-            <Text size="xs" weight={500}>
+            <NetworkBulb
+              color={getChainColor(chainId)}
+              data-testid="networkIndicator"
+            />
+            <Text size="xs" weight={500} data-testid="network">
               {getChainName(chainId)}
             </Text>
           </Network>
           <NoSSRWrapper>
+            {isTestnet(chainId) && <DualGovernanceStatusButton />}
             <HeaderWallet />
           </NoSSRWrapper>
           <ThemeTogglerWrap>
@@ -161,6 +175,12 @@ export function Header() {
                   </NavLinkIconWrap>{' '}
                   Vote
                 </NavItem>
+                <NavItem link={urls.delegation} onClick={handleCloseMobileMenu}>
+                  <NavLinkIconWrap>
+                    <DelegationSvg />
+                  </NavLinkIconWrap>{' '}
+                  Delegation
+                </NavItem>
                 <NavItem link={urls.settings} onClick={handleCloseMobileMenu}>
                   <NavLinkIconWrap>
                     <SettingsSvg />
@@ -184,8 +204,11 @@ export function Header() {
               <MobileNetworkWrap>
                 <MobileNetworkLabel>Network</MobileNetworkLabel>
                 <Network>
-                  <NetworkBulb color={getChainColor(chainId)} />
-                  <Text size="xs" weight={500}>
+                  <NetworkBulb
+                    color={getChainColor(chainId)}
+                    data-testid="networkIndicator"
+                  />
+                  <Text size="xs" weight={500} data-testid="network">
                     {getChainName(chainId)}
                   </Text>
                 </Network>

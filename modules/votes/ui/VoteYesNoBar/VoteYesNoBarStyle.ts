@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components'
 
 export const VotesTitleWrap = styled.div`
+  margin-top: ${({ theme }) => theme.spaceMap.lg}px;
   margin-bottom: ${({ theme }) => theme.spaceMap.sm}px;
   display: flex;
   justify-content: space-between;
@@ -9,7 +10,7 @@ export const VotesTitleWrap = styled.div`
 type VotesBarWrapProps = { showOnForeground?: boolean }
 export const VotesBarWrap = styled.div<VotesBarWrapProps>`
   display: flex;
-  height: 6px;
+  height: 4px;
   border-radius: ${({ theme }) => theme.borderRadiusesMap.sm}px;
   overflow: hidden;
   ${({ showOnForeground }) =>

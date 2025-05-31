@@ -10,23 +10,35 @@ import {
   CheckboxControl,
   CheckboxLabelWrap,
 } from 'modules/shared/ui/Controls/Checkbox'
-import { Button, Container, ToastSuccess } from '@lidofinance/lido-ui'
+import {
+  Button,
+  Container,
+  Link,
+  Text,
+  ToastSuccess,
+} from '@lidofinance/lido-ui'
 import { Actions, DescriptionText, DescriptionTitle } from './StyledFormStyle'
 import { ethers } from 'ethers'
 import { getChainName } from 'modules/blockChain/chains'
-import { ContractVoting } from 'modules/blockChain/contracts'
 import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'
 import { isUrl } from 'modules/shared/utils/isUrl'
+import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
+import { isTestnet as getIsTestnet } from 'modules/blockChain/utils/isTestnet'
+import { useTestContractsInfo } from './useTestContractsInfo'
+import { getEtherscanAddressLink } from '@lido-sdk/helpers'
 
 type FormValues = {
   rpcUrl: string
   etherscanApiKey: string
   useBundledAbi: boolean
+  useTestContracts: boolean
 }
 
 export function SettingsForm() {
   const { savedConfig, setSavedConfig } = useConfig()
   const { chainId } = useWeb3()
+  const { ldoHelpers } = useContractHelpers()
+  const testContractsInfo = useTestContractsInfo()
 
   const formMethods = useForm<FormValues>({
     mode: 'onChange',
@@ -35,6 +47,7 @@ export function SettingsForm() {
       rpcUrl: savedConfig.rpcUrls[chainId] || '',
       etherscanApiKey: savedConfig.etherscanApiKey || '',
       useBundledAbi: savedConfig.useBundledAbi,
+      useTestContracts: savedConfig.useTestContracts,
     },
   })
 
@@ -48,6 +61,7 @@ export function SettingsForm() {
         },
         etherscanApiKey: formValues.etherscanApiKey,
         useBundledAbi: formValues.useBundledAbi,
+        useTestContracts: formValues.useTestContracts,
       })
     },
     [chainId, setSavedConfig],
@@ -76,8 +90,8 @@ export function SettingsForm() {
         }
 
         // Doing a random request to check rpc url is fetchable
-        const voting = ContractVoting.connectRpc({ chainId, rpcUrl })
-        await voting.voteTime()
+        const ldo = ldoHelpers.connectRpc({ chainId, rpc: rpcUrl })
+        await ldo.decimals()
 
         // All fine
         return true
@@ -85,7 +99,7 @@ export function SettingsForm() {
         return 'Given url is not working'
       }
     },
-    [chainId],
+    [chainId, ldoHelpers],
   )
 
   const validateEtherscanKey = useCallback(
@@ -94,10 +108,10 @@ export function SettingsForm() {
       const errMsg = 'Etherscan api can not be accessed with given key now'
       try {
         // Doing a random request to check etherscan key is viable
-        const address = ContractVoting.address[chainId] as string
+
         await fetcherEtherscan<string>({
           chainId,
-          address,
+          address: ldoHelpers.address,
           module: 'contract',
           action: 'getabi',
           apiKey: etherscanApiKey,
@@ -108,7 +122,7 @@ export function SettingsForm() {
         return errMsg
       }
     },
-    [chainId],
+    [chainId, ldoHelpers.address],
   )
 
   const handleReset = useCallback(() => {
@@ -119,9 +133,11 @@ export function SettingsForm() {
     ToastSuccess('Settings have been reset')
   }, [setValue, saveSettings, getValues])
 
+  const isTestnet = getIsTestnet(chainId)
+
   return (
     <Container as="main" size="tight">
-      <Card>
+      <Card data-testid="settingsSection">
         <Form formMethods={formMethods} onSubmit={handleSubmit}>
           <Fieldset>
             <InputControl
@@ -137,18 +153,27 @@ export function SettingsForm() {
               rules={{ validate: validateEtherscanKey }}
             />
           </Fieldset>
-          <Fieldset>
+          <Fieldset data-testid="abisBlock">
             <CheckboxLabelWrap>
               <CheckboxControl name="useBundledAbi" />
               Use built-in ABIs
             </CheckboxLabelWrap>
           </Fieldset>
+          {isTestnet && (
+            <Fieldset data-testid="testContractsBlock">
+              <CheckboxLabelWrap>
+                <CheckboxControl name="useTestContracts" />
+                Use test contracts
+              </CheckboxLabelWrap>
+            </Fieldset>
+          )}
           <Actions>
             <Button
               fullwidth
               variant="translucent"
               children="Reset to defaults"
               onClick={handleReset}
+              data-testid="resetBtn"
             />
             <Button
               type="submit"
@@ -157,6 +182,7 @@ export function SettingsForm() {
               children="Save"
               loading={formState.isValidating}
               disabled={!formState.isValid || formState.isValidating}
+              data-testid="saveBtn"
             />
           </Actions>
         </Form>
@@ -165,7 +191,7 @@ export function SettingsForm() {
       <br />
 
       <Card>
-        <DescriptionText>
+        <DescriptionText data-testid="faqSection">
           <DescriptionTitle>What are these settings for?</DescriptionTitle>
           <p>
             This website relies on a JSON RPC connection and an Etherscan API
@@ -199,8 +225,37 @@ export function SettingsForm() {
             having trouble viewing the action items, uncheck this box to load
             ABIs from Etherscan.
           </p>
+          {isTestnet && (
+            <>
+              <DescriptionTitle>
+                What is the purpose of the &rdquo;Use test contracts&rdquo;
+                parameter?
+              </DescriptionTitle>
+              <p>
+                There may be more than one contract instance on the testnet.
+                This parameter allows you to choose between the test and main
+                contract.
+              </p>
+            </>
+          )}
         </DescriptionText>
       </Card>
+      {isTestnet && savedConfig.useTestContracts && testContractsInfo.length && (
+        <>
+          <br />
+          <Card>
+            <DescriptionTitle>Contracts with test addresses</DescriptionTitle>
+            {testContractsInfo.map(contract => (
+              <div key={contract.address}>
+                <Text size="sm">{contract.name}</Text>
+                <Link href={getEtherscanAddressLink(chainId, contract.address)}>
+                  {contract.address}
+                </Link>
+              </div>
+            ))}
+          </Card>
+        </>
+      )}
     </Container>
   )
 }
