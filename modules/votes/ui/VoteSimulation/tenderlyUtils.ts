@@ -1,6 +1,5 @@
 import * as ethers from 'ethers'
 import { CHAINS } from '@lido-sdk/constants'
-import { ContractVoting } from 'modules/blockChain/contracts'
 import {
   fetchForkTransactionsList,
   requestNetworkFork,
@@ -8,6 +7,7 @@ import {
 } from './tenderlyFetchers'
 import { estimateGasFallback } from 'modules/shared/utils/estimateGasFallback'
 import { Vote } from 'modules/votes/types'
+import { AragonVotingAbi } from 'generated'
 
 const TREASURY_ADDRESS: Partial<Record<CHAINS, string>> = {
   [CHAINS.Mainnet]: '0x3e40D73EB977Dc6a537aF587D48316feE66E9C8c',
@@ -28,27 +28,25 @@ export const createNetworkFork = async (args: { chainId: CHAINS }) => {
   }
 }
 
-export const sumulateVoteEnactmentOnFork = async ({
+export const simulateVoteEnactmentOnFork = async ({
   chainId,
   voteId,
   vote,
   voteTime,
   objectionPhaseTime,
+  forkedVotingContract,
 }: {
   chainId: CHAINS
   voteId: string
   vote: Vote
   voteTime: number
   objectionPhaseTime: number
+  forkedVotingContract: AragonVotingAbi
 }) => {
   const { forkId, forkProvider } = await createNetworkFork({ chainId })
 
   const treasuryAddress = TREASURY_ADDRESS[chainId]!
   const treasurySigner = forkProvider.getSigner(treasuryAddress)
-  const forkedVotingContract = ContractVoting.connect({
-    chainId,
-    library: treasurySigner,
-  })
 
   const { timestamp } = await forkProvider.getBlock('latest')
   const startDate = vote.startDate.toNumber()

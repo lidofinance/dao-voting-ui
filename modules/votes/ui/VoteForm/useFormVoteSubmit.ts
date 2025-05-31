@@ -129,7 +129,7 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
     if (!voteId) return
     try {
       setSubmitting('enact')
-      await txEnact.send()
+      await txEnact.send({ voteId })
     } catch (err) {
       console.error(err)
       setSubmitting(false)

@@ -7,7 +7,7 @@ import { TenderlyIcon } from './VoteSimulationStyle'
 
 import {
   getForkSimulationUrl,
-  sumulateVoteEnactmentOnFork,
+  simulateVoteEnactmentOnFork,
 } from './tenderlyUtils'
 import { fetchForkTransactionsList, fetchForksList } from './tenderlyFetchers'
 import { getErrorMessage } from 'modules/shared/utils/getErrorMessage'
@@ -73,12 +73,14 @@ export const VoteSimulation = ({
     if (!enactTxPopulated || !voteTime || !objectionPhaseTime) return
     setPendingSimulation(true)
     try {
-      const id = await sumulateVoteEnactmentOnFork({
+      const id = await simulateVoteEnactmentOnFork({
         chainId,
         voteId,
         vote,
         voteTime,
         objectionPhaseTime,
+        // TODO: add forkedVotingContract
+        forkedVotingContract: null as any,
       })
       setSimulationId(id)
       return id
