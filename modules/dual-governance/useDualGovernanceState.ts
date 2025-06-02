@@ -126,11 +126,13 @@ export const useDualGovernanceState = () => {
         status,
         nextStatus: stateDetails.effectiveState,
         totalStEthInEscrow,
+        totalSupply,
         rageQuitSupportPercent,
         activeProposalsCount,
         config,
         stateDetails,
         amountUntilVetoSignalling,
+        firstSealRageQuitSupport,
       }
     },
   )

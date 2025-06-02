@@ -2,7 +2,7 @@ import {
   getDualGovernanceStatusLabel,
   getDualGovernanceLink,
   stringifyDualGovernanceStatus,
-  formatPercent16,
+  parsePercent16,
 } from '../utils'
 import { DualGovernanceState, DualGovernanceStatus } from '../types'
 import {
@@ -12,10 +12,17 @@ import {
   StatusBulb,
 } from './DualGovernanceWidgetStyle'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-import { formatBalance } from 'modules/blockChain/utils/formatBalance'
+import { formatEther } from 'ethers/lib/utils'
+import { Box } from '@lidofinance/lido-ui'
 
 type Props = {
   dualGovernanceState: DualGovernanceState
+}
+
+const formatInMillions = (value: number): string => {
+  const inMillions = value / 1000000
+
+  return inMillions.toFixed(1) + 'm'
 }
 
 export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
@@ -25,9 +32,10 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
     status,
     activeProposalsCount,
     totalStEthInEscrow,
-    rageQuitSupportPercent,
     nextStatus,
     amountUntilVetoSignalling,
+    firstSealRageQuitSupport,
+    totalSupply,
   } = dualGovernanceState
 
   const hasProposals = !!activeProposalsCount
@@ -36,6 +44,14 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
     hasProposals &&
     status !== DualGovernanceStatus.Normal &&
     status !== DualGovernanceStatus.VetoCooldown
+
+  const firstSealRageQuitSupportPercent = parsePercent16(
+    firstSealRageQuitSupport,
+  )
+
+  const firstSealRageQuitSupportAmount = formatEther(
+    totalSupply.div(100).mul(firstSealRageQuitSupportPercent),
+  )
 
   const showState =
     status === DualGovernanceStatus.VetoSignalling ||
@@ -67,19 +83,18 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
       )}
       {/* Veto Support */}
       {status !== DualGovernanceStatus.RageQuit && (
-        <div>
+        <Box display="flex" justifyContent="space-between">
           <Label>Veto Support</Label>
           <p>
             {!totalStEthInEscrow.isZero() && (
               <Label $color="secondary">
-                {formatBalance(totalStEthInEscrow)} stETH
+                {formatInMillions(Number(formatEther(totalStEthInEscrow)))} /{' '}
+                {formatInMillions(Number(firstSealRageQuitSupportAmount))}
               </Label>
             )}
-            <Label>{formatPercent16(rageQuitSupportPercent)}%</Label>
           </p>
-        </div>
+        </Box>
       )}
-
       {/* Conditional information */}
       {showNextState && (
         <p>

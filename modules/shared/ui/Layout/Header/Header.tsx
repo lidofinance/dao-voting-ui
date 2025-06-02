@@ -50,8 +50,8 @@ import { isTestnet } from 'modules/blockChain/utils/isTestnet'
 import { DualGovernanceWarningBanner } from 'modules/blockChain/ui/DualGovernanceWarningBanner'
 import { useDualGovernanceState } from 'modules/dual-governance/useDualGovernanceState'
 import { DualGovernanceStatus } from 'modules/dual-governance/types'
-import { getUseModal } from '../../../../modal/useModal'
-import { DualGovernanceWarningModal } from '../../../../dual-governance/DualGovernanceWarningModal/DualGovernanceWarningModal'
+import { getUseModal } from 'modules/modal/useModal'
+import { DualGovernanceWarningModal } from 'modules/dual-governance/DualGovernanceWarningModal/DualGovernanceWarningModal'
 
 function NavItem({
   link,

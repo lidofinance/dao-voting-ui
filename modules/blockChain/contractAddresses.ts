@@ -97,7 +97,7 @@ export const Steth: ChainAddressMap = {
     actual: '0x3F1c547b21f65e10480dE3ad8E19fAAC46C95034',
   },
   [CHAINS.Hoodi]: {
-    test: '0x3508A952176b3c15387C97BE809eaffB1982176a',
+    test: '0x7853038c89a91752de79094db32fede15b5c6a4b',
     actual: '0x4ecAC76fEd32DADd892aB0697f47622FdcB0F955',
   },
 }
@@ -152,7 +152,7 @@ export const WithdrawalQueueERC721: ChainAddressMap = {
     test: '0x27f793CE9306341a8F4Fd6cDadb0c9785D46978a',
     actual: '0xc7cc160b58F8Bb0baC94b80847E2CF2800565C50',
   },
-  [CHAINS.Hoodi]: '0xfe56573178f1bcdf53F01A6E9977670dcBBD9186',
+  [CHAINS.Hoodi]: '0x7cc545e36c7571782922b075c2976e938a0cda05',
 }
 
 export const OracleReportSanityChecker: ChainAddressMap = {

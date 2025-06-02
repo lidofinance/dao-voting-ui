@@ -41,10 +41,12 @@ export type DualGovernanceState = {
   status: number
   nextStatus: number
   totalStEthInEscrow: BigNumber
+  totalSupply: BigNumber
   rageQuitSupportPercent: BigNumber
   activeProposalsCount: number
   config: DualGovernanceConfig
   stateDetails: DualGovernanceStateDetails
+  firstSealRageQuitSupport: BigNumber
   amountUntilVetoSignalling: {
     percentage: string
     value: string
