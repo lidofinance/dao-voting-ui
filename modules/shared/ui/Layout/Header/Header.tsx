@@ -37,6 +37,7 @@ import {
   NavBurger,
   ThemeTogglerWrap,
   MobileNetworkLabel,
+  MobileDGWidgetWrap,
 } from './HeaderStyle'
 
 import { getChainName } from 'modules/blockChain/chains'
@@ -248,7 +249,15 @@ export function Header() {
                   </Text>
                 </Network>
               </MobileNetworkWrap>
-              <HeaderWallet trimAddressSymbols={6} />
+              <NoSSRWrapper>
+                <MobileDGWidgetWrap>
+                  <Text size="sm" color="secondary">
+                    Dual Governance state
+                  </Text>
+                  {isTestnet(chainId) && <DualGovernanceStatusButton />}
+                </MobileDGWidgetWrap>
+                <HeaderWallet trimAddressSymbols={6} />
+              </NoSSRWrapper>
             </MobileMenuScroll>
           </MobileMenu>
         )}

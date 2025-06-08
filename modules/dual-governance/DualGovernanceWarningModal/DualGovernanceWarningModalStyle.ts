@@ -3,7 +3,7 @@ import WarningIconSVG from 'assets/warning.com.svg.react'
 
 export const WarningIcon = styled(WarningIconSVG)`
   path {
-    fill: red;
+    fill: #e14d4d;
   }
 `
 

@@ -9,6 +9,7 @@ import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 import {
   DualGovernanceState,
   DualGovernanceStatus,
+  ProposalStatus,
 } from 'modules/dual-governance/types'
 import { getAmountUntilVetoSignalling } from './utils'
 
@@ -83,8 +84,8 @@ export const useDualGovernanceState = () => {
         for (let i = 1; i <= proposalsCount; i++) {
           const proposal = await emergencyProtectedTimelock.getProposal(i)
           if (
-            proposal.proposalDetails.status === 1 ||
-            proposal.proposalDetails.status === 2
+            proposal.proposalDetails.status === ProposalStatus.Submitted ||
+            proposal.proposalDetails.status === ProposalStatus.Scheduled
           ) {
             activeProposalsCount++
           }

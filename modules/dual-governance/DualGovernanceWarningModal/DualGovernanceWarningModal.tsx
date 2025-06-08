@@ -6,9 +6,6 @@ import { useCallback } from 'react'
 
 export function DualGovernanceWarningModal({ ...modalProps }: ModalProps) {
   const { chainId } = useWeb3()
-
-  console.log(modalProps, 'modalProps')
-
   const handleButtonClick = useCallback(() => {
     open(getDualGovernanceLink(chainId))
   }, [chainId])
@@ -25,8 +22,9 @@ export function DualGovernanceWarningModal({ ...modalProps }: ModalProps) {
       titleIcon={<WarningIcon width="60px" height="50px" viewBox="0 0 14 12" />}
     >
       <Text size="xs" color="secondary">
-        Lido governance is currently blocked. stETH holders are vetoing
-        decisions made by LDO holders
+        Lido governance is currently blocked.
+        <br />
+        stETH holders are vetoing decisions made by LDO holders
       </Text>
       <br />
       <Text size="xs" color="secondary">

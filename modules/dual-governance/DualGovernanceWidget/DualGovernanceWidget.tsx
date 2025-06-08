@@ -19,10 +19,15 @@ type Props = {
   dualGovernanceState: DualGovernanceState
 }
 
-const formatInMillions = (value: number): string => {
+const formatNumber = (value: number): string => {
+  if (value === 0) return '0'
+  if (value < 1000) return value.toFixed(1)
+  if (value < 1000000) {
+    const inThousands = value / 1000
+    return inThousands.toFixed(1) + 'k'
+  }
   const inMillions = value / 1000000
-
-  return inMillions.toFixed(1) + 'm'
+  return inMillions.toFixed(1) + 'M'
 }
 
 export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
@@ -36,10 +41,10 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
     amountUntilVetoSignalling,
     firstSealRageQuitSupport,
     totalSupply,
+    rageQuitSupportPercent,
   } = dualGovernanceState
 
   const hasProposals = !!activeProposalsCount
-
   const showProposalsInfo =
     hasProposals &&
     status !== DualGovernanceStatus.Normal &&
@@ -88,8 +93,21 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
           <p>
             {!totalStEthInEscrow.isZero() && (
               <Label $color="secondary">
-                {formatInMillions(Number(formatEther(totalStEthInEscrow)))} /{' '}
-                {formatInMillions(Number(firstSealRageQuitSupportAmount))}
+                {formatNumber(Number(formatEther(totalStEthInEscrow)))} /{' '}
+                {formatNumber(Number(firstSealRageQuitSupportAmount))}
+              </Label>
+            )}
+          </p>
+        </Box>
+      )}
+      {/* RQ Support */}
+      {status === DualGovernanceStatus.VetoSignalling && (
+        <Box display="flex" justifyContent="space-between">
+          <Label>RageQuit threshold</Label>
+          <p>
+            {parsePercent16(rageQuitSupportPercent) && (
+              <Label $color="secondary">
+                {parsePercent16(rageQuitSupportPercent)}%
               </Label>
             )}
           </p>

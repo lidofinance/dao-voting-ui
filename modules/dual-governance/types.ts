@@ -52,3 +52,11 @@ export type DualGovernanceState = {
     value: string
   } | null
 }
+
+export enum ProposalStatus {
+  NotExist,
+  Submitted,
+  Scheduled,
+  Executed,
+  Cancelled,
+}
