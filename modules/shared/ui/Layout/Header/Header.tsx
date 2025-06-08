@@ -249,15 +249,17 @@ export function Header() {
                   </Text>
                 </Network>
               </MobileNetworkWrap>
-              <NoSSRWrapper>
-                <MobileDGWidgetWrap>
-                  <Text size="sm" color="secondary">
-                    Dual Governance state
-                  </Text>
-                  {isTestnet(chainId) && <DualGovernanceStatusButton />}
-                </MobileDGWidgetWrap>
-                <HeaderWallet trimAddressSymbols={6} />
-              </NoSSRWrapper>
+              {isTestnet(chainId) && (
+                <NoSSRWrapper>
+                  <MobileDGWidgetWrap>
+                    <Text size="sm" color="secondary">
+                      Dual Governance state
+                    </Text>
+                    <DualGovernanceStatusButton />
+                  </MobileDGWidgetWrap>
+                  <HeaderWallet trimAddressSymbols={6} />
+                </NoSSRWrapper>
+              )}
             </MobileMenuScroll>
           </MobileMenu>
         )}
