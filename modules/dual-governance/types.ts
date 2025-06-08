@@ -1,5 +1,10 @@
 import { BigNumber } from 'ethers'
 
+import { ProposalSubmittedEvent as DGProposalSubmittedEvent } from 'generated/DualGovernanceAbi'
+import { ProposalSubmittedEvent as EPTProposalSubmittedEvent } from 'generated/EmergencyProtectedTimelockAbi'
+
+type TimeStamp = number
+
 export enum DualGovernanceStatus {
   Unset,
   Normal,
@@ -49,4 +54,28 @@ export type DualGovernanceState = {
     percentage: string
     value: string
   } | null
+}
+
+export enum ProposalStatus {
+  NotExist,
+  Submitted,
+  Scheduled,
+  Executed,
+  Cancelled,
+}
+
+export type ProposalDetails = {
+  executor: string
+  id: BigNumber
+  scheduledAt: TimeStamp
+  status: ProposalStatus
+  submittedAt: TimeStamp
+}
+
+export type ProposalCombinedData = {
+  proposalId: BigNumber
+  voteId?: BigNumber
+  DGEvent?: DGProposalSubmittedEvent
+  EPTEvent?: EPTProposalSubmittedEvent
+  proposalDetails: ProposalDetails
 }

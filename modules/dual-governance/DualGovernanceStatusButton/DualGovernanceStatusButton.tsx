@@ -5,7 +5,7 @@ import {
   PopoverStyled,
 } from './DualGovernanceStatusButtonStyle'
 import { DualGovernanceWidget } from '../DualGovernanceWidget'
-import { useDualGovernanceState } from '../useDualGovernanceState'
+import { useDualGovernanceState } from '../hooks/useDualGovernanceState'
 import { Box, Loader } from '@lidofinance/lido-ui'
 import { DGIcon } from '../DGIcon'
 
