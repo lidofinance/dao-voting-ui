@@ -3,7 +3,7 @@ import Router from 'next/router'
 import { useEffect } from 'react'
 import { useSWR } from 'modules/network/hooks/useSwr'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-import { Container, Pagination } from '@lidofinance/lido-ui'
+import { Box, Container, Pagination, Text } from '@lidofinance/lido-ui'
 import { DashboardVote } from '../DashboardVote'
 import { DashboardVoteSkeleton } from '../DashboardVoteSkeleton'
 import { SkeletonBar } from 'modules/shared/ui/Skeletons/SkeletonBar'
@@ -14,6 +14,8 @@ import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
 import * as urls from 'modules/network/utils/urls'
 import { getEventExecuteVote } from 'modules/votes/utils/getEventExecuteVote'
 import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
+import { useProposals } from 'modules/dual-governance/hooks/useProposals'
+import { ProposalsListItem } from '../DashboardDGProposal/DashboardDGProposal'
 
 const PAGE_SIZE = 20
 
@@ -26,10 +28,11 @@ export function DashboardGrid({ currentPage }: Props) {
   const { votingHelpers } = useContractHelpers()
   const voting = votingHelpers.useRpc()
 
+  const { data: proposalsData } = useProposals()
+
   const handleChangePage = (nextPage: number) => {
     Router.push(urls.dashboardPage(nextPage))
   }
-
   const infoSwr = useSWR(
     `dashboard-general-info-${chainId}-${voting.address}`,
     async () => {
@@ -147,6 +150,23 @@ export function DashboardGrid({ currentPage }: Props) {
 
   return (
     <Container as="main" size="full">
+      <Text>Dual Governance Proposals</Text>
+      <br />
+      <Box display="flex" overflowX="scroll">
+        {proposalsData &&
+          proposalsData.proposals.length > 0 &&
+          proposalsData.proposals.map(proposal => (
+            <ProposalsListItem
+              key={Number(proposal.proposalId)}
+              id={Number(proposal.proposalId)}
+              description={proposal.DGEvent?.args.metadata || ''}
+              proposalDetails={proposal.proposalDetails}
+            />
+          ))}
+      </Box>
+      <br />
+      <Text>Aragon votes</Text>
+      <br />
       <GridWrap>
         {isLoading &&
           range(0, PAGE_SIZE).map(i => <DashboardVoteSkeleton key={i} />)}

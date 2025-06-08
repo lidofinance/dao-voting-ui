@@ -10,7 +10,7 @@ import {
   DualGovernanceState,
   DualGovernanceStatus,
 } from 'modules/dual-governance/types'
-import { getAmountUntilVetoSignalling } from './utils'
+import { getAmountUntilVetoSignalling } from '../utils'
 
 const WARNING_STATE_THRESHOLD_PERCENT = 33
 
