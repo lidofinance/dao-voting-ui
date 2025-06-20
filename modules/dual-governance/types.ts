@@ -47,6 +47,7 @@ export type DualGovernanceState = {
   config: DualGovernanceConfig
   stateDetails: DualGovernanceStateDetails
   firstSealRageQuitSupport: BigNumber
+  secondSealRageQuitSupport: BigNumber
   amountUntilVetoSignalling: {
     percentage: string
     value: string

@@ -1,8 +1,8 @@
 import {
-  getDualGovernanceStatusLabel,
   getDualGovernanceLink,
-  stringifyDualGovernanceStatus,
+  getDualGovernanceStatusLabel,
   parsePercent16,
+  stringifyDualGovernanceStatus,
 } from '../utils'
 import { DualGovernanceState, DualGovernanceStatus } from '../types'
 import {
@@ -14,6 +14,7 @@ import {
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { formatEther } from 'ethers/lib/utils'
 import { Box } from '@lidofinance/lido-ui'
+import { BigNumber } from 'ethers'
 
 type Props = {
   dualGovernanceState: DualGovernanceState
@@ -41,8 +42,52 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
     amountUntilVetoSignalling,
     firstSealRageQuitSupport,
     totalSupply,
-    rageQuitSupportPercent,
+    secondSealRageQuitSupport,
   } = dualGovernanceState
+
+  const secondSealRageQuitSupportPercent = parsePercent16(
+    secondSealRageQuitSupport,
+  )
+
+  const calculateRQThresholdPercent = () => {
+    if (
+      !secondSealRageQuitSupportPercent ||
+      secondSealRageQuitSupportPercent <= 0 ||
+      totalStEthInEscrow.isNegative()
+    ) {
+      return 0
+    }
+
+    const targetValue = totalSupply
+      .mul(BigNumber.from(secondSealRageQuitSupportPercent))
+      .div(BigNumber.from(100))
+
+    if (targetValue.isZero()) {
+      return totalStEthInEscrow.gt(0) ? 100 : 0
+    }
+
+    const scaleFactor = BigNumber.from(10000)
+    const percentBN = totalStEthInEscrow
+      .mul(scaleFactor)
+      .mul(BigNumber.from(100))
+      .div(targetValue)
+
+    let thresholdSupportPercent =
+      Number(percentBN.toString()) / Number(scaleFactor)
+
+    if (thresholdSupportPercent > 100) {
+      thresholdSupportPercent = 100
+    }
+    if (thresholdSupportPercent < 0) {
+      thresholdSupportPercent = 0
+    }
+
+    return thresholdSupportPercent
+  }
+
+  const rqThresholdPercent = calculateRQThresholdPercent()
+
+  const formattedRQThresholdPercent = rqThresholdPercent.toFixed(1)
 
   const hasProposals = !!activeProposalsCount
   const showProposalsInfo =
@@ -91,12 +136,10 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
         <Box display="flex" justifyContent="space-between">
           <Label>Veto Support</Label>
           <p>
-            {!totalStEthInEscrow.isZero() && (
-              <Label $color="secondary">
-                {formatNumber(Number(formatEther(totalStEthInEscrow)))} /{' '}
-                {formatNumber(Number(firstSealRageQuitSupportAmount))}
-              </Label>
-            )}
+            <Label $color="secondary">
+              {formatNumber(Number(formatEther(totalStEthInEscrow)))} /{' '}
+              {formatNumber(Number(firstSealRageQuitSupportAmount))}
+            </Label>
           </p>
         </Box>
       )}
@@ -105,11 +148,7 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
         <Box display="flex" justifyContent="space-between">
           <Label>RageQuit threshold</Label>
           <p>
-            {parsePercent16(rageQuitSupportPercent) && (
-              <Label $color="secondary">
-                {parsePercent16(rageQuitSupportPercent)}%
-              </Label>
-            )}
+            <Label $color="secondary">{formattedRQThresholdPercent}%</Label>
           </p>
         </Box>
       )}

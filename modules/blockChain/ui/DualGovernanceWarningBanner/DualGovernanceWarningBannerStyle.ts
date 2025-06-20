@@ -11,15 +11,6 @@ export const DualGovernanceWarningBannerWrapper = styled.div`
   p {
     color: white;
   }
-`
-
-export const LinkWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  cursor: pointer;
-
   svg {
     transform: rotate(180deg);
   }
