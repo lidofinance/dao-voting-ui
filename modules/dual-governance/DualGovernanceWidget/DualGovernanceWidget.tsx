@@ -13,6 +13,7 @@ import {
 } from './DualGovernanceWidgetStyle'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { Box } from '@lidofinance/lido-ui'
+import { BigNumber } from 'ethers'
 import { formatBalance } from '../../blockChain/utils/formatBalance'
 
 type Props = {
@@ -28,6 +29,7 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
     totalStEthInEscrow,
     nextStatus,
     amountUntilVetoSignalling,
+    firstSealRageQuitSupport,
     totalSupply,
     secondSealRageQuitSupport,
   } = dualGovernanceState
@@ -46,8 +48,8 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
     }
 
     const targetValue = totalSupply
-      .mul(secondSealRageQuitSupportPercent)
-      .div(100)
+      .mul(BigNumber.from(secondSealRageQuitSupportPercent))
+      .div(BigNumber.from(100))
 
     if (targetValue.isZero()) {
       return totalStEthInEscrow.gt(0) ? 100 : 0
@@ -81,6 +83,14 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
     hasProposals &&
     status !== DualGovernanceStatus.Normal &&
     status !== DualGovernanceStatus.VetoCooldown
+
+  const firstSealRageQuitSupportPercent = parsePercent16(
+    firstSealRageQuitSupport,
+  )
+
+  const firstSealRageQuitSupportAmount = totalSupply
+    .div(100)
+    .mul(firstSealRageQuitSupportPercent)
 
   const showState =
     status === DualGovernanceStatus.VetoSignalling ||
@@ -117,7 +127,7 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
           <p>
             <Label $color="secondary">
               {formatBalance(totalStEthInEscrow, 1)} /{' '}
-              {formatBalance(totalSupply, 1)}
+              {formatBalance(firstSealRageQuitSupportAmount, 1)}
             </Label>
           </p>
         </Box>

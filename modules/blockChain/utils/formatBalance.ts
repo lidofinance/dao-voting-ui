@@ -1,11 +1,22 @@
 import { weiToNum } from './parseWei'
 import { BigNumberish } from 'ethers'
 
-const formatter = Intl.NumberFormat('en', {
+const defaultFormatter = new Intl.NumberFormat('en', {
   notation: 'compact',
   maximumSignificantDigits: 3,
 })
 
-export const formatBalance = (amount: BigNumberish) => {
-  return formatter.format(weiToNum(amount))
+export const formatBalance = (
+  amount: BigNumberish,
+  maximumFractionDigits?: number,
+) => {
+  if (maximumFractionDigits !== undefined) {
+    const customFormatter = new Intl.NumberFormat('en', {
+      notation: 'compact',
+      maximumFractionDigits,
+    })
+    return customFormatter.format(weiToNum(amount))
+  }
+
+  return defaultFormatter.format(weiToNum(amount))
 }
