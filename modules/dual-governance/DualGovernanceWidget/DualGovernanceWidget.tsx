@@ -29,7 +29,6 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
     totalStEthInEscrow,
     nextStatus,
     amountUntilVetoSignalling,
-    firstSealRageQuitSupport,
     totalSupply,
     secondSealRageQuitSupport,
   } = dualGovernanceState
@@ -84,14 +83,6 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
     status !== DualGovernanceStatus.Normal &&
     status !== DualGovernanceStatus.VetoCooldown
 
-  const firstSealRageQuitSupportPercent = parsePercent16(
-    firstSealRageQuitSupport,
-  )
-
-  const firstSealRageQuitSupportAmount = totalSupply
-    .div(100)
-    .mul(firstSealRageQuitSupportPercent)
-
   const showState =
     status === DualGovernanceStatus.VetoSignalling ||
     status === DualGovernanceStatus.VetoSignallingDeactivation ||
@@ -127,7 +118,7 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
           <p>
             <Label $color="secondary">
               {formatBalance(totalStEthInEscrow, 1)} /{' '}
-              {formatBalance(firstSealRageQuitSupportAmount, 1)}
+              {formatBalance(totalSupply, 1)}
             </Label>
           </p>
         </Box>
