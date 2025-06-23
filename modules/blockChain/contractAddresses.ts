@@ -152,7 +152,10 @@ export const WithdrawalQueueERC721: ChainAddressMap = {
     test: '0x27f793CE9306341a8F4Fd6cDadb0c9785D46978a',
     actual: '0xc7cc160b58F8Bb0baC94b80847E2CF2800565C50',
   },
-  [CHAINS.Hoodi]: '0x7cc545e36c7571782922b075c2976e938a0cda05',
+  [CHAINS.Hoodi]: {
+    actual: '0xfe56573178f1bcdf53F01A6E9977670dcBBD9186',
+    test: '0x7cc545e36c7571782922b075c2976e938a0cda05',
+  },
 }
 
 export const OracleReportSanityChecker: ChainAddressMap = {
