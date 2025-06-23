@@ -47,7 +47,7 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
 
     const targetValue = totalSupply
       .mul(secondSealRageQuitSupportPercent)
-      .div(10)
+      .div(100)
 
     if (targetValue.isZero()) {
       return totalStEthInEscrow.gt(0) ? 100 : 0
