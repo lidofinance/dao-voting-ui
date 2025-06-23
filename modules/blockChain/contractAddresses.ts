@@ -335,29 +335,48 @@ export const CSMGateSeal: ChainAddressMap = {
 }
 
 export const DualGovernanceLaunchVerifier: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xd48c2fc419569537bb069bad2165dc0ceb160cec',
   [CHAINS.Hoodi]: '0x98FC7b149767302647D8e1dA1463F0051978826B',
 }
 
 export const DualGovernanceRolesValidator: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x31534e3aFE219B609da3715a00a1479D2A2d7981',
   [CHAINS.Hoodi]: '0x9CCe5BfAcDcf80DAd2287106b57197284DacaE3F',
 }
 
 export const DualGovernanceTimeConstraints: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x2a30f5ac03187674553024296bed35aa49749dda',
   [CHAINS.Hoodi]: '0xB26Fd3b50280AbC55c572EE73071778A51088408',
 }
 
 export const DualGovernanceAdminExecutor: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x23E0B465633FF5178808F4A75186E2F2F9537021',
   [CHAINS.Hoodi]: '0x8ef12c8bB0f544e4741cC594d07739e670c37959',
 }
 
 export const DualGovernanceEscrow: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xA8F14D033f377779274Ae016584a05bF14Dccaf8',
   [CHAINS.Hoodi]: '0x5e2EE9DCBE8C9433F22Dd3c5EFDe0Af6DC293405',
 }
 
 export const DualGovernanceResealManager: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x7914b5a1539b97Bd0bbd155757F25FD79A522d24',
   [CHAINS.Hoodi]: '0x758f8625E8e79B3Aec176126c63e617af511171F',
 }
 
 export const DualGovernanceTieBreakerCore: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x175742c3DDD88B0192df3EcF98f180A79cb259D0',
   [CHAINS.Hoodi]: '0x08f3c3B1CF5f030DC1749458277334505aa2092b',
+}
+
+export const EVMScriptRegistry: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x853cc0D5917f49B57B8e9F89e491F5E18919093A',
+}
+
+export const AllowedTokensRegistry: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x4ac40c34f8992bb1e5e856a448792158022551ca',
+}
+
+export const InsuranceFund: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x8B3f33234ABD88493c0Cd28De33D583B70beDe35',
 }
