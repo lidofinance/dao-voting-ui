@@ -65,6 +65,7 @@ export const getDualGovernanceBannerColor = (status: DualGovernanceStatus) => {
   }
 }
 
+// TODO: move to ENV
 export const getDualGovernanceLink = (chainId: CHAINS) => {
   switch (chainId) {
     case CHAINS.Holesky:

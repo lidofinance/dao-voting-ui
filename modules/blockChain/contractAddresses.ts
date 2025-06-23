@@ -97,7 +97,7 @@ export const Steth: ChainAddressMap = {
     actual: '0x3F1c547b21f65e10480dE3ad8E19fAAC46C95034',
   },
   [CHAINS.Hoodi]: {
-    test: '0x3508A952176b3c15387C97BE809eaffB1982176a',
+    test: '0x7853038c89a91752de79094db32fede15b5c6a4b',
     actual: '0x4ecAC76fEd32DADd892aB0697f47622FdcB0F955',
   },
 }
@@ -152,7 +152,10 @@ export const WithdrawalQueueERC721: ChainAddressMap = {
     test: '0x27f793CE9306341a8F4Fd6cDadb0c9785D46978a',
     actual: '0xc7cc160b58F8Bb0baC94b80847E2CF2800565C50',
   },
-  [CHAINS.Hoodi]: '0xfe56573178f1bcdf53F01A6E9977670dcBBD9186',
+  [CHAINS.Hoodi]: {
+    actual: '0xfe56573178f1bcdf53F01A6E9977670dcBBD9186',
+    test: '0x7cc545e36c7571782922b075c2976e938a0cda05',
+  },
 }
 
 export const OracleReportSanityChecker: ChainAddressMap = {
@@ -290,7 +293,7 @@ export const SandboxNodeOperatorsRegistry: ChainAddressMap = {
 }
 
 export const EmergencyTimelockedGovernance: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x0000000000000000000000000000000000000000',
+  [CHAINS.Mainnet]: '0x553337946F2FAb8911774b20025fa776B76a7CcE',
   [CHAINS.Holesky]: '0x2D99B1Fe6AFA9d102C7125908081414b5C3Cc759',
   [CHAINS.Hoodi]: '0x69E8e916c4A19F42C13C802abDF2767E1fB4F059',
 }
@@ -308,7 +311,7 @@ export const EmergencyProtectedTimelock: ChainAddressMap = {
 }
 
 export const DualGovernance: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0xcdf49b058d606ad34c5789fd8c3bf8b3e54ba2db',
+  [CHAINS.Mainnet]: '0xcdF49b058D606AD34c5789FD8c3BF8B3E54bA2db',
   [CHAINS.Holesky]: {
     test: '0x5A2958dC9532bAaCdF8481C8278735B1b05FB199',
     actual: '0x490bf377734CA134A8E207525E8576745652212e',

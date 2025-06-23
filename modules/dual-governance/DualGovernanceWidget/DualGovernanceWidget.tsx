@@ -1,8 +1,8 @@
 import {
-  getDualGovernanceStatusLabel,
   getDualGovernanceLink,
+  getDualGovernanceStatusLabel,
+  parsePercent16,
   stringifyDualGovernanceStatus,
-  formatPercent16,
 } from '../utils'
 import { DualGovernanceState, DualGovernanceStatus } from '../types'
 import {
@@ -12,7 +12,9 @@ import {
   StatusBulb,
 } from './DualGovernanceWidgetStyle'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-import { formatBalance } from 'modules/blockChain/utils/formatBalance'
+import { Box } from '@lidofinance/lido-ui'
+import { BigNumber } from 'ethers'
+import { formatBalance } from '../../blockChain/utils/formatBalance'
 
 type Props = {
   dualGovernanceState: DualGovernanceState
@@ -25,17 +27,70 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
     status,
     activeProposalsCount,
     totalStEthInEscrow,
-    rageQuitSupportPercent,
     nextStatus,
     amountUntilVetoSignalling,
+    firstSealRageQuitSupport,
+    totalSupply,
+    secondSealRageQuitSupport,
   } = dualGovernanceState
 
-  const hasProposals = !!activeProposalsCount
+  const secondSealRageQuitSupportPercent = parsePercent16(
+    secondSealRageQuitSupport,
+  )
 
+  const calculateRQThresholdPercent = () => {
+    if (
+      !secondSealRageQuitSupportPercent ||
+      secondSealRageQuitSupportPercent <= 0 ||
+      totalStEthInEscrow.isNegative()
+    ) {
+      return 0
+    }
+
+    const targetValue = totalSupply
+      .mul(BigNumber.from(secondSealRageQuitSupportPercent))
+      .div(BigNumber.from(100))
+
+    if (targetValue.isZero()) {
+      return totalStEthInEscrow.gt(0) ? 100 : 0
+    }
+
+    const scaleFactor = 10000
+    const percentBN = totalStEthInEscrow
+      .mul(scaleFactor)
+      .mul(100)
+      .div(targetValue)
+
+    let thresholdSupportPercent =
+      Number(percentBN.toString()) / Number(scaleFactor)
+
+    if (thresholdSupportPercent > 100) {
+      thresholdSupportPercent = 100
+    }
+    if (thresholdSupportPercent < 0) {
+      thresholdSupportPercent = 0
+    }
+
+    return thresholdSupportPercent
+  }
+
+  const rageQuitThresholdPercent = calculateRQThresholdPercent()
+
+  const formattedRageQuitThresholdPercent = rageQuitThresholdPercent.toFixed(1)
+
+  const hasProposals = !!activeProposalsCount
   const showProposalsInfo =
     hasProposals &&
     status !== DualGovernanceStatus.Normal &&
     status !== DualGovernanceStatus.VetoCooldown
+
+  const firstSealRageQuitSupportPercent = parsePercent16(
+    firstSealRageQuitSupport,
+  )
+
+  const firstSealRageQuitSupportAmount = totalSupply
+    .div(100)
+    .mul(firstSealRageQuitSupportPercent)
 
   const showState =
     status === DualGovernanceStatus.VetoSignalling ||
@@ -67,19 +122,27 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
       )}
       {/* Veto Support */}
       {status !== DualGovernanceStatus.RageQuit && (
-        <div>
+        <Box display="flex" justifyContent="space-between">
           <Label>Veto Support</Label>
           <p>
-            {!totalStEthInEscrow.isZero() && (
-              <Label $color="secondary">
-                {formatBalance(totalStEthInEscrow)} stETH
-              </Label>
-            )}
-            <Label>{formatPercent16(rageQuitSupportPercent)}%</Label>
+            <Label $color="secondary">
+              {formatBalance(totalStEthInEscrow, 1)} /{' '}
+              {formatBalance(firstSealRageQuitSupportAmount, 1)}
+            </Label>
           </p>
-        </div>
+        </Box>
       )}
-
+      {/* RQ Support */}
+      {status === DualGovernanceStatus.VetoSignalling && (
+        <Box display="flex" justifyContent="space-between">
+          <Label>RageQuit threshold</Label>
+          <p>
+            <Label $color="secondary">
+              {formattedRageQuitThresholdPercent}%
+            </Label>
+          </p>
+        </Box>
+      )}
       {/* Conditional information */}
       {showNextState && (
         <p>
