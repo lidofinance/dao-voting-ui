@@ -257,9 +257,11 @@ export function Header() {
                     </Text>
                     <DualGovernanceStatusButton />
                   </MobileDGWidgetWrap>
-                  <HeaderWallet trimAddressSymbols={6} />
                 </NoSSRWrapper>
               )}
+              <NoSSRWrapper>
+                <HeaderWallet trimAddressSymbols={6} />
+              </NoSSRWrapper>
             </MobileMenuScroll>
           </MobileMenu>
         )}
