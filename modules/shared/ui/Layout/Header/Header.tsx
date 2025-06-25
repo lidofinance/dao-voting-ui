@@ -47,7 +47,6 @@ import SettingsSvg from 'assets/settings.com.svg.react'
 import DelegationSvg from 'assets/delegation.com.svg.react'
 import * as urls from 'modules/network/utils/urls'
 import { DualGovernanceStatusButton } from 'modules/dual-governance/DualGovernanceStatusButton'
-import { isTestnet } from 'modules/blockChain/utils/isTestnet'
 import { DualGovernanceWarningBanner } from 'modules/blockChain/ui/DualGovernanceWarningBanner'
 import { useDualGovernanceState } from 'modules/dual-governance/useDualGovernanceState'
 import { DualGovernanceStatus } from 'modules/dual-governance/types'
@@ -174,7 +173,7 @@ export function Header() {
             </Text>
           </Network>
           <NoSSRWrapper>
-            {isTestnet(chainId) && <DualGovernanceStatusButton />}
+            <DualGovernanceStatusButton />
             <HeaderWallet />
           </NoSSRWrapper>
           <ThemeTogglerWrap>
@@ -249,16 +248,12 @@ export function Header() {
                   </Text>
                 </Network>
               </MobileNetworkWrap>
-              {isTestnet(chainId) && (
-                <NoSSRWrapper>
-                  <MobileDGWidgetWrap>
-                    <Text size="sm" color="secondary">
-                      Dual Governance state
-                    </Text>
-                    <DualGovernanceStatusButton />
-                  </MobileDGWidgetWrap>
-                </NoSSRWrapper>
-              )}
+              <MobileDGWidgetWrap>
+                <Text size="sm" color="secondary">
+                  Dual Governance state
+                </Text>
+                <DualGovernanceStatusButton />
+              </MobileDGWidgetWrap>
               <NoSSRWrapper>
                 <HeaderWallet trimAddressSymbols={6} />
               </NoSSRWrapper>
