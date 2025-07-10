@@ -94,21 +94,23 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
       status === DualGovernanceStatus.VetoCooldown)
 
   return (
-    <DualGovernanceWidgetWrapper>
+    <DualGovernanceWidgetWrapper data-testid={`dgWidget`}>
       {/* Governance State */}
       <p>
         <Label $size={14} $weight={700}>
           Governance
         </Label>
-        <Label>
-          <StatusBulb $status={status} />
+        <Label data-testid={`dgStatus`}>
+          <StatusBulb $status={status} data-testid={`statusBulb`} />
           {getDualGovernanceStatusLabel(status)}
         </Label>
       </p>
       {showState && (
         <p>
           <Label>State</Label>
-          <Label>{stringifyDualGovernanceStatus(status)}</Label>
+          <Label data-testid={`dgState`}>
+            {stringifyDualGovernanceStatus(status)}
+          </Label>
         </p>
       )}
       {/* Veto Support */}
@@ -116,7 +118,7 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
         <Box display="flex" justifyContent="space-between">
           <Label>Veto Support</Label>
           <p>
-            <Label $color="secondary">
+            <Label $color="secondary" data-testid={`vsBalance`}>
               {formatBalance(totalStEthInEscrow, 1)} /{' '}
               {formatBalance(totalSupply, 1)}
             </Label>
@@ -128,7 +130,7 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
         <Box display="flex" justifyContent="space-between">
           <Label>RageQuit threshold</Label>
           <p>
-            <Label $color="secondary">
+            <Label $color="secondary" data-testid={`rqPercent`}>
               {formattedRageQuitThresholdPercent}%
             </Label>
           </p>
@@ -138,7 +140,10 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
       {showNextState && (
         <p>
           <Label>Next state</Label>
-          <Label>{stringifyDualGovernanceStatus(nextStatus)}</Label>
+          <Label data-testid={`nextState`}>
+            {' '}
+            {stringifyDualGovernanceStatus(nextStatus)}
+          </Label>
         </p>
       )}
       {amountUntilVetoSignalling && (
@@ -173,6 +178,7 @@ export const DualGovernanceWidget = ({ dualGovernanceState }: Props) => {
         href={getDualGovernanceLink(chainId)}
         target="_blank"
         rel="noreferrer"
+        data-testid={`dgRedirectBtn`}
       >
         Go to Dual Governance
       </CheckLink>
