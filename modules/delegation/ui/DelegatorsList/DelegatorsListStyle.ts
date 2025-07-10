@@ -20,7 +20,7 @@ export const Wrap = styled.div<{ $empty?: boolean }>`
   `}
 `
 
-export const DeelgatorsListStyled = styled.div`
+export const DelegatorsListStyled = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: 10px;

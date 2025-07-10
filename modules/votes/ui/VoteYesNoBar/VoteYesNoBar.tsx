@@ -1,4 +1,4 @@
-import { Text, Tooltip } from '@lidofinance/lido-ui'
+import { Text } from '@lidofinance/lido-ui'
 import {
   VotesBarNay,
   VotesBarWrap,
@@ -44,16 +44,12 @@ export function VoteYesNoBar({
       <VotesTitleWrap>
         <Text size="xxs">
           <Text data-testid="votesNo" as="span" size="xxs">
-            <Tooltip title={<span>{nayNum}</span>} placement="top">
-              <span>{nayInfo}</span>
-            </Tooltip>
+            <span>{nayInfo}</span>
           </Text>
         </Text>
         <Text size="xxs" style={{ textAlign: 'right' }}>
           <Text as="span" size="xxs" data-testid="votesYes">
-            <Tooltip title={<span>{yeaNum}</span>} placement="top">
-              <span>{yeaInfo}</span>
-            </Tooltip>
+            <span>{yeaInfo}</span>
           </Text>
         </Text>
       </VotesTitleWrap>
