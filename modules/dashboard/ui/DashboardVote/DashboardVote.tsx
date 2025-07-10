@@ -108,7 +108,7 @@ export function DashboardVote({
         </VoteBody>
         <Footer>
           <VotesBarWrap>
-            {vote.phase !== VotePhase.Closed && (
+            {vote.phase === VotePhase.Main && (
               <NeededToQuorum>
                 <Text size="xxs" color="secondary">
                   Needed to quorum
