@@ -6,6 +6,10 @@ import {
   VotesTitleWrap,
 } from './VoteYesNoBarStyle'
 
+const vpFormatter = new Intl.NumberFormat('en', {
+  maximumFractionDigits: 0,
+})
+
 type Props = {
   yeaPct: number
   nayPct: number
@@ -27,14 +31,12 @@ export function VoteYesNoBar({
   showOnForeground,
   showNumber,
 }: Props) {
-  const roundDown = (n: number): number => Math.floor(n * 10) / 10
-
   const nayInfo = showNumber
-    ? `"No" — ${roundDown(nayNum)} (${nayPctOfTotalSupply}%)`
+    ? `"No" — ${vpFormatter.format(nayNum)} (${nayPctOfTotalSupply}%)`
     : `"No" — ${nayPctOfTotalSupply}%`
 
   const yeaInfo = showNumber
-    ? `"Yes" — ${roundDown(yeaNum)} (${yeaPctOfTotalSupply}%)`
+    ? `"Yes" — ${vpFormatter.format(yeaNum)} (${yeaPctOfTotalSupply}%)`
     : `"Yes" — ${yeaPctOfTotalSupply}%`
 
   return (
