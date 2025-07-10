@@ -28,6 +28,7 @@ export const DualGovernanceStatusButton = () => {
         onClick={handleButtonClick}
         ref={anchorRef}
         icon={initialLoading ? <Loader /> : DGIcon}
+        data-testid={`dgBtn`}
       />
       {!!data && (
         <PopoverStyled
