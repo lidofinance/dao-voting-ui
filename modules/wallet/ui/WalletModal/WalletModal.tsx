@@ -38,7 +38,7 @@ function WalletModalContent() {
           children={initialLoading ? 'Loading...' : 'Balance'}
         />
         {tokenData?.balanceStr ? (
-          <Text size="xxs" weight={500}>
+          <Text size="xxs" weight={500} data-testid="balance">
             &nbsp;
             {tokenData.balanceStr}
           </Text>
@@ -47,7 +47,7 @@ function WalletModalContent() {
 
       <Row>
         <Identicon address={walletAddress ?? ''} />
-        <Address>{trimmedAddress}</Address>
+        <Address data-testid="walletAddress">{trimmedAddress}</Address>
       </Row>
 
       <Row>
