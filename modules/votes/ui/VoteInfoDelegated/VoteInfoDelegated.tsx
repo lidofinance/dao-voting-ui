@@ -5,65 +5,58 @@ import {
   AddressBadgeWrap,
 } from './VoteInfoDelegatedStyle'
 import { useDelegateVoteInfo } from 'modules/delegation/hooks/useDelegateVoteInfo'
-import type { AttemptCastVoteAsDelegateEventObject } from 'generated/AragonVotingAbi'
-import { CastVoteEvent } from 'modules/votes/types'
+import { VoteEvent } from 'modules/votes/types'
 import { getPublicDelegateByAddress } from 'modules/delegation/utils/getPublicDelegateName'
 import { AddressPop } from 'modules/shared/ui/Common/AddressPop'
 import { PublicDelegateAvatar } from 'modules/delegation/ui/PublicDelegateAvatar'
 
 interface Props {
   walletAddress: string | null | undefined
-  eventsVoted: CastVoteEvent[] | undefined
-  eventsDelegatesVoted: AttemptCastVoteAsDelegateEventObject[] | undefined
+  voteEvents: VoteEvent[]
 }
 
-export function VoteInfoDelegated({
-  walletAddress,
-  eventsVoted,
-  eventsDelegatesVoted,
-}: Props) {
-  const voteInfo = useDelegateVoteInfo({
+export function VoteInfoDelegated({ walletAddress, voteEvents }: Props) {
+  const delegateVoteInfo = useDelegateVoteInfo({
     walletAddress,
-    eventsVoted,
-    eventsDelegatesVoted,
+    voteEvents,
   })
 
-  if (!voteInfo) {
+  if (!delegateVoteInfo) {
     return null
   }
 
-  const publicDelegate = getPublicDelegateByAddress(voteInfo.delegate)
+  const publicDelegate = getPublicDelegateByAddress(delegateVoteInfo.voter)
 
   return (
     <InfoWrap>
       <Text size="xxs" color="secondary">
         Delegate
       </Text>
-      <AddressPop address={voteInfo.delegate}>
+      <AddressPop address={delegateVoteInfo.voter}>
         <AddressBadgeWrap>
           {publicDelegate ? (
             <PublicDelegateAvatar avatarSrc={publicDelegate.avatar} size={20} />
           ) : (
-            <Identicon address={voteInfo.delegate} diameter={20} />
+            <Identicon address={delegateVoteInfo.voter} diameter={20} />
           )}
           <Text
             as="span"
             size="xxs"
             color={publicDelegate ? 'default' : 'secondary'}
           >
-            {publicDelegate?.name ?? trimAddress(voteInfo.delegate, 4)}
+            {publicDelegate?.name ?? trimAddress(delegateVoteInfo.voter, 4)}
           </Text>
         </AddressBadgeWrap>
       </AddressPop>
       <Text size="xxs" color="secondary">
         voted
       </Text>
-      <VoteStatus $supports={voteInfo.supports}>
+      <VoteStatus $supports={delegateVoteInfo.supports}>
         <Text size="xxs" color="secondary">
           for
         </Text>
         <Text as="span" size="xxs" strong>
-          {voteInfo.supports ? '“Yes”' : '“No”'}
+          {delegateVoteInfo.supports ? '“Yes”' : '“No”'}
         </Text>
       </VoteStatus>
     </InfoWrap>

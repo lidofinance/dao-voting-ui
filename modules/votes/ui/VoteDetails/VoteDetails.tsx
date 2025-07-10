@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 import { Link, Text } from '@lidofinance/lido-ui'
-import type { AttemptCastVoteAsDelegateEventObject } from 'generated/AragonVotingAbi'
 import { VoteScript } from '../VoteScript'
 import { VoteYesNoBar } from '../VoteYesNoBar'
 import {
@@ -15,7 +14,7 @@ import {
 } from './VoteDetailsStyle'
 import { VoteDescription } from '../VoteDescription'
 
-import { CastVoteEvent, Vote, VotePhase, VoteStatus } from 'modules/votes/types'
+import { Vote, VoteEvent, VotePhase, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
 import { VoteStatusChips } from '../VoteStatusChips'
@@ -48,11 +47,10 @@ type Props = {
   objectionPhaseTime: number
   metadata?: string
   isEnded: boolean
-  eventsVoted: CastVoteEvent[] | undefined
+  voteEvents: VoteEvent[]
   executedAt?: number
   executedTxHash?: string
   startedTxHash?: string
-  eventsDelegatesVoted: AttemptCastVoteAsDelegateEventObject[] | undefined
   votePhase: VotePhase | undefined
 }
 
@@ -64,10 +62,9 @@ export function VoteDetails({
   objectionPhaseTime,
   metadata,
   isEnded,
-  eventsVoted,
   executedTxHash,
   startedTxHash,
-  eventsDelegatesVoted,
+  voteEvents,
   executedAt,
   votePhase,
 }: Props) {
@@ -146,12 +143,7 @@ export function VoteDetails({
           votePhase={votePhase}
         />
       )}
-      {eventsVoted && eventsVoted.length > 0 && (
-        <VoteVotersList
-          eventsVoted={eventsVoted}
-          eventsDelegatesVoted={eventsDelegatesVoted}
-        />
-      )}
+      {voteEvents.length > 0 && <VoteVotersList voteEvents={voteEvents} />}
       <SectionHeading>Proposal</SectionHeading>
       {metadata && (
         <DetailsBoxWrap>

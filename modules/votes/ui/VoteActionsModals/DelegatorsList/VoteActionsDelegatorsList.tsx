@@ -16,13 +16,13 @@ import { formatBalance } from 'modules/blockChain/utils/formatBalance'
 import { useSimpleReducer } from 'modules/shared/hooks/useSimpleReducer'
 import { BigNumber } from 'ethers'
 import { EligibleDelegator } from 'modules/delegation/hooks/useEligibleDelegators'
-import { CastVoteEvent } from 'modules/votes/types'
+import { VoteEvent } from 'modules/votes/types'
 
 interface Props {
-  delegatorsVotedThemselves: CastVoteEvent[] | undefined
+  delegatorsVotedThemselves: VoteEvent[] | undefined
   governanceSymbol: string | undefined
   onSelectedAddressesChange: (address: string[]) => void
-  eventsVoted: CastVoteEvent[] | undefined
+  voteEvents: VoteEvent[] | undefined
   eligibleDelegatedVoters: EligibleDelegator[]
   eligibleDelegatedVotingPower: BigNumber
   defaultExpanded: boolean
@@ -37,7 +37,7 @@ export function DelegatorsList({
   governanceSymbol,
   eligibleDelegatedVotingPower,
   onSelectedAddressesChange,
-  eventsVoted,
+  voteEvents,
   defaultExpanded,
 }: Props) {
   const TRANSACTION_LIMIT = 100
@@ -63,11 +63,11 @@ export function DelegatorsList({
   )
 
   const _eventsVoted = useMemo(() => {
-    return eventsVoted?.reduce<Record<string, boolean>>((acc, event) => {
+    return voteEvents?.reduce<Record<string, boolean>>((acc, event) => {
       acc[event.voter] = event.supports
       return acc
     }, {})
-  }, [eventsVoted])
+  }, [voteEvents])
 
   useEffect(() => {
     onSelectedAddressesChange(selectedAddresses)

@@ -60,8 +60,8 @@ export function VoteFormActions({
     txDelegatesVote,
     setVoteId: setVoteFormActionsModalsVoteId,
     isSubmitting: isVoteSubmitting,
-    eventsVoted,
     successTx,
+    voteEvents,
     delegatorsVotedThemselves,
   } = useVoteFormActionsContext()
 
@@ -248,7 +248,7 @@ export function VoteFormActions({
           governanceSymbol={tokenData?.symbol}
           eligibleDelegatedVotingPower={eligibleDelegatedVotingPower}
           onSelectedAddressesChange={handleSelectedAddressesChange}
-          eventsVoted={eventsVoted}
+          voteEvents={voteEvents}
           defaultExpanded={false}
         />
       )}

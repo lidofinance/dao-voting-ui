@@ -1,70 +1,77 @@
 import { useMemo, useState } from 'react'
-import { useEnsNames } from 'modules/shared/hooks/useEnsNames'
-import UnionIcon from 'assets/union.com.svg.react'
-import { DelegationAddressPop } from 'modules/delegation/ui/DelegationAddressPop'
 
 import {
   Wrap,
   ListRow,
   ListRowCell,
-  AddressWrap,
   ShowMoreBtn,
+  ListRowCellSortable,
 } from './VoteVotersListStyle'
-import { Tooltip, trimAddress, Text, Identicon } from '@lidofinance/lido-ui'
+import { ArrowBottom, Text } from '@lidofinance/lido-ui'
 
-import { weiToNum } from 'modules/blockChain/utils/parseWei'
-import { formatNumber } from 'modules/shared/utils/formatNumber'
-import type { AttemptCastVoteAsDelegateEventObject } from 'generated/AragonVotingAbi'
-import { formatBalance } from 'modules/blockChain/utils/formatBalance'
-import { getPublicDelegateByAddress } from 'modules/delegation/utils/getPublicDelegateName'
-import { PublicDelegateAvatar } from 'modules/delegation/ui/PublicDelegateAvatar'
-import { CastVoteEvent } from 'modules/votes/types'
+import { VoteEvent } from 'modules/votes/types'
 import { useGovernanceTokenData } from 'modules/tokens/hooks/useGovernanceTokenData'
+import { VoteVoterItem } from './VoteVoterItem'
+import { useEnsNames } from 'modules/shared/hooks/useEnsNames'
 
 type Props = {
-  eventsVoted: CastVoteEvent[]
-  eventsDelegatesVoted: AttemptCastVoteAsDelegateEventObject[] | undefined
+  voteEvents: VoteEvent[]
 }
 
-const getDelegateVotesMap = (
-  delegateEvents: AttemptCastVoteAsDelegateEventObject[] | undefined,
-): Map<string, string | null> => {
-  const map = new Map<string, string | null>()
+const INITIAL_PAGE_SIZE = 5
 
-  delegateEvents?.forEach(
-    ({ delegate, voters }: AttemptCastVoteAsDelegateEventObject) => {
-      voters.forEach(voter => {
-        map.set(voter, delegate)
-      })
-    },
-  )
-
-  return map
-}
-
-// First we show 2 items, then add 10 more for every page
-const INITIAL_PAGE_SIZE = 2
-const PAGE_SIZE = 10
-
-export function VoteVotersList({ eventsVoted, eventsDelegatesVoted }: Props) {
+export function VoteVotersList({ voteEvents }: Props) {
   const { data: tokenData } = useGovernanceTokenData()
+  const [vpSort, setVpSort] = useState<'asc' | 'desc' | undefined>(undefined)
 
-  const addresses = useMemo(() => eventsVoted.map(e => e.voter), [eventsVoted])
-  const delegateVotesMap = useMemo(
-    () => getDelegateVotesMap(eventsDelegatesVoted),
-    [eventsDelegatesVoted],
-  )
+  const handleVpSortClick = () => {
+    switch (vpSort) {
+      case 'desc':
+        setVpSort('asc')
+        break
+      case 'asc':
+        setVpSort(undefined)
+        break
+      default:
+        setVpSort('desc')
+        break
+    }
+  }
 
-  const { data: ensNameList } = useEnsNames(addresses)
+  const votersAddresses = useMemo(() => {
+    const result = new Set<string>()
+    voteEvents.forEach(({ voter, delegatedVotes }) => {
+      result.add(voter)
+      delegatedVotes?.forEach(({ voter: delegatedVoter }) => {
+        result.add(delegatedVoter)
+      })
+    })
+    return Array.from(result)
+  }, [voteEvents])
+
+  const { data: ensMap } = useEnsNames(votersAddresses)
 
   const [limit, setLimit] = useState(INITIAL_PAGE_SIZE)
 
-  const handleShowMore = () => {
-    setLimit(limit + PAGE_SIZE)
-  }
-  const handleShowLess = () => {
-    setLimit(INITIAL_PAGE_SIZE)
-  }
+  const totalVotersCount = useMemo(() => {
+    return (
+      voteEvents.length +
+      voteEvents.reduce(
+        (acc, { delegatedVotes }) => acc + (delegatedVotes?.length || 0),
+        0,
+      )
+    )
+  }, [voteEvents])
+
+  const sortedVoteEvents = useMemo(() => {
+    if (!vpSort) return voteEvents
+    return [...voteEvents].sort((a, b) => {
+      if (vpSort === 'asc') {
+        return a.stake.gt(b.stake) ? 1 : -1
+      }
+      return a.stake.gt(b.stake) ? -1 : 1
+    })
+  }, [voteEvents, vpSort])
 
   return (
     <Wrap>
@@ -75,7 +82,7 @@ export function VoteVotersList({ eventsVoted, eventsDelegatesVoted }: Props) {
               Voter &nbsp;
             </Text>
             <Text data-testid="votersAmount" size="xxs" color="secondary">
-              {eventsVoted.length}
+              {totalVotersCount}
             </Text>
           </ListRowCell>
           <ListRowCell>
@@ -83,68 +90,30 @@ export function VoteVotersList({ eventsVoted, eventsDelegatesVoted }: Props) {
               Vote
             </Text>
           </ListRowCell>
-          <ListRowCell>
+          <ListRowCellSortable
+            $sortDirection={vpSort}
+            onClick={handleVpSortClick}
+          >
             <Text size="xxs" strong>
               Voting power
             </Text>
-          </ListRowCell>
+            {vpSort && <ArrowBottom width={20} height={20} />}
+          </ListRowCellSortable>
         </ListRow>
-        {eventsVoted.slice(0, limit).map((event, i) => {
-          const delegateAddress = delegateVotesMap.get(event.voter) || null
-          const votedByDelegate = !!delegateAddress
-
-          const publicDelegate = getPublicDelegateByAddress(event.voter)
-
-          return (
-            <ListRow data-testid="votersRow" key={`${event.voter}-${i}}`}>
-              <ListRowCell>
-                <DelegationAddressPop
-                  address={event.voter}
-                  delegateAddress={delegateAddress}
-                >
-                  {publicDelegate ? (
-                    <AddressWrap data-testid="voterAddress">
-                      <PublicDelegateAvatar
-                        avatarSrc={publicDelegate.avatar}
-                        size={20}
-                      />
-                      {publicDelegate.name}
-                      {votedByDelegate && <UnionIcon />}
-                    </AddressWrap>
-                  ) : (
-                    <AddressWrap>
-                      <Identicon address={event.voter} diameter={20} />
-                      {(ensNameList && ensNameList[i]) ||
-                        trimAddress(event.voter, 4)}
-                      {votedByDelegate && <UnionIcon />}
-                    </AddressWrap>
-                  )}
-                </DelegationAddressPop>
-              </ListRowCell>
-              <ListRowCell data-testid="voteStats">
-                {event.supports ? 'Yes' : 'No'}
-              </ListRowCell>
-              <ListRowCell>
-                <Tooltip
-                  placement="top"
-                  title={formatNumber(weiToNum(event.stake), 6)}
-                >
-                  <div data-testid="votingPower">
-                    {formatBalance(event.stake)} {tokenData?.symbol}
-                  </div>
-                </Tooltip>
-              </ListRowCell>
-            </ListRow>
-          )
-        })}
-        {eventsVoted.length > limit && (
-          <ShowMoreBtn data-testid="showMoreBtn" onClick={handleShowMore}>
-            Show more
-          </ShowMoreBtn>
-        )}
-        {eventsVoted.length > INITIAL_PAGE_SIZE && eventsVoted.length < limit && (
-          <ShowMoreBtn data-testid="showLessBtn" onClick={handleShowLess}>
-            Show less
+        {sortedVoteEvents.slice(0, limit).map((event, i) => (
+          <VoteVoterItem
+            voteEvent={event}
+            governanceTokenSymbol={tokenData?.symbol || ''}
+            ensMap={ensMap}
+            key={`${event.voter}-${i}`}
+          />
+        ))}
+        {voteEvents.length > limit && (
+          <ShowMoreBtn
+            data-testid="showMoreBtn"
+            onClick={() => setLimit(voteEvents.length)}
+          >
+            Show all
           </ShowMoreBtn>
         )}
       </>

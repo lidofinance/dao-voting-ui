@@ -13,11 +13,10 @@ import { useFormVoteSubmit } from 'modules/votes/ui/VoteForm/useFormVoteSubmit'
 import { useFormVoteInfo } from 'modules/votes/ui/VoteForm/useFormVoteInfo'
 
 import { ResultTx } from 'modules/blockChain/types'
-import { CastVoteEvent, VoteMode, VotePhase } from 'modules/votes/types'
+import { VoteEvent, VoteMode, VotePhase } from 'modules/votes/types'
 
 import invariant from 'tiny-invariant'
 
-import { AttemptCastVoteAsDelegateEventObject } from 'generated/AragonVotingAbi'
 import { BigNumber } from '@ethersproject/bignumber'
 import {
   FinishHandler,
@@ -48,13 +47,12 @@ export type VoteFormActionsContextValue = {
   mode: VoteMode | null
   txVote: TransactionSender
   txDelegatesVote: TransactionSender
-  eventsVoted: CastVoteEvent[] | undefined
-  eventsDelegatesVoted: AttemptCastVoteAsDelegateEventObject[] | undefined
+  voteEvents: VoteEvent[] | undefined
   eligibleDelegatedVotingPower: BigNumber
   delegatedVotersAddresses: string[]
   eligibleDelegatedVoters: EligibleDelegatorsData['eligibleDelegatedVoters']
   eligibleDelegatedVotersAddresses: string[]
-  delegatorsVotedThemselves: CastVoteEvent[] | undefined
+  delegatorsVotedThemselves: VoteEvent[] | undefined
   governanceSymbol: string | undefined
   votedByDelegate: EligibleDelegatorsData['eligibleDelegatedVoters']
   voterState: number | null | undefined
@@ -92,8 +90,7 @@ export const VoteFormActionsProvider: React.FC = ({ children }) => {
   const { data: tokenData } = useGovernanceTokenData()
 
   const {
-    eventsVoted,
-    eventsDelegatesVoted,
+    voteEvents,
     voterState,
     votePhase,
     votePower,
@@ -140,15 +137,17 @@ export const VoteFormActionsProvider: React.FC = ({ children }) => {
     const delegatorSet = new Set(delegatedVotersAddresses)
 
     const votedThroughDelegateSet = new Set(
-      eventsDelegatesVoted?.flatMap(event => event.voters),
+      voteEvents.flatMap(
+        event => event.delegatedVotes?.map(e => e.voter) ?? [],
+      ),
     )
 
-    return eventsVoted?.filter(
+    return voteEvents.filter(
       event =>
         delegatorSet.has(event.voter) &&
         !votedThroughDelegateSet.has(event.voter),
     )
-  }, [delegatedVotersAddresses, eventsVoted, eventsDelegatesVoted])
+  }, [delegatedVotersAddresses, voteEvents])
 
   const eligibleDelegatedVoters = useMemo(
     () => eligibleDelegatorsData.eligibleDelegatedVoters,
@@ -176,8 +175,7 @@ export const VoteFormActionsProvider: React.FC = ({ children }) => {
       mode,
       txVote,
       txDelegatesVote,
-      eventsVoted,
-      eventsDelegatesVoted,
+      voteEvents,
       eligibleDelegatedVotingPower:
         eligibleDelegatorsData.eligibleDelegatedVotingPower,
       delegatedVotersAddresses,
@@ -206,8 +204,6 @@ export const VoteFormActionsProvider: React.FC = ({ children }) => {
       mode,
       txVote,
       txDelegatesVote,
-      eventsVoted,
-      eventsDelegatesVoted,
       delegatedVotersAddresses,
       delegatorsVotedThemselves,
       eligibleDelegatedVoters,
@@ -217,6 +213,7 @@ export const VoteFormActionsProvider: React.FC = ({ children }) => {
       delegationInfo,
       votePhase,
       tokenData?.symbol,
+      voteEvents,
     ],
   )
 

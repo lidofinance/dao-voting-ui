@@ -7,10 +7,7 @@ import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { getEventExecuteVote } from 'modules/votes/utils/getEventExecuteVote'
 import { getVoteStatus } from 'modules/votes/utils/getVoteStatus'
 import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
-import {
-  getEventsCastVote,
-  getEventsAttemptCastVoteAsDelegate,
-} from 'modules/votes/utils/getEventsCastVote'
+import { getVoteEvents } from 'modules/votes/utils/getVoteEvents'
 import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 
 type Args = {
@@ -40,26 +37,17 @@ export function useFormVoteInfo({ voteId }: Args) {
         ])
 
       const snapshotBlock = vote.snapshotBlock.toNumber()
-      const eventsVoted = await getEventsCastVote(
-        voting,
-        _voteId,
-        snapshotBlock,
-      )
+
       const [
         eventStart,
-        eventsDelegatesVoted,
+        voteEvents,
         eventExecuteVote,
         canVote,
         voterState,
         votePowerWei,
       ] = await Promise.all([
         getEventStartVote(voting, _voteId, snapshotBlock),
-        getEventsAttemptCastVoteAsDelegate(
-          voting,
-          eventsVoted,
-          _voteId,
-          snapshotBlock,
-        ),
+        getVoteEvents(voting, _voteId, snapshotBlock),
         getEventExecuteVote(voting, _voteId, snapshotBlock),
         _walletAddress ? voting.canVote(_voteId, _walletAddress) : false,
         _walletAddress ? voting.getVoterState(_voteId, _walletAddress) : null,
@@ -79,8 +67,7 @@ export function useFormVoteInfo({ voteId }: Args) {
         voterState,
         votePower,
         eventStart,
-        eventsVoted,
-        eventsDelegatesVoted,
+        voteEvents,
         eventExecuteVote,
         votePowerWei,
         votePhase,
@@ -137,8 +124,7 @@ export function useFormVoteInfo({ voteId }: Args) {
     votePowerWei,
     votePhase,
     eventStart: swrVote.data?.eventStart,
-    eventsVoted: swrVote.data?.eventsVoted,
-    eventsDelegatesVoted: swrVote.data?.eventsDelegatesVoted,
+    voteEvents: swrVote.data?.voteEvents ?? [],
     eventExecuteVote: swrVote.data?.eventExecuteVote,
     status: swrVote.data?.status,
     mutate: mutateFn,

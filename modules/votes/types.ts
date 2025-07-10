@@ -35,10 +35,18 @@ export enum VotePhase {
   Closed,
 }
 
-export type CastVoteEvent = {
+export type VoteInfo = {
+  stake: BigNumber
   voter: string
   supports: boolean
-  stake: BigNumber
+}
+
+export type VoteMetadata = {
   blockNumber: number
   transactionIndex: number
 }
+
+export type VoteEvent = VoteInfo &
+  VoteMetadata & {
+    delegatedVotes?: VoteEvent[]
+  }
