@@ -7,7 +7,7 @@ import {
   ShowMoreBtn,
   ListRowCellSortable,
 } from './VoteVotersListStyle'
-import { ArrowBottom, Text } from '@lidofinance/lido-ui'
+import { ArrowBottom, Text, useBreakpoint } from '@lidofinance/lido-ui'
 
 import { VoteEvent } from 'modules/votes/types'
 import { useGovernanceTokenData } from 'modules/tokens/hooks/useGovernanceTokenData'
@@ -23,6 +23,7 @@ const INITIAL_PAGE_SIZE = 5
 export function VoteVotersList({ voteEvents }: Props) {
   const { data: tokenData } = useGovernanceTokenData()
   const [vpSort, setVpSort] = useState<'asc' | 'desc' | undefined>(undefined)
+  const isMobile = useBreakpoint('md')
 
   const handleVpSortClick = () => {
     switch (vpSort) {
@@ -95,7 +96,7 @@ export function VoteVotersList({ voteEvents }: Props) {
             onClick={handleVpSortClick}
           >
             <Text size="xxs" strong>
-              Voting power
+              {isMobile ? `VP (${tokenData?.symbol})` : 'Voting Power'}
             </Text>
             {vpSort && <ArrowBottom width={20} height={20} />}
           </ListRowCellSortable>
@@ -105,6 +106,7 @@ export function VoteVotersList({ voteEvents }: Props) {
             voteEvent={event}
             governanceTokenSymbol={tokenData?.symbol || ''}
             ensMap={ensMap}
+            isMobile={isMobile}
             key={`${event.voter}-${i}`}
           />
         ))}

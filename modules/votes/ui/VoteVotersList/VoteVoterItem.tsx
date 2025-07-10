@@ -13,6 +13,7 @@ import { PublicDelegateAvatar } from 'modules/delegation/ui/PublicDelegateAvatar
 import {
   ArrowBottom,
   Identicon,
+  Text,
   Tooltip,
   trimAddress,
 } from '@lidofinance/lido-ui'
@@ -27,6 +28,7 @@ type Props = {
   voteEvent: VoteEvent
   governanceTokenSymbol: string
   ensMap: Record<string, string | null> | undefined
+  isMobile: boolean
   isDelegated?: boolean
 }
 
@@ -35,6 +37,7 @@ export const VoteVoterItem = ({
   governanceTokenSymbol,
   ensMap,
   isDelegated,
+  isMobile,
 }: Props) => {
   const [isDelegatorsListVisible, setIsDelegatorsListVisible] = useState(false)
 
@@ -51,6 +54,12 @@ export const VoteVoterItem = ({
       setIsDelegatorsListVisible(!isDelegatorsListVisible)
     }
   }
+
+  const vpElement = (
+    <Text weight={isDelegate ? 700 : 400} size="xxs" data-testid="votingPower">
+      {formatBalance(stake, 1)} {isMobile ? '' : governanceTokenSymbol}
+    </Text>
+  )
 
   return (
     <>
@@ -91,14 +100,10 @@ export const VoteVoterItem = ({
         <ListRowCell>
           {stake.gt(utils.parseEther('1000')) ? (
             <Tooltip placement="top" title={formatNumber(weiToNum(stake), 6)}>
-              <div data-testid="votingPower">
-                {formatBalance(stake)} {governanceTokenSymbol}
-              </div>
+              {vpElement}
             </Tooltip>
           ) : (
-            <div data-testid="votingPower">
-              {formatBalance(stake)} {governanceTokenSymbol}
-            </div>
+            vpElement
           )}
           {isDelegate && <ArrowBottom width={20} height={20} color="#7A8AA0" />}
         </ListRowCell>
@@ -110,6 +115,7 @@ export const VoteVoterItem = ({
             voteEvent={vote}
             governanceTokenSymbol={governanceTokenSymbol}
             ensMap={ensMap}
+            isMobile={isMobile}
             isDelegated={true}
           />
         ))}

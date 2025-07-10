@@ -1,4 +1,5 @@
 import { Button, Text } from '@lidofinance/lido-ui'
+import { BREAKPOINT_MOBILE } from 'modules/globalStyles'
 import styled, { css } from 'styled-components'
 
 export const Wrap = styled.div`
@@ -70,6 +71,10 @@ export const ListRow = styled.div<{
     css`
       background-color: var(--lido-color-backgroundSecondary);
     `}
+
+  @media (max-width: ${BREAKPOINT_MOBILE}) {
+    padding: 12px 10px;
+  }
 `
 
 export const AddressWrap = styled.div`
