@@ -111,13 +111,11 @@ export function DashboardVote({
             {vote.phase === VotePhase.Main && (
               <NeededToQuorum>
                 <Text size="xxs" color="secondary">
-                  Needed to quorum
+                  {neededToQuorum > 0 ? 'Needed to quorum' : 'Quorum reached'}
                 </Text>
-                <Text size="xxs">
-                  {neededToQuorum > 0 && !isEnded
-                    ? `${neededToQuorumFormatted}%`
-                    : '-'}
-                </Text>
+                {neededToQuorum > 0 && (
+                  <Text size="xxs">{neededToQuorumFormatted}%</Text>
+                )}
               </NeededToQuorum>
             )}
 
