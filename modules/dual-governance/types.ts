@@ -41,12 +41,23 @@ export type DualGovernanceState = {
   status: number
   nextStatus: number
   totalStEthInEscrow: BigNumber
+  totalSupply: BigNumber
   rageQuitSupportPercent: BigNumber
   activeProposalsCount: number
   config: DualGovernanceConfig
   stateDetails: DualGovernanceStateDetails
+  firstSealRageQuitSupport: BigNumber
+  secondSealRageQuitSupport: BigNumber
   amountUntilVetoSignalling: {
     percentage: string
     value: string
   } | null
+}
+
+export enum ProposalStatus {
+  NotExist,
+  Submitted,
+  Scheduled,
+  Executed,
+  Cancelled,
 }

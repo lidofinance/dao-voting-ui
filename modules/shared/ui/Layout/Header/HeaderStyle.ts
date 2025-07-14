@@ -275,6 +275,13 @@ export const MobileNetworkWrap = styled.div`
   }
 `
 
+export const MobileDGWidgetWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: ${({ theme }) => theme.spaceMap.md}px;
+`
+
 export const MobileSpacer = styled.div`
   height: 90px;
   display: none;

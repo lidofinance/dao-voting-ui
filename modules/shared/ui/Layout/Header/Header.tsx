@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/dist/client/router'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useScrollLock } from 'modules/shared/hooks/useScrollLock'
@@ -37,6 +37,7 @@ import {
   NavBurger,
   ThemeTogglerWrap,
   MobileNetworkLabel,
+  MobileDGWidgetWrap,
 } from './HeaderStyle'
 
 import { getChainName } from 'modules/blockChain/chains'
@@ -46,7 +47,11 @@ import SettingsSvg from 'assets/settings.com.svg.react'
 import DelegationSvg from 'assets/delegation.com.svg.react'
 import * as urls from 'modules/network/utils/urls'
 import { DualGovernanceStatusButton } from 'modules/dual-governance/DualGovernanceStatusButton'
-import { isTestnet } from 'modules/blockChain/utils/isTestnet'
+import { DualGovernanceWarningBanner } from 'modules/blockChain/ui/DualGovernanceWarningBanner'
+import { useDualGovernanceState } from 'modules/dual-governance/useDualGovernanceState'
+import { DualGovernanceStatus } from 'modules/dual-governance/types'
+import { getUseModal } from 'modules/modal/useModal'
+import { DualGovernanceWarningModal } from 'modules/dual-governance/DualGovernanceWarningModal/DualGovernanceWarningModal'
 
 function NavItem({
   link,
@@ -85,6 +90,35 @@ export function Header() {
   const { chainId } = useWeb3()
   const { themeName, toggleTheme } = useThemeToggle()
   const [isBurgerOpened, setBurgerOpened] = useState(false)
+  const [showDualGovernanceWarningBanner, setShowDualGovernanceWarningBanner] =
+    useState(false)
+
+  const useDualGovernanceWarningModal = getUseModal(DualGovernanceWarningModal)
+
+  const { openModal } = useDualGovernanceWarningModal()
+
+  const {
+    data: dualGovernanceStateData,
+    initialLoading: dualGovernanceStateInitialLoading,
+  } = useDualGovernanceState()
+
+  useEffect(() => {
+    if (!dualGovernanceStateData || dualGovernanceStateInitialLoading) {
+      return
+    }
+
+    if (
+      [
+        DualGovernanceStatus.VetoSignalling,
+        DualGovernanceStatus.RageQuit,
+        DualGovernanceStatus.VetoSignallingDeactivation,
+      ].includes(dualGovernanceStateData.status)
+    ) {
+      setShowDualGovernanceWarningBanner(true)
+      openModal()
+    }
+  }, [dualGovernanceStateData, dualGovernanceStateInitialLoading, openModal])
+
   const handleCloseMobileMenu = useCallback(() => setBurgerOpened(false), [])
   const handleClickToggleTheme = useCallback(
     (e: React.MouseEvent) => {
@@ -97,6 +131,7 @@ export function Header() {
 
   return (
     <>
+      {showDualGovernanceWarningBanner && <DualGovernanceWarningBanner />}
       <Wrap>
         <Nav>
           <Logo data-testid="lidoLogo" href="https://lido.fi">
@@ -138,7 +173,7 @@ export function Header() {
             </Text>
           </Network>
           <NoSSRWrapper>
-            {isTestnet(chainId) && <DualGovernanceStatusButton />}
+            <DualGovernanceStatusButton />
             <HeaderWallet />
           </NoSSRWrapper>
           <ThemeTogglerWrap>
@@ -213,7 +248,15 @@ export function Header() {
                   </Text>
                 </Network>
               </MobileNetworkWrap>
-              <HeaderWallet trimAddressSymbols={6} />
+              <MobileDGWidgetWrap>
+                <Text size="sm" color="secondary">
+                  Dual Governance state
+                </Text>
+                <DualGovernanceStatusButton />
+              </MobileDGWidgetWrap>
+              <NoSSRWrapper>
+                <HeaderWallet trimAddressSymbols={6} />
+              </NoSSRWrapper>
             </MobileMenuScroll>
           </MobileMenu>
         )}
