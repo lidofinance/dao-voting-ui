@@ -54,17 +54,6 @@ export function VoteVotersList({ voteEvents }: Props) {
 
   const [limit, setLimit] = useState(INITIAL_PAGE_SIZE)
 
-  const totalVotersCount = useMemo(() => {
-    return (
-      voteEvents.length +
-      voteEvents.reduce((acc, { delegatedVotes }) => {
-        if (!delegatedVotes?.length) return acc
-
-        return acc + delegatedVotes.length - 1 // -1 to not count the delegate itself
-      }, 0)
-    )
-  }, [voteEvents])
-
   const sortedVoteEvents = useMemo(() => {
     if (!vpSort) return voteEvents
     return [...voteEvents].sort((a, b) => {
@@ -84,7 +73,7 @@ export function VoteVotersList({ voteEvents }: Props) {
               Voter &nbsp;
             </Text>
             <Text data-testid="votersAmount" size="xxs" color="secondary">
-              {totalVotersCount}
+              {voteEvents.length}
             </Text>
           </ListRowCell>
           <ListRowCell>
