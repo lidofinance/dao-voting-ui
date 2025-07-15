@@ -57,10 +57,11 @@ export function VoteVotersList({ voteEvents }: Props) {
   const totalVotersCount = useMemo(() => {
     return (
       voteEvents.length +
-      voteEvents.reduce(
-        (acc, { delegatedVotes }) => acc + (delegatedVotes?.length || 0),
-        0,
-      )
+      voteEvents.reduce((acc, { delegatedVotes }) => {
+        if (!delegatedVotes?.length) return acc
+
+        return acc + delegatedVotes.length - 1 // -1 to not count the delegate itself
+      }, 0)
     )
   }, [voteEvents])
 
