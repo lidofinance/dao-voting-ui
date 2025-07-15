@@ -62,9 +62,16 @@ export function DelegatorsList({
     [checkedItems],
   )
 
-  const _eventsVoted = useMemo(() => {
+  const voterBySupportOptionMap = useMemo(() => {
     return voteEvents?.reduce<Record<string, boolean>>((acc, event) => {
-      acc[event.voter] = event.supports
+      if (event.delegatedVotes?.length) {
+        for (const delegatedVote of event.delegatedVotes) {
+          acc[delegatedVote.voter] = delegatedVote.supports
+        }
+      } else {
+        acc[event.voter] = event.supports
+      }
+
       return acc
     }, {})
   }, [voteEvents])
@@ -151,7 +158,7 @@ export function DelegatorsList({
             </AddressWrap>
             {delegator.votedByDelegate && (
               <Text as="span" size="xxs">
-                {_eventsVoted && _eventsVoted[delegator.address]
+                {voterBySupportOptionMap?.[delegator.address]
                   ? 'Yes (You)'
                   : 'No (You)'}
               </Text>
