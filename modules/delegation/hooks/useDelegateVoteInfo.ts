@@ -15,7 +15,8 @@ export function useDelegateVoteInfo({
 
     const delegateVote = voteEvents.find(
       event =>
-        event.delegatedVotes?.findIndex(
+        event.delegatedVotes?.length &&
+        event.delegatedVotes.findIndex(
           vote => vote.voter.toLowerCase() === walletAddress.toLowerCase(),
         ) !== -1,
     )
