@@ -2,6 +2,25 @@ import type { AragonVotingAbi } from 'generated'
 import { BigNumber } from 'ethers'
 import { VoteEvent, VoteInfo, VoteMetadata } from '../types'
 
+const isVoteMoreRecentThan = (
+  newVote: VoteMetadata,
+  existingVote: VoteMetadata | undefined,
+): boolean => {
+  if (!existingVote) {
+    return true
+  }
+
+  if (newVote.blockNumber > existingVote.blockNumber) {
+    return true
+  }
+
+  if (newVote.blockNumber === existingVote.blockNumber) {
+    return newVote.transactionIndex > existingVote.transactionIndex
+  }
+
+  return false
+}
+
 export async function getVoteEvents(
   contractVoting: AragonVotingAbi,
   voteId: string | number,
@@ -18,19 +37,20 @@ export async function getVoteEvents(
     return []
   }
 
+  // Voter address -> vote info
   const votesMap: Record<string, (VoteInfo & VoteMetadata) | undefined> = {}
 
   for (const event of castVoteEvents) {
-    const key = `${event.args.voter.toLowerCase()}-${event.blockNumber}-${
-      event.transactionIndex
-    }`
+    const key = event.args.voter.toLowerCase()
 
-    votesMap[key] = {
-      blockNumber: event.blockNumber,
-      transactionIndex: event.transactionIndex,
-      voter: event.args.voter,
-      supports: event.args.supports,
-      stake: event.args.stake,
+    if (isVoteMoreRecentThan(event, votesMap[key])) {
+      votesMap[key] = {
+        blockNumber: event.blockNumber,
+        transactionIndex: event.transactionIndex,
+        voter: event.args.voter,
+        supports: event.args.supports,
+        stake: event.args.stake,
+      }
     }
   }
 
@@ -42,24 +62,37 @@ export async function getVoteEvents(
   const result: VoteEvent[] = []
 
   let delegatedVotes: VoteEvent[] = []
+  const delegateVotesMetadata: Record<string, VoteMetadata> = {}
 
   for (const delegateEvent of delegateEvents) {
-    for (const voter of delegateEvent.args.voters) {
-      const key = `${voter.toLowerCase()}-${delegateEvent.blockNumber}-${
-        delegateEvent.transactionIndex
-      }`
-      const existingVote = votesMap[key]
+    const existingDelegateVote =
+      delegateVotesMetadata[delegateEvent.args.delegate.toLowerCase()]
 
-      if (existingVote) {
-        delegatedVotes.push({
-          stake: existingVote.stake,
-          voter: existingVote.voter,
-          supports: existingVote.supports,
-          blockNumber: delegateEvent.blockNumber,
-          transactionIndex: delegateEvent.transactionIndex,
-        })
+    if (isVoteMoreRecentThan(delegateEvent, existingDelegateVote)) {
+      for (const voter of delegateEvent.args.voters) {
+        const key = voter.toLowerCase()
+        const existingVote = votesMap[key]
 
-        delete votesMap[key]
+        if (!existingVote) {
+          continue
+        }
+
+        if (
+          existingVote.blockNumber === delegateEvent.blockNumber &&
+          existingVote.transactionIndex === delegateEvent.transactionIndex
+        ) {
+          // If there is a vote happening at the same block and transaction index,
+          // we can consider it as a delegated vote.
+          delegatedVotes.push({
+            stake: existingVote.stake,
+            voter: existingVote.voter,
+            supports: existingVote.supports,
+            blockNumber: delegateEvent.blockNumber,
+            transactionIndex: delegateEvent.transactionIndex,
+          })
+
+          delete votesMap[key]
+        }
       }
     }
 
