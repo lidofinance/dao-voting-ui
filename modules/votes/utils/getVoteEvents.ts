@@ -59,68 +59,94 @@ export async function getVoteEvents(
     fromBlock,
   )
 
-  const result: VoteEvent[] = []
-
-  let delegatedVotes: VoteEvent[] = []
-  const delegateVotesMetadata: Record<string, VoteMetadata> = {}
+  // ${delegateAddress}-${supports} -> VoteEvent
+  const delegatedVotesMap: Record<string, VoteEvent | undefined> = {}
 
   for (const delegateEvent of delegateEvents) {
-    const existingDelegateVote =
-      delegateVotesMetadata[delegateEvent.args.delegate.toLowerCase()]
+    const nestedVotes: VoteEvent[] = []
 
-    if (isVoteMoreRecentThan(delegateEvent, existingDelegateVote)) {
-      for (const voter of delegateEvent.args.voters) {
-        const key = voter.toLowerCase()
-        const existingVote = votesMap[key]
+    for (const voter of delegateEvent.args.voters) {
+      const key = voter.toLowerCase()
+      const voteEvent = votesMap[key]
 
-        if (!existingVote) {
-          continue
-        }
+      if (!voteEvent) {
+        continue
+      }
 
-        if (
-          existingVote.blockNumber === delegateEvent.blockNumber &&
-          existingVote.transactionIndex === delegateEvent.transactionIndex
-        ) {
-          // If there is a vote happening at the same block and transaction index,
-          // we can consider it as a delegated vote.
-          delegatedVotes.push({
-            stake: existingVote.stake,
-            voter: existingVote.voter,
-            supports: existingVote.supports,
-            blockNumber: delegateEvent.blockNumber,
-            transactionIndex: delegateEvent.transactionIndex,
-          })
+      if (
+        voteEvent.blockNumber === delegateEvent.blockNumber &&
+        voteEvent.transactionIndex === delegateEvent.transactionIndex
+      ) {
+        // If there is a vote happening at the same block and transaction index,
+        // we can consider it as a delegated vote.
+        nestedVotes.push({
+          stake: voteEvent.stake,
+          voter: voteEvent.voter,
+          supports: voteEvent.supports,
+          blockNumber: voteEvent.blockNumber,
+          transactionIndex: voteEvent.transactionIndex,
+        })
 
-          delete votesMap[key]
-        }
+        delete votesMap[key]
       }
     }
 
-    if (delegatedVotes.length > 0) {
-      const delegateStake = delegatedVotes.reduce(
-        (acc, v) => acc.add(v.stake),
-        BigNumber.from(0),
-      )
-      const delegateSupports = delegatedVotes[0].supports
-      const sortedVotes = delegatedVotes.sort((a, b) => {
-        return a.stake.gt(b.stake) ? -1 : 1
-      })
-      result.push({
-        voter: delegateEvent.args.delegate,
-        delegatedVotes: sortedVotes,
-        blockNumber: delegateEvent.blockNumber,
-        transactionIndex: delegateEvent.transactionIndex,
-        supports: delegateSupports,
-        stake: delegateStake,
-      })
+    if (nestedVotes.length > 0) {
+      const delegateSupports = nestedVotes[0].supports
+      const delegateKey = `${delegateEvent.args.delegate.toLowerCase()}-${delegateSupports}`
 
-      delegatedVotes = []
+      const existingDelegatedVote = delegatedVotesMap[delegateKey]
+
+      // If there is an existing delegated vote with the same `supports` value,
+      // we need to merge two delegated votes.
+      if (existingDelegatedVote) {
+        const nestedVotesMap = new Map<string, VoteEvent>()
+
+        ;[
+          ...(existingDelegatedVote.delegatedVotes ?? []),
+          ...nestedVotes,
+        ].forEach(v => {
+          nestedVotesMap.set(v.voter.toLowerCase(), v)
+        })
+
+        const updatedVotersList = Array.from(nestedVotesMap.values())
+
+        const delegateStake = updatedVotersList.reduce(
+          (acc, v) => acc.add(v.stake),
+          BigNumber.from(0),
+        )
+        const sortedVotes = updatedVotersList.sort((a, b) => {
+          return a.stake.gt(b.stake) ? -1 : 1
+        })
+
+        delegatedVotesMap[delegateKey] = {
+          voter: delegateEvent.args.delegate,
+          delegatedVotes: sortedVotes,
+          supports: delegateSupports,
+          stake: delegateStake,
+          blockNumber: delegateEvent.blockNumber,
+          transactionIndex: delegateEvent.transactionIndex,
+        }
+      } else {
+        delegatedVotesMap[delegateKey] = {
+          voter: delegateEvent.args.delegate,
+          delegatedVotes: nestedVotes,
+          supports: delegateSupports,
+          stake: nestedVotes.reduce(
+            (acc, v) => acc.add(v.stake),
+            BigNumber.from(0),
+          ),
+          blockNumber: delegateEvent.blockNumber,
+          transactionIndex: delegateEvent.transactionIndex,
+        }
+      }
     }
   }
 
-  result.push(...(Object.values(votesMap) as VoteEvent[]))
-
-  return result.sort((a, b) => {
+  return [
+    ...(Object.values(votesMap) as VoteEvent[]),
+    ...(Object.values(delegatedVotesMap) as VoteEvent[]),
+  ].sort((a, b) => {
     if (a.blockNumber !== b.blockNumber) {
       return b.blockNumber - a.blockNumber
     }
