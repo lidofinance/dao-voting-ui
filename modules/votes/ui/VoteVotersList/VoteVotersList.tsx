@@ -64,6 +64,10 @@ export function VoteVotersList({ voteEvents }: Props) {
     })
   }, [voteEvents, vpSort])
 
+  const votersCount = useMemo(() => {
+    return new Set(voteEvents.map(event => event.voter)).size
+  }, [voteEvents])
+
   return (
     <Wrap>
       <>
@@ -73,7 +77,7 @@ export function VoteVotersList({ voteEvents }: Props) {
               Voter &nbsp;
             </Text>
             <Text data-testid="votersAmount" size="xxs" color="secondary">
-              {voteEvents.length}
+              {votersCount}
             </Text>
           </ListRowCell>
           <ListRowCell>
