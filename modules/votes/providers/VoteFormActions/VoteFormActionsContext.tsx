@@ -144,6 +144,7 @@ export const VoteFormActionsProvider: React.FC = ({ children }) => {
 
     return voteEvents.filter(
       event =>
+        !event.delegatedVotes?.length &&
         delegatorSet.has(event.voter) &&
         !votedThroughDelegateSet.has(event.voter),
     )
