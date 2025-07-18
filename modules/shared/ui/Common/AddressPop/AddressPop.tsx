@@ -28,6 +28,7 @@ export function AddressPop({ children, ...badgeProps }: Props) {
     (event: React.MouseEvent) => {
       // To avoid opening a vote when clicking on the pop from the dashboard
       event.preventDefault()
+      event.stopPropagation()
       setState({ isOpened: true })
     },
     [setState],

@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import {
   CounterBadge,
-  DeelgatorsListStyled,
+  DelegatorsListStyled,
   ShowMoreButton,
   TitleWrap,
   Wrap,
@@ -79,7 +79,7 @@ export function DelegatorsList() {
           {nonZeroDelegatorsCount > 1 ? 'es' : ''} on-chain
         </InfoLabel>
       </TitleWrap>
-      <DeelgatorsListStyled>
+      <DelegatorsListStyled>
         {delegatorsToShow.map(delegator => (
           <DelegatorsListItem
             key={delegator.address}
@@ -94,7 +94,7 @@ export function DelegatorsList() {
             Show More
           </ShowMoreButton>
         )}
-      </DeelgatorsListStyled>
+      </DelegatorsListStyled>
       {data.notFetchedDelegatorsCount > 0 && (
         <Text size="xxs" color="secondary">
           This list displays addresses with a positive {governanceToken?.symbol}{' '}

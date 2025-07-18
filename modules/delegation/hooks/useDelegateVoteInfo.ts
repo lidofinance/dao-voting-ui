@@ -1,47 +1,26 @@
 import { useMemo } from 'react'
-import type { AttemptCastVoteAsDelegateEventObject } from 'generated/AragonVotingAbi'
-import { CastVoteEvent } from 'modules/votes/types'
+import { VoteEvent } from 'modules/votes/types'
 
 interface Props {
   walletAddress: string | null | undefined
-  eventsVoted: CastVoteEvent[] | undefined
-  eventsDelegatesVoted: AttemptCastVoteAsDelegateEventObject[] | undefined
+  voteEvents: VoteEvent[] | undefined
 }
-
-type DelegateVoteResult = {
-  delegate: string
-  supports: boolean
-  stake: string
-} | null
 
 export function useDelegateVoteInfo({
   walletAddress,
-  eventsVoted,
-  eventsDelegatesVoted,
-}: Props): DelegateVoteResult {
+  voteEvents,
+}: Props): VoteEvent | null {
   return useMemo(() => {
-    if (!walletAddress || !eventsVoted || !eventsDelegatesVoted) return null
+    if (!walletAddress || !voteEvents) return null
 
-    const delegateVote = eventsDelegatesVoted.find(event =>
-      event.voters.includes(walletAddress),
+    const delegateVote = voteEvents.find(
+      event =>
+        event.delegatedVotes?.length &&
+        event.delegatedVotes.findIndex(
+          vote => vote.voter.toLowerCase() === walletAddress.toLowerCase(),
+        ) !== -1,
     )
 
-    if (!delegateVote) {
-      return null
-    }
-
-    const vote = eventsVoted.find(
-      event => event.voter.toLowerCase() === walletAddress.toLowerCase(),
-    )
-
-    if (!vote) {
-      return null
-    }
-
-    return {
-      delegate: delegateVote.delegate,
-      supports: vote.supports,
-      stake: vote.stake.toString(),
-    }
-  }, [walletAddress, eventsDelegatesVoted, eventsVoted])
+    return delegateVote ?? null
+  }, [walletAddress, voteEvents])
 }

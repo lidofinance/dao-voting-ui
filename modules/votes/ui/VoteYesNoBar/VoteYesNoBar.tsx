@@ -1,10 +1,14 @@
-import { Text, Tooltip } from '@lidofinance/lido-ui'
+import { Text } from '@lidofinance/lido-ui'
 import {
   VotesBarNay,
   VotesBarWrap,
   VotesBarYea,
   VotesTitleWrap,
 } from './VoteYesNoBarStyle'
+
+const vpFormatter = new Intl.NumberFormat('en', {
+  maximumFractionDigits: 0,
+})
 
 type Props = {
   yeaPct: number
@@ -27,14 +31,12 @@ export function VoteYesNoBar({
   showOnForeground,
   showNumber,
 }: Props) {
-  const roundDown = (n: number): number => Math.floor(n * 10) / 10
-
   const nayInfo = showNumber
-    ? `"No" — ${roundDown(nayNum)} (${nayPctOfTotalSupply}%)`
+    ? `"No" — ${vpFormatter.format(nayNum)} (${nayPctOfTotalSupply}%)`
     : `"No" — ${nayPctOfTotalSupply}%`
 
   const yeaInfo = showNumber
-    ? `"Yes" — ${roundDown(yeaNum)} (${yeaPctOfTotalSupply}%)`
+    ? `"Yes" — ${vpFormatter.format(yeaNum)} (${yeaPctOfTotalSupply}%)`
     : `"Yes" — ${yeaPctOfTotalSupply}%`
 
   return (
@@ -42,16 +44,12 @@ export function VoteYesNoBar({
       <VotesTitleWrap>
         <Text size="xxs">
           <Text data-testid="votesNo" as="span" size="xxs">
-            <Tooltip title={<span>{nayNum}</span>} placement="top">
-              <span>{nayInfo}</span>
-            </Tooltip>
+            <span>{nayInfo}</span>
           </Text>
         </Text>
         <Text size="xxs" style={{ textAlign: 'right' }}>
           <Text as="span" size="xxs" data-testid="votesYes">
-            <Tooltip title={<span>{yeaNum}</span>} placement="top">
-              <span>{yeaInfo}</span>
-            </Tooltip>
+            <span>{yeaInfo}</span>
           </Text>
         </Text>
       </VotesTitleWrap>

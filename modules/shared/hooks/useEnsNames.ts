@@ -20,24 +20,31 @@ export function useEnsNames(addresses: string[]) {
       if (chainId === CHAINS.Holesky || chainId === CHAINS.Hoodi) {
         provider.network.ensAddress = ENS_NAME_ADDRESS
       }
-      const res = await Promise.all(
-        addresses.map(address =>
-          provider.lookupAddress(address).catch(error => {
-            const _error = error as Error
 
-            // TODO: add GNS support
-            if (IGNORE_GAIANETWORK_PATTERN.test(_error.message)) {
-              console.log(
-                'Ignoring CSP error for api.gaianet.ai -> request api.gaianet.ai blocked by CSP, GNS not supported',
-              )
-              return null
-            }
-            throw error
-          }),
+      const result: Record<string, string | null> = {}
+      await Promise.all(
+        addresses.map(address =>
+          provider
+            .lookupAddress(address)
+            .then(ens => {
+              result[address] = ens
+            })
+            .catch(error => {
+              const _error = error as Error
+
+              // TODO: add GNS support
+              if (IGNORE_GAIANETWORK_PATTERN.test(_error.message)) {
+                console.log(
+                  'Ignoring CSP error for api.gaianet.ai -> request api.gaianet.ai blocked by CSP, GNS not supported',
+                )
+                return null
+              }
+              throw error
+            }),
         ),
       )
 
-      return res
+      return result
     },
   )
   return {
