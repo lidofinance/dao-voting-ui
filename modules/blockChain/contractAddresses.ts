@@ -277,13 +277,13 @@ export const CSModule: ChainAddressMap = {
 }
 
 export const CSVerifier: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x3Dfc50f22aCA652a0a6F28a0F892ab62074b5583',
+  [CHAINS.Mainnet]: '0x0c345dFa318f9F4977cdd4f33d80F9D0ffA38e8B',
   [CHAINS.Holesky]: '0xC099dfD61F6E5420e0Ca7e84D820daAd17Fc1D44',
   [CHAINS.Hoodi]: '0xB6bafBD970a4537077dE59cebE33081d794513d6',
 }
 
 export const CSVerifierProposed: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x0c345dFa318f9F4977cdd4f33d80F9D0ffA38e8B',
+  [CHAINS.Mainnet]: '0xeC6Cc185f671F627fb9b6f06C8772755F587b05d',
 }
 
 export const SandboxNodeOperatorsRegistry: ChainAddressMap = {
