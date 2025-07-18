@@ -16,13 +16,13 @@ import { formatBalance } from 'modules/blockChain/utils/formatBalance'
 import { useSimpleReducer } from 'modules/shared/hooks/useSimpleReducer'
 import { BigNumber } from 'ethers'
 import { EligibleDelegator } from 'modules/delegation/hooks/useEligibleDelegators'
-import { CastVoteEvent } from 'modules/votes/types'
+import { VoteEvent } from 'modules/votes/types'
 
 interface Props {
-  delegatorsVotedThemselves: CastVoteEvent[] | undefined
+  delegatorsVotedThemselves: VoteEvent[] | undefined
   governanceSymbol: string | undefined
   onSelectedAddressesChange: (address: string[]) => void
-  eventsVoted: CastVoteEvent[] | undefined
+  voteEvents: VoteEvent[] | undefined
   eligibleDelegatedVoters: EligibleDelegator[]
   eligibleDelegatedVotingPower: BigNumber
   defaultExpanded: boolean
@@ -37,7 +37,7 @@ export function DelegatorsList({
   governanceSymbol,
   eligibleDelegatedVotingPower,
   onSelectedAddressesChange,
-  eventsVoted,
+  voteEvents,
   defaultExpanded,
 }: Props) {
   const TRANSACTION_LIMIT = 100
@@ -62,12 +62,19 @@ export function DelegatorsList({
     [checkedItems],
   )
 
-  const _eventsVoted = useMemo(() => {
-    return eventsVoted?.reduce<Record<string, boolean>>((acc, event) => {
-      acc[event.voter] = event.supports
+  const voterBySupportOptionMap = useMemo(() => {
+    return voteEvents?.reduce<Record<string, boolean>>((acc, event) => {
+      if (event.delegatedVotes?.length) {
+        for (const delegatedVote of event.delegatedVotes) {
+          acc[delegatedVote.voter] = delegatedVote.supports
+        }
+      } else {
+        acc[event.voter] = event.supports
+      }
+
       return acc
     }, {})
-  }, [eventsVoted])
+  }, [voteEvents])
 
   useEffect(() => {
     onSelectedAddressesChange(selectedAddresses)
@@ -151,7 +158,7 @@ export function DelegatorsList({
             </AddressWrap>
             {delegator.votedByDelegate && (
               <Text as="span" size="xxs">
-                {_eventsVoted && _eventsVoted[delegator.address]
+                {voterBySupportOptionMap?.[delegator.address]
                   ? 'Yes (You)'
                   : 'No (You)'}
               </Text>

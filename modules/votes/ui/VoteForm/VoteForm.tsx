@@ -36,9 +36,8 @@ export function VoteForm({ voteId }: Props) {
     voterState,
     doRevalidate,
     eventStart,
-    eventsVoted,
     eventExecuteVote,
-    eventsDelegatesVoted,
+    voteEvents,
     status,
     votePhase,
   } = useFormVoteInfo({ voteId })
@@ -117,8 +116,7 @@ export function VoteForm({ voteId }: Props) {
             objectionPhaseTime={objectionPhaseTime!}
             isEnded={isEnded}
             metadata={eventStart?.decoded.metadata}
-            eventsVoted={eventsVoted}
-            eventsDelegatesVoted={eventsDelegatesVoted}
+            voteEvents={voteEvents}
             executedTxHash={eventExecuteVote?.event.transactionHash}
             executedAt={eventExecuteVote?.executedAt}
             votePhase={votePhase}
@@ -132,8 +130,7 @@ export function VoteForm({ voteId }: Props) {
           {isWalletConnected && (
             <>
               <VoteInfoDelegated
-                eventsVoted={eventsVoted}
-                eventsDelegatesVoted={eventsDelegatesVoted}
+                voteEvents={voteEvents}
                 walletAddress={walletAddress}
               />
               {votePhase !== VotePhase.Closed && (

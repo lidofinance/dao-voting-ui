@@ -64,7 +64,7 @@ export function VoteSuccessModal({
     governanceSymbol,
     eligibleDelegatedVotingPower,
     delegatedVotersAddresses,
-    eventsVoted,
+    voteEvents,
     votedAs,
     setSuccessTx,
     mode,
@@ -328,7 +328,7 @@ export function VoteSuccessModal({
                     currentSnapshot.eligibleDelegatedVotingPower
                   }
                   onSelectedAddressesChange={handleSelectedAddressesChange}
-                  eventsVoted={eventsVoted}
+                  voteEvents={voteEvents}
                 />
               </>
             )}

@@ -16,7 +16,7 @@ export function VoteSubmitModal({ data: { mode }, ...modalProps }: ModalProps) {
     handleVote,
     handleDelegatesVote,
     txDelegatesVote,
-    eventsVoted,
+    voteEvents,
     eligibleDelegatedVotingPower,
     delegatorsVotedThemselves,
     eligibleDelegatedVoters,
@@ -81,12 +81,12 @@ export function VoteSubmitModal({ data: { mode }, ...modalProps }: ModalProps) {
       {canVoteWithDelegatedPower && (
         <DelegatorsList
           defaultExpanded={false}
-          eligibleDelegatedVoters={eligibleDelegatedVoters}
           delegatorsVotedThemselves={delegatorsVotedThemselves}
+          eligibleDelegatedVoters={eligibleDelegatedVoters}
           governanceSymbol={governanceSymbol}
           eligibleDelegatedVotingPower={eligibleDelegatedVotingPower}
           onSelectedAddressesChange={handleSelectedAddressesChange}
-          eventsVoted={eventsVoted}
+          voteEvents={voteEvents}
         />
       )}
     </Modal>
