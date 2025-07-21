@@ -37,7 +37,7 @@ export async function getVoteEvents(
     return []
   }
 
-  // Voter address -> vote info
+  // Voter address -> vote info & metadata
   const votesMap: Record<string, (VoteInfo & VoteMetadata) | undefined> = {}
 
   for (const event of castVoteEvents) {
@@ -83,8 +83,6 @@ export async function getVoteEvents(
           stake: voteEvent.stake,
           voter: voteEvent.voter,
           supports: voteEvent.supports,
-          blockNumber: voteEvent.blockNumber,
-          transactionIndex: voteEvent.transactionIndex,
         })
 
         delete votesMap[key]
@@ -94,9 +92,9 @@ export async function getVoteEvents(
     if (nestedVotes.length > 0) {
       const delegateSupports = nestedVotes[0].supports
       const delegateKey = `${delegateEvent.args.delegate.toLowerCase()}-${delegateSupports}`
-
       const existingDelegatedVote = delegatedVotesMap[delegateKey]
 
+      let delegatedVotes = nestedVotes
       // If there is an existing delegated vote with the same `supports` value,
       // we need to merge two delegated votes.
       if (existingDelegatedVote) {
@@ -109,36 +107,23 @@ export async function getVoteEvents(
           nestedVotesMap.set(v.voter.toLowerCase(), v)
         })
 
-        const updatedVotersList = Array.from(nestedVotesMap.values())
+        delegatedVotes = Array.from(nestedVotesMap.values())
+      }
 
-        const delegateStake = updatedVotersList.reduce(
-          (acc, v) => acc.add(v.stake),
-          BigNumber.from(0),
-        )
-        const sortedVotes = updatedVotersList.sort((a, b) => {
-          return a.stake.gt(b.stake) ? -1 : 1
-        })
+      const delegatedStake = delegatedVotes.reduce(
+        (acc, v) => acc.add(v.stake),
+        BigNumber.from(0),
+      )
 
-        delegatedVotesMap[delegateKey] = {
-          voter: delegateEvent.args.delegate,
-          delegatedVotes: sortedVotes,
-          supports: delegateSupports,
-          stake: delegateStake,
-          blockNumber: delegateEvent.blockNumber,
-          transactionIndex: delegateEvent.transactionIndex,
-        }
-      } else {
-        delegatedVotesMap[delegateKey] = {
-          voter: delegateEvent.args.delegate,
-          delegatedVotes: nestedVotes,
-          supports: delegateSupports,
-          stake: nestedVotes.reduce(
-            (acc, v) => acc.add(v.stake),
-            BigNumber.from(0),
-          ),
-          blockNumber: delegateEvent.blockNumber,
-          transactionIndex: delegateEvent.transactionIndex,
-        }
+      const sortedVotes = delegatedVotes.sort((a, b) => {
+        return a.stake.gt(b.stake) ? -1 : 1
+      })
+
+      delegatedVotesMap[delegateKey] = {
+        voter: delegateEvent.args.delegate,
+        delegatedVotes: sortedVotes,
+        supports: delegateSupports,
+        stake: delegatedStake,
       }
     }
   }
@@ -147,9 +132,6 @@ export async function getVoteEvents(
     ...(Object.values(votesMap) as VoteEvent[]),
     ...(Object.values(delegatedVotesMap) as VoteEvent[]),
   ].sort((a, b) => {
-    if (a.blockNumber !== b.blockNumber) {
-      return b.blockNumber - a.blockNumber
-    }
-    return b.transactionIndex - a.transactionIndex
+    return a.stake.gt(b.stake) ? -1 : 1
   })
 }
