@@ -46,7 +46,6 @@ export type VoteMetadata = {
   transactionIndex: number
 }
 
-export type VoteEvent = VoteInfo &
-  VoteMetadata & {
-    delegatedVotes?: VoteEvent[]
-  }
+export type VoteEvent = VoteInfo & {
+  delegatedVotes?: VoteInfo[]
+}

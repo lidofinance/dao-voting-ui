@@ -17,11 +17,6 @@ export const ListRowCell = styled.div`
 
   &:nth-child(3) {
     justify-content: flex-end;
-    padding-right: 20px;
-
-    svg {
-      transition: transform 0.2s ease-in-out;
-    }
   }
 `
 
@@ -97,31 +92,4 @@ export const ShowMoreBtn = styled(Button).attrs({
 
 export const AddressLabel = styled(Text).attrs({ as: 'span' })`
   min-width: 65px;
-`
-
-export const ListRowCellSortable = styled(ListRowCell)<{
-  $sortDirection?: 'asc' | 'desc'
-}>`
-  cursor: pointer;
-  user-select: none;
-
-  svg {
-    transition: transform 0.2s ease-in-out;
-  }
-
-  ${({ $sortDirection }) =>
-    $sortDirection === 'asc' &&
-    css`
-      svg {
-        transform: rotate(180deg);
-      }
-    `}
-
-  ${({ $sortDirection }) =>
-    !!$sortDirection &&
-    css`
-      &:nth-child(3) {
-        padding-right: 0;
-      }
-    `}
 `

@@ -1,13 +1,7 @@
 import { useMemo, useState } from 'react'
 
-import {
-  Wrap,
-  ListRow,
-  ListRowCell,
-  ShowMoreBtn,
-  ListRowCellSortable,
-} from './VoteVotersListStyle'
-import { ArrowBottom, Text, useBreakpoint } from '@lidofinance/lido-ui'
+import { Wrap, ListRow, ListRowCell, ShowMoreBtn } from './VoteVotersListStyle'
+import { Text, useBreakpoint } from '@lidofinance/lido-ui'
 
 import { VoteEvent } from 'modules/votes/types'
 import { useGovernanceTokenData } from 'modules/tokens/hooks/useGovernanceTokenData'
@@ -22,22 +16,7 @@ const INITIAL_PAGE_SIZE = 5
 
 export function VoteVotersList({ voteEvents }: Props) {
   const { data: tokenData } = useGovernanceTokenData()
-  const [vpSort, setVpSort] = useState<'asc' | 'desc' | undefined>(undefined)
   const isMobile = useBreakpoint('md')
-
-  const handleVpSortClick = () => {
-    switch (vpSort) {
-      case 'desc':
-        setVpSort('asc')
-        break
-      case 'asc':
-        setVpSort(undefined)
-        break
-      default:
-        setVpSort('desc')
-        break
-    }
-  }
 
   const votersAddresses = useMemo(() => {
     const result = new Set<string>()
@@ -53,16 +32,6 @@ export function VoteVotersList({ voteEvents }: Props) {
   const { data: ensMap } = useEnsNames(votersAddresses)
 
   const [limit, setLimit] = useState(INITIAL_PAGE_SIZE)
-
-  const sortedVoteEvents = useMemo(() => {
-    if (!vpSort) return voteEvents
-    return [...voteEvents].sort((a, b) => {
-      if (vpSort === 'asc') {
-        return a.stake.gt(b.stake) ? 1 : -1
-      }
-      return a.stake.gt(b.stake) ? -1 : 1
-    })
-  }, [voteEvents, vpSort])
 
   const votersCount = useMemo(() => {
     return new Set(voteEvents.map(event => event.voter)).size
@@ -85,17 +54,13 @@ export function VoteVotersList({ voteEvents }: Props) {
               Vote
             </Text>
           </ListRowCell>
-          <ListRowCellSortable
-            $sortDirection={vpSort}
-            onClick={handleVpSortClick}
-          >
+          <ListRowCell>
             <Text size="xxs" strong>
               {isMobile ? `VP (${tokenData?.symbol})` : 'Voting Power'}
             </Text>
-            {vpSort && <ArrowBottom width={20} height={20} />}
-          </ListRowCellSortable>
+          </ListRowCell>
         </ListRow>
-        {sortedVoteEvents.slice(0, limit).map((event, i) => (
+        {voteEvents.slice(0, limit).map((event, i) => (
           <VoteVoterItem
             voteEvent={event}
             governanceTokenSymbol={tokenData?.symbol || ''}
