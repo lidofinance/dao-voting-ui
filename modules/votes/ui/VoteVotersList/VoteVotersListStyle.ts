@@ -44,6 +44,11 @@ export const ListRow = styled.div<{
     border-top-right-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
   }
 
+  &:last-child {
+    border-bottom-left-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
+    border-bottom-right-radius: ${({ theme }) => theme.borderRadiusesMap.lg}px;
+  }
+
   ${({ $isExpanded }) =>
     $isExpanded &&
     css`
