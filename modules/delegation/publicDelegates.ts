@@ -54,13 +54,6 @@ export const PUBLIC_DELEGATES = [
     twitter: 'https://x.com/Token_Logic',
   },
   {
-    name: 'BlockworksResearch',
-    avatar: `${basePath}/delegates/blockworks.jpeg`,
-    address: '0xfF4139e99Bd7c23F4611dc660c33c97A825EA67b',
-    lido: 'https://research.lido.fi/t/blockworks-research-delegate-thread/8024',
-    twitter: 'https://x.com/blockworksres',
-  },
-  {
     name: 'kpk',
     avatar: `${basePath}/delegates/kpk.png`,
     address: '0x8787FC2De4De95c53e5E3a4e5459247D9773ea52',
@@ -105,7 +98,7 @@ export const PUBLIC_DELEGATES = [
   {
     name: 'DAOplomats',
     avatar: `${basePath}/delegates/daoplomats.png`,
-    address: '0x057928bc52bD08e4D7cE24bF47E01cE99E074048',
+    address: '0xc5547B4907418C2EC0C2A95beC6fEE8354657759',
     lido: 'https://research.lido.fi/t/daoplomats-delegate-thread/8242',
     twitter: 'https://x.com/DAOplomats',
   },
