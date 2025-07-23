@@ -1,5 +1,20 @@
 [
-  { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "voting",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "impl",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
   {
     "anonymous": false,
     "inputs": [
@@ -32,17 +47,30 @@
     "name": "Upgraded",
     "type": "event"
   },
-  { "stateMutability": "payable", "type": "fallback" },
+  {
+    "stateMutability": "payable",
+    "type": "fallback"
+  },
   {
     "inputs": [],
     "name": "implementation",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "newAdmin", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "newAdmin",
+        "type": "address"
+      }
     ],
     "name": "proxy_changeAdmin",
     "outputs": [],
@@ -52,14 +80,26 @@
   {
     "inputs": [],
     "name": "proxy_getAdmin",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "proxy_getIsOssified",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -70,45 +110,168 @@
         "name": "newImplementation",
         "type": "address"
       },
-      { "internalType": "bytes", "name": "setupCalldata", "type": "bytes" }
+      {
+        "internalType": "bytes",
+        "name": "setupCalldata",
+        "type": "bytes"
+      }
     ],
     "name": "proxy_upgradeTo",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
-  { "stateMutability": "payable", "type": "receive" },
-
+  {
+    "stateMutability": "payable",
+    "type": "receive"
+  },
   {
     "inputs": [
-      { "internalType": "contract ILido", "name": "_lido", "type": "address" },
-      { "internalType": "address", "name": "_treasury", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_lido",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_treasury",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_triggerableWithdrawalsGateway",
+        "type": "address"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
-  { "inputs": [], "name": "InvalidContractVersionIncrement", "type": "error" },
-  { "inputs": [], "name": "LidoZeroAddress", "type": "error" },
-  { "inputs": [], "name": "NonZeroContractVersionOnInit", "type": "error" },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "requested", "type": "uint256" },
-      { "internalType": "uint256", "name": "balance", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "firstArrayLength",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "secondArrayLength",
+        "type": "uint256"
+      }
+    ],
+    "name": "ArraysLengthMismatch",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FeeInvalidData",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FeeReadFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "requiredFee",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "providedFee",
+        "type": "uint256"
+      }
+    ],
+    "name": "IncorrectFee",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidContractVersionIncrement",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NonZeroContractVersionOnInit",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "requested",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "balance",
+        "type": "uint256"
+      }
     ],
     "name": "NotEnoughEther",
     "type": "error"
   },
-  { "inputs": [], "name": "NotLido", "type": "error" },
-  { "inputs": [], "name": "TreasuryZeroAddress", "type": "error" },
+  {
+    "inputs": [],
+    "name": "NotLido",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotTriggerableWithdrawalsGateway",
+    "type": "error"
+  },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "expected", "type": "uint256" },
-      { "internalType": "uint256", "name": "received", "type": "uint256" }
+      {
+        "internalType": "bytes",
+        "name": "callData",
+        "type": "bytes"
+      }
+    ],
+    "name": "RequestAdditionFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "expected",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "received",
+        "type": "uint256"
+      }
     ],
     "name": "UnexpectedContractVersion",
     "type": "error"
   },
-  { "inputs": [], "name": "ZeroAmount", "type": "error" },
+  {
+    "inputs": [],
+    "name": "ZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroAmount",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      }
+    ],
+    "name": "ZeroArgument",
+    "type": "error"
+  },
   {
     "anonymous": false,
     "inputs": [
@@ -173,10 +336,27 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "request",
+        "type": "bytes"
+      }
+    ],
+    "name": "WithdrawalRequestAdded",
+    "type": "event"
+  },
+  {
     "inputs": [],
     "name": "LIDO",
     "outputs": [
-      { "internalType": "contract ILido", "name": "", "type": "address" }
+      {
+        "internalType": "contract ILido",
+        "name": "",
+        "type": "address"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -184,14 +364,90 @@
   {
     "inputs": [],
     "name": "TREASURY",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
+    "name": "TRIGGERABLE_WITHDRAWALS_GATEWAY",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "WITHDRAWAL_REQUEST",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes[]",
+        "name": "pubkeys",
+        "type": "bytes[]"
+      },
+      {
+        "internalType": "uint64[]",
+        "name": "amounts",
+        "type": "uint64[]"
+      }
+    ],
+    "name": "addWithdrawalRequests",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "finalizeUpgrade_v2",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getContractVersion",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getWithdrawalRequestFee",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -209,7 +465,11 @@
         "name": "_token",
         "type": "address"
       },
-      { "internalType": "uint256", "name": "_amount", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
     ],
     "name": "recoverERC20",
     "outputs": [],
@@ -223,7 +483,11 @@
         "name": "_token",
         "type": "address"
       },
-      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
     ],
     "name": "recoverERC721",
     "outputs": [],
@@ -232,7 +496,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_amount", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
     ],
     "name": "withdrawWithdrawals",
     "outputs": [],
