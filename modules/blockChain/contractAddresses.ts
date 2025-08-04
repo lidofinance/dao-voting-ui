@@ -318,20 +318,20 @@ export const DualGovernance: ChainAddressMap = {
   },
   [CHAINS.Hoodi]: {
     test: '0x3Dec3C5Ef9C53234B55705DDC892b106A1C47bCa',
-    actual: '0x4d12b9f6aCAB54FF6a3a776BA3b8724D9B77845F',
+    actual: '0x9CAaCCc62c66d817CC59c44780D1b722359795bF',
   },
 }
 
 export const GateSeal: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xf9C9fDB4A5D2AA1D836D5370AB9b28BC1847e178',
   [CHAINS.Holesky]: '0xAE6eCd77DCC656c5533c4209454Fd56fB46e1778',
-  [CHAINS.Hoodi]: '0x2168Ea6D948Ab49c3D34c667A7e02F92369F3A9C',
+  [CHAINS.Hoodi]: '0x73d76Bd3D589B2b2185c402da82cdAfbc18b958D',
 }
 
 export const CSMGateSeal: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x16Dbd4B85a448bE564f1742d5c8cCdD2bB3185D0',
   [CHAINS.Holesky]: '0xf1C03536dbC77B1bD493a2D1C0b1831Ea78B540a',
-  [CHAINS.Hoodi]: '0xEe1f7f0ebB5900F348f2CfbcC641FB1681359B8a',
+  [CHAINS.Hoodi]: '0x94a3aEB0E9148F64CB453Be2BDe2Bc0148f6AC24',
 }
 
 export const DualGovernanceLaunchVerifier: ChainAddressMap = {
@@ -351,22 +351,22 @@ export const DualGovernanceTimeConstraints: ChainAddressMap = {
 
 export const DualGovernanceAdminExecutor: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x23E0B465633FF5178808F4A75186E2F2F9537021',
-  [CHAINS.Hoodi]: '0x8ef12c8bB0f544e4741cC594d07739e670c37959',
+  [CHAINS.Hoodi]: '0x0eCc17597D292271836691358B22340b78F3035B',
 }
 
 export const DualGovernanceEscrow: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xA8F14D033f377779274Ae016584a05bF14Dccaf8',
-  [CHAINS.Hoodi]: '0x5e2EE9DCBE8C9433F22Dd3c5EFDe0Af6DC293405',
+  [CHAINS.Hoodi]: '0x781afe6C8D768CEaA9a97f2A75714e80AE0e83B9',
 }
 
 export const DualGovernanceResealManager: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x7914b5a1539b97Bd0bbd155757F25FD79A522d24',
-  [CHAINS.Hoodi]: '0x758f8625E8e79B3Aec176126c63e617af511171F',
+  [CHAINS.Hoodi]: '0x05172CbCDb7307228F781436b327679e4DAE166B',
 }
 
 export const DualGovernanceTieBreakerCore: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x175742c3DDD88B0192df3EcF98f180A79cb259D0',
-  [CHAINS.Hoodi]: '0x08f3c3B1CF5f030DC1749458277334505aa2092b',
+  [CHAINS.Hoodi]: '0x9Ce4bA766C87cC87e507307163eA54C5003A3563',
 }
 
 export const EVMScriptRegistry: ChainAddressMap = {
