@@ -322,6 +322,14 @@ export const DualGovernance: ChainAddressMap = {
   },
 }
 
+export const DualGovernanceLegacy: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0x4d12b9f6acab54ff6a3a776ba3b8724d9b77845f',
+}
+
+export const DualGovernanceProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xC1db28B3301331277e307FDCfF8DE28242A4486E',
+}
+
 export const GateSeal: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xf9C9fDB4A5D2AA1D836D5370AB9b28BC1847e178',
   [CHAINS.Holesky]: '0xAE6eCd77DCC656c5533c4209454Fd56fB46e1778',
@@ -379,4 +387,13 @@ export const AllowedTokensRegistry: ChainAddressMap = {
 
 export const InsuranceFund: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x8B3f33234ABD88493c0Cd28De33D583B70beDe35',
+}
+
+export const TriggerableWithdrawalsGateway: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0x6679090D92b08a2a686eF8614feECD8cDFE209db',
+}
+
+export const DualGovernanceUpgradeStateVerifier: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x487b764a2085ffd595D9141BAec0A766B7904786',
+  [CHAINS.Hoodi]: '0x46862627C20b28AE79E25a0E06C5c66D07f8aa43',
 }

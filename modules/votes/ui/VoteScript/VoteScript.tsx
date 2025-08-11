@@ -18,7 +18,8 @@ import { CalldataDecoder } from 'modules/blockChain/CalldataDecoder'
 import { EVMScriptDecoder } from '@lidofinance/evm-script-decoder'
 import { useEVMScriptDecoder } from 'modules/votes/hooks/useEvmScriptDecoder'
 import { CHAINS } from '@lido-sdk/constants'
-import { useGetContractAddress } from 'modules/blockChain/hooks/useGetContractAddress'
+
+const SUBMIT_PROPOSAL_METHOD_ID = '0x53e51f8b' // submitProposal((address,uint96,bytes)[],string)
 
 type Props = {
   script: string
@@ -29,7 +30,6 @@ const parseDGCalls = async (
   decoded: EVMScriptDecoded | undefined,
   calldataDecoder: CalldataDecoder,
   evmScriptDecoder: EVMScriptDecoder,
-  dualGovernanceAddress: string,
 ): Promise<EVMScriptDecoded | undefined> => {
   if (!decoded?.calls.length) {
     return decoded
@@ -38,10 +38,8 @@ const parseDGCalls = async (
   const parsedCalls: EVMScriptCall[] = []
 
   for (const call of decoded.calls) {
-    const hasDg =
-      call.abi?.name === 'submitProposal' &&
-      call.address.toLowerCase() === dualGovernanceAddress.toLowerCase()
-    if (!hasDg) {
+    // Check if the call is a Dual Governance `submitProposal` call
+    if (call.methodId !== SUBMIT_PROPOSAL_METHOD_ID) {
       parsedCalls.push(call)
     } else {
       const parsedDgDecodedCalldata: EVMScriptDecoded[] = []
@@ -117,7 +115,6 @@ export function VoteScript({ script, metadata = '' }: Props) {
   const calldataDecoder = useCalldataDecoder()
   const evmScriptDecoder = useEVMScriptDecoder()
   const { chainId } = useWeb3()
-  const getContractAddress = useGetContractAddress()
 
   const { data: decoded, initialLoading } = useSWR(
     ['swr:decode-script', chainId, evmScriptDecoder, calldataDecoder, script],
@@ -129,12 +126,10 @@ export function VoteScript({ script, metadata = '' }: Props) {
       _script: string,
     ) => {
       const decodedEvmScript = await _evmDecoder.decodeEVMScript(_script)
-      const dualGovernanceAddress = getContractAddress('DualGovernance')
       const parsedScriptForDg = await parseDGCalls(
         decodedEvmScript,
         _callDataDecoder,
         _evmDecoder,
-        dualGovernanceAddress,
       )
       return parsedScriptForDg
     },
