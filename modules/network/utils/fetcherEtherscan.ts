@@ -2,9 +2,9 @@ import { Cache } from 'memory-cache'
 import { CHAINS } from '@lido-sdk/constants'
 import { fetcherStandard } from './fetcherStandard'
 import {
-  getEtherscanUrl,
   ETHERSCAN_API_URL,
   ETHERSCAN_CACHE_TTL,
+  ETHERSCAN_REMOTE_URL,
 } from 'modules/config/network'
 
 const cache = new Cache<string, unknown>()
@@ -32,11 +32,11 @@ export async function fetcherEtherscan<T>({
     `module=${module}`,
     `action=${action}`,
     `address=${address}`,
-    isProxy && `chainId=${chainId}`,
+    `chainId=${chainId}`,
     !isProxy && `apikey=${apiKey}`,
   ].filter(Boolean)
 
-  const urlBase = isProxy ? ETHERSCAN_API_URL : getEtherscanUrl(chainId)
+  const urlBase = isProxy ? ETHERSCAN_API_URL : ETHERSCAN_REMOTE_URL
   const url = `${urlBase}?${queryParams.join('&')}`
 
   if (useCache) {
