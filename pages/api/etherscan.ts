@@ -5,7 +5,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { parseChainId } from 'modules/blockChain/chains'
 import { fetchWithFallback } from 'modules/network/utils/fetchWithFallback'
 import clone from 'just-clone'
-import { ETHERSCAN_CACHE_TTL, ETHERSCAN_REMOTE_URL } from 'modules/config'
+import { ETHERSCAN_CACHE_TTL, ETHERSCAN_REMOTE_API_URL } from 'modules/config'
 import { etherscanResponseTime } from 'modules/shared/metrics/responseTime'
 
 const { serverRuntimeConfig } = getConfig()
@@ -47,7 +47,7 @@ export default async function etherscan(
     }
 
     const queryParams = [
-      `chainId=${req.query.chainId}`,
+      `chainid=${req.query.chainId}`,
       `module=${req.query.module}`,
       `action=${req.query.action}`,
       `address=${req.query.address}`,
@@ -56,7 +56,7 @@ export default async function etherscan(
 
     const chainId = parseChainId(String(req.query.chainId))
 
-    const url = `${ETHERSCAN_REMOTE_URL}?${queryParams.join('&')}`
+    const url = `${ETHERSCAN_REMOTE_API_URL}?${queryParams.join('&')}`
 
     const cached = cache.get(url)
 

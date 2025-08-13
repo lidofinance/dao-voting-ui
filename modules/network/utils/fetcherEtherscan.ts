@@ -4,7 +4,7 @@ import { fetcherStandard } from './fetcherStandard'
 import {
   ETHERSCAN_API_URL,
   ETHERSCAN_CACHE_TTL,
-  ETHERSCAN_REMOTE_URL,
+  ETHERSCAN_REMOTE_API_URL,
 } from 'modules/config/network'
 
 const cache = new Cache<string, unknown>()
@@ -29,14 +29,14 @@ export async function fetcherEtherscan<T>({
   const isProxy = !Boolean(apiKey)
 
   const queryParams = [
+    `chainid=${chainId}`,
     `module=${module}`,
     `action=${action}`,
     `address=${address}`,
-    `chainId=${chainId}`,
     !isProxy && `apikey=${apiKey}`,
   ].filter(Boolean)
 
-  const urlBase = isProxy ? ETHERSCAN_API_URL : ETHERSCAN_REMOTE_URL
+  const urlBase = isProxy ? ETHERSCAN_API_URL : ETHERSCAN_REMOTE_API_URL
   const url = `${urlBase}?${queryParams.join('&')}`
 
   if (useCache) {
