@@ -47,7 +47,7 @@ export default async function etherscan(
     }
 
     const queryParams = [
-      `chainid=${req.query.chainId}`,
+      `chainId=${req.query.chainId}`,
       `module=${req.query.module}`,
       `action=${req.query.action}`,
       `address=${req.query.address}`,

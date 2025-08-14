@@ -29,7 +29,7 @@ export async function fetcherEtherscan<T>({
   const isProxy = !Boolean(apiKey)
 
   const queryParams = [
-    `chainid=${chainId}`,
+    `chainId=${chainId}`,
     `module=${module}`,
     `action=${action}`,
     `address=${address}`,
