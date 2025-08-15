@@ -1,0 +1,208 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newDualGovernance",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "newTiebreakerCoreCommittee",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "configProviderForDisconnectedDualGovernance",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "expectedValue", "type": "address" },
+      { "internalType": "address", "name": "actualValue", "type": "address" }
+    ],
+    "name": "InvalidConfigProviderForDisconnectedDualGovernance",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "expectedValue", "type": "address" },
+      { "internalType": "address", "name": "actualValue", "type": "address" }
+    ],
+    "name": "InvalidDualGovernanceAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "expectedValue", "type": "address" },
+      { "internalType": "address", "name": "actualValue", "type": "address" }
+    ],
+    "name": "InvalidProposalsCanceller",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "expectedValue", "type": "address" },
+      { "internalType": "address", "name": "actualValue", "type": "address" }
+    ],
+    "name": "InvalidProposer",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "expectedValue", "type": "address" },
+      { "internalType": "address", "name": "actualValue", "type": "address" }
+    ],
+    "name": "InvalidProposerExecutor",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "expectedValue", "type": "uint256" },
+      { "internalType": "uint256", "name": "actualValue", "type": "uint256" }
+    ],
+    "name": "InvalidProposesCount",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "expectedValue", "type": "address" },
+      { "internalType": "address", "name": "actualValue", "type": "address" }
+    ],
+    "name": "InvalidResealCommittee",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      { "internalType": "Duration", "name": "expectedValue", "type": "uint32" },
+      { "internalType": "Duration", "name": "actualValue", "type": "uint32" }
+    ],
+    "name": "InvalidTiebreakerActivationTimeout",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "expectedValue", "type": "address" },
+      { "internalType": "address", "name": "actualValue", "type": "address" }
+    ],
+    "name": "InvalidTiebreakerCommittee",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "expectedValue", "type": "address" },
+      { "internalType": "address", "name": "actualValue", "type": "address" }
+    ],
+    "name": "InvalidTiebreakerSealableWithdrawalBlockers",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "expectedValue", "type": "uint256" },
+      { "internalType": "uint256", "name": "actualValue", "type": "uint256" }
+    ],
+    "name": "InvalidTiebreakerSealableWithdrawalBlockersCount",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [],
+    "name": "DGUpgradeConfigurationValidated",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "ADMIN_EXECUTOR",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "CONFIG_PROVIDER_FOR_DISCONNECTED_DUAL_GOVERNANCE",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "DUAL_GOVERNANCE",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "NEW_DUAL_GOVERNANCE",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "NEW_TIEBREAKER_CORE_COMMITTEE",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "RESEAL_COMMITTEE",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "TIEBREAKER_ACTIVATION_TIMEOUT",
+    "outputs": [{ "internalType": "Duration", "name": "", "type": "uint32" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "TIMELOCK",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "TRIGGERABLE_WITHDRAWALS_GATEWAY",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "VALIDATORS_EXIT_BUS_ORACLE",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "VOTING",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "WITHDRAWAL_QUEUE",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "verify",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
