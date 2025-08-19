@@ -129,7 +129,7 @@ export function VoteStatusChips({
               }
             >
               <div>
-                <Chip variant="warning">In Dual Governance</Chip>
+                <Chip variant="warning">In Dual Governance review</Chip>
               </div>
             </Tooltip>
           )
