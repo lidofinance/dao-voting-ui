@@ -74,21 +74,17 @@ export const useDualGovernanceState = () => {
       let status = stateDetails.persistedState
 
       let activeProposalsCount = 0
-      if (
-        status !== DualGovernanceStatus.Normal &&
-        status !== DualGovernanceStatus.VetoCooldown
-      ) {
-        const proposalsCount = (
-          await emergencyProtectedTimelock.getProposalsCount()
-        ).toNumber()
-        for (let i = 1; i <= proposalsCount; i++) {
-          const proposal = await emergencyProtectedTimelock.getProposal(i)
-          if (
-            proposal.proposalDetails.status === ProposalStatus.Submitted ||
-            proposal.proposalDetails.status === ProposalStatus.Scheduled
-          ) {
-            activeProposalsCount++
-          }
+
+      const proposalsCount = (
+        await emergencyProtectedTimelock.getProposalsCount()
+      ).toNumber()
+      for (let i = 1; i <= proposalsCount; i++) {
+        const proposal = await emergencyProtectedTimelock.getProposal(i)
+        if (
+          proposal.proposalDetails.status === ProposalStatus.Submitted ||
+          proposal.proposalDetails.status === ProposalStatus.Scheduled
+        ) {
+          activeProposalsCount++
         }
       }
 

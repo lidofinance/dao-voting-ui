@@ -22,6 +22,7 @@ import { VoteVotersList } from '../VoteVotersList'
 import { VoteProgressBar } from 'modules/votes/ui/VoteProgressBar'
 import { getEtherscanTxLink } from '@lido-sdk/helpers'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
+import { useVoteDualGovernanceStatus } from 'modules/dual-governance/useVoteDualGovernanceStatus'
 
 const localeDateOptions = {
   month: 'long',
@@ -86,19 +87,34 @@ export function VoteDetails({
     return `Enacted ${formatDate(executedAt)}`
   }, [executedAt, startDate])
 
+  const {
+    data: voteDualGovernanceStatus,
+    initialLoading: voteDualGovernanceStatusLoading,
+  } = useVoteDualGovernanceStatus({
+    voteId,
+    snapshotBlock: vote.snapshotBlock.toNumber(),
+  })
+
   return (
     <>
       <VoteHeader data-testid="voteHeader">
         <VoteTitle data-testid="voteTitle">Vote #{voteId}</VoteTitle>
-        <VoteStatusChips
-          totalSupply={totalSupply}
-          nayNum={nayNum}
-          yeaNum={yeaNum}
-          minAcceptQuorum={weiToNum(vote.minAcceptQuorum)}
-          status={status}
-          executedTxHash={executedTxHash}
-          votePhase={votePhase}
-        />
+        {!voteDualGovernanceStatusLoading && (
+          <VoteStatusChips
+            totalSupply={totalSupply}
+            nayNum={nayNum}
+            yeaNum={yeaNum}
+            minAcceptQuorum={weiToNum(vote.minAcceptQuorum)}
+            status={status}
+            executedTxHash={executedTxHash}
+            votePhase={votePhase}
+            chainId={chainId}
+            proposalId={voteDualGovernanceStatus?.proposalId || null}
+            voteDualGovernanceStatus={
+              voteDualGovernanceStatus?.proposalStatus || null
+            }
+          />
+        )}
         <BlockWrap>
           <Text as="span" color="secondary" size="xxs">
             {'Block '}

@@ -22,6 +22,7 @@ import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
 import { formatFloatPct } from 'modules/shared/utils/formatFloatPct'
 import * as urls from 'modules/network/utils/urls'
+import { useVoteDualGovernanceStatus } from 'modules/dual-governance/useVoteDualGovernanceStatus'
 
 type Props = {
   voteId: number
@@ -77,6 +78,11 @@ export function DashboardVote({
     onPass: handlePass,
   })
 
+  const { data: voteDualGovernanceStatus } = useVoteDualGovernanceStatus({
+    voteId,
+    snapshotBlock: vote.snapshotBlock.toNumber(),
+  })
+
   const neededToQuorum = weiToNum(vote.minAcceptQuorum) - yeaPctOfTotalSupply
   const neededToQuorumFormatted = formatFloatPct(neededToQuorum, {
     floor: true,
@@ -99,6 +105,9 @@ export function DashboardVote({
           totalSupply={totalSupply}
           fontSize="xxs"
           minAcceptQuorum={weiToNum(vote.minAcceptQuorum)}
+          voteDualGovernanceStatus={
+            voteDualGovernanceStatus?.proposalStatus || null
+          }
         />
         <VoteBody>
           <VoteTitle>Vote #{voteId}</VoteTitle>

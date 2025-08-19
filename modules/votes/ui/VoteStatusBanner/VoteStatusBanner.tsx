@@ -1,20 +1,22 @@
 import { useMemo } from 'react'
 import {
-  Wrap,
-  BannerText,
-  InfoText,
-  BadgePassed,
   BadgeFailed,
   BadgeNoQuorum,
   BadgeOngoing,
+  BadgePassed,
+  BannerText,
+  InfoText,
+  Wrap,
 } from './VoteStatusBannerStyle'
 import { FormattedDate } from 'modules/shared/ui/Utils/FormattedDate'
 import { VoteDetailsCountdown } from '../VoteDetailsCountdown'
 import ClearIconSVG from 'assets/clear.com.svg.react'
 import DoneIconSVG from 'assets/done.com.svg.react'
+import DGIconSVG from 'assets/dg.com.svg.react'
 
 import { VoteStatus } from 'modules/votes/types'
 import { convertStatusToStyledVariant, VoteStatusFontSize } from './types'
+import { ProposalStatus } from 'modules/dual-governance/types'
 
 type Props = {
   startDate: number
@@ -28,6 +30,7 @@ type Props = {
   nayNum: number
   totalSupply: number
   minAcceptQuorum: number
+  voteDualGovernanceStatus: ProposalStatus | null
 }
 
 export function VoteStatusBanner({
@@ -42,6 +45,7 @@ export function VoteStatusBanner({
   nayNum,
   totalSupply,
   minAcceptQuorum,
+  voteDualGovernanceStatus,
 }: Props) {
   const variant = convertStatusToStyledVariant(status)
 
@@ -113,10 +117,37 @@ export function VoteStatusBanner({
 
       {status === VoteStatus.Executed && (
         <>
-          <BadgePassed>
-            <DoneIconSVG />
-          </BadgePassed>
-          <BannerText variant={variant}>Passed (enacted)</BannerText>
+          {voteDualGovernanceStatus === ProposalStatus.Cancelled && (
+            <>
+              <BadgeFailed>
+                <DGIconSVG />
+              </BadgeFailed>
+              <BannerText variant={variant}>
+                Cancelled in Dual Governance
+              </BannerText>
+            </>
+          )}
+          {voteDualGovernanceStatus &&
+            voteDualGovernanceStatus !== ProposalStatus.Cancelled &&
+            voteDualGovernanceStatus !== ProposalStatus.Executed && (
+              <>
+                <BadgeNoQuorum>
+                  <DGIconSVG />
+                </BadgeNoQuorum>
+                <BannerText variant={variant}>
+                  In Dual Governance review
+                </BannerText>
+              </>
+            )}
+          {(voteDualGovernanceStatus === ProposalStatus.Executed ||
+            voteDualGovernanceStatus === null) && (
+            <>
+              <BadgePassed>
+                <DoneIconSVG />
+              </BadgePassed>
+              <BannerText variant={variant}>Passed (enacted)</BannerText>
+            </>
+          )}
           {endDateEl}
         </>
       )}
