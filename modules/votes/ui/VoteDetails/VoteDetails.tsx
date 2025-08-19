@@ -14,7 +14,13 @@ import {
 } from './VoteDetailsStyle'
 import { VoteDescription } from '../VoteDescription'
 
-import { Vote, VoteEvent, VotePhase, VoteStatus } from 'modules/votes/types'
+import {
+  EventExecuteVote,
+  Vote,
+  VoteEvent,
+  VotePhase,
+  VoteStatus,
+} from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
 import { VoteStatusChips } from '../VoteStatusChips'
@@ -53,6 +59,7 @@ type Props = {
   executedTxHash?: string
   startedTxHash?: string
   votePhase: VotePhase | undefined
+  eventExecuteVote: EventExecuteVote | undefined
 }
 
 export function VoteDetails({
@@ -68,6 +75,7 @@ export function VoteDetails({
   voteEvents,
   executedAt,
   votePhase,
+  eventExecuteVote,
 }: Props) {
   const { chainId } = useWeb3()
   const {
@@ -92,7 +100,7 @@ export function VoteDetails({
     initialLoading: voteDualGovernanceStatusLoading,
   } = useVoteDualGovernanceStatus({
     voteId,
-    snapshotBlock: vote.snapshotBlock.toNumber(),
+    eventExecuteVote,
   })
 
   return (

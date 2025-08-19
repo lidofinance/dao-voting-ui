@@ -17,7 +17,12 @@ import {
   NeededToQuorum,
 } from './DashboardVoteStyle'
 import type { StartVoteEventObject } from 'generated/AragonVotingAbi'
-import { Vote, VotePhase, VoteStatus } from 'modules/votes/types'
+import {
+  EventExecuteVote,
+  Vote,
+  VotePhase,
+  VoteStatus,
+} from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
 import { formatFloatPct } from 'modules/shared/utils/formatFloatPct'
@@ -33,6 +38,7 @@ type Props = {
   objectionPhaseTime: number
   executedAt?: number
   onPass: () => void
+  eventExecuteVote: EventExecuteVote
 }
 
 export function DashboardVote({
@@ -44,6 +50,7 @@ export function DashboardVote({
   objectionPhaseTime,
   executedAt,
   onPass,
+  eventExecuteVote,
 }: Props) {
   const {
     nayPct,
@@ -80,7 +87,7 @@ export function DashboardVote({
 
   const { data: voteDualGovernanceStatus } = useVoteDualGovernanceStatus({
     voteId,
-    snapshotBlock: vote.snapshotBlock.toNumber(),
+    eventExecuteVote,
   })
 
   const neededToQuorum = weiToNum(vote.minAcceptQuorum) - yeaPctOfTotalSupply

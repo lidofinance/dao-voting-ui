@@ -117,6 +117,7 @@ export function VoteForm({ voteId }: Props) {
             isEnded={isEnded}
             metadata={eventStart?.decoded.metadata}
             voteEvents={voteEvents}
+            eventExecuteVote={eventExecuteVote}
             executedTxHash={eventExecuteVote?.event.transactionHash}
             executedAt={eventExecuteVote?.executedAt}
             votePhase={votePhase}
