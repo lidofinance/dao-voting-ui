@@ -134,6 +134,16 @@ export function VoteStatusChips({
             </Tooltip>
           )
         }
+      } else {
+        statusChip = (
+          <VotePhasesTooltip
+            placement="bottomLeft"
+            executedTxHash={executedTxHash}
+            votePhase={votePhase}
+          >
+            <Chip variant="success">Passed (enacted)</Chip>
+          </VotePhasesTooltip>
+        )
       }
     } else {
       statusChip = (
