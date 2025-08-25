@@ -372,6 +372,20 @@ export const DualGovernanceResealManager: ChainAddressMap = {
   [CHAINS.Hoodi]: '0x05172CbCDb7307228F781436b327679e4DAE166B',
 }
 
+export const ResealCommittee: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xFFe21561251c49AdccFad065C94Fb4931dF49081',
+  [CHAINS.Hoodi]: '0x83BCE68B4e8b7071b2a664a26e6D3Bc17eEe3102',
+}
+
+export const DualGovernanceConfigProvider: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xa1692Af6FDfdD1030E4E9c4Bc429986FA64CB5EF',
+  [CHAINS.Hoodi]: '0x2b685e6fB288bBb7A82533BAfb679FfDF6E5bb33',
+}
+
+export const DualGovernanceConfigProviderLegacy: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xc934E90E76449F09f2369BB85DCEa056567A327a',
+}
+
 export const DualGovernanceTieBreakerCore: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x175742c3DDD88B0192df3EcF98f180A79cb259D0',
   [CHAINS.Hoodi]: '0x9Ce4bA766C87cC87e507307163eA54C5003A3563',
