@@ -98,7 +98,7 @@ export const Steth: ChainAddressMap = {
   },
   [CHAINS.Hoodi]: {
     test: '0x7853038c89a91752de79094db32fede15b5c6a4b',
-    actual: '0x4ecAC76fEd32DADd892aB0697f47622FdcB0F955',
+    actual: '0x3508A952176b3c15387C97BE809eaffB1982176a',
   },
 }
 
