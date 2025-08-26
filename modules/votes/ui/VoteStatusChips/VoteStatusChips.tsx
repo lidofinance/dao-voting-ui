@@ -82,59 +82,24 @@ export function VoteStatusChips({
     )
   }
   let statusChip = null
-  if (status === VoteStatus.Passed) {
-    statusChip = <Chip variant="success">Passed</Chip>
-  } else if (status === VoteStatus.Executed) {
-    if (voteDualGovernanceStatus !== null) {
-      if (voteDualGovernanceStatus !== ProposalStatus.Executed) {
-        if (voteDualGovernanceStatus === ProposalStatus.Cancelled) {
-          statusChip = (
-            <Tooltip
-              title={
-                <TooltipText>
-                  <LinkWrap>
-                    See on Dual Governance:
-                    <Link
-                      href={`${getDualGovernanceLink(
-                        chainId,
-                      )}proposals/${proposalId}`}
-                    >
-                      <External />
-                    </Link>
-                  </LinkWrap>
-                </TooltipText>
-              }
-            >
-              <div>
-                <Chip variant="warning">Cancelled in Dual Governance</Chip>
-              </div>
-            </Tooltip>
-          )
-        } else {
-          statusChip = (
-            <Tooltip
-              title={
-                <TooltipText>
-                  <LinkWrap>
-                    See on Dual Governance
-                    <Link
-                      href={`${getDualGovernanceLink(
-                        chainId,
-                      )}proposals/${proposalId}`}
-                    >
-                      <External />
-                    </Link>
-                  </LinkWrap>
-                </TooltipText>
-              }
-            >
-              <div>
-                <Chip variant="warning">In Dual Governance review</Chip>
-              </div>
-            </Tooltip>
-          )
-        }
-      } else {
+
+  switch (status) {
+    case VoteStatus.Passed:
+      statusChip = <Chip variant="success">Passed</Chip>
+      break
+    case VoteStatus.Pending:
+      statusChip = <Chip variant="success">Passed (pending)</Chip>
+      break
+    case VoteStatus.Rejected:
+      if (quorumIsReached) {
+        statusChip = <Chip variant="danger">Rejected</Chip>
+      }
+      break
+    case VoteStatus.Executed:
+      if (
+        voteDualGovernanceStatus === null ||
+        voteDualGovernanceStatus === ProposalStatus.Executed
+      ) {
         statusChip = (
           <VotePhasesTooltip
             placement="bottomLeft"
@@ -144,20 +109,60 @@ export function VoteStatusChips({
             <Chip variant="success">Passed (enacted)</Chip>
           </VotePhasesTooltip>
         )
+        break
       }
-    } else {
+
+      if (voteDualGovernanceStatus === ProposalStatus.Cancelled) {
+        statusChip = (
+          <Tooltip
+            title={
+              <TooltipText>
+                <LinkWrap>
+                  See on Dual Governance:
+                  <Link
+                    href={`${getDualGovernanceLink(
+                      chainId,
+                    )}proposals/${proposalId}`}
+                  >
+                    <External />
+                  </Link>
+                </LinkWrap>
+              </TooltipText>
+            }
+          >
+            <div>
+              <Chip variant="warning">Cancelled in Dual Governance</Chip>
+            </div>
+          </Tooltip>
+        )
+        break
+      }
+
       statusChip = (
-        <VotePhasesTooltip
-          placement="bottomLeft"
-          executedTxHash={executedTxHash}
-          votePhase={votePhase}
+        <Tooltip
+          title={
+            <TooltipText>
+              <LinkWrap>
+                See on Dual Governance
+                <Link
+                  href={`${getDualGovernanceLink(
+                    chainId,
+                  )}proposals/${proposalId}`}
+                >
+                  <External />
+                </Link>
+              </LinkWrap>
+            </TooltipText>
+          }
         >
-          <Chip variant="success">Passed (enacted)</Chip>
-        </VotePhasesTooltip>
+          <div>
+            <Chip variant="warning">In Dual Governance review</Chip>
+          </div>
+        </Tooltip>
       )
-    }
-  } else if (status === VoteStatus.Rejected && quorumIsReached) {
-    statusChip = <Chip variant="danger">Rejected</Chip>
+      break
+    default:
+      statusChip = null
   }
 
   return (
