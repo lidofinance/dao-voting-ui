@@ -85,7 +85,7 @@ export function DashboardGrid({ currentPage }: Props) {
           dataItem.voteId,
           snapshotBlock,
         )
-        const eventExecute = await getEventExecuteVote(
+        const eventExecuteVote = await getEventExecuteVote(
           voting,
           dataItem.voteId,
           snapshotBlock,
@@ -94,7 +94,8 @@ export function DashboardGrid({ currentPage }: Props) {
         return {
           ...dataItem,
           eventStart,
-          executedAt: eventExecute?.executedAt,
+          executedAt: eventExecuteVote?.executedAt,
+          eventExecuteVote,
         }
       })
 

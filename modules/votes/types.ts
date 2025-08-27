@@ -1,6 +1,10 @@
 import { BigNumber } from 'ethers'
 import { AragonVotingAbi } from 'generated'
 import { UnwrapPromise } from 'next/dist/lib/coalesced-function'
+import type {
+  ExecuteVoteEvent,
+  ExecuteVoteEventObject,
+} from 'generated/AragonVotingAbi'
 
 export type Vote = UnwrapPromise<ReturnType<AragonVotingAbi['getVote']>>
 
@@ -49,3 +53,9 @@ export type VoteMetadata = {
 export type VoteEvent = VoteInfo & {
   delegatedVotes?: VoteInfo[]
 }
+
+export type EventExecuteVote = {
+  event: ExecuteVoteEvent
+  decoded: ExecuteVoteEventObject
+  executedAt: number | undefined
+} | null
