@@ -98,7 +98,7 @@ export const Steth: ChainAddressMap = {
   },
   [CHAINS.Hoodi]: {
     test: '0x7853038c89a91752de79094db32fede15b5c6a4b',
-    actual: '0x4ecAC76fEd32DADd892aB0697f47622FdcB0F955',
+    actual: '0x3508A952176b3c15387C97BE809eaffB1982176a',
   },
 }
 
@@ -322,6 +322,14 @@ export const DualGovernance: ChainAddressMap = {
   },
 }
 
+export const DualGovernanceLegacy: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0x4d12b9f6acab54ff6a3a776ba3b8724d9b77845f',
+}
+
+export const DualGovernanceProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xC1db28B3301331277e307FDCfF8DE28242A4486E',
+}
+
 export const GateSeal: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xf9C9fDB4A5D2AA1D836D5370AB9b28BC1847e178',
   [CHAINS.Holesky]: '0xAE6eCd77DCC656c5533c4209454Fd56fB46e1778',
@@ -364,9 +372,27 @@ export const DualGovernanceResealManager: ChainAddressMap = {
   [CHAINS.Hoodi]: '0x05172CbCDb7307228F781436b327679e4DAE166B',
 }
 
+export const ResealCommittee: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xFFe21561251c49AdccFad065C94Fb4931dF49081',
+  [CHAINS.Hoodi]: '0x83BCE68B4e8b7071b2a664a26e6D3Bc17eEe3102',
+}
+
+export const DualGovernanceConfigProvider: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xa1692Af6FDfdD1030E4E9c4Bc429986FA64CB5EF',
+  [CHAINS.Hoodi]: '0x2b685e6fB288bBb7A82533BAfb679FfDF6E5bb33',
+}
+
+export const DualGovernanceConfigProviderLegacy: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xc934E90E76449F09f2369BB85DCEa056567A327a',
+}
+
 export const DualGovernanceTieBreakerCore: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x175742c3DDD88B0192df3EcF98f180A79cb259D0',
   [CHAINS.Hoodi]: '0x9Ce4bA766C87cC87e507307163eA54C5003A3563',
+}
+
+export const DualGovernanceTieBreakerCoreProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xf65614d73952Be91ce0aE7Dd9cFf25Ba15bEE2f5',
 }
 
 export const EVMScriptRegistry: ChainAddressMap = {
@@ -379,4 +405,13 @@ export const AllowedTokensRegistry: ChainAddressMap = {
 
 export const InsuranceFund: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x8B3f33234ABD88493c0Cd28De33D583B70beDe35',
+}
+
+export const TriggerableWithdrawalsGateway: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0x6679090D92b08a2a686eF8614feECD8cDFE209db',
+}
+
+export const DualGovernanceUpgradeStateVerifier: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x487b764a2085ffd595D9141BAec0A766B7904786',
+  [CHAINS.Hoodi]: '0x46862627C20b28AE79E25a0E06C5c66D07f8aa43',
 }
