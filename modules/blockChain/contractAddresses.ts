@@ -391,6 +391,10 @@ export const DualGovernanceTieBreakerCore: ChainAddressMap = {
   [CHAINS.Hoodi]: '0x9Ce4bA766C87cC87e507307163eA54C5003A3563',
 }
 
+export const DualGovernanceTieBreakerCoreProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xf65614d73952Be91ce0aE7Dd9cFf25Ba15bEE2f5',
+}
+
 export const EVMScriptRegistry: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x853cc0D5917f49B57B8e9F89e491F5E18919093A',
 }
