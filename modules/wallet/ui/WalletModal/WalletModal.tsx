@@ -20,7 +20,6 @@ import {
   Address,
 } from './WalletModalStyle'
 import { useDisconnect as useDisconnectWagmi } from 'wagmi'
-import { ETHERSCAN_ENTITIES } from 'modules/blockChain/utils/getEtherscanLink'
 
 function WalletModalContent() {
   const { walletAddress } = useWeb3()
@@ -52,10 +51,7 @@ function WalletModalContent() {
       </Row>
 
       <Row>
-        <CopyOpenActions
-          value={walletAddress}
-          entity={ETHERSCAN_ENTITIES.ADDRESS}
-        />
+        <CopyOpenActions value={walletAddress} entity="address" />
       </Row>
     </>
   )

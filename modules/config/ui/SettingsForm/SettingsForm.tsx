@@ -25,7 +25,7 @@ import { isUrl } from 'modules/shared/utils/isUrl'
 import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 import { isTestnet as getIsTestnet } from 'modules/blockChain/utils/isTestnet'
 import { useTestContractsInfo } from './useTestContractsInfo'
-import { getEtherscanAddressLink } from 'modules/blockChain/utils/getEtherscanLink'
+import { getEtherscanAddressLink } from 'modules/blockChain/utils/etherscan'
 
 type FormValues = {
   rpcUrl: string

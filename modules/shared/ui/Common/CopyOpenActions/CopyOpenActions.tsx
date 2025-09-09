@@ -1,23 +1,19 @@
 import { useCopyToClipboard } from 'modules/shared/hooks/useCopyToClipboard'
-import {
-  ETHERSCAN_ENTITIES,
-  getEtherscanLink,
-} from 'modules/blockChain/utils/getEtherscanLink'
+import { EtherscanEntity } from 'modules/blockChain/utils/etherscan'
 
 import { ButtonIcon, Copy } from '@lidofinance/lido-ui'
 import { Wrap } from './CopyOpenActionsStyle'
 import { ButtonExternalView } from 'modules/shared/ui/Common/ButtonExternalView'
-import { openWindow } from 'modules/shared/utils/openWindow'
-import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
+import { useEtherscanOpener } from 'modules/blockChain/hooks/useEtherscanOpener'
 
 type Props = {
   value: string | null | undefined
-  entity: ETHERSCAN_ENTITIES
+  entity: EtherscanEntity
 }
 
 export function CopyOpenActions({ value, entity }: Props) {
-  const { chainId } = useWeb3()
   const handleCopy = useCopyToClipboard(value ?? '')
+  const handleEtherscan = useEtherscanOpener(value ?? '', entity)
 
   const copyText =
     entity === 'address' ? 'address' : entity === 'tx' ? 'hash' : 'token'
@@ -33,9 +29,7 @@ export function CopyOpenActions({ value, entity }: Props) {
         data-testid="copyAddressBtn"
       />
       <ButtonExternalView
-        onClick={() =>
-          openWindow(getEtherscanLink(chainId, value ?? '', entity))
-        }
+        onClick={handleEtherscan}
         children="View on Etherscan"
         variant="ghost"
         data-testid="etherscanBtn"

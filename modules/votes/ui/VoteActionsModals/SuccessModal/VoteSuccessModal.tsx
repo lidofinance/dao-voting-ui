@@ -30,8 +30,7 @@ import { VoteActionButtonObjectionTooltip } from 'modules/votes/ui/VoteActionBut
 import { EligibleDelegator } from 'modules/delegation/hooks/useEligibleDelegators'
 import { DelegationInfo } from 'modules/delegation/types'
 import { ModalProps } from 'modules/modal/ModalProvider'
-import { getEtherscanTxLink } from 'modules/blockChain/utils/getEtherscanLink'
-import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
+import { useEtherscanOpener } from 'modules/blockChain/hooks/useEtherscanOpener'
 
 interface SnapshotData {
   mode: 'yay' | 'nay' | 'enact' | null
@@ -51,7 +50,6 @@ export function VoteSuccessModal({
 }: ModalProps<{
   data: { successTx?: { hash: string } }
 }>) {
-  const { chainId } = useWeb3()
   const contextData = useVoteFormActionsContext()
   const {
     txVote,
@@ -184,6 +182,8 @@ export function VoteSuccessModal({
     currentSnapshot.votePower > 0 &&
     !hasVotedWithOwnVP
 
+  const handleEtherscan = useEtherscanOpener(successTx?.hash ?? '', 'tx')
+
   useEffect(() => {
     setSuccessTx(null)
   }, [setSuccessTx])
@@ -221,13 +221,7 @@ export function VoteSuccessModal({
         <Text size="xs" color="secondary">
           Transaction can be viewed on
         </Text>
-        <Link
-          onClick={() =>
-            openWindow(getEtherscanTxLink(chainId, successTx?.hash ?? ''))
-          }
-        >
-          Etherscan
-        </Link>
+        <Link onClick={handleEtherscan}>Etherscan</Link>
       </LinkWrap>
       {(canVoteWithDelegatedPower || canVoteWithOwnPower) && (
         <>

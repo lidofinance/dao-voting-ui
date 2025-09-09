@@ -10,7 +10,7 @@ import {
 } from './VoteScriptStyle'
 
 import { EVMScriptDecoded } from '@lidofinance/evm-script-decoder/lib/types'
-import { getEtherscanAddressLink } from 'modules/blockChain/utils/getEtherscanLink'
+import { getEtherscanAddressLink } from 'modules/blockChain/utils/etherscan'
 import { getContractName } from 'modules/config/utils/getContractName'
 import { formatCallString } from './utils'
 import { useGetContractAddress } from 'modules/blockChain/hooks/useGetContractAddress'
