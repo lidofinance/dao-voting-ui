@@ -4,7 +4,6 @@ import getConfig from 'next/config'
 import NextApp, { AppProps, AppContext } from 'next/app'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useErrorMessage } from 'modules/blockChain/hooks/useErrorMessage'
-import { useSupportedChains } from 'reef-knot/web3-react'
 import { PageLayout } from 'modules/shared/ui/Layout/PageLayout'
 import { GlobalStyle } from 'modules/globalStyles'
 import { toast, ToastContainer, ToastError } from '@lidofinance/lido-ui'
@@ -22,6 +21,7 @@ import { UiProvider } from 'modules/shared/ui/UiProvider'
 import { useConfig } from 'modules/config/hooks/useConfig'
 import { TestModeBanner } from 'modules/blockChain/ui/TestModeBanner'
 import { isTestnet } from 'modules/blockChain/utils/isTestnet'
+import { useIsChainSupported } from 'modules/blockChain/hooks/useIsChainSupported'
 
 // Somehow using `GlobalStyle` directly causes a type error
 const GlobalStyleCasted = GlobalStyle as unknown as React.FC
@@ -34,11 +34,11 @@ const basePath = getConfig().publicRuntimeConfig.basePath || ''
 function AppRoot({ Component, pageProps }: AppProps) {
   const { chainId } = useWeb3()
   const { savedConfig } = useConfig()
-  const { isUnsupported } = useSupportedChains()
+  const isChainSupported = useIsChainSupported()
   const error = useErrorMessage()
 
   useEffect(() => {
-    if (!error || isUnsupported) return
+    if (!error || !isChainSupported) return
 
     ToastError(error, {
       toastId: 'wallet-error',
@@ -46,7 +46,7 @@ function AppRoot({ Component, pageProps }: AppProps) {
     })
 
     return () => toast.dismiss('wallet-error')
-  }, [error, isUnsupported])
+  }, [error, isChainSupported])
 
   return (
     <>
@@ -100,7 +100,7 @@ function AppRoot({ Component, pageProps }: AppProps) {
         ))}
       </Head>
       <PageLayout>
-        <NetworkSwitcher />
+        {!isChainSupported && <NetworkSwitcher />}
         {savedConfig.useTestContracts && isTestnet(chainId) && (
           <TestModeBanner />
         )}
