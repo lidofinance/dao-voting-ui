@@ -6,11 +6,9 @@ import { ModalProps } from 'modules/modal/ModalProvider'
 
 const trustedSites = ['https://research.lido.fi/', 'https://snapshot.org/']
 
-export function NavigationModal(
-  props: ModalProps<{ data: { href?: string } }>,
-) {
-  const { data, onClose } = props
-  const link = data.href ? `${data.href}` : ''
+export function NavigationModal(props: ModalProps<{ href?: string }>) {
+  const { href, onClose } = props
+  const link = href ? `${href}` : ''
   const handleClick = useCallback(() => {
     if (link) openWindow(link)
     onClose?.()

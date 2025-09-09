@@ -31,6 +31,7 @@ import { EligibleDelegator } from 'modules/delegation/hooks/useEligibleDelegator
 import { DelegationInfo } from 'modules/delegation/types'
 import { ModalProps } from 'modules/modal/ModalProvider'
 import { useEtherscanOpener } from 'modules/blockChain/hooks/useEtherscanOpener'
+import { ResultTx } from 'modules/blockChain/types'
 
 interface SnapshotData {
   mode: 'yay' | 'nay' | 'enact' | null
@@ -45,11 +46,9 @@ interface SnapshotData {
 }
 
 export function VoteSuccessModal({
-  data: { successTx },
+  successTx,
   ...modalProps
-}: ModalProps<{
-  data: { successTx?: { hash: string } }
-}>) {
+}: ModalProps<{ successTx?: ResultTx }>) {
   const contextData = useVoteFormActionsContext()
   const {
     txVote,
@@ -182,7 +181,10 @@ export function VoteSuccessModal({
     currentSnapshot.votePower > 0 &&
     !hasVotedWithOwnVP
 
-  const handleEtherscan = useEtherscanOpener(successTx?.hash ?? '', 'tx')
+  const handleEtherscan = useEtherscanOpener(
+    successTx?.type === 'regular' ? successTx.tx.hash : '',
+    'tx',
+  )
 
   useEffect(() => {
     setSuccessTx(null)

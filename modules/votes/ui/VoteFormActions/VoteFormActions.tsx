@@ -34,13 +34,12 @@ type Props = {
 type ModalData = {
   mode?: VoteMode | null
   successTx?: ResultTx
-  voterState?: VoterState
 }
 
 type ModalKey = 'submit' | 'success'
 
-const useSubmitModal = getUseModal<ModalData>(VoteSubmitModal)
-const useSuccessModal = getUseModal<ModalData>(VoteSuccessModal)
+const useSubmitModal = getUseModal(VoteSubmitModal)
+const useSuccessModal = getUseModal(VoteSuccessModal)
 
 export function VoteFormActions({
   canEnact,
@@ -195,7 +194,7 @@ export function VoteFormActions({
 
   useEffect(() => {
     if (successTx !== null && !('safeTxHash' in successTx)) {
-      handleSubmit({ successTx, voterState })
+      handleSubmit({ successTx })
     }
   }, [successTx, handleSubmit, voterState])
 

@@ -11,8 +11,12 @@ import { useVoteFormActionsContext } from 'modules/votes/providers/VoteFormActio
 import { TxRow } from 'modules/blockChain/ui/TxRow'
 import { BigNumber } from '@ethersproject/bignumber'
 import { ModalProps } from 'modules/modal/ModalProvider'
+import { VoteMode } from 'modules/votes/types'
 
-export function VoteSubmitModal({ data: { mode }, ...modalProps }: ModalProps) {
+export function VoteSubmitModal({
+  mode,
+  ...modalProps
+}: ModalProps<{ mode?: VoteMode | null }>) {
   const {
     handleVote,
     handleDelegatesVote,

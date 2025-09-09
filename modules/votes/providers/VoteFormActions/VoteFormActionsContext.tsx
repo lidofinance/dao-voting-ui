@@ -39,9 +39,9 @@ export type VoteFormActionsContextValue = {
   formVoteSubmitData: ReturnType<typeof useFormVoteSubmit>
   setVoteId: React.Dispatch<React.SetStateAction<string>>
   votePower: number | undefined
-  handleVote: (mode: VoteMode | null) => Promise<void>
+  handleVote: (mode: VoteMode | null | undefined) => Promise<void>
   handleDelegatesVote: (
-    mode: VoteMode | null,
+    mode: VoteMode | null | undefined,
     selectedAddresses: string[],
   ) => Promise<void>
   votedAs: VotedAs | null

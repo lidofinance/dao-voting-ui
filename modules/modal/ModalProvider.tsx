@@ -58,10 +58,6 @@ export const useModal = <P extends object>(modal: ModalComponentType<P>) => {
   )
 }
 
-export const getUseModal = <P extends object>(modal: ModalComponentType<P>) => {
-  return () => useModal(modal)
-}
-
 /**
  * Context provider
  */

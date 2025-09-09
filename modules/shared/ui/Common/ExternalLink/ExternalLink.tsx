@@ -16,7 +16,7 @@ export function ExternalLink({ href = '', children }: Props) {
   const { openModal: openNavigationModal } = useNavigationModal()
 
   return (
-    <ExternalLinkWrap onClick={() => openNavigationModal({ data: { href } })}>
+    <ExternalLinkWrap onClick={() => openNavigationModal({ href })}>
       {children}
     </ExternalLinkWrap>
   )
