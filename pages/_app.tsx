@@ -6,7 +6,12 @@ import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useErrorMessage } from 'modules/blockChain/hooks/useErrorMessage'
 import { PageLayout } from 'modules/shared/ui/Layout/PageLayout'
 import { GlobalStyle } from 'modules/globalStyles'
-import { toast, ToastContainer, ToastError } from '@lidofinance/lido-ui'
+import {
+  CookieThemeProvider,
+  toast,
+  ToastContainer,
+  ToastError,
+} from '@lidofinance/lido-ui'
 import { ConfigProvider } from 'modules/config/providers/configProvider'
 import { ModalProvider } from 'modules/modal/ModalProvider'
 import { NetworkSwitcher } from 'modules/blockChain/ui/NetworkSwitcher'
@@ -17,7 +22,6 @@ import { getAddressList } from 'modules/config/utils/getAddressList'
 import { withCsp } from 'modules/shared/utils/csp'
 import { CustomAppProps } from 'modules/shared/utils/utilTypes'
 import { AppWeb3Provider } from 'modules/web3Provider'
-import { UiProvider } from 'modules/shared/ui/UiProvider'
 import { useConfig } from 'modules/config/hooks/useConfig'
 import { TestModeBanner } from 'modules/blockChain/ui/TestModeBanner'
 import { isTestnet } from 'modules/blockChain/utils/isTestnet'
@@ -115,7 +119,7 @@ const AppRootMemo = memo(AppRoot)
 
 function App({ envConfig, ...appProps }: CustomAppProps) {
   return (
-    <UiProvider>
+    <CookieThemeProvider>
       <GlobalStyleCasted />
       <ConfigProvider envConfig={envConfig}>
         <AppWeb3Provider>
@@ -126,7 +130,7 @@ function App({ envConfig, ...appProps }: CustomAppProps) {
           </VotePromptProvider>
         </AppWeb3Provider>
       </ConfigProvider>
-    </UiProvider>
+    </CookieThemeProvider>
   )
 }
 
