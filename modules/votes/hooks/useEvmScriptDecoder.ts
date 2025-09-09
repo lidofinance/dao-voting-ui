@@ -8,7 +8,7 @@ import {
   ABIElement as ABIElementImported,
 } from '@lidofinance/evm-script-decoder/lib/types'
 import { EVMScriptDecoder, abiProviders } from '@lidofinance/evm-script-decoder'
-import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
+import { getStaticRpcBatchProvider } from 'modules/blockChain/utils/rpcProviders'
 
 import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'
 import { useAbiMap } from 'modules/blockChain/hooks/useAbiMap'

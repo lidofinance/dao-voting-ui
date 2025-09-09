@@ -1,6 +1,6 @@
-import { CHAINS } from '@lido-sdk/constants'
+import { CHAINS } from 'modules/blockChain/chains'
 import { useSWR } from 'modules/network/hooks/useSwr'
-import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
+import { getStaticRpcBatchProvider } from 'modules/blockChain/utils/rpcProviders'
 import { useWeb3 } from '../../blockChain/hooks/useWeb3'
 import { useConfig } from '../../config/hooks/useConfig'
 

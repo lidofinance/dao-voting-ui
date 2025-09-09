@@ -18,6 +18,7 @@ import {
 import { calcPopoverPosition } from './calcPopoverPosition'
 import { getPublicDelegateByAddress } from 'modules/delegation/utils/getPublicDelegateName'
 import { PublicDelegateAvatar } from '../PublicDelegateAvatar'
+import { ETHERSCAN_ENTITIES } from 'modules/blockChain/utils/getEtherscanLink'
 
 type IdenticonBadgeProps = React.ComponentProps<typeof IdenticonBadge>
 
@@ -74,7 +75,10 @@ export function DelegationAddressPop({ children, ...badgeProps }: Props) {
                 onClick={handleOpen}
               />
             </BadgeWrap>
-            <CopyOpenActions value={address} entity="address" />
+            <CopyOpenActions
+              value={address}
+              entity={ETHERSCAN_ENTITIES.ADDRESS}
+            />
           </div>
           {delegateAddress && (
             <div>
@@ -103,7 +107,10 @@ export function DelegationAddressPop({ children, ...badgeProps }: Props) {
                   />
                 )}
               </BadgeWrap>
-              <CopyOpenActions value={delegateAddress} entity="address" />
+              <CopyOpenActions
+                value={delegateAddress}
+                entity={ETHERSCAN_ENTITIES.ADDRESS}
+              />
             </div>
           )}
         </Pop>

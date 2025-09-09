@@ -1,5 +1,5 @@
-import { CHAINS } from '@lido-sdk/constants'
-import { useLidoSWR } from '@lido-sdk/react'
+import { CHAINS } from 'modules/blockChain/chains'
+import { useSWR } from 'modules/network/hooks/useSwr'
 import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 
@@ -8,7 +8,7 @@ export const useIsDelegate = () => {
   const { votingHelpers } = useContractHelpers()
   const voting = votingHelpers.useRpc()
 
-  return useLidoSWR(
+  return useSWR(
     walletAddress
       ? [`swr:useIsDelegate`, chainId, walletAddress, voting.address]
       : null,

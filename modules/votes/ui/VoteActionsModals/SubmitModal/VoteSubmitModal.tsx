@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
-import { Button, Modal, ModalProps } from '@lidofinance/lido-ui'
+import { Button, Modal } from '@lidofinance/lido-ui'
 import {
   ButtonGroup,
   TxStatusWrapper,
@@ -10,6 +10,7 @@ import { formatBalance } from 'modules/blockChain/utils/formatBalance'
 import { useVoteFormActionsContext } from 'modules/votes/providers/VoteFormActions/VoteFormActionsContext'
 import { TxRow } from 'modules/blockChain/ui/TxRow'
 import { BigNumber } from '@ethersproject/bignumber'
+import { ModalProps } from 'modules/modal/ModalProvider'
 
 export function VoteSubmitModal({ data: { mode }, ...modalProps }: ModalProps) {
   const {
@@ -27,12 +28,12 @@ export function VoteSubmitModal({ data: { mode }, ...modalProps }: ModalProps) {
     string[]
   >([])
 
-  const handleSelectedAddressesChange = useCallback(addresses => {
+  const handleSelectedAddressesChange = useCallback((addresses: string[]) => {
     setSelectedDelegatedAddresses(addresses)
   }, [])
 
   const handleVoteClick = useCallback(
-    power => {
+    (power: 'delegated' | 'own') => {
       if (power === 'own') {
         return handleVote(mode)
       }

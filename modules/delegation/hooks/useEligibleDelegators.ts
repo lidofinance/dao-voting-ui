@@ -1,7 +1,7 @@
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { BigNumber } from 'ethers'
-import { useLidoSWR } from '@lido-sdk/react'
-import { CHAINS } from '@lido-sdk/constants'
+import { useSWR } from 'modules/network/hooks/useSwr'
+import { CHAINS } from 'modules/blockChain/chains'
 import { VoterState } from 'modules/votes/types'
 import {
   DELEGATED_VOTERS_ADDRESSES_LIMIT,
@@ -74,7 +74,7 @@ export function useEligibleDelegators({ voteId }: Args) {
   const { votingHelpers } = useContractHelpers()
   const voting = votingHelpers.useRpc()
 
-  const swrResult = useLidoSWR(
+  const swrResult = useSWR(
     walletAddress && voteId
       ? [
           'swr:useEligibleDelegators',

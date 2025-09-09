@@ -11,7 +11,7 @@ import {
   TooltipText,
 } from '../VotePhasesTooltip/VotePhasesTooltipStyle'
 import { getDualGovernanceLink } from 'modules/dual-governance/utils'
-import { CHAINS } from '@lido-sdk/constants'
+import { CHAINS } from 'modules/blockChain/chains'
 
 interface Props {
   totalSupply: number

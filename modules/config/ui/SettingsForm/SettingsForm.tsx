@@ -25,7 +25,7 @@ import { isUrl } from 'modules/shared/utils/isUrl'
 import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 import { isTestnet as getIsTestnet } from 'modules/blockChain/utils/isTestnet'
 import { useTestContractsInfo } from './useTestContractsInfo'
-import { getEtherscanAddressLink } from '@lido-sdk/helpers'
+import { getEtherscanAddressLink } from 'modules/blockChain/utils/getEtherscanLink'
 
 type FormValues = {
   rpcUrl: string

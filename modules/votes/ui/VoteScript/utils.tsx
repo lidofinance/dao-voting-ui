@@ -5,7 +5,7 @@ import {
 import { DEFAULT_ADMIN_ROLE, LIDO_ROLES } from 'modules/votes/constants'
 import { utils } from 'ethers'
 import { getContractName } from 'modules/config/utils/getContractName'
-import { CHAINS } from '@lido-sdk/constants'
+import { CHAINS } from 'modules/blockChain/chains'
 
 export const formatCallString = (
   chainId: CHAINS,

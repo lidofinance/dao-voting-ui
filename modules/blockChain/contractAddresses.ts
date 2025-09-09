@@ -1,4 +1,4 @@
-import { CHAINS } from '@lido-sdk/constants'
+import { CHAINS } from './chains'
 import { ChainAddressMap } from './types'
 
 export const AragonVoting: ChainAddressMap = {

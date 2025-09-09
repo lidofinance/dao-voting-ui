@@ -7,6 +7,7 @@ import { IdenticonBadge } from '@lidofinance/lido-ui'
 import { Wrap, Pop, BadgeWrap } from './AddressPopStyle'
 
 import { calcPopoverPosition } from './calcPopoverPosition'
+import { ETHERSCAN_ENTITIES } from 'modules/blockChain/utils/getEtherscanLink'
 
 type Props = React.ComponentProps<typeof IdenticonBadge>
 
@@ -59,7 +60,10 @@ export function AddressPop({ children, ...badgeProps }: Props) {
               onClick={handleOpen}
             />
           </BadgeWrap>
-          <CopyOpenActions value={address} entity="address" />
+          <CopyOpenActions
+            value={address}
+            entity={ETHERSCAN_ENTITIES.ADDRESS}
+          />
         </Pop>
       )}
     </Wrap>

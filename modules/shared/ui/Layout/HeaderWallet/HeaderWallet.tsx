@@ -1,6 +1,6 @@
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useWalletModal } from 'modules/wallet/ui/WalletModal'
-import { useConnectWalletModal } from 'modules/wallet/ui/ConnectWalletModal'
+import { useConnect } from 'reef-knot/core-react'
 
 import { Button, Identicon, trimAddress } from '@lidofinance/lido-ui'
 import { Wrap, AddressBadge, AddressText } from './HeaderWalletStyle'
@@ -12,14 +12,14 @@ type Props = {
 export function HeaderWallet({ trimAddressSymbols = 3 }: Props) {
   const { isWalletConnected, walletAddress } = useWeb3()
   const { openModal: openWalletModal } = useWalletModal()
-  const { openModal: openConnectModal } = useConnectWalletModal()
+  const { connect } = useConnect()
 
   if (!isWalletConnected) {
     return (
       <Wrap>
         <Button
           size="sm"
-          onClick={openConnectModal}
+          onClick={connect}
           style={{ width: '100%' }}
           data-testid="connectButton"
         >

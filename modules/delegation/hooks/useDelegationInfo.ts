@@ -1,5 +1,5 @@
-import { CHAINS } from '@lido-sdk/constants'
-import { useLidoSWRImmutable } from '@lido-sdk/react'
+import { CHAINS } from 'modules/blockChain/chains'
+import { useSWRImmutable } from 'modules/network/hooks/useSwr'
 import { constants } from 'ethers'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { SNAPSHOT_LIDO_SPACE_NAME } from '../constants'
@@ -13,7 +13,7 @@ export const useDelegationInfo = () => {
   const voting = votingHelpers.useRpc()
   const snapshot = snapshotHelpers.useRpc()
 
-  return useLidoSWRImmutable(
+  return useSWRImmutable(
     walletAddress
       ? [
           'swr:useDelegationInfo',

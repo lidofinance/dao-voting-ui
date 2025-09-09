@@ -1,56 +1,125 @@
+import { v4 as uuid } from 'uuid'
 import {
   memo,
   useMemo,
   useCallback,
+  useContext,
   createContext,
   useRef,
   useState,
 } from 'react'
-import type { ModalProps } from '@lidofinance/lido-ui'
+import type { ModalProps as LidoModalProps } from '@lidofinance/lido-ui'
 
-export type Modal = React.ComponentType<ModalProps>
+/**
+ * Utility types
+ */
+type EmptyObj = Record<string, never>
 
-export type Data = Record<string, any>
+export type ModalProps<P extends object = EmptyObj> = LidoModalProps & P
 
-type ModalContextValue = {
-  openModal: (modal: Modal, initialData?: Data) => void
-  closeModal: () => void
+export type ModalComponentType<P extends object = EmptyObj> = React.FC<
+  ModalProps<P>
+>
+
+/**
+ * Context definition
+ */
+export type ModalContextValue = {
+  openModal: <P extends object>(
+    modal: ModalComponentType<P>,
+    props?: P,
+  ) => {
+    modalSession: string
+    updateProps: (nextProps: P) => void
+    closeModal: () => void
+  }
+  closeModal: <P extends object>(modal?: ModalComponentType<P>) => void
 }
-
-// https://github.com/CharlesStover/use-force-update
-const createNewEmptyObjectForForceUpdate = (): Data => ({})
 
 export const modalContext = createContext({} as ModalContextValue)
 
+/**
+ * Context accessors
+ */
+export const useModalActions = () => {
+  const { openModal, closeModal } = useContext(modalContext)
+  return { openModal, closeModal }
+}
+
+export const useModal = <P extends object>(modal: ModalComponentType<P>) => {
+  const { openModal, closeModal } = useContext(modalContext)
+
+  return useMemo(
+    () => ({
+      openModal: (props?: P) => openModal(modal, props),
+      closeModal: () => closeModal(modal),
+    }),
+    [modal, openModal, closeModal],
+  )
+}
+
+export const getUseModal = <P extends object>(modal: ModalComponentType<P>) => {
+  return () => useModal(modal)
+}
+
+/**
+ * Context provider
+ */
 type Props = {
   children?: React.ReactNode
 }
 
-function ModalProviderRaw({ children }: Props) {
-  const stateRef = useRef<Modal | null>(null)
-  const [data, setData] = useState<Data>(createNewEmptyObjectForForceUpdate())
+const ModalProviderRaw = ({ children }: Props) => {
+  const modalSessionRef = useRef('')
+  const [modalState, setModalState] = useState<{
+    modal: React.ComponentType<any>
+    props: any
+  } | null>(null)
 
-  const openModal = useCallback(
-    (modal: Modal, initialData?: Data) => {
-      stateRef.current = modal
-      if (initialData) {
-        setData(initialData)
-      } else {
-        setData(createNewEmptyObjectForForceUpdate())
+  const openModal: ModalContextValue['openModal'] = useCallback(
+    (modal, props) => {
+      const modalSession = uuid()
+      modalSessionRef.current = modalSession
+      setModalState({ modal, props })
+
+      /**
+       * Session-based handlers
+       */
+      const updateProps = (nextProps: typeof props) => {
+        if (modalSessionRef.current === modalSession) {
+          setModalState(
+            prevState =>
+              prevState && { modal: prevState.modal, props: nextProps },
+          )
+        }
+      }
+
+      const closeModal = () => {
+        setTimeout(() => {
+          if (modalSessionRef.current === modalSession) setModalState(null)
+        }, 0)
+      }
+
+      return {
+        modalSession,
+        updateProps,
+        closeModal,
       }
     },
-    [setData],
+    [],
   )
 
-  const closeModal = useCallback(() => {
+  const closeModal: ModalContextValue['closeModal'] = useCallback(modal => {
     // setTimeout helps to get rid of this error:
     // "Can't perform a react state update on an unmounted component"
     // after WalletConnect connection
     setTimeout(() => {
-      stateRef.current = null
-      setData(createNewEmptyObjectForForceUpdate())
+      setModalState(prevState => {
+        if (modal && modal !== prevState?.modal) return prevState
+        return null
+      })
     }, 0)
-  }, [setData])
+  }, [])
 
   const context = useMemo(
     () => ({
@@ -60,11 +129,13 @@ function ModalProviderRaw({ children }: Props) {
     [openModal, closeModal],
   )
 
+  const handleClose = useCallback(() => closeModal(), [closeModal])
+
   return (
     <modalContext.Provider value={context}>
       {children}
-      {stateRef.current && (
-        <stateRef.current open onClose={closeModal} data={data} />
+      {modalState && (
+        <modalState.modal open onClose={handleClose} {...modalState.props} />
       )}
     </modalContext.Provider>
   )

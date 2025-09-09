@@ -1,8 +1,10 @@
-import { useWeb3 } from 'reef-knot/web3-react'
+import { useWeb3 } from './useWeb3'
 import { useIsContract } from './useIsContract'
 
 export const useIsMultisig = () => {
-  const { account } = useWeb3()
-  const { isContract, loading } = useIsContract(account ?? undefined)
+  const { walletAddress } = useWeb3()
+  const { data: isContract, isLoading: loading } = useIsContract(
+    walletAddress ?? undefined,
+  )
   return [isContract, loading]
 }

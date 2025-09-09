@@ -1,10 +1,10 @@
-import { useLidoSWRImmutable } from '@lido-sdk/react'
+import { useSWRImmutable } from 'modules/network/hooks/useSwr'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-import { CHAINS } from '@lido-sdk/constants'
+import { CHAINS } from 'modules/blockChain/chains'
 
 import { DGConfigProviderAbi__factory, DGEscrowAbi__factory } from 'generated'
 import { useConfig } from 'modules/config/hooks/useConfig'
-import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
+import { getStaticRpcBatchProvider } from 'modules/blockChain/utils/rpcProviders'
 import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 import {
   DualGovernanceState,
@@ -29,7 +29,7 @@ export const useDualGovernanceState = () => {
   const stEth = stEthHelpers.useRpc()
   const emergencyProtectedTimelock = emergencyProtectedTimelockHelpers.useRpc()
 
-  return useLidoSWRImmutable<DualGovernanceState>(
+  return useSWRImmutable<DualGovernanceState>(
     ['swr:useDualGovernanceState', chainId],
     async (_: any, _chainId: CHAINS) => {
       const rpcUrl = getRpcUrl(_chainId)

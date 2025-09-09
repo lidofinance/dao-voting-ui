@@ -1,5 +1,6 @@
 import React, {
   createContext,
+  PropsWithChildren,
   useCallback,
   useContext,
   useMemo,
@@ -73,7 +74,9 @@ export const useVoteFormActionsContext = () => {
   return value
 }
 
-export const VoteFormActionsProvider: React.FC = ({ children }) => {
+export const VoteFormActionsProvider: React.FC<PropsWithChildren> = ({
+  children,
+}) => {
   const [voteId, setVoteId] = useState<string>('')
   const [successTx, setSuccessTx] = useState<ResultTx | null>(null)
   const [votedAs, setVotedAs] = useState<VotedAs | null>(null)
@@ -111,7 +114,7 @@ export const VoteFormActionsProvider: React.FC = ({ children }) => {
   const { txVote, txDelegatesVote, isSubmitting } = formVoteSubmitData
 
   const handleVote = useCallback(
-    _mode => {
+    (_mode: VoteMode) => {
       setVotedAs(VotedAs.owner)
       setMode(_mode)
       return formVoteSubmitData.handleVote(_mode)
@@ -120,7 +123,7 @@ export const VoteFormActionsProvider: React.FC = ({ children }) => {
   )
 
   const handleDelegatesVote = useCallback(
-    (_mode, selectedAddresses) => {
+    (_mode: VoteMode, selectedAddresses: string[]) => {
       setVotedAs(VotedAs.delegate)
       setMode(_mode)
       return formVoteSubmitData.handleDelegatesVote(_mode, selectedAddresses)

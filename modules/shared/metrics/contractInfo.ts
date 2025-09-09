@@ -2,7 +2,7 @@ import { Gauge } from 'prom-client'
 import { METRICS_PREFIX } from './constants'
 import getConfig from 'next/config'
 import { getAddressList } from 'modules/config/utils/getAddressList'
-import { CHAINS } from '@lido-sdk/constants'
+import { CHAINS } from 'modules/blockChain/chains'
 
 const { publicRuntimeConfig } = getConfig()
 const { defaultChain, supportedChains } = publicRuntimeConfig

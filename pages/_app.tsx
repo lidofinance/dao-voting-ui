@@ -17,12 +17,14 @@ import { parseEnvConfig } from 'modules/config/utils/parseEnvConfig'
 import { getAddressList } from 'modules/config/utils/getAddressList'
 import { withCsp } from 'modules/shared/utils/csp'
 import { CustomAppProps } from 'modules/shared/utils/utilTypes'
-import { AppProviderWeb3 } from 'modules/web3Provider'
-import { AppWagmiConfig } from 'modules/wagmiConfig'
+import { AppWeb3Provider } from 'modules/web3Provider'
 import { UiProvider } from 'modules/shared/ui/UiProvider'
 import { useConfig } from 'modules/config/hooks/useConfig'
 import { TestModeBanner } from 'modules/blockChain/ui/TestModeBanner'
 import { isTestnet } from 'modules/blockChain/utils/isTestnet'
+
+// Somehow using `GlobalStyle` directly causes a type error
+const GlobalStyleCasted = GlobalStyle as unknown as React.FC
 
 // Visualize route changes
 nprogress()
@@ -98,7 +100,7 @@ function AppRoot({ Component, pageProps }: AppProps) {
         ))}
       </Head>
       <PageLayout>
-        {isUnsupported && <NetworkSwitcher />}
+        <NetworkSwitcher />
         {savedConfig.useTestContracts && isTestnet(chainId) && (
           <TestModeBanner />
         )}
@@ -114,17 +116,15 @@ const AppRootMemo = memo(AppRoot)
 function App({ envConfig, ...appProps }: CustomAppProps) {
   return (
     <UiProvider>
-      <GlobalStyle />
+      <GlobalStyleCasted />
       <ConfigProvider envConfig={envConfig}>
-        <AppWagmiConfig>
-          <AppProviderWeb3>
-            <VotePromptProvider>
-              <ModalProvider>
-                <AppRootMemo {...appProps} />
-              </ModalProvider>
-            </VotePromptProvider>
-          </AppProviderWeb3>
-        </AppWagmiConfig>
+        <AppWeb3Provider>
+          <VotePromptProvider>
+            <ModalProvider>
+              <AppRootMemo {...appProps} />
+            </ModalProvider>
+          </VotePromptProvider>
+        </AppWeb3Provider>
       </ConfigProvider>
     </UiProvider>
   )

@@ -18,7 +18,7 @@ export const useVoteDualGovernanceStatus = ({
   eventExecuteVote,
 }: Args) => {
   const { emergencyProtectedTimelockHelpers } = useContractHelpers()
-  const { library } = useWeb3()
+  const { rpcProvider } = useWeb3()
   const getContractAddress = useGetContractAddress()
   const dualGovernanceAddress = getContractAddress('DualGovernance')
 
@@ -26,7 +26,7 @@ export const useVoteDualGovernanceStatus = ({
 
   return useSWR(`${voteId}-dg-status`, async () => {
     if (eventExecuteVote) {
-      const receipt = await library?.getTransactionReceipt(
+      const receipt = await rpcProvider?.getTransactionReceipt(
         eventExecuteVote.event.transactionHash,
       )
 

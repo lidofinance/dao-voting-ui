@@ -41,7 +41,7 @@ import {
 } from './HeaderStyle'
 
 import { getChainName } from 'modules/blockChain/chains'
-import { getChainColor } from '@lido-sdk/constants'
+import { getChainColor } from 'modules/blockChain/utils/getChainColor'
 import StarSvg from 'assets/star.com.svg.react'
 import SettingsSvg from 'assets/settings.com.svg.react'
 import DelegationSvg from 'assets/delegation.com.svg.react'

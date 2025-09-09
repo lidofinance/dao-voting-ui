@@ -5,13 +5,13 @@ import { sendTransactionGnosisWorkaround } from '../utils/sendTransactionGnosisW
 import { useIsMultisig } from './useIsMultisig'
 
 export function useSendTransactionGnosisWorkaround() {
-  const { library } = useWeb3()
+  const { web3Provider } = useWeb3()
   // TODO: track loading state of this swr in the ui on yes/no/enact button
   const [isMultisig] = useIsMultisig()
 
   return useCallback(
     (tx: PopulatedTransaction) =>
-      sendTransactionGnosisWorkaround(library?.getSigner(), tx, isMultisig),
-    [library, isMultisig],
+      sendTransactionGnosisWorkaround(web3Provider, tx, Boolean(isMultisig)),
+    [web3Provider, isMultisig],
   )
 }
