@@ -5,8 +5,8 @@ import { sendTransactionGnosisWorkaround } from '../utils/sendTransactionGnosisW
 import { useIsContract } from './useIsContract'
 
 export function useSendTransactionGnosisWorkaround() {
-  const { walletAddress, web3Provider } = useWeb3()
-  const { data: isMultisig } = useIsContract(walletAddress)
+  const { web3Provider } = useWeb3()
+  const { data: isMultisig } = useIsContract()
 
   return useCallback(
     (tx: PopulatedTransaction) =>

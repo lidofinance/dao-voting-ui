@@ -55,29 +55,39 @@ function getEthersProvider(
 }
 
 export function useWeb3() {
-  const { chainId, isConnected, address } = useAccount()
+  const { chainId: accountChainId, isConnected, address } = useAccount()
+  const { supportedChainIds } = useConfig()
+
   const { defaultChain } = useConfig()
   const wagmiConfig = useWagmiConfig()
 
-  const currentChain = useMemo(
-    () => parseChainId(chainId || defaultChain),
-    [chainId, defaultChain],
-  )
+  const chainId = useMemo(() => {
+    if (!!accountChainId && supportedChainIds.includes(accountChainId)) {
+      return parseChainId(accountChainId)
+    }
+
+    return defaultChain
+  }, [accountChainId, defaultChain, supportedChainIds])
 
   const rpcProvider = useMemo(
-    () => getEthersProvider(wagmiConfig),
-    [wagmiConfig],
+    () => getEthersProvider(wagmiConfig, { chainId }),
+    [wagmiConfig, chainId],
   )
 
   const { data: web3Provider } = useSWR(
-    address ? `ethers-signer-${currentChain}-${address}` : null,
-    async () => getEthersSigner(wagmiConfig),
+    address ? `ethers-signer-${chainId}-${address}` : null,
+    async () => getEthersSigner(wagmiConfig, { chainId }),
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    },
   )
 
   return {
     isWalletConnected: isConnected,
     walletAddress: address,
-    chainId: currentChain,
+    chainId,
     rpcProvider,
     web3Provider,
   }

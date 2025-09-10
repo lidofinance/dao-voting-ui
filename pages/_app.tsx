@@ -26,6 +26,7 @@ import { useConfig } from 'modules/config/hooks/useConfig'
 import { TestModeBanner } from 'modules/blockChain/ui/TestModeBanner'
 import { isTestnet } from 'modules/blockChain/utils/isTestnet'
 import { useIsChainSupported } from 'modules/blockChain/hooks/useIsChainSupported'
+import { NoSSRWrapper } from 'modules/shared/ui/Utils/NoSSRWrapper'
 
 // Somehow using `GlobalStyle` directly causes a type error
 const GlobalStyleCasted = GlobalStyle as unknown as React.FC
@@ -106,7 +107,9 @@ function AppRoot({ Component, pageProps }: AppProps) {
       <PageLayout>
         {!isChainSupported && <NetworkSwitcher />}
         {savedConfig.useTestContracts && isTestnet(chainId) && (
-          <TestModeBanner />
+          <NoSSRWrapper>
+            <TestModeBanner />
+          </NoSSRWrapper>
         )}
         <Component {...pageProps} />
       </PageLayout>
