@@ -100,10 +100,10 @@ export const VoteFormActionsProvider: React.FC<PropsWithChildren> = ({
     mutate: doRevalidate,
   } = formVoteInfoData
 
-  const handleFinish: FinishHandler = async ({ tx }) => {
+  const handleFinish: FinishHandler = async _successTx => {
     await mutate()
     await doRevalidate()
-    setSuccessTx(tx as unknown as ResultTx)
+    setSuccessTx(_successTx)
   }
 
   const formVoteSubmitData = useFormVoteSubmit({
