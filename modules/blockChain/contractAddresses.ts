@@ -277,13 +277,9 @@ export const CSModule: ChainAddressMap = {
 }
 
 export const CSVerifier: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x0c345dFa318f9F4977cdd4f33d80F9D0ffA38e8B',
+  [CHAINS.Mainnet]: '0xeC6Cc185f671F627fb9b6f06C8772755F587b05d',
   [CHAINS.Holesky]: '0xC099dfD61F6E5420e0Ca7e84D820daAd17Fc1D44',
   [CHAINS.Hoodi]: '0xB6bafBD970a4537077dE59cebE33081d794513d6',
-}
-
-export const CSVerifierProposed: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0xeC6Cc185f671F627fb9b6f06C8772755F587b05d',
 }
 
 export const SandboxNodeOperatorsRegistry: ChainAddressMap = {
@@ -311,7 +307,7 @@ export const EmergencyProtectedTimelock: ChainAddressMap = {
 }
 
 export const DualGovernance: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0xcdF49b058D606AD34c5789FD8c3BF8B3E54bA2db',
+  [CHAINS.Mainnet]: '0xC1db28B3301331277e307FDCfF8DE28242A4486E',
   [CHAINS.Holesky]: {
     test: '0x5A2958dC9532bAaCdF8481C8278735B1b05FB199',
     actual: '0x490bf377734CA134A8E207525E8576745652212e',
@@ -323,11 +319,8 @@ export const DualGovernance: ChainAddressMap = {
 }
 
 export const DualGovernanceLegacy: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xcdF49b058D606AD34c5789FD8c3BF8B3E54bA2db',
   [CHAINS.Hoodi]: '0x4d12b9f6acab54ff6a3a776ba3b8724d9b77845f',
-}
-
-export const DualGovernanceProposed: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0xC1db28B3301331277e307FDCfF8DE28242A4486E',
 }
 
 export const GateSeal: ChainAddressMap = {
@@ -387,12 +380,12 @@ export const DualGovernanceConfigProviderLegacy: ChainAddressMap = {
 }
 
 export const DualGovernanceTieBreakerCore: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x175742c3DDD88B0192df3EcF98f180A79cb259D0',
+  [CHAINS.Mainnet]: '0xf65614d73952Be91ce0aE7Dd9cFf25Ba15bEE2f5',
   [CHAINS.Hoodi]: '0x9Ce4bA766C87cC87e507307163eA54C5003A3563',
 }
 
-export const DualGovernanceTieBreakerCoreProposed: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0xf65614d73952Be91ce0aE7Dd9cFf25Ba15bEE2f5',
+export const DualGovernanceTieBreakerCoreLegacy: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x175742c3DDD88B0192df3EcF98f180A79cb259D0',
 }
 
 export const EVMScriptRegistry: ChainAddressMap = {
