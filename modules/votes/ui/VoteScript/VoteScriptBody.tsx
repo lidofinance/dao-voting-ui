@@ -37,6 +37,10 @@ export function VoteScriptBody({ binary, decoded, parentId }: Props) {
   const dualGovernanceAddress =
     getContractAddress('DualGovernance').toLowerCase()
 
+  const legacyDualGovernanceAddress = getContractAddress(
+    'DualGovernanceLegacy',
+  ).toLowerCase()
+
   return (
     <>
       {decoded.calls.map((call, i) => {
@@ -54,7 +58,8 @@ export function VoteScriptBody({ binary, decoded, parentId }: Props) {
 
         const withDg =
           call.abi?.name === 'submitProposal' &&
-          call.address.toLowerCase() === dualGovernanceAddress
+          (call.address.toLowerCase() === dualGovernanceAddress ||
+            call.address.toLowerCase() === legacyDualGovernanceAddress)
 
         return (
           <CallWrapper key={i} $withDg={withDg}>
