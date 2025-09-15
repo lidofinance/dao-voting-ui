@@ -1,11 +1,10 @@
-import { CHAINS } from '@lido-sdk/constants'
-
+import { CHAINS } from '../chains'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useGlobalMemo } from 'modules/shared/hooks/useGlobalMemo'
 
 import type { Signer, providers } from 'ethers'
 import type { JsonRpcSigner } from '@ethersproject/providers'
-import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
+import { getStaticRpcBatchProvider } from './rpcProviders'
 import { Address } from '../types'
 
 type Library = JsonRpcSigner | Signer | providers.Provider
@@ -57,22 +56,22 @@ export function createContractHelpers<F extends Factory>({
   }
 
   function useInstanceWeb3() {
-    const { library, active, account } = useWeb3()
+    const { web3Provider, isWalletConnected, walletAddress } = useWeb3()
     const { chainId } = useWeb3()
 
     return useGlobalMemo(
       () =>
         connect({
           // TODO: find a way to remove ! here
-          library: library?.getSigner()!,
+          library: web3Provider!,
         }),
       [
         'contract-web3-',
-        active ? 'active' : 'inactive',
-        library ? 'with-signer' : 'no-signer',
+        isWalletConnected ? 'active' : 'inactive',
+        web3Provider ? 'with-signer' : 'no-signer',
         chainId,
         address,
-        account,
+        walletAddress,
       ].join('-'),
     )
   }

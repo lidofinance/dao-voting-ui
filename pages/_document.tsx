@@ -33,7 +33,7 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <LidoUIHead />
+          <LidoUIHead cssFont />
         </Head>
         <body>
           <Main />

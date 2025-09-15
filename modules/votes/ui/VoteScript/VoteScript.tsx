@@ -17,7 +17,7 @@ import {
 import { CalldataDecoder } from 'modules/blockChain/CalldataDecoder'
 import { EVMScriptDecoder } from '@lidofinance/evm-script-decoder'
 import { useEVMScriptDecoder } from 'modules/votes/hooks/useEvmScriptDecoder'
-import { CHAINS } from '@lido-sdk/constants'
+import { CHAINS } from 'modules/blockChain/chains'
 
 const SUBMIT_PROPOSAL_METHOD_ID = '0x53e51f8b' // submitProposal((address,uint96,bytes)[],string)
 

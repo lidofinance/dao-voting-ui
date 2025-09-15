@@ -10,6 +10,7 @@ export const DualGovernanceStatusButtonStyled = styled(ButtonIcon).attrs({
 })<{ $status: DualGovernanceStatus; $loading?: boolean }>`
   border: 1px solid rgba(0, 10, 61, 0.12);
   margin-right: 12px;
+  padding: 14px;
 
   & svg {
     fill: ${({ $status }) => getDualGovernanceBannerColor($status)};

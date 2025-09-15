@@ -19,7 +19,7 @@ export function useVoteTimeCountdown(startDate: number, duration: number) {
         .duration(Math.abs(diff), 'seconds')
         // \xa0 is non-breaking space
         .format('HH: mm : ss', {
-          trim: 'final',
+          trim: 'all',
           minValue: 1,
         }),
     }

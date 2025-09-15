@@ -1,15 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import * as urls from 'modules/network/utils/urls'
-import {
-  Button,
-  Link,
-  Modal,
-  ModalProps,
-  Success,
-  Text,
-} from '@lidofinance/lido-ui'
-import { useEtherscanOpen } from '@lido-sdk/react'
-import type { EtherscanEntities } from '@lido-sdk/helpers'
+import { Button, Link, Modal, Success, Text } from '@lidofinance/lido-ui'
 
 import CheckSVG from 'assets/check.com.svg.react'
 import CrossSVG from 'assets/cross.com.svg.react'
@@ -38,6 +29,9 @@ import { openWindow } from 'modules/shared/utils/openWindow'
 import { VoteActionButtonObjectionTooltip } from 'modules/votes/ui/VoteActionButtonObjectionTooltip'
 import { EligibleDelegator } from 'modules/delegation/hooks/useEligibleDelegators'
 import { DelegationInfo } from 'modules/delegation/types'
+import { ModalProps } from 'modules/modal/ModalProvider'
+import { useEtherscanOpener } from 'modules/blockChain/hooks/useEtherscanOpener'
+import { ResultTx } from 'modules/blockChain/types'
 
 interface SnapshotData {
   mode: 'yay' | 'nay' | 'enact' | null
@@ -52,9 +46,9 @@ interface SnapshotData {
 }
 
 export function VoteSuccessModal({
-  data: { successTx },
+  successTx,
   ...modalProps
-}: ModalProps) {
+}: ModalProps<{ successTx?: ResultTx }>) {
   const contextData = useVoteFormActionsContext()
   const {
     txVote,
@@ -84,7 +78,7 @@ export function VoteSuccessModal({
   const [snapshotData, setSnapshotData] = useState<SnapshotData | null>(null)
   const hasSubmitted = useRef(false)
 
-  const handleSelectedAddressesChange = useCallback(addresses => {
+  const handleSelectedAddressesChange = useCallback((addresses: string[]) => {
     setSelectedDelegatedAddresses(addresses)
   }, [])
   // This is to avoid re-rendering the modal template right after the response returns and before closing the modal
@@ -157,7 +151,7 @@ export function VoteSuccessModal({
   )
 
   const handleVoteClick = useCallback(
-    power => {
+    (power: 'own' | 'delegated') => {
       if (!currentSnapshot.mode) return
       if (power === 'own') {
         return handleVote(currentSnapshot.mode)
@@ -187,9 +181,9 @@ export function VoteSuccessModal({
     currentSnapshot.votePower > 0 &&
     !hasVotedWithOwnVP
 
-  const handleEtherscan = useEtherscanOpen(
-    successTx.hash,
-    'tx' as EtherscanEntities,
+  const handleEtherscan = useEtherscanOpener(
+    successTx?.type === 'regular' ? successTx.tx.hash : '',
+    'tx',
   )
 
   useEffect(() => {

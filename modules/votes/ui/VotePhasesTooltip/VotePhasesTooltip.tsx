@@ -8,7 +8,7 @@ import {
 } from '@lidofinance/lido-ui'
 import { TooltipText, LinkWrap } from './VotePhasesTooltipStyle'
 
-import { getEtherscanTxLink } from '@lido-sdk/helpers'
+import { getEtherscanTxLink } from 'modules/blockChain/utils/etherscan'
 import { VotePhase } from 'modules/votes/types'
 
 type Props = {

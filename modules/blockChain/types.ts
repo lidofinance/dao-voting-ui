@@ -1,5 +1,5 @@
 import { ContractTransaction } from '@ethersproject/contracts'
-import { CHAINS } from '@lido-sdk/constants'
+import { CHAINS } from './chains'
 import { ABIElement as ABIElementImported } from '@lidofinance/evm-script-decoder/lib/types'
 
 export type SafeTx = {

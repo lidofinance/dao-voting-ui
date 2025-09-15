@@ -1,24 +1,14 @@
 import { useCallback } from 'react'
-import {
-  Text,
-  Modal,
-  ModalProps,
-  ButtonIcon,
-  External,
-} from '@lidofinance/lido-ui'
+import { Text, Modal, ButtonIcon, External } from '@lidofinance/lido-ui'
 import { openWindow } from 'modules/shared/utils/openWindow'
 import { NavigationModalBody } from './NavigationModalStyles'
-import type { Data } from 'modules/modal/ModalProvider'
+import { ModalProps } from 'modules/modal/ModalProvider'
 
 const trustedSites = ['https://research.lido.fi/', 'https://snapshot.org/']
 
-interface NavigationModalProps extends ModalProps {
-  data?: Data
-}
-
-export function NavigationModal(props: NavigationModalProps) {
-  const { onClose, data } = props
-  const link = data?.href ? `${data.href}` : ''
+export function NavigationModal(props: ModalProps<{ href?: string }>) {
+  const { href, onClose } = props
+  const link = href ? `${href}` : ''
   const handleClick = useCallback(() => {
     if (link) openWindow(link)
     onClose?.()

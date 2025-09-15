@@ -1,4 +1,4 @@
-import { useLidoSWRImmutable } from '@lido-sdk/react'
+import { useSWRImmutable } from 'modules/network/hooks/useSwr'
 import { BigNumber } from 'ethers'
 import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
@@ -23,7 +23,7 @@ export const useProcessedPublicDelegatesList = () => {
 
   const { resolveName } = useEnsResolvers()
 
-  return useLidoSWRImmutable<ProcessedDelegate[]>(
+  return useSWRImmutable<ProcessedDelegate[]>(
     [`swr:useProcessedPublicDelegatesList`, chainId, voting.address],
     async () => {
       const parsedList: ProcessedDelegate[] = await Promise.all(

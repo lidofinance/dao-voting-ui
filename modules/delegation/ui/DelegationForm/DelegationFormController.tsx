@@ -1,8 +1,10 @@
-import { FC } from 'react'
+import { FC, PropsWithChildren } from 'react'
 import { useDelegationFormData } from 'modules/delegation/providers/DelegationFormContext'
 import { DelegationFormControllerStyled } from './DelegationFormStyle'
 
-export const DelegationFormController: FC = ({ children }) => {
+export const DelegationFormController: FC<PropsWithChildren> = ({
+  children,
+}) => {
   const { mode, onSubmit } = useDelegationFormData()
 
   return (

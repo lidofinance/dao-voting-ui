@@ -1,4 +1,4 @@
-import { CHAINS } from '@lido-sdk/constants'
+import { CHAINS } from '../chains'
 
 export const isTestnet = (chainId: CHAINS) =>
   chainId === CHAINS.Holesky || chainId === CHAINS.Hoodi

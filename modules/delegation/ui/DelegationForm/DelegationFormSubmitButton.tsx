@@ -1,7 +1,7 @@
 import { MouseEventHandler, useCallback, useMemo, useRef } from 'react'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useDelegationFormData } from 'modules/delegation/providers/DelegationFormContext'
-import { useConnectWalletModal } from 'modules/wallet/ui/ConnectWalletModal'
+import { useConnect } from 'reef-knot/core-react'
 import { DelegateButton, HiddenButton } from './DelegationFormStyle'
 import { useConfirmReDelegateModal } from './ConfirmReDelegateModal'
 import { Text } from '@lidofinance/lido-ui'
@@ -12,7 +12,7 @@ type Props = {
 
 export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
   const { isWalletConnected } = useWeb3()
-  const { openModal: openConnectWalletModal } = useConnectWalletModal()
+  const { connect } = useConnect()
   const {
     mode,
     isSubmitting,
@@ -110,21 +110,21 @@ export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
     )
   }, [match])
 
-  const { openModal: openConfirmReDelegateModal } = useConfirmReDelegateModal({
-    onAlternative: onCustomizeClick,
-    onSubmit: submitFromModal,
-    subtitle,
-  })
+  const { openModal: openConfirmReDelegateModal } = useConfirmReDelegateModal()
 
   const onSubmitDialog: MouseEventHandler<HTMLButtonElement> = event => {
     // this prevents form being submitted by Enter keypress on the input
     event.preventDefault()
-    openConfirmReDelegateModal()
+    openConfirmReDelegateModal({
+      onAlternative: onCustomizeClick,
+      onSubmit: submitFromModal,
+      subtitle,
+    })
   }
 
   if (!isWalletConnected) {
     return (
-      <DelegateButton onClick={() => openConnectWalletModal()} type="button">
+      <DelegateButton onClick={connect} type="button">
         Connect wallet
       </DelegateButton>
     )

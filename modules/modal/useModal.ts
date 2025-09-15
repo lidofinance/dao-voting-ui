@@ -1,19 +1,19 @@
 import { useContext, useMemo } from 'react'
-import { modalContext, Modal } from './ModalProvider'
-import type { Data } from './ModalProvider'
+import { modalContext } from './ModalProvider'
+import type { ModalComponentType } from './ModalProvider'
 
-export function useModal(modal: Modal, data?: Data) {
+export const useModal = <P extends object>(modal: ModalComponentType<P>) => {
   const { openModal, closeModal } = useContext(modalContext)
 
   return useMemo(
     () => ({
-      openModal: (props?: any) => openModal(modal, { ...data, ...props }),
-      closeModal,
+      openModal: (props?: P) => openModal(modal, props),
+      closeModal: () => closeModal(modal),
     }),
-    [closeModal, openModal, modal, data],
+    [modal, openModal, closeModal],
   )
 }
 
-export function getUseModal(modal: Modal) {
-  return (data?: Data) => useModal(modal, data)
+export const getUseModal = <P extends object>(modal: ModalComponentType<P>) => {
+  return () => useModal(modal)
 }

@@ -1,5 +1,10 @@
 import get from 'lodash/get'
-import { CHAINS } from '@lido-sdk/constants'
+
+export enum CHAINS {
+  Mainnet = 1,
+  Holesky = 17000,
+  Hoodi = 560048,
+}
 
 export const ChainNames = {
   [CHAINS.Mainnet]: 'Mainnet',

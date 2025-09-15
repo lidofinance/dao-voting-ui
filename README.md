@@ -26,7 +26,7 @@ This project requires an .env file which is distributed via private communicatio
 
 ## Dockerfile env
 
-- Node.js v16.20.1
+- Node.js v20
 - Yarn package manager v1.22.19
 
 ## Development

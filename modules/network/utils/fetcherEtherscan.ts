@@ -1,5 +1,5 @@
 import { Cache } from 'memory-cache'
-import { CHAINS } from '@lido-sdk/constants'
+import { CHAINS } from 'modules/blockChain/chains'
 import { fetcherStandard } from './fetcherStandard'
 import {
   ETHERSCAN_API_URL,

@@ -1,5 +1,5 @@
-import { CHAINS } from '@lido-sdk/constants'
-import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
+import { CHAINS } from 'modules/blockChain/chains'
+import { getStaticRpcBatchProvider } from 'modules/blockChain/utils/rpcProviders'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useConfig } from 'modules/config/hooks/useConfig'
 import { useCallback, useMemo } from 'react'

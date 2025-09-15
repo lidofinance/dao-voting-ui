@@ -26,7 +26,7 @@ import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsForma
 import { VoteStatusChips } from '../VoteStatusChips'
 import { VoteVotersList } from '../VoteVotersList'
 import { VoteProgressBar } from 'modules/votes/ui/VoteProgressBar'
-import { getEtherscanTxLink } from '@lido-sdk/helpers'
+import { getEtherscanTxLink } from 'modules/blockChain/utils/etherscan'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useVoteDualGovernanceStatus } from 'modules/dual-governance/useVoteDualGovernanceStatus'
 
