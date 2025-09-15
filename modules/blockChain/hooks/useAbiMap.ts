@@ -27,7 +27,7 @@ const ABI_EXCEPTIONS = {
   DualGovernanceProposed: abis.DualGovernanceAbi__factory.abi,
   DualGovernanceConfigProvider: abis.DGConfigProviderAbi__factory.abi,
   DualGovernanceConfigProviderLegacy: abis.DGConfigProviderAbi__factory.abi,
-  DualGovernanceTieBreakerCoreProposed:
+  DualGovernanceTieBreakerCoreLegacy:
     abis.DualGovernanceTieBreakerCoreAbi__factory.abi,
 } as const
 
