@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import { useMemo, useCallback } from 'react'
 import {
   type Transport,
@@ -24,9 +25,6 @@ const DISABLED_METHODS = new Set([
 export const PROVIDER_BATCH_TIME = 150
 export const PROVIDER_MAX_BATCH = 20
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-const NOOP = () => {}
-
 // Viem transport wrapper that allows runtime changes via setter
 const runtimeMutableTransport = (
   mainTransports: Transport[],
@@ -35,7 +33,18 @@ const runtimeMutableTransport = (
   return [
     params => {
       const defaultTransport = fallback(mainTransports)(params)
-      let responseFn: OnResponseFn = NOOP
+      let externalOnResponse: OnResponseFn
+
+      const onResponse: OnResponseFn = params => {
+        if (params.status === 'error' && !(params as any).skipLog) {
+          console.warn(
+            `[runtimeMutableTransport] error in RuntimeMutableTransport(using injected: ${!!withInjectedTransport})`,
+            params,
+          )
+        }
+        externalOnResponse(params)
+      }
+
       return createTransport(
         {
           key: 'RuntimeMutableTransport',
@@ -50,13 +59,15 @@ const runtimeMutableTransport = (
               const error = new UnsupportedProviderMethodError(
                 new Error(`Method ${requestParams.method} is not supported`),
               )
-              responseFn({
+              onResponse({
                 error,
                 method: requestParams.method,
                 params: params as unknown[],
                 transport,
                 status: 'error',
-              })
+                // skip logging because we expect wagmi to try those
+                skipLog: true,
+              } as any)
               throw error
             }
 
@@ -66,14 +77,10 @@ const runtimeMutableTransport = (
               // works for empty array, empty string and all falsish values
               !requestParams.params[0]?.address?.length
             ) {
-              console.warn(
-                '[runtimeMutableTransport] Invalid empty getLogs',
-                requestParams,
-              )
               const error = new InvalidParamsRpcError(
                 new Error(`Empty address for eth_getLogs is not supported`),
               )
-              responseFn({
+              onResponse({
                 error,
                 method: requestParams.method,
                 params: params as unknown[],
@@ -83,41 +90,19 @@ const runtimeMutableTransport = (
               throw error
             }
 
-            transport.value?.onResponse(responseFn)
-            if (
-              ['eth_call', 'eth_estimateGas'].includes(requestParams.method)
-            ) {
-              try {
-                return await transport.request(requestParams, options)
-              } catch (error: any) {
-                if (
-                  error?.message?.includes('execution reverted') ||
-                  error?.code === 3
-                ) {
-                  return null
-                }
-                throw error
-              }
-            }
-
-            try {
-              return await transport.request(requestParams, options)
-            } catch (error: any) {
-              if (
-                error?.message?.includes('execution reverted') ||
-                error?.code === 3
-              ) {
-                return null
-              }
-
-              throw error
-            }
+            transport.value?.onResponse(onResponse)
+            return transport.request(requestParams, options)
           },
+          // crucial cause we quack like a fallback transport and some connectors(WC) rely on this
           type: 'fallback',
         },
+        // transport.value contents
         {
+          // this is fallbackTransport specific field, used by WC connectors to extract rpc Urls
+          // we can use defaultTransport because no injected transport
           transports: defaultTransport.value?.transports,
-          onResponse: (fn: OnResponseFn) => (responseFn = fn),
+          // providers that use this transport, use this to set onResponse callback for transport,
+          onResponse: (fn: OnResponseFn) => (externalOnResponse = fn),
         },
       )
     },
@@ -131,33 +116,24 @@ const runtimeMutableTransport = (
   ]
 }
 
-// returns Viem transport map that uses browser wallet RPC provider when available fallbacked by our RPC
+// returns Viem transport map that uses browser wallet RPC provider when available fallbacked by our RPC and default RPCs
 export const useWeb3Transport = (
   supportedChains: Chain[],
   backendRpcMap: Record<number, string>,
 ) => {
   const { transportMap, setTransportMap } = useMemo(() => {
+    const batchConfig = {
+      wait: PROVIDER_BATCH_TIME,
+      batchSize: PROVIDER_MAX_BATCH,
+    }
+
     return supportedChains.reduce(
-      // eslint-disable-next-line @typescript-eslint/no-shadow
       ({ transportMap, setTransportMap }, chain) => {
         const [transport, setTransport] = runtimeMutableTransport([
+          // api/rpc
           http(backendRpcMap[chain.id], {
-            batch: {
-              wait: PROVIDER_BATCH_TIME,
-              batchSize: PROVIDER_MAX_BATCH,
-            },
+            batch: batchConfig,
             name: backendRpcMap[chain.id],
-            retryCount: 0,
-            timeout: 10000,
-          }),
-          http(undefined, {
-            batch: {
-              wait: PROVIDER_BATCH_TIME,
-              batchSize: PROVIDER_MAX_BATCH,
-            },
-            name: 'default HTTP RPC',
-            retryCount: 0,
-            timeout: 10000,
           }),
         ])
         return {
@@ -176,7 +152,7 @@ export const useWeb3Transport = (
         setTransportMap: {} as Record<number, (t: Transport | null) => void>,
       },
     )
-  }, [supportedChains, backendRpcMap])
+  }, [backendRpcMap, supportedChains])
 
   const onActiveConnection = useCallback(
     async (activeConnection: Connection | null) => {
@@ -185,7 +161,8 @@ export const useWeb3Transport = (
         if (
           activeConnection &&
           chain.id === activeConnection.chainId &&
-          activeConnection.connector.type === 'injected'
+          (activeConnection.connector.type === 'injected' ||
+            activeConnection.connector.type === 'metaMask')
         ) {
           const provider = (await activeConnection.connector.getProvider({
             chainId: chain.id,

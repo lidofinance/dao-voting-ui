@@ -81,8 +81,8 @@ export function SettingsForm() {
       if (!isUrl(rpcUrl)) return 'Given string is not valid url'
       try {
         // Check chain id
-        const rpcProvider = new ethers.providers.JsonRpcProvider(rpcUrl)
-        const network = await rpcProvider.getNetwork()
+        const provider = new ethers.providers.JsonRpcProvider(rpcUrl)
+        const network = await provider.getNetwork()
         if (network.chainId !== chainId) {
           return `Url is working, but network does not match to ${getChainName(
             chainId!,
