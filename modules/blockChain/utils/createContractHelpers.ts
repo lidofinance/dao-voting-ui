@@ -46,11 +46,10 @@ export function createContractHelpers<F extends Factory>({
   }
 
   function useInstanceRpc() {
-    const { chainId } = useWeb3()
-    const library = getStaticRpcBatchProvider(chainId, rpcUrl)
+    const { chainId, rpcProvider } = useWeb3()
 
     return useGlobalMemo(
-      () => connect({ library }),
+      () => connect({ library: rpcProvider! }),
       `contract-rpc-${chainId}-${rpcUrl}-${address}`,
     )
   }
