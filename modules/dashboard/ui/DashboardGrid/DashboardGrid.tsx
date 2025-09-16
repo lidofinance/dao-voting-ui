@@ -14,6 +14,8 @@ import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
 import * as urls from 'modules/network/utils/urls'
 import { getEventExecuteVote } from 'modules/votes/utils/getEventExecuteVote'
 import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
+import { getVoteDualGovernanceStatus } from 'modules/dual-governance/getVoteDualGovernanceStatus'
+import { useGetContractAddress } from 'modules/blockChain/hooks/useGetContractAddress'
 
 const PAGE_SIZE = 20
 
@@ -22,9 +24,12 @@ type Props = {
 }
 
 export function DashboardGrid({ currentPage }: Props) {
-  const { chainId } = useWeb3()
-  const { votingHelpers } = useContractHelpers()
+  const { chainId, rpcProvider } = useWeb3()
+  const { votingHelpers, emergencyProtectedTimelockHelpers } =
+    useContractHelpers()
   const voting = votingHelpers.useRpc()
+  const getContractAddress = useGetContractAddress()
+  const emergencyProtectedTimelock = emergencyProtectedTimelockHelpers.useRpc()
 
   const handleChangePage = (nextPage: number) => {
     Router.push(urls.dashboardPage(nextPage))
@@ -78,6 +83,8 @@ export function DashboardGrid({ currentPage }: Props) {
 
       const votesList = await Promise.all(requests)
 
+      const dualGovernanceAddress = getContractAddress('DualGovernance')
+
       const eventsPromises = votesList.map(async dataItem => {
         const snapshotBlock = dataItem.vote.snapshotBlock.toNumber()
         const eventStart = await getEventStartVote(
@@ -91,11 +98,19 @@ export function DashboardGrid({ currentPage }: Props) {
           snapshotBlock,
         )
 
+        const dualGovernanceStatus = await getVoteDualGovernanceStatus(
+          eventExecuteVote?.event.transactionHash,
+          dualGovernanceAddress,
+          rpcProvider!,
+          emergencyProtectedTimelock,
+        )
+
         return {
           ...dataItem,
           eventStart,
           executedAt: eventExecuteVote?.executedAt,
           eventExecuteVote,
+          proposalStatus: dualGovernanceStatus?.proposalStatus ?? null,
         }
       })
 

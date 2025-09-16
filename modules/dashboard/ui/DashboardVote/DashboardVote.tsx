@@ -17,17 +17,11 @@ import {
   NeededToQuorum,
 } from './DashboardVoteStyle'
 import type { StartVoteEventObject } from 'generated/AragonVotingAbi'
-import {
-  EventExecuteVote,
-  Vote,
-  VotePhase,
-  VoteStatus,
-} from 'modules/votes/types'
+import { Vote, VotePhase, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
 import { formatFloatPct } from 'modules/shared/utils/formatFloatPct'
 import * as urls from 'modules/network/utils/urls'
-import { useVoteDualGovernanceStatus } from 'modules/dual-governance/useVoteDualGovernanceStatus'
 
 type Props = {
   voteId: number
@@ -36,9 +30,9 @@ type Props = {
   status: VoteStatus
   voteTime: number
   objectionPhaseTime: number
+  proposalStatus: number | null
   executedAt?: number
   onPass: () => void
-  eventExecuteVote: EventExecuteVote
 }
 
 export function DashboardVote({
@@ -49,8 +43,8 @@ export function DashboardVote({
   voteTime,
   objectionPhaseTime,
   executedAt,
+  proposalStatus,
   onPass,
-  eventExecuteVote,
 }: Props) {
   const {
     nayPct,
@@ -85,11 +79,6 @@ export function DashboardVote({
     onPass: handlePass,
   })
 
-  const { data: voteDualGovernanceStatus } = useVoteDualGovernanceStatus({
-    voteId,
-    eventExecuteVote,
-  })
-
   const neededToQuorum = weiToNum(vote.minAcceptQuorum) - yeaPctOfTotalSupply
   const neededToQuorumFormatted = formatFloatPct(neededToQuorum, {
     floor: true,
@@ -112,9 +101,7 @@ export function DashboardVote({
           totalSupply={totalSupply}
           fontSize="xxs"
           minAcceptQuorum={weiToNum(vote.minAcceptQuorum)}
-          voteDualGovernanceStatus={
-            voteDualGovernanceStatus?.proposalStatus || null
-          }
+          voteDualGovernanceStatus={proposalStatus}
         />
         <VoteBody>
           <VoteTitle>Vote #{voteId}</VoteTitle>
