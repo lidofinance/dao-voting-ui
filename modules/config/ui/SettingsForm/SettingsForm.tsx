@@ -25,7 +25,7 @@ import { isUrl } from 'modules/shared/utils/isUrl'
 import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 import { isTestnet as getIsTestnet } from 'modules/blockChain/utils/isTestnet'
 import { useTestContractsInfo } from './useTestContractsInfo'
-import { getEtherscanAddressLink } from '@lido-sdk/helpers'
+import { getEtherscanAddressLink } from 'modules/blockChain/utils/etherscan'
 
 type FormValues = {
   rpcUrl: string
@@ -81,8 +81,8 @@ export function SettingsForm() {
       if (!isUrl(rpcUrl)) return 'Given string is not valid url'
       try {
         // Check chain id
-        const rpcProvider = new ethers.providers.JsonRpcProvider(rpcUrl)
-        const network = await rpcProvider.getNetwork()
+        const provider = new ethers.providers.JsonRpcProvider(rpcUrl)
+        const network = await provider.getNetwork()
         if (network.chainId !== chainId) {
           return `Url is working, but network does not match to ${getChainName(
             chainId!,

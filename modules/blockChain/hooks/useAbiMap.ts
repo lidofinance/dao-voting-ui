@@ -23,6 +23,12 @@ const ABI_EXCEPTIONS = {
   GateSealProposed: abis.GateSealAbi__factory.abi,
   CSMGateSeal: abis.GateSealAbi__factory.abi,
   CSMGateSealProposed: abis.GateSealAbi__factory.abi,
+  DualGovernanceLegacy: abis.DualGovernanceAbi__factory.abi,
+  DualGovernanceProposed: abis.DualGovernanceAbi__factory.abi,
+  DualGovernanceConfigProvider: abis.DGConfigProviderAbi__factory.abi,
+  DualGovernanceConfigProviderLegacy: abis.DGConfigProviderAbi__factory.abi,
+  DualGovernanceTieBreakerCoreLegacy:
+    abis.DualGovernanceTieBreakerCoreAbi__factory.abi,
 } as const
 
 type ExceptionContractName = keyof typeof ABI_EXCEPTIONS

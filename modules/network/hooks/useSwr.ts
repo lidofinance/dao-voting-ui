@@ -58,3 +58,22 @@ export const useSWRInfinite = <Data = unknown, Error = any>(
     initialLoading,
   }
 }
+
+export const useSWRImmutable = <Data = unknown, Error = any>(
+  key: Key,
+  fetcher: Fetcher<Data> | null,
+  config?: SWRConfiguration<Data, Error>,
+) => {
+  const result = useSWRSource<Data>(key, fetcher, {
+    ...defaultConfig,
+    ...config,
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  })
+  const initialLoading = result.data == null && result.isValidating
+  return {
+    ...result,
+    initialLoading,
+  }
+}

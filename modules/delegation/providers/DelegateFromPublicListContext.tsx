@@ -1,4 +1,11 @@
-import { createContext, FC, useCallback, useContext, useState } from 'react'
+import {
+  createContext,
+  FC,
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useState,
+} from 'react'
 import invariant from 'tiny-invariant'
 
 //
@@ -22,7 +29,9 @@ export const useDelegateFromPublicList = () => {
   return value
 }
 
-export const DelegateFromPublicListProvider: FC = ({ children }) => {
+export const DelegateFromPublicListProvider: FC<PropsWithChildren> = ({
+  children,
+}) => {
   const [selectedPublicDelegate, setSelectedPublicDelegate] = useState<string>()
 
   const handleDelegatePick = useCallback(

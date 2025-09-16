@@ -22,10 +22,7 @@ export function DelegationAddressBadge({
   type,
 }: Props) {
   const { isSubmitting, onRevoke } = useDelegationFormData()
-  const { openModal: openConfirmModal } = useConfirmRevokeModal({
-    title: `Revoke ${type} delegation?`,
-    onRevoke: onRevoke(type),
-  })
+  const { openModal: openConfirmModal } = useConfirmRevokeModal()
 
   return (
     <DelegationAddressBadgeStyled>
@@ -47,7 +44,12 @@ export function DelegationAddressBadge({
       </AddressPop>
       <RevokeDelegationButton
         disabled={isSubmitting}
-        onClick={() => openConfirmModal()}
+        onClick={() =>
+          openConfirmModal({
+            title: `Revoke ${type} delegation?`,
+            onRevoke: onRevoke(type),
+          })
+        }
       />
     </DelegationAddressBadgeStyled>
   )

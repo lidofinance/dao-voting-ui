@@ -27,7 +27,8 @@ export const fetcherIPFS: FetcherIPFS = async (
     throw new Error('An error occurred while fetching the data.')
   }
 
-  const text = await response.text()
+  const textRaw = await response.text()
+  const text = textRaw.replaceAll('\x00', '')
 
   const [hash, hashBOM] = await Promise.all([
     Hash.of(text, { cidVersion: 1, rawLeaves: true }),

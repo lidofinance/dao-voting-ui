@@ -1,7 +1,7 @@
-import { useLocalStorage } from '@lido-sdk/react'
+import { useLocalStorage } from 'modules/shared/hooks/useLocalStorage'
 import { useState, useCallback, createContext } from 'react'
 
-import { CHAINS } from '@lido-sdk/constants'
+import { CHAINS } from 'modules/blockChain/chains'
 import { EnvConfigParsed } from '../types'
 import { getRpcUrlDefault } from '../network'
 import { STORAGE_KEY_SAVED_SETTINGS } from 'modules/config/storage'

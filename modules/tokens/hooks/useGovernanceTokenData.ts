@@ -1,6 +1,6 @@
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-import { useLidoSWRImmutable } from '@lido-sdk/react'
-import { CHAINS } from '@lido-sdk/constants'
+import { useSWRImmutable } from 'modules/network/hooks/useSwr'
+import { CHAINS } from 'modules/blockChain/chains'
 import { formatToken } from '../utils/formatToken'
 import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 import { BigNumber } from 'ethers'
@@ -10,7 +10,7 @@ export function useGovernanceTokenData() {
   const { ldoHelpers } = useContractHelpers()
   const ldo = ldoHelpers.useRpc()
 
-  return useLidoSWRImmutable(
+  return useSWRImmutable(
     ['swr:useGovernanceTokenData', chainId, walletAddress, ldo.address],
     async (
       _key: string,

@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-import { useDisconnect, useConnectorInfo } from 'reef-knot/web3-react'
+import { useConnectorInfo, useDisconnect } from 'reef-knot/core-react'
 import { useGovernanceTokenData } from 'modules/tokens/hooks/useGovernanceTokenData'
 import { useConfig } from 'modules/config/hooks/useConfig'
 import { CopyOpenActions } from 'modules/shared/ui/Common/CopyOpenActions'
@@ -59,7 +59,7 @@ function WalletModalContent() {
 
 export function WalletModal(props: ModalProps) {
   const { onClose } = props
-  const { providerName } = useConnectorInfo()
+  const { connectorName } = useConnectorInfo()
   const { disconnect } = useDisconnect()
   const { disconnect: wagmiDisconnect } = useDisconnectWagmi()
   const { chainId } = useWeb3()
@@ -80,7 +80,7 @@ export function WalletModal(props: ModalProps) {
       <Content>
         <Connected>
           <Connector data-testid="providerName">
-            Connected with {providerName}
+            Connected with {connectorName}
           </Connector>
           <Disconnect
             size="xs"
