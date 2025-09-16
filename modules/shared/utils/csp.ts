@@ -39,6 +39,7 @@ export const contentSecurityPolicy = {
       'https://*.ipfs.dweb.link',
       'wss://*.walletlink.org',
       'https://*.coinbase.com',
+      'https://*.web3modal.org',
       ...trustedHosts,
     ],
     prefetchSrc: ["'self'", ...trustedHosts],
