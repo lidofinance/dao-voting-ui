@@ -9,16 +9,21 @@ import { getVoteStatus } from 'modules/votes/utils/getVoteStatus'
 import { getEventStartVote } from 'modules/votes/utils/getEventVoteStart'
 import { getVoteEvents } from 'modules/votes/utils/getVoteEvents'
 import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
+import { getVoteDualGovernanceStatus } from 'modules/dual-governance/getVoteDualGovernanceStatus'
+import { useGetContractAddress } from 'modules/blockChain/hooks/useGetContractAddress'
 
 type Args = {
   voteId?: string
 }
 
 export function useFormVoteInfo({ voteId }: Args) {
-  const { chainId, walletAddress, isWalletConnected } = useWeb3()
-  const { ldoHelpers, votingHelpers } = useContractHelpers()
+  const { chainId, walletAddress, isWalletConnected, rpcProvider } = useWeb3()
+  const { ldoHelpers, votingHelpers, emergencyProtectedTimelockHelpers } =
+    useContractHelpers()
   const voting = votingHelpers.useRpc()
   const ldo = ldoHelpers.useRpc()
+  const getContractAddress = useGetContractAddress()
+  const emergencyProtectedTimelock = emergencyProtectedTimelockHelpers.useRpc()
 
   const swrVote = useSWR(
     voteId
@@ -56,6 +61,13 @@ export function useFormVoteInfo({ voteId }: Args) {
           : null,
       ])
 
+      const dualGovernanceStatus = await getVoteDualGovernanceStatus(
+        eventExecuteVote?.event.transactionHash,
+        getContractAddress('DualGovernance'),
+        rpcProvider!,
+        emergencyProtectedTimelock,
+      )
+
       const votePower = votePowerWei ? Number(formatEther(votePowerWei)) : 0
 
       return {
@@ -72,6 +84,8 @@ export function useFormVoteInfo({ voteId }: Args) {
         votePowerWei,
         votePhase,
         status: getVoteStatus(vote, canExecute),
+        proposalId: dualGovernanceStatus?.proposalId,
+        proposalStatus: dualGovernanceStatus?.proposalStatus,
       }
     },
     { onError: noop },
@@ -127,6 +141,8 @@ export function useFormVoteInfo({ voteId }: Args) {
     voteEvents: swrVote.data?.voteEvents ?? [],
     eventExecuteVote: swrVote.data?.eventExecuteVote,
     status: swrVote.data?.status,
+    proposalId: swrVote.data?.proposalId ?? null,
+    proposalStatus: swrVote.data?.proposalStatus ?? null,
     mutate: mutateFn,
   }
 }

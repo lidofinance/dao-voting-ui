@@ -14,13 +14,7 @@ import {
 } from './VoteDetailsStyle'
 import { VoteDescription } from '../VoteDescription'
 
-import {
-  EventExecuteVote,
-  Vote,
-  VoteEvent,
-  VotePhase,
-  VoteStatus,
-} from 'modules/votes/types'
+import { Vote, VoteEvent, VotePhase, VoteStatus } from 'modules/votes/types'
 import { weiToNum } from 'modules/blockChain/utils/parseWei'
 import { getVoteDetailsFormatted } from 'modules/votes/utils/getVoteDetailsFormatted'
 import { VoteStatusChips } from '../VoteStatusChips'
@@ -28,7 +22,6 @@ import { VoteVotersList } from '../VoteVotersList'
 import { VoteProgressBar } from 'modules/votes/ui/VoteProgressBar'
 import { getEtherscanTxLink } from 'modules/blockChain/utils/etherscan'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-import { useVoteDualGovernanceStatus } from 'modules/dual-governance/useVoteDualGovernanceStatus'
 
 const localeDateOptions = {
   month: 'long',
@@ -59,7 +52,8 @@ type Props = {
   executedTxHash?: string
   startedTxHash?: string
   votePhase: VotePhase | undefined
-  eventExecuteVote: EventExecuteVote | undefined
+  proposalId: number | null
+  proposalStatus: number | null
 }
 
 export function VoteDetails({
@@ -75,7 +69,8 @@ export function VoteDetails({
   voteEvents,
   executedAt,
   votePhase,
-  eventExecuteVote,
+  proposalId,
+  proposalStatus,
 }: Props) {
   const { chainId } = useWeb3()
   const {
@@ -95,34 +90,22 @@ export function VoteDetails({
     return `Enacted ${formatDate(executedAt)}`
   }, [executedAt, startDate])
 
-  const {
-    data: voteDualGovernanceStatus,
-    initialLoading: voteDualGovernanceStatusLoading,
-  } = useVoteDualGovernanceStatus({
-    voteId,
-    eventExecuteVote,
-  })
-
   return (
     <>
       <VoteHeader data-testid="voteHeader">
         <VoteTitle data-testid="voteTitle">Vote #{voteId}</VoteTitle>
-        {!voteDualGovernanceStatusLoading && (
-          <VoteStatusChips
-            totalSupply={totalSupply}
-            nayNum={nayNum}
-            yeaNum={yeaNum}
-            minAcceptQuorum={weiToNum(vote.minAcceptQuorum)}
-            status={status}
-            executedTxHash={executedTxHash}
-            votePhase={votePhase}
-            chainId={chainId}
-            proposalId={voteDualGovernanceStatus?.proposalId || null}
-            voteDualGovernanceStatus={
-              voteDualGovernanceStatus?.proposalStatus || null
-            }
-          />
-        )}
+        <VoteStatusChips
+          totalSupply={totalSupply}
+          nayNum={nayNum}
+          yeaNum={yeaNum}
+          minAcceptQuorum={weiToNum(vote.minAcceptQuorum)}
+          status={status}
+          executedTxHash={executedTxHash}
+          votePhase={votePhase}
+          chainId={chainId}
+          proposalId={proposalId}
+          voteDualGovernanceStatus={proposalStatus}
+        />
         <BlockWrap>
           <Text as="span" color="secondary" size="xxs">
             {'Block '}
