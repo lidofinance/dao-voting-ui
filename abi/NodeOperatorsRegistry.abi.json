@@ -44,20 +44,6 @@
   {
     "constant": true,
     "inputs": [],
-    "name": "appId",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
     "name": "kernel",
     "outputs": [
       {
@@ -1279,20 +1265,6 @@
       {
         "name": "",
         "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "kernel",
-    "outputs": [
-      {
-        "name": "",
-        "type": "address"
       }
     ],
     "payable": false,
