@@ -11,18 +11,15 @@ import { CHAINS } from 'modules/blockChain/chains'
 import { Chain } from 'viem'
 
 /** Action to convert a Viem Client to an ethers.js Signer. */
-async function getEthersSigner(
-  config: Config,
-  { chainId }: { chainId?: number } = {},
-) {
+async function getEthersSigner(config: Config, chainId: CHAINS) {
   const client = await getConnectorClient(config, { chainId })
-  const { account, chain, transport } = client
-  const network = {
-    chainId: chain.id,
-    name: chain.name,
-    ensAddress: chain.contracts?.ensRegistry?.address,
-  }
-  const provider = new providers.Web3Provider(transport, network)
+  const { account, transport } = client
+  // const network = {
+  //   chainId: chain.id,
+  //   name: chain.name,
+  //   ensAddress: chain.contracts?.ensRegistry?.address,
+  // }
+  const provider = new providers.Web3Provider(transport)
   const signer = provider.getSigner(account.address)
   return signer
 }
@@ -59,7 +56,11 @@ export const Web3LegacyProvider = ({
 
   const { data: web3Provider } = useSWR(
     walletAddress ? `ethers-signer-${chainId}-${walletAddress}` : null,
-    async () => getEthersSigner(wagmiConfig, { chainId }),
+    async () => {
+      if (!walletAddress) return
+
+      return getEthersSigner(wagmiConfig, chainId)
+    },
     {
       revalidateIfStale: false,
       revalidateOnFocus: false,
