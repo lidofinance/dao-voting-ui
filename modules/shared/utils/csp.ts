@@ -12,15 +12,15 @@ const reportOnly = cspReportOnly === 'true'
 export const contentSecurityPolicy = {
   directives: {
     'default-src': ["'self'"],
-    styleSrc: ["'self'", "'unsafe-inline'"],
-    fontSrc: ["'self'", 'data:'],
+    styleSrc: ["'self'", 'https://fonts.googleapis.com', "'unsafe-inline'"],
+    fontSrc: ["'self'", 'data:', 'https://fonts.gstatic.com', ...trustedHosts],
     imgSrc: [
       "'self'",
       'data:',
       'https://*.walletconnect.org',
       'https://*.walletconnect.com',
     ],
-    scriptSrc: ["'self'", "'unsafe-inline'", ...trustedHosts],
+    scriptSrc: ["'self'", "'unsafe-eval'", "'unsafe-inline'", ...trustedHosts],
     // Allow fetch connections to any secure host
     connectSrc: ["'self'", 'https:', 'wss:'],
     frameAncestors: ['*'],
@@ -30,6 +30,7 @@ export const contentSecurityPolicy = {
       'https://*.walletconnect.com',
     ],
     baseUri: ["'none'"],
+    workerSrc: ["'none'"],
     reportURI: cspReportUri,
   },
   reportOnly,
