@@ -8,15 +8,13 @@ import {
   ABIElement as ABIElementImported,
 } from '@lidofinance/evm-script-decoder/lib/types'
 import { EVMScriptDecoder, abiProviders } from '@lidofinance/evm-script-decoder'
-import { getStaticRpcBatchProvider } from 'modules/blockChain/utils/rpcProviders'
 
 import { fetcherEtherscan } from 'modules/network/utils/fetcherEtherscan'
 import { useAbiMap } from 'modules/blockChain/hooks/useAbiMap'
 
 export function useEVMScriptDecoder(): EVMScriptDecoder {
-  const { chainId } = useWeb3()
-  const { getRpcUrl, savedConfig } = useConfig()
-  const rpcUrl = getRpcUrl(chainId)
+  const { chainId, rpcProvider } = useWeb3()
+  const { savedConfig } = useConfig()
   const { etherscanApiKey, useBundledAbi } = savedConfig
   const abiMap = useAbiMap()
 
@@ -48,7 +46,7 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
             const contract = new Contract(
               proxyAddress,
               [abiElement],
-              getStaticRpcBatchProvider(chainId, rpcUrl),
+              rpcProvider,
             )
             return contract[abiElement.name]()
           },
@@ -61,5 +59,5 @@ export function useEVMScriptDecoder(): EVMScriptDecoder {
         Boolean,
       ) as ABIProvider[]),
     )
-  }, `evm-script-decoder-${chainId}-${rpcUrl}-${useBundledAbi ? 'with-local' : 'no-local'}-${etherscanApiKey}`)
+  }, `evm-script-decoder-${chainId}-${useBundledAbi ? 'with-local' : 'no-local'}-${etherscanApiKey}`)
 }

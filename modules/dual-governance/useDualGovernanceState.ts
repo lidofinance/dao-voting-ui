@@ -1,10 +1,7 @@
 import { useSWRImmutable } from 'modules/network/hooks/useSwr'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-import { CHAINS } from 'modules/blockChain/chains'
 
 import { DGConfigProviderAbi__factory, DGEscrowAbi__factory } from 'generated'
-import { useConfig } from 'modules/config/hooks/useConfig'
-import { getStaticRpcBatchProvider } from 'modules/blockChain/utils/rpcProviders'
 import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 import {
   DualGovernanceState,
@@ -16,8 +13,7 @@ import { getAmountUntilVetoSignalling } from './utils'
 const WARNING_STATE_THRESHOLD_PERCENT = 33
 
 export const useDualGovernanceState = () => {
-  const { chainId } = useWeb3()
-  const { getRpcUrl } = useConfig()
+  const { chainId, rpcProvider } = useWeb3()
 
   const {
     dualGovernanceHelpers,
@@ -31,10 +27,7 @@ export const useDualGovernanceState = () => {
 
   return useSWRImmutable<DualGovernanceState>(
     ['swr:useDualGovernanceState', chainId],
-    async (_: any, _chainId: CHAINS) => {
-      const rpcUrl = getRpcUrl(_chainId)
-      const provider = getStaticRpcBatchProvider(_chainId, rpcUrl)
-
+    async () => {
       const isEmergencyModeActive =
         await emergencyProtectedTimelock.isEmergencyModeActive()
 
@@ -45,12 +38,12 @@ export const useDualGovernanceState = () => {
 
       const vetoSignallingEscrow = DGEscrowAbi__factory.connect(
         vetoSignallingAddress,
-        provider,
+        rpcProvider,
       )
 
       const dualGovernanceConfig = DGConfigProviderAbi__factory.connect(
         configAddress,
-        provider,
+        rpcProvider,
       )
 
       const lockedAssets =
