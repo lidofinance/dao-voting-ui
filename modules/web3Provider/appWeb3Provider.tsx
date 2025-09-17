@@ -1,9 +1,7 @@
-import { FC, PropsWithChildren, useEffect, useMemo } from 'react'
+import { FC, PropsWithChildren, useMemo } from 'react'
 import * as wagmiChains from 'wagmi/chains'
 import getConfig from 'next/config'
-import { CHAINS } from 'modules/blockChain/chains'
-import { useConnections, WagmiProvider } from 'wagmi'
-import { useWeb3Transport } from 'modules/blockChain/hooks/useWeb3Transport'
+import { WagmiProvider } from 'wagmi'
 import { useConfig } from 'modules/config/hooks/useConfig'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReefKnotProvider, getDefaultConfig } from 'reef-knot/core-react'
@@ -13,6 +11,8 @@ import {
 } from 'reef-knot/connect-wallet-modal'
 import { WalletIdsEthereum, WalletsListEthereum } from 'reef-knot/wallets'
 import { useThemeToggle } from '@lidofinance/lido-ui'
+import { Web3LegacyProvider } from './web3LegacyProvider'
+import { PROVIDER_POLLING_INTERVAL } from 'modules/blockChain/utils/rpcProviders'
 
 type ChainsList = [wagmiChains.Chain, ...wagmiChains.Chain[]]
 
@@ -57,8 +57,6 @@ const queryClient = new QueryClient({
   },
 })
 
-const PROVIDER_POLLING_INTERVAL = 12_000
-
 const { publicRuntimeConfig } = getConfig()
 
 let supportedChainIds: number[] = []
@@ -83,10 +81,7 @@ export const AppWeb3Provider: FC<PropsWithChildren> = ({ children }) => {
     () =>
       supportedChainIds.reduce(
         (res, curr) => ({ ...res, [curr]: getRpcUrl(curr) }),
-        {
-          // Mainnet RPC is always required for some requests, e.g. ETH to USD price, ENS lookup
-          [CHAINS.Mainnet]: getRpcUrl(CHAINS.Mainnet),
-        },
+        {},
       ),
     [getRpcUrl],
   )
@@ -105,11 +100,6 @@ export const AppWeb3Provider: FC<PropsWithChildren> = ({ children }) => {
     }
   }, [])
 
-  const { transportMap, onActiveConnection } = useWeb3Transport(
-    chains.supportedChains,
-    backendRPC,
-  )
-
   const { wagmiConfig, reefKnotConfig, walletsModalConfig } = useMemo(() => {
     return getDefaultConfig({
       // Reef-Knot config args
@@ -119,7 +109,6 @@ export const AppWeb3Provider: FC<PropsWithChildren> = ({ children }) => {
       walletsList: WalletsListEthereum,
 
       // Wagmi config args
-      transports: transportMap,
       chains: chains.supportedChains,
       autoConnect: true,
       ssr: true,
@@ -133,25 +122,25 @@ export const AppWeb3Provider: FC<PropsWithChildren> = ({ children }) => {
       walletsPinned: WALLETS_PINNED,
       walletsShown: WALLETS_SHOWN,
     })
-  }, [backendRPC, chains.defaultChain, chains.supportedChains, transportMap])
-
-  const [activeConnection] = useConnections({ config: wagmiConfig })
-
-  useEffect(() => {
-    void onActiveConnection(activeConnection)
-  }, [activeConnection, onActiveConnection])
+  }, [backendRPC, chains.defaultChain, chains.supportedChains])
 
   return (
     // default wagmi autoConnect, MUST be false in our case, because we use custom autoConnect from Reef Knot
     <WagmiProvider config={wagmiConfig} reconnectOnMount={false}>
       <QueryClientProvider client={queryClient}>
-        <ReefKnotProvider config={reefKnotConfig}>
-          <ReefKnotWalletsModal
-            config={walletsModalConfig}
-            darkThemeEnabled={themeName === 'dark'}
-          />
-          {children}
-        </ReefKnotProvider>
+        <Web3LegacyProvider
+          defaultChainId={chains.defaultChain.id}
+          supportedChains={chains.supportedChains}
+          wagmiConfig={wagmiConfig}
+        >
+          <ReefKnotProvider config={reefKnotConfig}>
+            <ReefKnotWalletsModal
+              config={walletsModalConfig}
+              darkThemeEnabled={themeName === 'dark'}
+            />
+            {children}
+          </ReefKnotProvider>
+        </Web3LegacyProvider>
       </QueryClientProvider>
     </WagmiProvider>
   )

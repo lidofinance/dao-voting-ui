@@ -6,6 +6,8 @@ import {
 } from '@ethersproject/providers'
 import { StaticJsonRpcBatchProvider } from './StaticJsonRpcBatchProvider'
 
+export const PROVIDER_POLLING_INTERVAL = 12_000
+
 /**
  * Local copy of the same file from "@lido-sdk"
  */
@@ -25,7 +27,7 @@ const createProviderGetter = <T extends ProviderType>(
     chainId: number,
     url: string,
     cacheSeed = 0,
-    pollingInterval?: number,
+    pollingInterval = PROVIDER_POLLING_INTERVAL,
   ): T => {
     const cacheKey = `${chainId}-${cacheSeed}-${url}`
     let provider = cache.get(cacheKey)
@@ -35,9 +37,7 @@ const createProviderGetter = <T extends ProviderType>(
       cache.set(cacheKey, provider)
     }
 
-    if (pollingInterval !== undefined) {
-      provider.pollingInterval = pollingInterval
-    }
+    provider.pollingInterval = pollingInterval
 
     return provider
   }
