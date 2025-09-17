@@ -1,27 +1,31 @@
 import { StaticJsonRpcBatchProvider } from 'modules/blockChain/utils/StaticJsonRpcBatchProvider'
-import { createContext, useEffect, useState } from 'react'
-import { Config, useAccount, useConnections } from 'wagmi'
-import { JsonRpcSigner } from '@ethersproject/providers'
+import { createContext, useEffect, useState, useMemo } from 'react'
+import { Config, useAccount, useConnections, useConnectorClient } from 'wagmi'
+import { providers } from 'ethers' // ethers v5
+import type { JsonRpcSigner } from '@ethersproject/providers'
 import { useConfig } from 'modules/config/hooks/useConfig'
 import { getStaticRpcBatchProvider } from 'modules/blockChain/utils/rpcProviders'
-import { useSWR } from 'modules/network/hooks/useSwr'
-import { getConnectorClient } from '@wagmi/core'
-import { providers } from 'ethers'
 import { CHAINS } from 'modules/blockChain/chains'
 import { Chain } from 'viem'
+import type { Account, Client, Transport } from 'viem'
 
-/** Action to convert a Viem Client to an ethers.js Signer. */
-async function getEthersSigner(config: Config, chainId: CHAINS) {
-  const client = await getConnectorClient(config, { chainId })
-  const { account, transport } = client
-  // const network = {
-  //   chainId: chain.id,
-  //   name: chain.name,
-  //   ensAddress: chain.contracts?.ensRegistry?.address,
-  // }
-  const provider = new providers.Web3Provider(transport)
+// Official wagmi adapter for ethers v5 (from wagmi docs)
+export function clientToSigner(client: Client<Transport, Chain, Account>) {
+  const { account, chain, transport } = client
+  const network = {
+    chainId: chain.id,
+    name: chain.name,
+    ensAddress: chain.contracts?.ensRegistry?.address,
+  }
+  const provider = new providers.Web3Provider(transport, network)
   const signer = provider.getSigner(account.address)
   return signer
+}
+
+/** Hook to convert a viem Wallet Client to an ethers.js Signer. */
+export function useEthersSigner(chainId: CHAINS) {
+  const { data: client } = useConnectorClient({ chainId })
+  return useMemo(() => (client ? clientToSigner(client) : undefined), [client])
 }
 
 type Value = {
@@ -54,19 +58,7 @@ export const Web3LegacyProvider = ({
     getStaticRpcBatchProvider(defaultChainId, getRpcUrl(defaultChainId)),
   )
 
-  const { data: web3Provider } = useSWR(
-    walletAddress ? `ethers-signer-${chainId}-${walletAddress}` : null,
-    async () => {
-      if (!walletAddress) return
-
-      return getEthersSigner(wagmiConfig, chainId)
-    },
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    },
-  )
+  const web3Provider = useEthersSigner(chainId)
 
   const [activeConnection] = useConnections({ config: wagmiConfig })
 
