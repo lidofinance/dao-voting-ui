@@ -5,14 +5,13 @@ import { CustomAppProps } from './utilTypes'
 const { serverRuntimeConfig } = getConfig()
 const { cspTrustedHosts, cspReportOnly, cspReportUri } = serverRuntimeConfig
 
-const trustedHosts = cspTrustedHosts
-  ? cspTrustedHosts.split(',')
-  : ['https://*.lido.fi']
+const trustedHosts = cspTrustedHosts ? cspTrustedHosts.split(',') : []
 
 const reportOnly = cspReportOnly === 'true'
 
 export const contentSecurityPolicy = {
   directives: {
+    'default-src': ["'self'"],
     styleSrc: ["'self'", 'https://fonts.googleapis.com', "'unsafe-inline'"],
     fontSrc: ["'self'", 'data:', 'https://fonts.gstatic.com', ...trustedHosts],
     imgSrc: [
@@ -20,41 +19,18 @@ export const contentSecurityPolicy = {
       'data:',
       'https://*.walletconnect.org',
       'https://*.walletconnect.com',
-      ...trustedHosts,
     ],
     scriptSrc: ["'self'", "'unsafe-eval'", "'unsafe-inline'", ...trustedHosts],
-    connectSrc: [
-      "'self'",
-      'wss://*.walletconnect.org',
-      'https://*.walletconnect.org',
-      'wss://*.walletconnect.com',
-      'https://*.walletconnect.com',
-      'https://api.thegraph.com',
-      'https://*.infura.io',
-      'https://*.alchemyapi.io',
-      'https://*.alchemy.com',
-      'https://*.drpc.org',
-      'https://*.etherscan.io/api',
-      'https://*.ipfs.w3s.link',
-      'https://*.ipfs.dweb.link',
-      'wss://*.walletlink.org',
-      'https://*.coinbase.com',
-      ...trustedHosts,
-    ],
-    prefetchSrc: ["'self'", ...trustedHosts],
-    formAction: ["'self'", ...trustedHosts],
+    // Allow fetch connections to any secure host
+    connectSrc: ["'self'", 'https:', 'wss:'],
     frameAncestors: ['*'],
-    manifestSrc: ["'self'", ...trustedHosts],
-    mediaSrc: ["'self'", ...trustedHosts],
     childSrc: [
       "'self'",
       'https://*.walletconnect.org',
       'https://*.walletconnect.com',
-      ...trustedHosts,
     ],
-    objectSrc: ["'self'", ...trustedHosts],
-    defaultSrc: ["'self'", ...trustedHosts],
     baseUri: ["'none'"],
+    workerSrc: ["'none'"],
     reportURI: cspReportUri,
   },
   reportOnly,
@@ -66,4 +42,5 @@ export const withCsp = (
   withSecureHeaders({
     contentSecurityPolicy,
     frameGuard: false,
+    referrerPolicy: 'same-origin',
   })(app)

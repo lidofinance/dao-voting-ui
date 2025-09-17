@@ -11,3 +11,4 @@
 
 # production
 /build
+next.config.mjs
