@@ -9,6 +9,7 @@ import { useDelegationFormData } from 'modules/delegation/providers/DelegationFo
 import { DelegationType, PublicDelegate } from 'modules/delegation/types'
 import { useConfirmRevokeModal } from './ConfirmRevokeModal'
 import { PublicDelegateAvatar } from '../../PublicDelegateAvatar'
+import { useIsChainSupported } from 'modules/blockChain/hooks/useIsChainSupported'
 
 type Props = {
   address: string
@@ -23,6 +24,7 @@ export function DelegationAddressBadge({
 }: Props) {
   const { isSubmitting, onRevoke } = useDelegationFormData()
   const { openModal: openConfirmModal } = useConfirmRevokeModal()
+  const isChainSupported = useIsChainSupported()
 
   return (
     <DelegationAddressBadgeStyled>
@@ -43,7 +45,7 @@ export function DelegationAddressBadge({
         </AddressBadgeWrap>
       </AddressPop>
       <RevokeDelegationButton
-        disabled={isSubmitting}
+        disabled={isSubmitting || !isChainSupported}
         onClick={() =>
           openConfirmModal({
             title: `Revoke ${type} delegation?`,

@@ -19,6 +19,7 @@ import { TxRow } from 'modules/blockChain/ui/TxRow'
 import { DelegatorsList } from 'modules/votes/ui/VoteActionsModals/DelegatorsList/VoteActionsDelegatorsList'
 import { VoteActionButtonObjectionTooltip } from 'modules/votes/ui/VoteActionButtonObjectionTooltip'
 import { useGovernanceTokenData } from 'modules/tokens/hooks/useGovernanceTokenData'
+import { useIsChainSupported } from 'modules/blockChain/hooks/useIsChainSupported'
 
 type Props = {
   canEnact: boolean
@@ -54,6 +55,8 @@ export function VoteFormActions({
   const {
     data: { eligibleDelegatedVoters, eligibleDelegatedVotingPower },
   } = useEligibleDelegators({ voteId })
+
+  const isChainSupported = useIsChainSupported()
 
   const {
     handleVote,
@@ -204,6 +207,9 @@ export function VoteFormActions({
 
   const getDisableCondition = useCallback(
     (currentMode: VoteMode | null): boolean => {
+      if (!isChainSupported) {
+        return true
+      }
       const isObjectionPhase = votePhase === VotePhase.Objection
       const isYay = currentMode === 'yay'
 
@@ -213,7 +219,7 @@ export function VoteFormActions({
 
       return Boolean(isVoteSubmitting) && isVoteSubmitting !== currentMode
     },
-    [votePhase, isVoteSubmitting],
+    [votePhase, isChainSupported, isVoteSubmitting],
   )
 
   const renderVoteButton = useCallback(

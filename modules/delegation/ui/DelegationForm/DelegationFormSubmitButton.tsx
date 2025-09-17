@@ -5,6 +5,7 @@ import { useConnect } from 'reef-knot/core-react'
 import { DelegateButton, HiddenButton } from './DelegationFormStyle'
 import { useConfirmReDelegateModal } from './ConfirmReDelegateModal'
 import { Text } from '@lidofinance/lido-ui'
+import { useIsChainSupported } from 'modules/blockChain/hooks/useIsChainSupported'
 
 type Props = {
   onCustomizeClick?: () => void
@@ -21,6 +22,7 @@ export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
     watch,
   } = useDelegationFormData()
   const ref = useRef<HTMLButtonElement>(null)
+  const isChainSupported = useIsChainSupported()
 
   const submitFromModal = useCallback(() => {
     ref.current?.click()
@@ -144,6 +146,7 @@ export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
         type="submit"
         loading={isSubmitting}
         onClick={onSubmitDialog}
+        disabled={!isChainSupported}
       >
         {buttonText}
       </DelegateButton>
