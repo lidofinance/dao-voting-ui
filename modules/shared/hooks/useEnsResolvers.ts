@@ -1,28 +1,34 @@
 import { CHAINS } from 'modules/blockChain/chains'
-import { getStaticRpcBatchProvider } from 'modules/blockChain/utils/rpcProviders'
-import { useConfig } from 'modules/config/hooks/useConfig'
-import { useCallback, useMemo } from 'react'
+import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
+import { useCallback } from 'react'
 
 export const useEnsResolvers = () => {
-  const { getRpcUrl } = useConfig()
-
-  const ethProvider = useMemo(() => {
-    const rpcUrl = getRpcUrl(CHAINS.Mainnet)
-    return getStaticRpcBatchProvider(CHAINS.Mainnet, rpcUrl)
-  }, [getRpcUrl])
+  const { chainId, rpcProvider } = useWeb3()
 
   const lookupAddress = useCallback(
     async (address: string) => {
-      return ethProvider.lookupAddress(address)
+      // ENS name is not supported on Holesky and Hoodi for our current setup
+      // TODO: revisit this after package upgrade
+      if (chainId === CHAINS.Holesky || chainId === CHAINS.Hoodi) {
+        return null
+      }
+
+      return rpcProvider.lookupAddress(address)
     },
-    [ethProvider],
+    [chainId, rpcProvider],
   )
 
   const resolveName = useCallback(
     async (address: string) => {
-      return ethProvider.resolveName(address)
+      // ENS name is not supported on Holesky and Hoodi for our current setup
+      // TODO: revisit this after package upgrade
+      if (chainId === CHAINS.Holesky || chainId === CHAINS.Hoodi) {
+        return null
+      }
+
+      return rpcProvider.resolveName(address)
     },
-    [ethProvider],
+    [chainId, rpcProvider],
   )
 
   return {

@@ -1,27 +1,28 @@
 import { StaticJsonRpcBatchProvider } from 'modules/blockChain/utils/StaticJsonRpcBatchProvider'
-import { createContext, useEffect, useState, useMemo } from 'react'
-import { Config, useAccount, useConnections, useConnectorClient } from 'wagmi'
+import { createContext, useEffect, useState } from 'react'
+import { Config, useAccount, useConnections } from 'wagmi'
 import { providers } from 'ethers' // ethers v5
 import type { JsonRpcSigner } from '@ethersproject/providers'
 import { useConfig } from 'modules/config/hooks/useConfig'
 import { getStaticRpcBatchProvider } from 'modules/blockChain/utils/rpcProviders'
 import { CHAINS } from 'modules/blockChain/chains'
 import { Chain } from 'viem'
-import type { Account, Client, Transport } from 'viem'
+import { useSWR } from 'modules/network/hooks/useSwr'
+import { getConnectorClient } from '@wagmi/core'
 
-// Official wagmi adapter for ethers v5 (from wagmi docs)
-export function clientToSigner(client: Client<Transport, Chain, Account>) {
-  const { account, transport } = client
-
-  const provider = new providers.Web3Provider(transport, 'any')
+/** Action to convert a Viem Client to an ethers.js Signer. */
+async function getEthersSigner(config: Config, chainId: CHAINS) {
+  const { account, chain, transport } = await getConnectorClient(config, {
+    chainId,
+  })
+  const network = {
+    chainId: chain.id,
+    name: chain.name,
+    ensAddress: chain.contracts?.ensRegistry?.address,
+  }
+  const provider = new providers.Web3Provider(transport, network)
   const signer = provider.getSigner(account.address)
   return signer
-}
-
-/** Hook to convert a viem Wallet Client to an ethers.js Signer. */
-export function useEthersSigner(chainId: CHAINS) {
-  const { data: client } = useConnectorClient({ chainId })
-  return useMemo(() => (client ? clientToSigner(client) : undefined), [client])
 }
 
 type Value = {
@@ -54,7 +55,15 @@ export const Web3LegacyProvider = ({
     getStaticRpcBatchProvider(defaultChainId, getRpcUrl(defaultChainId)),
   )
 
-  const web3Provider = useEthersSigner(chainId)
+  const { data: web3Provider } = useSWR(
+    walletAddress ? `ethers-signer-${chainId}-${walletAddress}` : null,
+    async () => getEthersSigner(wagmiConfig, chainId),
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    },
+  )
 
   const [activeConnection] = useConnections({ config: wagmiConfig })
 
