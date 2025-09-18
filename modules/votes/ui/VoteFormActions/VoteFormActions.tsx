@@ -7,14 +7,16 @@ import { VoteMode, VotePhase, VoterState } from '../../types'
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { VoteButton } from './VoteButton'
-import { useVoteFormActionsContext } from 'modules/votes/providers/VoteFormActions/VoteFormActionsContext'
+import {
+  SuccessData,
+  useVoteFormActionsContext,
+} from 'modules/votes/providers/VoteFormActions/VoteFormActionsContext'
 import { useEligibleDelegators } from 'modules/delegation/hooks/useEligibleDelegators'
 import { formatBalance } from 'modules/blockChain/utils/formatBalance'
 import { BigNumber } from '@ethersproject/bignumber'
 import { getUseModal } from 'modules/modal/useModal'
 import { VoteSubmitModal } from 'modules/votes/ui/VoteActionsModals/SubmitModal/VoteSubmitModal'
 import { VoteSuccessModal } from 'modules/votes/ui/VoteActionsModals/SuccessModal/VoteSuccessModal'
-import { ResultTx } from 'modules/blockChain/types'
 import { TxRow } from 'modules/blockChain/ui/TxRow'
 import { DelegatorsList } from 'modules/votes/ui/VoteActionsModals/DelegatorsList/VoteActionsDelegatorsList'
 import { VoteActionButtonObjectionTooltip } from 'modules/votes/ui/VoteActionButtonObjectionTooltip'
@@ -33,7 +35,7 @@ type Props = {
 
 type ModalData = {
   mode?: VoteMode | null
-  successTx: ResultTx
+  successData: SuccessData
 }
 
 type ModalKey = 'submit' | 'success'
@@ -62,7 +64,7 @@ export function VoteFormActions({
     txDelegatesVote,
     setVoteId: setVoteFormActionsModalsVoteId,
     isSubmitting: isVoteSubmitting,
-    successTx,
+    successData,
     voteEvents,
     delegatorsVotedThemselves,
   } = useVoteFormActionsContext()
@@ -133,8 +135,8 @@ export function VoteFormActions({
   )
 
   const handleSubmit = useCallback(
-    (tx: ResultTx) => {
-      switchModal('submit', 'success', { successTx: tx })
+    (_successData: SuccessData) => {
+      switchModal('submit', 'success', { successData: _successData })
     },
     [switchModal],
   )
@@ -193,10 +195,14 @@ export function VoteFormActions({
   }, [voteId, setVoteFormActionsModalsVoteId])
 
   useEffect(() => {
-    if (successTx !== null && !('safeTxHash' in successTx)) {
-      handleSubmit(successTx)
+    if (
+      // Open success modal only if user has voted for the first time
+      successData?.votedAsLog.length === 1 &&
+      !('safeTxHash' in successData.successTx)
+    ) {
+      handleSubmit(successData)
     }
-  }, [successTx, handleSubmit, voterState])
+  }, [handleSubmit, voterState, successData])
 
   const nayButtonLabel = 'No'
 
