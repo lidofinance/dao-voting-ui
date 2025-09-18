@@ -68,8 +68,9 @@ export function VoteSuccessModal(props: ModalProps<{}>) {
   const votedAsLog = useMemo(() => successData?.votedAsLog || [], [successData])
 
   const hasVotedWithOwnVP =
-    votedAsLog.includes('owner') &&
-    (voterState === VoterState.Nay || voterState === VoterState.Yea)
+    votedAsLog.includes('owner') ||
+    voterState === VoterState.Nay ||
+    voterState === VoterState.Yea
   const hasVotedAsDelegate = votedAsLog.includes('delegate')
   const hasVotedBothWays = hasVotedWithOwnVP && hasVotedAsDelegate
 
