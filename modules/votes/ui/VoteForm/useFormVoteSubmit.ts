@@ -11,9 +11,10 @@ import { useContractHelpers } from 'modules/blockChain/hooks/useContractHelpers'
 type Args = {
   voteId?: string
   onFinish?: FinishHandler
+  onError?: () => void
 }
 
-export function useFormVoteSubmit({ voteId, onFinish }: Args) {
+export function useFormVoteSubmit({ voteId, onFinish, onError }: Args) {
   const { votingHelpers } = useContractHelpers()
   const voting = votingHelpers.useWeb3()
   const [isSubmitting, setSubmitting] = useState<false | VoteMode>(false)
@@ -28,7 +29,8 @@ export function useFormVoteSubmit({ voteId, onFinish }: Args) {
 
   const handleError = useCallback(() => {
     setSubmitting(false)
-  }, [])
+    onError?.()
+  }, [onError])
 
   const populateVote = useCallback(
     async (args: { voteId: string; mode: VoteMode }) => {

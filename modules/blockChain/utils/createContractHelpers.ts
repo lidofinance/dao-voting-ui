@@ -1,10 +1,8 @@
-import { CHAINS } from '../chains'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useGlobalMemo } from 'modules/shared/hooks/useGlobalMemo'
 
 import type { Signer, providers } from 'ethers'
 import type { JsonRpcSigner } from '@ethersproject/providers'
-import { getStaticRpcBatchProvider } from './rpcProviders'
 import { Address } from '../types'
 
 type Library = JsonRpcSigner | Signer | providers.Provider
@@ -17,22 +15,15 @@ interface Factory {
 type CreatorArgs<F> = {
   factory: F
   address: Address
-  rpcUrl: string
 }
 
 type CallArgs = {
   library: Library
 }
 
-type CallRpcArgs = {
-  chainId: CHAINS
-  rpc: string
-}
-
 export function createContractHelpers<F extends Factory>({
   address,
   factory,
-  rpcUrl,
 }: CreatorArgs<F>) {
   type Instance = ReturnType<F['connect']>
 
@@ -40,17 +31,12 @@ export function createContractHelpers<F extends Factory>({
     return factory.connect(address, library) as Instance
   }
 
-  function connectRpc({ chainId, rpc }: CallRpcArgs) {
-    const library = getStaticRpcBatchProvider(chainId, rpc)
-    return connect({ library })
-  }
-
   function useInstanceRpc() {
     const { chainId, rpcProvider } = useWeb3()
 
     return useGlobalMemo(
       () => connect({ library: rpcProvider! }),
-      `contract-rpc-${chainId}-${rpcUrl}-${address}`,
+      `contract-rpc-${chainId}-${address}`,
     )
   }
 
@@ -79,7 +65,6 @@ export function createContractHelpers<F extends Factory>({
     address,
     factory,
     connect,
-    connectRpc,
     useRpc: useInstanceRpc,
     useWeb3: useInstanceWeb3,
   }

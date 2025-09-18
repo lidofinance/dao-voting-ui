@@ -1,17 +1,9 @@
 import { CHAINS } from 'modules/blockChain/chains'
-import { getStaticRpcBatchProvider } from 'modules/blockChain/utils/rpcProviders'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
-import { useConfig } from 'modules/config/hooks/useConfig'
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 
 export const useEnsResolvers = () => {
-  const { chainId } = useWeb3()
-  const { getRpcUrl } = useConfig()
-
-  const ethProvider = useMemo(() => {
-    const rpcUrl = getRpcUrl(chainId)
-    return getStaticRpcBatchProvider(chainId, rpcUrl)
-  }, [chainId, getRpcUrl])
+  const { chainId, rpcProvider } = useWeb3()
 
   const lookupAddress = useCallback(
     async (address: string) => {
@@ -21,9 +13,9 @@ export const useEnsResolvers = () => {
         return null
       }
 
-      return ethProvider.lookupAddress(address)
+      return rpcProvider.lookupAddress(address)
     },
-    [chainId, ethProvider],
+    [chainId, rpcProvider],
   )
 
   const resolveName = useCallback(
@@ -34,9 +26,9 @@ export const useEnsResolvers = () => {
         return null
       }
 
-      return ethProvider.resolveName(address)
+      return rpcProvider.resolveName(address)
     },
-    [chainId, ethProvider],
+    [chainId, rpcProvider],
   )
 
   return {

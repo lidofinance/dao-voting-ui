@@ -90,7 +90,7 @@ export function SettingsForm() {
         }
 
         // Doing a random request to check rpc url is fetchable
-        const ldo = ldoHelpers.connectRpc({ chainId, rpc: rpcUrl })
+        const ldo = ldoHelpers.connect({ library: provider })
         await ldo.decimals()
 
         // All fine
