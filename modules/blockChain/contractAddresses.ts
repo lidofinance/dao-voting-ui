@@ -426,8 +426,10 @@ export const IdentifiedCommunityStakersGate: ChainAddressMap = {
 
 export const GateSealWEBAndTWGProposed: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xA6BC802fAa064414AA62117B4a53D27fFfF741F1',
+  [CHAINS.Hoodi]: '0x368f2fcb593170823cc844F1B29e75E3d26879A1',
 }
 
 export const GateSealWithdrawalQueueProposed: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x8A854C4E750CDf24f138f34A9061b2f556066912',
+  [CHAINS.Hoodi]: '0x73d76Bd3D589B2b2185c402da82cdAfbc18b958D',
 }
