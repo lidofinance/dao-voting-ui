@@ -33,7 +33,7 @@ type Props = {
 
 type ModalData = {
   mode?: VoteMode | null
-  successTx?: ResultTx
+  successTx: ResultTx
 }
 
 type ModalKey = 'submit' | 'success'
@@ -133,8 +133,8 @@ export function VoteFormActions({
   )
 
   const handleSubmit = useCallback(
-    (data?: ModalData) => {
-      switchModal('submit', 'success', data)
+    (tx: ResultTx) => {
+      switchModal('submit', 'success', { successTx: tx })
     },
     [switchModal],
   )
@@ -194,7 +194,7 @@ export function VoteFormActions({
 
   useEffect(() => {
     if (successTx !== null && !('safeTxHash' in successTx)) {
-      handleSubmit({ successTx })
+      handleSubmit(successTx)
     }
   }, [successTx, handleSubmit, voterState])
 

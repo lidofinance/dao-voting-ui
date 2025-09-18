@@ -48,7 +48,7 @@ interface SnapshotData {
 export function VoteSuccessModal({
   successTx,
   ...modalProps
-}: ModalProps<{ successTx?: ResultTx }>) {
+}: ModalProps<{ successTx: ResultTx }>) {
   const contextData = useVoteFormActionsContext()
   const {
     txVote,
@@ -108,7 +108,7 @@ export function VoteSuccessModal({
   )
 
   useEffect(() => {
-    if (successTx && !hasSubmitted.current) {
+    if (!hasSubmitted.current) {
       setSnapshotData(createSnapshot())
       hasSubmitted.current = true
     }
@@ -182,7 +182,7 @@ export function VoteSuccessModal({
     !hasVotedWithOwnVP
 
   const handleEtherscan = useEtherscanOpener(
-    successTx?.type === 'regular' ? successTx.tx.hash : '',
+    successTx.type === 'regular' ? successTx.tx.hash : '',
     'tx',
   )
 
