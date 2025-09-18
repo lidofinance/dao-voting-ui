@@ -29,6 +29,9 @@ const ABI_EXCEPTIONS = {
   DualGovernanceConfigProviderLegacy: abis.DGConfigProviderAbi__factory.abi,
   DualGovernanceTieBreakerCoreLegacy:
     abis.DualGovernanceTieBreakerCoreAbi__factory.abi,
+  GateSealWEBAndTWGProposed: abis.GateSealAbi__factory.abi,
+  GateSealWithdrawalQueueProposed: abis.GateSealAbi__factory.abi,
+  GateSealProposedToRemove: abis.GateSealAbi__factory.abi,
 } as const
 
 type ExceptionContractName = keyof typeof ABI_EXCEPTIONS

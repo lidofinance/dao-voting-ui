@@ -191,82 +191,34 @@
         "name": "secondsPerSlot",
         "type": "uint256"
       },
-      {
-        "internalType": "uint256",
-        "name": "genesisTime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "lidoLocator",
-        "type": "address"
-      }
+      { "internalType": "uint256", "name": "genesisTime", "type": "uint256" },
+      { "internalType": "address", "name": "lidoLocator", "type": "address" }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
-  {
-    "inputs": [],
-    "name": "AddressCannotBeSame",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "AddressCannotBeZero",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "AdminCannotBeZero",
-    "type": "error"
-  },
+  { "inputs": [], "name": "AddressCannotBeSame", "type": "error" },
+  { "inputs": [], "name": "AddressCannotBeZero", "type": "error" },
+  { "inputs": [], "name": "AdminCannotBeZero", "type": "error" },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "exitDataIndex",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "requestsCount",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "exitDataIndex", "type": "uint256" },
+      { "internalType": "uint256", "name": "requestsCount", "type": "uint256" }
     ],
     "name": "ExitDataIndexOutOfRange",
     "type": "error"
   },
-  {
-    "inputs": [],
-    "name": "ExitHashAlreadySubmitted",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ExitHashNotSubmitted",
-    "type": "error"
-  },
+  { "inputs": [], "name": "ExitHashAlreadySubmitted", "type": "error" },
+  { "inputs": [], "name": "ExitHashNotSubmitted", "type": "error" },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "requestsCount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "remainingLimit",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "requestsCount", "type": "uint256" },
+      { "internalType": "uint256", "name": "remainingLimit", "type": "uint256" }
     ],
     "name": "ExitRequestsLimitExceeded",
     "type": "error"
   },
-  {
-    "inputs": [],
-    "name": "HashCannotBeZero",
-    "type": "error"
-  },
+  { "inputs": [], "name": "HashCannotBeZero", "type": "error" },
   {
     "inputs": [
       {
@@ -283,95 +235,35 @@
     "name": "InitialRefSlotCannotBeLessThanProcessingOne",
     "type": "error"
   },
-  {
-    "inputs": [],
-    "name": "InvalidContractVersionIncrement",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidExitDataIndexSortOrder",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidModuleId",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidRequestsDataLength",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidRequestsDataSortOrder",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "LimitExceeded",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NoConsensusReportToProcess",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NonZeroContractVersionOnInit",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "PauseUntilMustBeInFuture",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "PausedExpected",
-    "type": "error"
-  },
+  { "inputs": [], "name": "InvalidContractVersionIncrement", "type": "error" },
+  { "inputs": [], "name": "InvalidExitDataIndexSortOrder", "type": "error" },
+  { "inputs": [], "name": "InvalidModuleId", "type": "error" },
+  { "inputs": [], "name": "InvalidRequestsDataLength", "type": "error" },
+  { "inputs": [], "name": "InvalidRequestsDataSortOrder", "type": "error" },
+  { "inputs": [], "name": "LimitExceeded", "type": "error" },
+  { "inputs": [], "name": "NoConsensusReportToProcess", "type": "error" },
+  { "inputs": [], "name": "NonZeroContractVersionOnInit", "type": "error" },
+  { "inputs": [], "name": "PauseUntilMustBeInFuture", "type": "error" },
+  { "inputs": [], "name": "PausedExpected", "type": "error" },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "deadline",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "deadline", "type": "uint256" }
     ],
     "name": "ProcessingDeadlineMissed",
     "type": "error"
   },
-  {
-    "inputs": [],
-    "name": "RefSlotAlreadyProcessing",
-    "type": "error"
-  },
+  { "inputs": [], "name": "RefSlotAlreadyProcessing", "type": "error" },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "refSlot",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "prevRefSlot",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "refSlot", "type": "uint256" },
+      { "internalType": "uint256", "name": "prevRefSlot", "type": "uint256" }
     ],
     "name": "RefSlotCannotDecrease",
     "type": "error"
   },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "refSlot",
-        "type": "uint256"
-      },
+      { "internalType": "uint256", "name": "refSlot", "type": "uint256" },
       {
         "internalType": "uint256",
         "name": "processingRefSlot",
@@ -381,58 +273,18 @@
     "name": "RefSlotMustBeGreaterThanProcessingOne",
     "type": "error"
   },
-  {
-    "inputs": [],
-    "name": "RequestsAlreadyDelivered",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "RequestsNotDelivered",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ResumedExpected",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "SecondsPerSlotCannotBeZero",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "SenderIsNotTheConsensusContract",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "SenderNotAllowed",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "TooLargeExitsPerFrame",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "TooLargeFrameDuration",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "TooLargeMaxExitRequestsLimit",
-    "type": "error"
-  },
+  { "inputs": [], "name": "RequestsAlreadyDelivered", "type": "error" },
+  { "inputs": [], "name": "RequestsNotDelivered", "type": "error" },
+  { "inputs": [], "name": "ResumedExpected", "type": "error" },
+  { "inputs": [], "name": "SecondsPerSlotCannotBeZero", "type": "error" },
+  { "inputs": [], "name": "SenderIsNotTheConsensusContract", "type": "error" },
+  { "inputs": [], "name": "SenderNotAllowed", "type": "error" },
+  { "inputs": [], "name": "TooLargeExitsPerFrame", "type": "error" },
+  { "inputs": [], "name": "TooLargeFrameDuration", "type": "error" },
+  { "inputs": [], "name": "TooLargeMaxExitRequestsLimit", "type": "error" },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "requestsCount",
-        "type": "uint256"
-      },
+      { "internalType": "uint256", "name": "requestsCount", "type": "uint256" },
       {
         "internalType": "uint256",
         "name": "maxRequestsPerReport",
@@ -442,11 +294,7 @@
     "name": "TooManyExitRequestsInReport",
     "type": "error"
   },
-  {
-    "inputs": [],
-    "name": "UnexpectedChainConfig",
-    "type": "error"
-  },
+  { "inputs": [], "name": "UnexpectedChainConfig", "type": "error" },
   {
     "inputs": [
       {
@@ -465,32 +313,16 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "expected",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "received",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "expected", "type": "uint256" },
+      { "internalType": "uint256", "name": "received", "type": "uint256" }
     ],
     "name": "UnexpectedContractVersion",
     "type": "error"
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "consensusHash",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "receivedHash",
-        "type": "bytes32"
-      }
+      { "internalType": "bytes32", "name": "consensusHash", "type": "bytes32" },
+      { "internalType": "bytes32", "name": "receivedHash", "type": "bytes32" }
     ],
     "name": "UnexpectedDataHash",
     "type": "error"
@@ -502,57 +334,27 @@
         "name": "consensusRefSlot",
         "type": "uint256"
       },
-      {
-        "internalType": "uint256",
-        "name": "dataRefSlot",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "dataRefSlot", "type": "uint256" }
     ],
     "name": "UnexpectedRefSlot",
     "type": "error"
   },
-  {
-    "inputs": [],
-    "name": "UnexpectedRequestsDataLength",
-    "type": "error"
-  },
+  { "inputs": [], "name": "UnexpectedRequestsDataLength", "type": "error" },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "format",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "format", "type": "uint256" }
     ],
     "name": "UnsupportedRequestsDataFormat",
     "type": "error"
   },
+  { "inputs": [], "name": "VersionCannotBeSame", "type": "error" },
   {
-    "inputs": [],
-    "name": "VersionCannotBeSame",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
-      }
-    ],
+    "inputs": [{ "internalType": "string", "name": "name", "type": "string" }],
     "name": "ZeroArgument",
     "type": "error"
   },
-  {
-    "inputs": [],
-    "name": "ZeroFrameDuration",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ZeroPauseDuration",
-    "type": "error"
-  },
+  { "inputs": [], "name": "ZeroFrameDuration", "type": "error" },
+  { "inputs": [], "name": "ZeroPauseDuration", "type": "error" },
   {
     "anonymous": false,
     "inputs": [
@@ -731,12 +533,7 @@
     "name": "RequestsHashSubmitted",
     "type": "event"
   },
-  {
-    "anonymous": false,
-    "inputs": [],
-    "name": "Resumed",
-    "type": "event"
-  },
+  { "anonymous": false, "inputs": [], "name": "Resumed", "type": "event" },
   {
     "anonymous": false,
     "inputs": [
@@ -903,179 +700,97 @@
   {
     "inputs": [],
     "name": "DATA_FORMAT_LIST",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "DEFAULT_ADMIN_ROLE",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "EXIT_REQUEST_LIMIT_MANAGER_ROLE",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "EXIT_TYPE",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "GENESIS_TIME",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "MANAGE_CONSENSUS_CONTRACT_ROLE",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "MANAGE_CONSENSUS_VERSION_ROLE",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "PAUSE_INFINITELY",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "PAUSE_ROLE",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "RESUME_ROLE",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "SECONDS_PER_SLOT",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "SUBMIT_DATA_ROLE",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "SUBMIT_REPORT_HASH_ROLE",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "refSlot",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "refSlot", "type": "uint256" }
     ],
     "name": "discardConsensusReport",
     "outputs": [],
@@ -1094,11 +809,7 @@
         "name": "maxExitRequestsLimit",
         "type": "uint256"
       },
-      {
-        "internalType": "uint256",
-        "name": "exitsPerFrame",
-        "type": "uint256"
-      },
+      { "internalType": "uint256", "name": "exitsPerFrame", "type": "uint256" },
       {
         "internalType": "uint256",
         "name": "frameDurationInSec",
@@ -1113,13 +824,7 @@
   {
     "inputs": [],
     "name": "getConsensusContract",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -1127,26 +832,14 @@
     "inputs": [],
     "name": "getConsensusReport",
     "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "hash",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint256",
-        "name": "refSlot",
-        "type": "uint256"
-      },
+      { "internalType": "bytes32", "name": "hash", "type": "bytes32" },
+      { "internalType": "uint256", "name": "refSlot", "type": "uint256" },
       {
         "internalType": "uint256",
         "name": "processingDeadlineTime",
         "type": "uint256"
       },
-      {
-        "internalType": "bool",
-        "name": "processingStarted",
-        "type": "bool"
-      }
+      { "internalType": "bool", "name": "processingStarted", "type": "bool" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -1154,26 +847,14 @@
   {
     "inputs": [],
     "name": "getConsensusVersion",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "getContractVersion",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -1205,11 +886,7 @@
         "name": "maxExitRequestsLimit",
         "type": "uint256"
       },
-      {
-        "internalType": "uint256",
-        "name": "exitsPerFrame",
-        "type": "uint256"
-      },
+      { "internalType": "uint256", "name": "exitsPerFrame", "type": "uint256" },
       {
         "internalType": "uint256",
         "name": "frameDurationInSec",
@@ -1232,26 +909,14 @@
   {
     "inputs": [],
     "name": "getLastProcessingRefSlot",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "getMaxValidatorsPerReport",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -1271,16 +936,8 @@
             "name": "processingDeadlineTime",
             "type": "uint256"
           },
-          {
-            "internalType": "bytes32",
-            "name": "dataHash",
-            "type": "bytes32"
-          },
-          {
-            "internalType": "bool",
-            "name": "dataSubmitted",
-            "type": "bool"
-          },
+          { "internalType": "bytes32", "name": "dataHash", "type": "bytes32" },
+          { "internalType": "bool", "name": "dataSubmitted", "type": "bool" },
           {
             "internalType": "uint256",
             "name": "dataFormat",
@@ -1308,103 +965,49 @@
   {
     "inputs": [],
     "name": "getResumeSinceTimestamp",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      }
+      { "internalType": "bytes32", "name": "role", "type": "bytes32" }
     ],
     "name": "getRoleAdmin",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint256",
-        "name": "index",
-        "type": "uint256"
-      }
+      { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+      { "internalType": "uint256", "name": "index", "type": "uint256" }
     ],
     "name": "getRoleMember",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      }
+      { "internalType": "bytes32", "name": "role", "type": "bytes32" }
     ],
     "name": "getRoleMemberCount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "getTotalRequestsProcessed",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
+      { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+      { "internalType": "address", "name": "account", "type": "address" }
     ],
     "name": "grantRole",
     "outputs": [],
@@ -1413,35 +1016,17 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
+      { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+      { "internalType": "address", "name": "account", "type": "address" }
     ],
     "name": "hasRole",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "admin",
-        "type": "address"
-      },
+      { "internalType": "address", "name": "admin", "type": "address" },
       {
         "internalType": "address",
         "name": "consensusContract",
@@ -1467,11 +1052,7 @@
         "name": "maxExitRequestsLimit",
         "type": "uint256"
       },
-      {
-        "internalType": "uint256",
-        "name": "exitsPerFrame",
-        "type": "uint256"
-      },
+      { "internalType": "uint256", "name": "exitsPerFrame", "type": "uint256" },
       {
         "internalType": "uint256",
         "name": "frameDurationInSec",
@@ -1486,23 +1067,13 @@
   {
     "inputs": [],
     "name": "isPaused",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_duration",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "_duration", "type": "uint256" }
     ],
     "name": "pauseFor",
     "outputs": [],
@@ -1524,16 +1095,8 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
+      { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+      { "internalType": "address", "name": "account", "type": "address" }
     ],
     "name": "renounceRole",
     "outputs": [],
@@ -1549,16 +1112,8 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
+      { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+      { "internalType": "address", "name": "account", "type": "address" }
     ],
     "name": "revokeRole",
     "outputs": [],
@@ -1567,11 +1122,7 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "addr",
-        "type": "address"
-      }
+      { "internalType": "address", "name": "addr", "type": "address" }
     ],
     "name": "setConsensusContract",
     "outputs": [],
@@ -1580,11 +1131,7 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "version",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "version", "type": "uint256" }
     ],
     "name": "setConsensusVersion",
     "outputs": [],
@@ -1598,11 +1145,7 @@
         "name": "maxExitRequestsLimit",
         "type": "uint256"
       },
-      {
-        "internalType": "uint256",
-        "name": "exitsPerFrame",
-        "type": "uint256"
-      },
+      { "internalType": "uint256", "name": "exitsPerFrame", "type": "uint256" },
       {
         "internalType": "uint256",
         "name": "frameDurationInSec",
@@ -1616,11 +1159,7 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "maxRequests",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "maxRequests", "type": "uint256" }
     ],
     "name": "setMaxValidatorsPerReport",
     "outputs": [],
@@ -1629,21 +1168,9 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "reportHash",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint256",
-        "name": "refSlot",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "deadline",
-        "type": "uint256"
-      }
+      { "internalType": "bytes32", "name": "reportHash", "type": "bytes32" },
+      { "internalType": "uint256", "name": "refSlot", "type": "uint256" },
+      { "internalType": "uint256", "name": "deadline", "type": "uint256" }
     ],
     "name": "submitConsensusReport",
     "outputs": [],
@@ -1654,16 +1181,8 @@
     "inputs": [
       {
         "components": [
-          {
-            "internalType": "bytes",
-            "name": "data",
-            "type": "bytes"
-          },
-          {
-            "internalType": "uint256",
-            "name": "dataFormat",
-            "type": "uint256"
-          }
+          { "internalType": "bytes", "name": "data", "type": "bytes" },
+          { "internalType": "uint256", "name": "dataFormat", "type": "uint256" }
         ],
         "internalType": "struct ValidatorsExitBus.ExitRequestsData",
         "name": "request",
@@ -1697,11 +1216,7 @@
             "name": "consensusVersion",
             "type": "uint256"
           },
-          {
-            "internalType": "uint256",
-            "name": "refSlot",
-            "type": "uint256"
-          },
+          { "internalType": "uint256", "name": "refSlot", "type": "uint256" },
           {
             "internalType": "uint256",
             "name": "requestsCount",
@@ -1712,11 +1227,7 @@
             "name": "dataFormat",
             "type": "uint256"
           },
-          {
-            "internalType": "bytes",
-            "name": "data",
-            "type": "bytes"
-          }
+          { "internalType": "bytes", "name": "data", "type": "bytes" }
         ],
         "internalType": "struct ValidatorsExitBusOracle.ReportData",
         "name": "data",
@@ -1735,20 +1246,10 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes4",
-        "name": "interfaceId",
-        "type": "bytes4"
-      }
+      { "internalType": "bytes4", "name": "interfaceId", "type": "bytes4" }
     ],
     "name": "supportsInterface",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -1756,16 +1257,8 @@
     "inputs": [
       {
         "components": [
-          {
-            "internalType": "bytes",
-            "name": "data",
-            "type": "bytes"
-          },
-          {
-            "internalType": "uint256",
-            "name": "dataFormat",
-            "type": "uint256"
-          }
+          { "internalType": "bytes", "name": "data", "type": "bytes" },
+          { "internalType": "uint256", "name": "dataFormat", "type": "uint256" }
         ],
         "internalType": "struct ValidatorsExitBus.ExitRequestsData",
         "name": "exitsData",
@@ -1789,44 +1282,16 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes",
-        "name": "exitRequests",
-        "type": "bytes"
-      },
-      {
-        "internalType": "uint256",
-        "name": "dataFormat",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "index",
-        "type": "uint256"
-      }
+      { "internalType": "bytes", "name": "exitRequests", "type": "bytes" },
+      { "internalType": "uint256", "name": "dataFormat", "type": "uint256" },
+      { "internalType": "uint256", "name": "index", "type": "uint256" }
     ],
     "name": "unpackExitRequest",
     "outputs": [
-      {
-        "internalType": "bytes",
-        "name": "pubkey",
-        "type": "bytes"
-      },
-      {
-        "internalType": "uint256",
-        "name": "nodeOpId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "moduleId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "valIndex",
-        "type": "uint256"
-      }
+      { "internalType": "bytes", "name": "pubkey", "type": "bytes" },
+      { "internalType": "uint256", "name": "nodeOpId", "type": "uint256" },
+      { "internalType": "uint256", "name": "moduleId", "type": "uint256" },
+      { "internalType": "uint256", "name": "valIndex", "type": "uint256" }
     ],
     "stateMutability": "pure",
     "type": "function"

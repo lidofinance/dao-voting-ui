@@ -323,7 +323,7 @@ export const DualGovernanceLegacy: ChainAddressMap = {
   [CHAINS.Hoodi]: '0x4d12b9f6acab54ff6a3a776ba3b8724d9b77845f',
 }
 
-export const GateSeal: ChainAddressMap = {
+export const GateSealProposedToRemove: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xf9C9fDB4A5D2AA1D836D5370AB9b28BC1847e178',
   [CHAINS.Holesky]: '0xAE6eCd77DCC656c5533c4209454Fd56fB46e1778',
   [CHAINS.Hoodi]: '0x73d76Bd3D589B2b2185c402da82cdAfbc18b958D',
@@ -410,13 +410,24 @@ export const DualGovernanceUpgradeStateVerifier: ChainAddressMap = {
 }
 
 export const CSStrikes: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xaa328816027F2D32B9F56d190BC9Fa4A5C07637f',
   [CHAINS.Hoodi]: '0x8fBA385C3c334D251eE413e79d4D3890db98693c',
 }
 
 export const CSParametersRegistry: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x9D28ad303C90DF524BA960d7a2DAC56DcC31e428',
   [CHAINS.Hoodi]: '0xA4aD5236963f9Fe4229864712269D8d79B65C5Ad',
 }
 
 export const IdentifiedCommunityStakersGate: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xB314D4A76C457c93150d308787939063F4Cc67E0',
   [CHAINS.Hoodi]: '0x10a254e724fe2b7f305f76f3f116a3969c53845f',
+}
+
+export const GateSealWEBAndTWGProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xA6BC802fAa064414AA62117B4a53D27fFfF741F1',
+}
+
+export const GateSealWithdrawalQueueProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x8A854C4E750CDf24f138f34A9061b2f556066912',
 }
