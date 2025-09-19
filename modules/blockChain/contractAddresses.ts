@@ -438,21 +438,34 @@ export const DualGovernanceUpgradeStateVerifier: ChainAddressMap = {
 }
 
 export const CSStrikes: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0xaa328816027F2D32B9F56d190BC9Fa4A5C07637f',
   [CHAINS.Hoodi]: '0x8fBA385C3c334D251eE413e79d4D3890db98693c',
 }
 
+export const CSStrikesProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xaa328816027F2D32B9F56d190BC9Fa4A5C07637f',
+}
+
 export const CSParametersRegistry: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x9D28ad303C90DF524BA960d7a2DAC56DcC31e428',
   [CHAINS.Hoodi]: '0xA4aD5236963f9Fe4229864712269D8d79B65C5Ad',
 }
 
+export const CSParametersRegistryProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x9D28ad303C90DF524BA960d7a2DAC56DcC31e428',
+}
+
 export const IdentifiedCommunityStakersGate: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0xB314D4A76C457c93150d308787939063F4Cc67E0',
   [CHAINS.Hoodi]: '0x10a254e724fe2b7f305f76f3f116a3969c53845f',
 }
 
+export const IdentifiedCommunityStakersGateProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xB314D4A76C457c93150d308787939063F4Cc67E0',
+}
+
 export const PermissionlessGate: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0x5553077102322689876A6AdFd48D75014c28acfb',
+}
+
+export const PermissionlessGateProposed: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xcF33a38111d0B1246A3F38a838fb41D626B454f0',
 }
 

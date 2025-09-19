@@ -38,6 +38,11 @@ const ABI_EXCEPTIONS = {
   CSEjectorProposed: abis.CSEjectorAbi__factory.abi,
   ValidatorExitDelayVerifierProposed:
     abis.ValidatorExitDelayVerifierAbi__factory.abi,
+  CSStrikesProposed: abis.CSStrikesAbi__factory.abi,
+  CSParametersRegistryProposed: abis.CSParametersRegistryAbi__factory.abi,
+  IdentifiedCommunityStakersGateProposed:
+    abis.IdentifiedCommunityStakersGateAbi__factory.abi,
+  PermissionlessGateProposed: abis.PermissionlessGateAbi__factory.abi,
 } as const
 
 type ExceptionContractName = keyof typeof ABI_EXCEPTIONS
