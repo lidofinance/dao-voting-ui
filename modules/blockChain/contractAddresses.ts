@@ -284,6 +284,7 @@ export const CSVerifierProposedToRemove: ChainAddressMap = {
 
 export const CSVerifierProposed: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xdC5FE1782B6943f318E05230d688713a560063DC',
+  [CHAINS.Hoodi]: '0xf805b3711cBB48F15Ae2bb27095ddC38c5339968',
 }
 
 export const SandboxNodeOperatorsRegistry: ChainAddressMap = {
