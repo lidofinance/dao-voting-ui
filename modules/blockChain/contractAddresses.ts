@@ -405,6 +405,10 @@ export const InsuranceFund: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x8B3f33234ABD88493c0Cd28De33D583B70beDe35',
 }
 
+export const TriggerableWithdrawalsGatewayProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xDC00116a0D3E064427dA2600449cfD2566B3037B',
+}
+
 export const TriggerableWithdrawalsGateway: ChainAddressMap = {
   [CHAINS.Hoodi]: '0x6679090D92b08a2a686eF8614feECD8cDFE209db',
 }
