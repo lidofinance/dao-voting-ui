@@ -276,10 +276,14 @@ export const CSModule: ChainAddressMap = {
   [CHAINS.Hoodi]: '0x79CEf36D84743222f37765204Bec41E92a93E59d',
 }
 
-export const CSVerifier: ChainAddressMap = {
+export const CSVerifierProposedToRemove: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xeC6Cc185f671F627fb9b6f06C8772755F587b05d',
   [CHAINS.Holesky]: '0xC099dfD61F6E5420e0Ca7e84D820daAd17Fc1D44',
   [CHAINS.Hoodi]: '0xB6bafBD970a4537077dE59cebE33081d794513d6',
+}
+
+export const CSVerifierProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xdC5FE1782B6943f318E05230d688713a560063DC',
 }
 
 export const SandboxNodeOperatorsRegistry: ChainAddressMap = {
@@ -432,4 +436,13 @@ export const GateSealWEBAndTWGProposed: ChainAddressMap = {
 export const GateSealWithdrawalQueueProposed: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x8A854C4E750CDf24f138f34A9061b2f556066912',
   [CHAINS.Hoodi]: '0x73d76Bd3D589B2b2185c402da82cdAfbc18b958D',
+}
+
+export const GateSealProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xE1686C2E90eb41a48356c1cC7FaA17629af3ADB3',
+}
+
+// CSM v2 related
+export const PermissionlessGate: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xcF33a38111d0B1246A3F38a838fb41D626B454f0',
 }
