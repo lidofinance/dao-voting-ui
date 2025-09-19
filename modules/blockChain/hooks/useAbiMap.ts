@@ -28,11 +28,16 @@ const ABI_EXCEPTIONS = {
   DualGovernanceConfigProviderLegacy: abis.DGConfigProviderAbi__factory.abi,
   DualGovernanceTieBreakerCoreLegacy:
     abis.DualGovernanceTieBreakerCoreAbi__factory.abi,
-  GateSealWEBAndTWGProposed: abis.GateSealAbi__factory.abi,
+  GateSealVEBAndTWG: abis.GateSealAbi__factory.abi,
+  GateSealVEBAndTWGProposed: abis.GateSealAbi__factory.abi,
+  GateSealWithdrawalQueue: abis.GateSealAbi__factory.abi,
   GateSealWithdrawalQueueProposed: abis.GateSealAbi__factory.abi,
   GateSealProposedToRemove: abis.GateSealAbi__factory.abi,
   TriggerableWithdrawalsGatewayProposed:
     abis.TriggerableWithdrawalsGatewayAbi__factory.abi,
+  CSEjectorProposed: abis.CSEjectorAbi__factory.abi,
+  ValidatorExitDelayVerifierProposed:
+    abis.ValidatorExitDelayVerifierAbi__factory.abi,
 } as const
 
 type ExceptionContractName = keyof typeof ABI_EXCEPTIONS

@@ -278,13 +278,14 @@ export const CSModule: ChainAddressMap = {
 
 export const CSVerifierProposedToRemove: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xeC6Cc185f671F627fb9b6f06C8772755F587b05d',
-  [CHAINS.Holesky]: '0xC099dfD61F6E5420e0Ca7e84D820daAd17Fc1D44',
-  [CHAINS.Hoodi]: '0xB6bafBD970a4537077dE59cebE33081d794513d6',
+}
+
+export const CSVerifier: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0xf805b3711cBB48F15Ae2bb27095ddC38c5339968',
 }
 
 export const CSVerifierProposed: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xdC5FE1782B6943f318E05230d688713a560063DC',
-  [CHAINS.Hoodi]: '0xf805b3711cBB48F15Ae2bb27095ddC38c5339968',
 }
 
 export const SandboxNodeOperatorsRegistry: ChainAddressMap = {
@@ -330,14 +331,32 @@ export const DualGovernanceLegacy: ChainAddressMap = {
 
 export const GateSealProposedToRemove: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xf9C9fDB4A5D2AA1D836D5370AB9b28BC1847e178',
-  [CHAINS.Holesky]: '0xAE6eCd77DCC656c5533c4209454Fd56fB46e1778',
-  [CHAINS.Hoodi]: '0x73d76Bd3D589B2b2185c402da82cdAfbc18b958D',
+}
+
+export const GateSealProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xE1686C2E90eb41a48356c1cC7FaA17629af3ADB3',
 }
 
 export const CSMGateSeal: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x16Dbd4B85a448bE564f1742d5c8cCdD2bB3185D0',
   [CHAINS.Holesky]: '0xf1C03536dbC77B1bD493a2D1C0b1831Ea78B540a',
   [CHAINS.Hoodi]: '0x94a3aEB0E9148F64CB453Be2BDe2Bc0148f6AC24',
+}
+
+export const GateSealVEBAndTWG: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0x368f2fcb593170823cc844F1B29e75E3d26879A1',
+}
+
+export const GateSealVEBAndTWGProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xA6BC802fAa064414AA62117B4a53D27fFfF741F1',
+}
+
+export const GateSealWithdrawalQueue: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0x73d76Bd3D589B2b2185c402da82cdAfbc18b958D',
+}
+
+export const GateSealWithdrawalQueueProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0x8A854C4E750CDf24f138f34A9061b2f556066912',
 }
 
 export const DualGovernanceLaunchVerifier: ChainAddressMap = {
@@ -433,21 +452,22 @@ export const IdentifiedCommunityStakersGate: ChainAddressMap = {
   [CHAINS.Hoodi]: '0x10a254e724fe2b7f305f76f3f116a3969c53845f',
 }
 
-export const GateSealWEBAndTWGProposed: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0xA6BC802fAa064414AA62117B4a53D27fFfF741F1',
-  [CHAINS.Hoodi]: '0x368f2fcb593170823cc844F1B29e75E3d26879A1',
-}
-
-export const GateSealWithdrawalQueueProposed: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0x8A854C4E750CDf24f138f34A9061b2f556066912',
-  [CHAINS.Hoodi]: '0x73d76Bd3D589B2b2185c402da82cdAfbc18b958D',
-}
-
-export const GateSealProposed: ChainAddressMap = {
-  [CHAINS.Mainnet]: '0xE1686C2E90eb41a48356c1cC7FaA17629af3ADB3',
-}
-
-// CSM v2 related
 export const PermissionlessGate: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xcF33a38111d0B1246A3F38a838fb41D626B454f0',
+}
+
+export const CSEjector: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0x21e271cBa32672B106737AbeB3a45E53Fe9a0df4',
+}
+
+export const CSEjectorProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xc72b58aa02E0e98cF8A4a0E9Dce75e763800802C',
+}
+
+export const ValidatorExitDelayVerifier: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0xa5F5A9360275390fF9728262a29384399f38d2f0',
+}
+
+export const ValidatorExitDelayVerifierProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xbDb567672c867DB533119C2dcD4FB9d8b44EC82f',
 }
