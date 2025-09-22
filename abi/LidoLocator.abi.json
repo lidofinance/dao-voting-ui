@@ -6,14 +6,30 @@
         "name": "implementation_",
         "type": "address"
       },
-      { "internalType": "address", "name": "admin_", "type": "address" },
-      { "internalType": "bytes", "name": "data_", "type": "bytes" }
+      {
+        "internalType": "address",
+        "name": "admin_",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "data_",
+        "type": "bytes"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
-  { "inputs": [], "name": "NotAdmin", "type": "error" },
-  { "inputs": [], "name": "ProxyIsOssified", "type": "error" },
+  {
+    "inputs": [],
+    "name": "NotAdmin",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ProxyIsOssified",
+    "type": "error"
+  },
   {
     "anonymous": false,
     "inputs": [
@@ -65,10 +81,17 @@
     "name": "Upgraded",
     "type": "event"
   },
-  { "stateMutability": "payable", "type": "fallback" },
+  {
+    "stateMutability": "payable",
+    "type": "fallback"
+  },
   {
     "inputs": [
-      { "internalType": "address", "name": "newAdmin_", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "newAdmin_",
+        "type": "address"
+      }
     ],
     "name": "proxy__changeAdmin",
     "outputs": [],
@@ -78,21 +101,39 @@
   {
     "inputs": [],
     "name": "proxy__getAdmin",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "proxy__getImplementation",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "proxy__getIsOssified",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -123,15 +164,26 @@
         "name": "newImplementation_",
         "type": "address"
       },
-      { "internalType": "bytes", "name": "setupCalldata_", "type": "bytes" },
-      { "internalType": "bool", "name": "forceCall_", "type": "bool" }
+      {
+        "internalType": "bytes",
+        "name": "setupCalldata_",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bool",
+        "name": "forceCall_",
+        "type": "bool"
+      }
     ],
     "name": "proxy__upgradeToAndCall",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
-  { "stateMutability": "payable", "type": "receive" },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
+  },
   {
     "inputs": [
       {
@@ -192,6 +244,16 @@
           {
             "internalType": "address",
             "name": "oracleDaemonConfig",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "validatorExitDelayVerifier",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "triggerableWithdrawalsGateway",
             "type": "address"
           }
         ],
@@ -306,6 +368,20 @@
   {
     "inputs": [],
     "name": "treasury",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "triggerableWithdrawalsGateway",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "validatorExitDelayVerifier",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
