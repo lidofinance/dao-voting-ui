@@ -337,10 +337,16 @@ export const GateSealProposed: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xE1686C2E90eb41a48356c1cC7FaA17629af3ADB3',
 }
 
-export const CSMGateSeal: ChainAddressMap = {
+export const CSGateSealProposedToRemove: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x16Dbd4B85a448bE564f1742d5c8cCdD2bB3185D0',
-  [CHAINS.Holesky]: '0xf1C03536dbC77B1bD493a2D1C0b1831Ea78B540a',
+}
+
+export const CSGateSeal: ChainAddressMap = {
   [CHAINS.Hoodi]: '0x94a3aEB0E9148F64CB453Be2BDe2Bc0148f6AC24',
+}
+
+export const CSGateSealProposed: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xE1686C2E90eb41a48356c1cC7FaA17629af3ADB3',
 }
 
 export const GateSealVEBAndTWG: ChainAddressMap = {
