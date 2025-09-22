@@ -14,7 +14,7 @@ import {
   DELEGATORS_PAGE_SIZE,
 } from 'modules/delegation/constants'
 import { InfoLabel } from 'modules/shared/ui/Common/InfoRow'
-import { getEtherscanAddressLink } from '@lido-sdk/helpers'
+import { getEtherscanAddressLink } from 'modules/blockChain/utils/etherscan'
 import { formatBalance } from 'modules/blockChain/utils/formatBalance'
 import { useDelegators } from 'modules/delegation/hooks/useDelegators'
 import { ExternalLink } from 'modules/shared/ui/Common/ExternalLink'

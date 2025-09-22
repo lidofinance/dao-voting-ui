@@ -1,5 +1,5 @@
-import { CHAINS } from '@lido-sdk/constants'
-import { useLidoSWR } from '@lido-sdk/react'
+import { CHAINS } from 'modules/blockChain/chains'
+import { useSWR } from 'modules/network/hooks/useSwr'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { DELEGATORS_FETCH_SIZE, DELEGATORS_FETCH_TOTAL } from '../constants'
 import { BigNumber } from 'ethers'
@@ -29,7 +29,7 @@ export function useDelegators() {
   const voting = votingHelpers.useRpc()
   const { lookupAddress } = useEnsResolvers()
 
-  const { data, initialLoading, loading, error } = useLidoSWR<DelegatorsData>(
+  const { data, initialLoading, error } = useSWR<DelegatorsData>(
     walletAddress
       ? [`swr:useDelegators`, chainId, walletAddress, voting.address]
       : null,
@@ -115,7 +115,6 @@ export function useDelegators() {
       notFetchedDelegatorsCount: data?.notFetchedDelegatorsCount ?? 0,
     } as DelegatorsData,
     initialLoading,
-    loading,
     error,
   }
 }

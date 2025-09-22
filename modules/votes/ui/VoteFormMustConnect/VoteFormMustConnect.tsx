@@ -1,12 +1,12 @@
-import { useConnectWalletModal } from 'modules/wallet/ui/ConnectWalletModal'
+import { useConnect } from 'reef-knot/core-react'
 
 import { Button } from '@lidofinance/lido-ui'
 
 export function VoteFormMustConnect() {
-  const { openModal: openConnectWalletModal } = useConnectWalletModal()
+  const { connect } = useConnect()
 
   return (
-    <Button fullwidth onClick={openConnectWalletModal}>
+    <Button fullwidth onClick={connect}>
       Connect wallet
     </Button>
   )

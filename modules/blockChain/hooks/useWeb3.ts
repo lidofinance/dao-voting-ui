@@ -1,25 +1,9 @@
-import { useMemo } from 'react'
-import { useWeb3 as useWeb3ReefKnot } from 'reef-knot/web3-react'
-import { useConfig } from 'modules/config/hooks/useConfig'
-import { parseChainId } from '../chains'
-import { useSDK } from '@lido-sdk/react'
+import { useContext } from 'react'
+import invariant from 'tiny-invariant'
+import { Web3LegacyContext } from 'modules/web3Provider/web3LegacyProvider'
 
-export function useWeb3() {
-  const web3 = useWeb3ReefKnot()
-  const { providerWeb3 } = useSDK()
-  const { defaultChain } = useConfig()
-  const { chainId } = web3
-
-  const currentChain = useMemo(
-    () => parseChainId(chainId || defaultChain),
-    [chainId, defaultChain],
-  )
-
-  return {
-    ...web3,
-    isWalletConnected: web3.active,
-    walletAddress: web3.account,
-    chainId: currentChain,
-    library: providerWeb3,
-  }
+export const useWeb3 = () => {
+  const value = useContext(Web3LegacyContext)
+  invariant(value, 'useWeb3 was used outside the Web3LegacyContext provider')
+  return value
 }

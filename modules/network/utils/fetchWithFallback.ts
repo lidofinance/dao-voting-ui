@@ -1,4 +1,4 @@
-import { CHAINS } from '@lido-sdk/constants'
+import { CHAINS } from 'modules/blockChain/chains'
 import { rpcResponseTime } from 'modules/shared/metrics/responseTime'
 
 type FetchWithFallback = (

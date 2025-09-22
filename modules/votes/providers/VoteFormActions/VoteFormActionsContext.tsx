@@ -1,5 +1,6 @@
 import React, {
   createContext,
+  PropsWithChildren,
   useCallback,
   useContext,
   useMemo,
@@ -26,24 +27,25 @@ import { useDelegationInfo } from 'modules/delegation/hooks/useDelegationInfo'
 import { DelegationInfo } from 'modules/delegation/types'
 import { useGovernanceTokenData } from 'modules/tokens/hooks/useGovernanceTokenData'
 
-export enum VotedAs {
-  delegate = 'delegate',
-  owner = 'owner',
+export type VotedAs = 'owner' | 'delegate'
+
+export type SuccessData = {
+  successTx: ResultTx
+  votedAsLog: VotedAs[]
 }
 
 export type VoteFormActionsContextValue = {
   voteId: string
-  successTx: ResultTx | null
-  setSuccessTx: React.Dispatch<React.SetStateAction<ResultTx | null>>
+  successData: SuccessData | null
+  setSuccessData: React.Dispatch<React.SetStateAction<SuccessData | null>>
   formVoteSubmitData: ReturnType<typeof useFormVoteSubmit>
   setVoteId: React.Dispatch<React.SetStateAction<string>>
   votePower: number | undefined
-  handleVote: (mode: VoteMode | null) => Promise<void>
+  handleVote: (mode: VoteMode | null | undefined) => Promise<void>
   handleDelegatesVote: (
-    mode: VoteMode | null,
+    mode: VoteMode | null | undefined,
     selectedAddresses: string[],
   ) => Promise<void>
-  votedAs: VotedAs | null
   mode: VoteMode | null
   txVote: TransactionSender
   txDelegatesVote: TransactionSender
@@ -73,10 +75,12 @@ export const useVoteFormActionsContext = () => {
   return value
 }
 
-export const VoteFormActionsProvider: React.FC = ({ children }) => {
+export const VoteFormActionsProvider: React.FC<PropsWithChildren> = ({
+  children,
+}) => {
   const [voteId, setVoteId] = useState<string>('')
-  const [successTx, setSuccessTx] = useState<ResultTx | null>(null)
-  const [votedAs, setVotedAs] = useState<VotedAs | null>(null)
+  const [successData, setSuccessData] = useState<SuccessData | null>(null)
+  const [votedAsDraft, setVotedAsDraft] = useState<VotedAs | null>(null)
   const [mode, setMode] = useState<VoteMode | null>(null)
 
   const { data: eligibleDelegatorsData, mutate } = useEligibleDelegators({
@@ -97,22 +101,29 @@ export const VoteFormActionsProvider: React.FC = ({ children }) => {
     mutate: doRevalidate,
   } = formVoteInfoData
 
-  const handleFinish: FinishHandler = async ({ tx }) => {
+  const handleFinish: FinishHandler = async successTx => {
     await mutate()
     await doRevalidate()
-    setSuccessTx(tx as unknown as ResultTx)
+    const votedAsLog = votedAsDraft
+      ? [...(successData?.votedAsLog ?? []), votedAsDraft]
+      : []
+    setSuccessData({ successTx, votedAsLog })
   }
 
   const formVoteSubmitData = useFormVoteSubmit({
     voteId,
+    onError: () => {
+      setSuccessData(null)
+      setVotedAsDraft(null)
+    },
     onFinish: handleFinish,
   })
 
   const { txVote, txDelegatesVote, isSubmitting } = formVoteSubmitData
 
   const handleVote = useCallback(
-    _mode => {
-      setVotedAs(VotedAs.owner)
+    (_mode: VoteMode) => {
+      setVotedAsDraft('owner')
       setMode(_mode)
       return formVoteSubmitData.handleVote(_mode)
     },
@@ -120,8 +131,8 @@ export const VoteFormActionsProvider: React.FC = ({ children }) => {
   )
 
   const handleDelegatesVote = useCallback(
-    (_mode, selectedAddresses) => {
-      setVotedAs(VotedAs.delegate)
+    (_mode: VoteMode, selectedAddresses: string[]) => {
+      setVotedAsDraft('delegate')
       setMode(_mode)
       return formVoteSubmitData.handleDelegatesVote(_mode, selectedAddresses)
     },
@@ -167,12 +178,11 @@ export const VoteFormActionsProvider: React.FC = ({ children }) => {
       setVoteId,
       formVoteSubmitData,
       formVoteInfoData,
-      successTx,
-      setSuccessTx,
       votePower,
       handleVote,
       handleDelegatesVote,
-      votedAs,
+      successData,
+      setSuccessData,
       mode,
       txVote,
       txDelegatesVote,
@@ -196,12 +206,11 @@ export const VoteFormActionsProvider: React.FC = ({ children }) => {
       eligibleDelegatorsData,
       formVoteSubmitData,
       formVoteInfoData,
-      successTx,
-      setSuccessTx,
+      successData,
+      setSuccessData,
       votePower,
       handleVote,
       handleDelegatesVote,
-      votedAs,
       mode,
       txVote,
       txDelegatesVote,

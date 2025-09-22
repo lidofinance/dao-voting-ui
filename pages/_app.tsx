@@ -4,10 +4,14 @@ import getConfig from 'next/config'
 import NextApp, { AppProps, AppContext } from 'next/app'
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useErrorMessage } from 'modules/blockChain/hooks/useErrorMessage'
-import { useSupportedChains } from 'reef-knot/web3-react'
 import { PageLayout } from 'modules/shared/ui/Layout/PageLayout'
 import { GlobalStyle } from 'modules/globalStyles'
-import { toast, ToastContainer, ToastError } from '@lidofinance/lido-ui'
+import {
+  CookieThemeProvider,
+  toast,
+  ToastContainer,
+  ToastError,
+} from '@lidofinance/lido-ui'
 import { ConfigProvider } from 'modules/config/providers/configProvider'
 import { ModalProvider } from 'modules/modal/ModalProvider'
 import { NetworkSwitcher } from 'modules/blockChain/ui/NetworkSwitcher'
@@ -17,12 +21,15 @@ import { parseEnvConfig } from 'modules/config/utils/parseEnvConfig'
 import { getAddressList } from 'modules/config/utils/getAddressList'
 import { withCsp } from 'modules/shared/utils/csp'
 import { CustomAppProps } from 'modules/shared/utils/utilTypes'
-import { AppProviderWeb3 } from 'modules/web3Provider'
-import { AppWagmiConfig } from 'modules/wagmiConfig'
-import { UiProvider } from 'modules/shared/ui/UiProvider'
+import { AppWeb3Provider } from 'modules/web3Provider'
 import { useConfig } from 'modules/config/hooks/useConfig'
 import { TestModeBanner } from 'modules/blockChain/ui/TestModeBanner'
 import { isTestnet } from 'modules/blockChain/utils/isTestnet'
+import { useIsChainSupported } from 'modules/blockChain/hooks/useIsChainSupported'
+import { NoSSRWrapper } from 'modules/shared/ui/Utils/NoSSRWrapper'
+
+// Somehow using `GlobalStyle` directly causes a type error
+const GlobalStyleCasted = GlobalStyle as unknown as React.FC
 
 // Visualize route changes
 nprogress()
@@ -32,11 +39,11 @@ const basePath = getConfig().publicRuntimeConfig.basePath || ''
 function AppRoot({ Component, pageProps }: AppProps) {
   const { chainId } = useWeb3()
   const { savedConfig } = useConfig()
-  const { isUnsupported } = useSupportedChains()
+  const isChainSupported = useIsChainSupported()
   const error = useErrorMessage()
 
   useEffect(() => {
-    if (!error || isUnsupported) return
+    if (!error || !isChainSupported) return
 
     ToastError(error, {
       toastId: 'wallet-error',
@@ -44,7 +51,7 @@ function AppRoot({ Component, pageProps }: AppProps) {
     })
 
     return () => toast.dismiss('wallet-error')
-  }, [error, isUnsupported])
+  }, [error, isChainSupported])
 
   return (
     <>
@@ -98,9 +105,11 @@ function AppRoot({ Component, pageProps }: AppProps) {
         ))}
       </Head>
       <PageLayout>
-        {isUnsupported && <NetworkSwitcher />}
+        {!isChainSupported && <NetworkSwitcher />}
         {savedConfig.useTestContracts && isTestnet(chainId) && (
-          <TestModeBanner />
+          <NoSSRWrapper>
+            <TestModeBanner />
+          </NoSSRWrapper>
         )}
         <Component {...pageProps} />
       </PageLayout>
@@ -113,20 +122,18 @@ const AppRootMemo = memo(AppRoot)
 
 function App({ envConfig, ...appProps }: CustomAppProps) {
   return (
-    <UiProvider>
-      <GlobalStyle />
+    <CookieThemeProvider>
+      <GlobalStyleCasted />
       <ConfigProvider envConfig={envConfig}>
-        <AppWagmiConfig>
-          <AppProviderWeb3>
-            <VotePromptProvider>
-              <ModalProvider>
-                <AppRootMemo {...appProps} />
-              </ModalProvider>
-            </VotePromptProvider>
-          </AppProviderWeb3>
-        </AppWagmiConfig>
+        <AppWeb3Provider>
+          <VotePromptProvider>
+            <ModalProvider>
+              <AppRootMemo {...appProps} />
+            </ModalProvider>
+          </VotePromptProvider>
+        </AppWeb3Provider>
       </ConfigProvider>
-    </UiProvider>
+    </CookieThemeProvider>
   )
 }
 

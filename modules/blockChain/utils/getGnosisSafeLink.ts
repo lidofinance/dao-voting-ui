@@ -1,4 +1,4 @@
-import { CHAINS } from '@lido-sdk/constants'
+import { CHAINS } from '../chains'
 
 export const getGnosisSafeLink = (chainId: CHAINS, address: string) => {
   switch (chainId) {

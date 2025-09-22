@@ -46,11 +46,11 @@ const useDelegationFormNetworkData = (): DelegationFormNetworkData => {
   const {
     data: delegationInfo,
     initialLoading: isDelegationInfoLoading,
-    update: updateGovernanceInfo,
+    mutate: updateGovernanceInfo,
   } = useDelegationInfo()
 
   const revalidate = useCallback(async () => {
-    await updateGovernanceInfo()
+    await updateGovernanceInfo(undefined, true)
   }, [updateGovernanceInfo])
 
   const loading = useMemo(
@@ -81,18 +81,18 @@ const useDelegationFormActions = (
   const setSubmitting = useCallback(() => setIsSubmitting(true), [])
   const resetSubmitting = useCallback(() => setIsSubmitting(false), [])
 
-  const { update } = useProcessedPublicDelegatesList()
+  const { mutate } = useProcessedPublicDelegatesList()
 
   const handleFinish = useCallback(
     async (hasError?: boolean) => {
       await networkData.revalidate()
-      await update()
+      await mutate(undefined, true)
       resetSubmitting()
       if (!hasError) {
         ToastSuccess('Transaction submitted successfully')
       }
     },
-    [networkData, resetSubmitting, update],
+    [networkData, resetSubmitting, mutate],
   )
 
   const { txAragonDelegate, txSnapshotDelegate, submitDelegation } =
@@ -125,6 +125,7 @@ const useDelegationFormActions = (
 //
 export type DelegationFormProviderProps = {
   mode: DelegationFormMode
+  children?: React.ReactNode
 }
 
 export const DelegationFormProvider: FC<DelegationFormProviderProps> = ({

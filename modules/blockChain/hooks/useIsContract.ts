@@ -1,28 +1,17 @@
-import { useEthereumSWR } from '@lido-sdk/react'
+import { useSWRImmutable } from 'modules/network/hooks/useSwr'
+import { useWeb3 } from './useWeb3'
 
-export const useIsContract = (
-  account?: string | null,
-): { loading: boolean; isContract: boolean } => {
-  // eth_getCode returns hex string of bytecode at address
-  // for accounts it's "0x"
-  // for contract it's potentially very long hex (can't be safely&quickly parsed)
-  const result = useEthereumSWR({
-    shouldFetch: !!account,
-    method: 'getCode',
-    params: [account, 'latest'],
-    config: {
-      // this is very stable request
-      refreshWhenHidden: false,
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnMount: true,
-      revalidateOnReconnect: false,
-      refreshInterval: 0,
+export const useIsContract = () => {
+  const { walletAddress, chainId, rpcProvider } = useWeb3()
+
+  return useSWRImmutable(
+    walletAddress ? `is-contract-${chainId}-${walletAddress}` : null,
+    async () => {
+      if (!walletAddress || !rpcProvider) return false
+
+      const code = await rpcProvider.getCode(walletAddress)
+
+      return Boolean(code && code !== '0x')
     },
-  })
-
-  return {
-    loading: result.loading,
-    isContract: result.data ? result.data !== '0x' : false,
-  }
+  )
 }

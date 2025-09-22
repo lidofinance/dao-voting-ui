@@ -7,14 +7,16 @@ import { VoteMode, VotePhase, VoterState } from '../../types'
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { VoteButton } from './VoteButton'
-import { useVoteFormActionsContext } from 'modules/votes/providers/VoteFormActions/VoteFormActionsContext'
+import {
+  SuccessData,
+  useVoteFormActionsContext,
+} from 'modules/votes/providers/VoteFormActions/VoteFormActionsContext'
 import { useEligibleDelegators } from 'modules/delegation/hooks/useEligibleDelegators'
 import { formatBalance } from 'modules/blockChain/utils/formatBalance'
 import { BigNumber } from '@ethersproject/bignumber'
 import { getUseModal } from 'modules/modal/useModal'
 import { VoteSubmitModal } from 'modules/votes/ui/VoteActionsModals/SubmitModal/VoteSubmitModal'
 import { VoteSuccessModal } from 'modules/votes/ui/VoteActionsModals/SuccessModal/VoteSuccessModal'
-import { ResultTx } from 'modules/blockChain/types'
 import { TxRow } from 'modules/blockChain/ui/TxRow'
 import { DelegatorsList } from 'modules/votes/ui/VoteActionsModals/DelegatorsList/VoteActionsDelegatorsList'
 import { VoteActionButtonObjectionTooltip } from 'modules/votes/ui/VoteActionButtonObjectionTooltip'
@@ -32,12 +34,14 @@ type Props = {
 }
 
 type ModalData = {
-  mode?: VoteMode
-  successTx?: ResultTx
-  voterState?: VoterState
+  mode?: VoteMode | null
+  successData: SuccessData
 }
 
 type ModalKey = 'submit' | 'success'
+
+const useSubmitModal = getUseModal(VoteSubmitModal)
+const useSuccessModal = getUseModal(VoteSuccessModal)
 
 export function VoteFormActions({
   canEnact,
@@ -60,13 +64,10 @@ export function VoteFormActions({
     txDelegatesVote,
     setVoteId: setVoteFormActionsModalsVoteId,
     isSubmitting: isVoteSubmitting,
-    successTx,
+    successData,
     voteEvents,
     delegatorsVotedThemselves,
   } = useVoteFormActionsContext()
-
-  const useSubmitModal = getUseModal(VoteSubmitModal)
-  const useSuccessModal = getUseModal(VoteSuccessModal)
 
   const { openModal: openSubmitModal, closeModal: closeSubmitModal } =
     useSubmitModal()
@@ -134,8 +135,8 @@ export function VoteFormActions({
   )
 
   const handleSubmit = useCallback(
-    (data?: ModalData) => {
-      switchModal('submit', 'success', data)
+    (_successData: SuccessData) => {
+      switchModal('submit', 'success', { successData: _successData })
     },
     [switchModal],
   )
@@ -145,7 +146,7 @@ export function VoteFormActions({
   }, [])
 
   const handleVoteClick = useCallback(
-    async (voteType?) => {
+    async (voteType?: VoteMode) => {
       const currentVoteType = voteType || activeVoteType
       await handleVote(currentVoteType)
       setIsMenuOpen(false)
@@ -180,7 +181,7 @@ export function VoteFormActions({
     ],
   )
 
-  const handleSelectedAddressesChange = useCallback(addresses => {
+  const handleSelectedAddressesChange = useCallback((addresses: string[]) => {
     setSelectedDelegatedAddresses(addresses)
   }, [])
 
@@ -194,10 +195,14 @@ export function VoteFormActions({
   }, [voteId, setVoteFormActionsModalsVoteId])
 
   useEffect(() => {
-    if (successTx !== null && !('safeTxHash' in successTx)) {
-      handleSubmit({ successTx, voterState })
+    if (
+      // Open success modal only if user has voted for the first time
+      successData?.votedAsLog.length === 1 &&
+      !('safeTxHash' in successData.successTx)
+    ) {
+      handleSubmit(successData)
     }
-  }, [successTx, handleSubmit, voterState])
+  }, [handleSubmit, voterState, successData])
 
   const nayButtonLabel = 'No'
 
@@ -271,7 +276,6 @@ export function VoteFormActions({
           style={{
             width: 200,
           }}
-          themeOverride="light"
           variant="default"
           open={isMenuOpen}
         >

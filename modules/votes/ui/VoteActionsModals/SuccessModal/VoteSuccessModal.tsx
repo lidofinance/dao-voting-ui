@@ -1,25 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import * as urls from 'modules/network/utils/urls'
-import {
-  Button,
-  Link,
-  Modal,
-  ModalProps,
-  Success,
-  Text,
-} from '@lidofinance/lido-ui'
-import { useEtherscanOpen } from '@lido-sdk/react'
-import type { EtherscanEntities } from '@lido-sdk/helpers'
+import { Button, Link, Modal, Success, Text } from '@lidofinance/lido-ui'
 
 import CheckSVG from 'assets/check.com.svg.react'
 import CrossSVG from 'assets/cross.com.svg.react'
 
 import { DelegatorsList } from 'modules/votes/ui/VoteActionsModals/DelegatorsList/VoteActionsDelegatorsList'
 
-import {
-  useVoteFormActionsContext,
-  VotedAs,
-} from 'modules/votes/providers/VoteFormActions/VoteFormActionsContext'
+import { useVoteFormActionsContext } from 'modules/votes/providers/VoteFormActions/VoteFormActionsContext'
 import { formatBalance } from 'modules/blockChain/utils/formatBalance'
 import { ButtonGroup } from 'modules/votes/ui/VoteActionsModals/SubmitModal/VoteSubmitModalStyle'
 import { BigNumber } from '@ethersproject/bignumber'
@@ -36,26 +24,10 @@ import {
 import { TxRow } from 'modules/blockChain/ui/TxRow'
 import { openWindow } from 'modules/shared/utils/openWindow'
 import { VoteActionButtonObjectionTooltip } from 'modules/votes/ui/VoteActionButtonObjectionTooltip'
-import { EligibleDelegator } from 'modules/delegation/hooks/useEligibleDelegators'
-import { DelegationInfo } from 'modules/delegation/types'
+import { ModalProps } from 'modules/modal/ModalProvider'
+import { useEtherscanOpener } from 'modules/blockChain/hooks/useEtherscanOpener'
 
-interface SnapshotData {
-  mode: 'yay' | 'nay' | 'enact' | null
-  eligibleDelegatedVotingPower: BigNumber
-  votePhase: VotePhase | undefined
-  votedByDelegate: EligibleDelegator[]
-  votePower: number | undefined
-  delegationInfo: DelegationInfo | undefined
-  delegatedVotersAddresses: string[]
-  eligibleDelegatedVoters: EligibleDelegator[]
-  voterState: number | null | undefined
-}
-
-export function VoteSuccessModal({
-  data: { successTx },
-  ...modalProps
-}: ModalProps) {
-  const contextData = useVoteFormActionsContext()
+export function VoteSuccessModal(props: ModalProps<{}>) {
   const {
     txVote,
     txDelegatesVote,
@@ -65,86 +37,59 @@ export function VoteSuccessModal({
     eligibleDelegatedVotingPower,
     delegatedVotersAddresses,
     voteEvents,
-    votedAs,
-    setSuccessTx,
     mode,
     votedByDelegate,
     handleVote,
     handleDelegatesVote,
     votePower,
-    voterState,
     delegationInfo,
     votePhase,
-  } = contextData
+    successData,
+    voterState,
+    setSuccessData,
+  } = useVoteFormActionsContext()
+
+  useEffect(() => {
+    return () => {
+      // Clear success data on modal close
+      setSuccessData(null)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const [selectedDelegatedAddresses, setSelectedDelegatedAddresses] = useState<
     string[]
   >([])
 
-  const [snapshotData, setSnapshotData] = useState<SnapshotData | null>(null)
-  const hasSubmitted = useRef(false)
-
-  const handleSelectedAddressesChange = useCallback(addresses => {
+  const handleSelectedAddressesChange = useCallback((addresses: string[]) => {
     setSelectedDelegatedAddresses(addresses)
   }, [])
-  // This is to avoid re-rendering the modal template right after the response returns and before closing the modal
-  const createSnapshot = useCallback(
-    () => ({
-      mode,
-      eligibleDelegatedVotingPower,
-      votePhase,
-      votedByDelegate,
-      votePower,
-      delegationInfo,
-      delegatedVotersAddresses,
-      eligibleDelegatedVoters,
-      voterState,
-    }),
-    [
-      mode,
-      eligibleDelegatedVotingPower,
-      votePhase,
-      votedByDelegate,
-      votePower,
-      delegationInfo,
-      delegatedVotersAddresses,
-      eligibleDelegatedVoters,
-      voterState,
-    ],
-  )
 
-  useEffect(() => {
-    if (successTx && !hasSubmitted.current) {
-      setSnapshotData(createSnapshot())
-      hasSubmitted.current = true
-    }
-  }, [successTx, createSnapshot])
+  const votedAsLog = useMemo(() => successData?.votedAsLog || [], [successData])
 
-  const currentSnapshot = snapshotData || contextData
-
-  const hasVotedWithOwnVP = useMemo(
-    () =>
-      currentSnapshot.voterState === VoterState.Nay ||
-      currentSnapshot.voterState === VoterState.Yea,
-    [currentSnapshot.voterState],
-  )
+  const hasVotedWithOwnVP =
+    votedAsLog.includes('owner') ||
+    voterState === VoterState.Nay ||
+    voterState === VoterState.Yea
+  const hasVotedAsDelegate = votedAsLog.includes('delegate')
+  const hasVotedBothWays = hasVotedWithOwnVP && hasVotedAsDelegate
 
   const hasDelegators = useMemo(
-    () => currentSnapshot.delegatedVotersAddresses.length > 0,
-    [currentSnapshot.delegatedVotersAddresses],
+    () => delegatedVotersAddresses.length > 0,
+    [delegatedVotersAddresses],
   )
 
   const showDelegateCta = useMemo(
     () =>
       hasVotedWithOwnVP &&
       !hasDelegators &&
-      !currentSnapshot.delegationInfo?.aragonDelegateAddress,
-    [hasVotedWithOwnVP, hasDelegators, currentSnapshot.delegationInfo],
+      !delegationInfo?.aragonDelegateAddress,
+    [hasVotedWithOwnVP, hasDelegators, delegationInfo],
   )
 
   const selectedBalance = useMemo(
     () =>
-      currentSnapshot.eligibleDelegatedVoters
+      eligibleDelegatedVoters
         .filter(delegator =>
           selectedDelegatedAddresses.includes(delegator.address),
         )
@@ -153,48 +98,39 @@ export function VoteSuccessModal({
             acc.add(BigNumber.from(delegator.votingPower)),
           BigNumber.from(0),
         ),
-    [selectedDelegatedAddresses, currentSnapshot.eligibleDelegatedVoters],
+    [selectedDelegatedAddresses, eligibleDelegatedVoters],
   )
 
   const handleVoteClick = useCallback(
-    power => {
-      if (!currentSnapshot.mode) return
+    (power: 'own' | 'delegated') => {
+      if (!mode) return
       if (power === 'own') {
-        return handleVote(currentSnapshot.mode)
+        return handleVote(mode)
       }
-      return handleDelegatesVote(
-        currentSnapshot.mode,
-        selectedDelegatedAddresses,
-      )
+      return handleDelegatesVote(mode, selectedDelegatedAddresses)
     },
-    [
-      currentSnapshot.mode,
-      handleVote,
-      handleDelegatesVote,
-      selectedDelegatedAddresses,
-    ],
+    [mode, handleVote, handleDelegatesVote, selectedDelegatedAddresses],
   )
 
   const handleCtaClick = useCallback(() => openWindow(urls.delegation), [])
 
   const canVoteWithDelegatedPower =
-    currentSnapshot.eligibleDelegatedVoters.length -
-      currentSnapshot.votedByDelegate.length >
-    0
+    hasVotedWithOwnVP &&
+    eligibleDelegatedVoters.length - votedByDelegate.length > 0
 
   const canVoteWithOwnPower =
-    currentSnapshot.votePower !== undefined &&
-    currentSnapshot.votePower > 0 &&
-    !hasVotedWithOwnVP
+    votePower !== undefined && votePower > 0 && !hasVotedWithOwnVP
 
-  const handleEtherscan = useEtherscanOpen(
-    successTx.hash,
-    'tx' as EtherscanEntities,
-  )
+  const lastTxHash = useMemo(() => {
+    const { tx } =
+      votedAsLog[votedAsLog.length - 1] === 'owner' ? txVote : txDelegatesVote
+    if (tx?.type === 'safe') {
+      return ''
+    }
+    return tx?.tx.hash ?? ''
+  }, [txDelegatesVote, txVote, votedAsLog])
 
-  useEffect(() => {
-    setSuccessTx(null)
-  }, [setSuccessTx])
+  const handleEtherscan = useEtherscanOpener(lastTxHash, 'tx')
 
   const canVoteWithDelegatedPowerOnly = useMemo(
     () => !canVoteWithOwnPower && canVoteWithDelegatedPower,
@@ -202,14 +138,11 @@ export function VoteSuccessModal({
   )
 
   const voteOption = useMemo(() => {
-    return currentSnapshot.mode === 'yay' ? '“Yes”' : '“No”'
-  }, [currentSnapshot.mode])
+    return mode === 'yay' ? '“Yes”' : '“No”'
+  }, [mode])
 
-  const title = useRef(
-    `You voted ${voteOption}${
-      votedAs === VotedAs.delegate ? ' as a delegate' : ''
-    }`,
-  )
+  const shouldShowAdditionalCta =
+    !hasVotedBothWays && (canVoteWithDelegatedPower || canVoteWithOwnPower)
 
   const extraVotingTitle = useMemo(() => {
     if (canVoteWithDelegatedPowerOnly) {
@@ -218,20 +151,28 @@ export function VoteSuccessModal({
     return `Vote ${voteOption} with`
   }, [canVoteWithDelegatedPowerOnly, voteOption])
 
+  if (votedAsLog.length === 0) {
+    return null
+  }
+
   return (
     <Modal
-      title={title.current}
+      title={`You voted ${voteOption}${
+        votedAsLog[votedAsLog.length - 1] === 'delegate' ? ' as a delegate' : ''
+      }`}
       center
-      {...modalProps}
+      {...props}
       titleIcon={<Success color="green" height={64} width={64} />}
     >
-      <LinkWrap>
-        <Text size="xs" color="secondary">
-          Transaction can be viewed on
-        </Text>
-        <Link onClick={handleEtherscan}>Etherscan</Link>
-      </LinkWrap>
-      {(canVoteWithDelegatedPower || canVoteWithOwnPower) && (
+      {lastTxHash && (
+        <LinkWrap>
+          <Text size="xs" color="secondary">
+            Transaction can be viewed on
+          </Text>
+          <Link onClick={handleEtherscan}>Etherscan</Link>
+        </LinkWrap>
+      )}
+      {shouldShowAdditionalCta && (
         <>
           <ExtraVotingWrap>
             <Text size="sm" strong>
@@ -249,7 +190,7 @@ export function VoteSuccessModal({
                   >
                     {<CrossSVG />} No
                   </VoteButtonStyled>
-                  {currentSnapshot.votePhase === VotePhase.Objection ? (
+                  {votePhase === VotePhase.Objection ? (
                     <VoteActionButtonObjectionTooltip>
                       <VoteButtonStyled size="xs" color="secondary" disabled>
                         {<CheckSVG />} Yes
@@ -286,7 +227,7 @@ export function VoteSuccessModal({
                     loading={txVote.isPending}
                     disabled={!txVote.isEmpty && txVote.tx?.type === 'safe'}
                   >
-                    My own ({currentSnapshot.votePower} {governanceSymbol})
+                    My own ({votePower} {governanceSymbol})
                   </Button>
                 )}
                 {!txVote.isEmpty && canVoteWithOwnPower && (
@@ -319,14 +260,10 @@ export function VoteSuccessModal({
               <>
                 <DelegatorsList
                   defaultExpanded={false}
-                  eligibleDelegatedVoters={
-                    currentSnapshot.eligibleDelegatedVoters
-                  }
+                  eligibleDelegatedVoters={eligibleDelegatedVoters}
                   delegatorsVotedThemselves={delegatorsVotedThemselves}
                   governanceSymbol={governanceSymbol}
-                  eligibleDelegatedVotingPower={
-                    currentSnapshot.eligibleDelegatedVotingPower
-                  }
+                  eligibleDelegatedVotingPower={eligibleDelegatedVotingPower}
                   onSelectedAddressesChange={handleSelectedAddressesChange}
                   voteEvents={voteEvents}
                 />

@@ -1,11 +1,8 @@
-import { CHAINS } from '@lido-sdk/constants'
-
 import { useWeb3 } from 'modules/blockChain/hooks/useWeb3'
 import { useGlobalMemo } from 'modules/shared/hooks/useGlobalMemo'
 
 import type { Signer, providers } from 'ethers'
 import type { JsonRpcSigner } from '@ethersproject/providers'
-import { getStaticRpcBatchProvider } from '@lido-sdk/providers'
 import { Address } from '../types'
 
 type Library = JsonRpcSigner | Signer | providers.Provider
@@ -18,22 +15,15 @@ interface Factory {
 type CreatorArgs<F> = {
   factory: F
   address: Address
-  rpcUrl: string
 }
 
 type CallArgs = {
   library: Library
 }
 
-type CallRpcArgs = {
-  chainId: CHAINS
-  rpc: string
-}
-
 export function createContractHelpers<F extends Factory>({
   address,
   factory,
-  rpcUrl,
 }: CreatorArgs<F>) {
   type Instance = ReturnType<F['connect']>
 
@@ -41,38 +31,32 @@ export function createContractHelpers<F extends Factory>({
     return factory.connect(address, library) as Instance
   }
 
-  function connectRpc({ chainId, rpc }: CallRpcArgs) {
-    const library = getStaticRpcBatchProvider(chainId, rpc)
-    return connect({ library })
-  }
-
   function useInstanceRpc() {
-    const { chainId } = useWeb3()
-    const library = getStaticRpcBatchProvider(chainId, rpcUrl)
+    const { chainId, rpcProvider } = useWeb3()
 
     return useGlobalMemo(
-      () => connect({ library }),
-      `contract-rpc-${chainId}-${rpcUrl}-${address}`,
+      () => connect({ library: rpcProvider! }),
+      `contract-rpc-${chainId}-${address}`,
     )
   }
 
   function useInstanceWeb3() {
-    const { library, active, account } = useWeb3()
+    const { web3Provider, isWalletConnected, walletAddress } = useWeb3()
     const { chainId } = useWeb3()
 
     return useGlobalMemo(
       () =>
         connect({
           // TODO: find a way to remove ! here
-          library: library?.getSigner()!,
+          library: web3Provider!,
         }),
       [
         'contract-web3-',
-        active ? 'active' : 'inactive',
-        library ? 'with-signer' : 'no-signer',
+        isWalletConnected ? 'active' : 'inactive',
+        web3Provider ? 'with-signer' : 'no-signer',
         chainId,
         address,
-        account,
+        walletAddress,
       ].join('-'),
     )
   }
@@ -81,7 +65,6 @@ export function createContractHelpers<F extends Factory>({
     address,
     factory,
     connect,
-    connectRpc,
     useRpc: useInstanceRpc,
     useWeb3: useInstanceWeb3,
   }

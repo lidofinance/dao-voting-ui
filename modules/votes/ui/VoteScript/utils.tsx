@@ -5,7 +5,20 @@ import {
 import { DEFAULT_ADMIN_ROLE, LIDO_ROLES } from 'modules/votes/constants'
 import { utils } from 'ethers'
 import { getContractName } from 'modules/config/utils/getContractName'
-import { CHAINS } from '@lido-sdk/constants'
+import { CHAINS } from 'modules/blockChain/chains'
+
+const stringifyArray = (arr: any[], separator = ',\n'): string => {
+  const result = arr
+    .map(item => {
+      if (Array.isArray(item)) {
+        return `[${stringifyArray(item, ', ')}]`
+      }
+      return item.toString()
+    })
+    .join(separator)
+
+  return result
+}
 
 export const formatCallString = (
   chainId: CHAINS,
@@ -43,6 +56,9 @@ export const formatCallString = (
             } else {
               callRes += `See parsed calls below`
             }
+            // Try to parse custom tuple type
+          } else if (Array.isArray(data)) {
+            callRes += `\n[${stringifyArray(data)}]`
           }
         } else {
           if (typeof data === 'string') {

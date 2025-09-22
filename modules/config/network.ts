@@ -1,6 +1,5 @@
 import ms from 'ms'
-import { CHAINS } from '@lido-sdk/constants'
-import { parseChainId } from 'modules/blockChain/chains'
+import { CHAINS, parseChainId } from 'modules/blockChain/chains'
 
 export const ETHERSCAN_API_URL = '/api/etherscan'
 export const ETHERSCAN_CACHE_TTL = ms('1h')
