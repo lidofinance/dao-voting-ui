@@ -22,7 +22,7 @@ const ABI_EXCEPTIONS = {
   CSVerifierProposed: abis.CSVerifierAbi__factory.abi,
   CSVerifierProposedToRemove: abis.CSVerifierAbi__factory.abi,
   GateSealProposed: abis.GateSealAbi__factory.abi,
-  CSMGateSeal: abis.GateSealAbi__factory.abi,
+  CSGateSeal: abis.GateSealAbi__factory.abi,
   DualGovernanceLegacy: abis.DualGovernanceAbi__factory.abi,
   DualGovernanceConfigProvider: abis.DGConfigProviderAbi__factory.abi,
   DualGovernanceConfigProviderLegacy: abis.DGConfigProviderAbi__factory.abi,
@@ -43,6 +43,8 @@ const ABI_EXCEPTIONS = {
   IdentifiedCommunityStakersGateProposed:
     abis.IdentifiedCommunityStakersGateAbi__factory.abi,
   PermissionlessGateProposed: abis.PermissionlessGateAbi__factory.abi,
+  CSGateSealProposed: abis.GateSealAbi__factory.abi,
+  CSGateSealProposedToRemove: abis.GateSealAbi__factory.abi,
 } as const
 
 type ExceptionContractName = keyof typeof ABI_EXCEPTIONS
