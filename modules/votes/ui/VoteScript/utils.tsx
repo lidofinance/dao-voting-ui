@@ -7,7 +7,7 @@ import { utils } from 'ethers'
 import { getContractName } from 'modules/config/utils/getContractName'
 import { CHAINS } from 'modules/blockChain/chains'
 
-const stringifyArray = (arr: any[], separator = '\n'): string => {
+const stringifyArray = (arr: any[], separator = ',\n'): string => {
   const result = arr
     .map(item => {
       if (Array.isArray(item)) {
@@ -58,7 +58,7 @@ export const formatCallString = (
             }
             // Try to parse custom tuple type
           } else if (Array.isArray(data)) {
-            callRes += `\n${stringifyArray(data)}`
+            callRes += `\n[${stringifyArray(data)}]`
           }
         } else {
           if (typeof data === 'string') {

@@ -484,3 +484,8 @@ export const ValidatorExitDelayVerifier: ChainAddressMap = {
 export const ValidatorExitDelayVerifierProposed: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xbDb567672c867DB533119C2dcD4FB9d8b44EC82f',
 }
+
+export const EVMScriptExecutor: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xFE5986E06210aC1eCC1aDCafc0cc7f8D63B3F977',
+  [CHAINS.Hoodi]: '0x79a20FD0FA36453B2F45eAbab19bfef43575Ba9E',
+}
