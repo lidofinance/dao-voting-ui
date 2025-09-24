@@ -19,9 +19,6 @@ const ABI_EXCEPTIONS = {
   OracleRepo: abis.RepoAbi__factory.abi,
   SimpleDVT: abis.NodeOperatorsRegistryAbi__factory.abi,
   SandboxNodeOperatorsRegistry: abis.NodeOperatorsRegistryAbi__factory.abi,
-  CSVerifierProposed: abis.CSVerifierAbi__factory.abi,
-  CSVerifierProposedToRemove: abis.CSVerifierAbi__factory.abi,
-  GateSealProposed: abis.GateSealAbi__factory.abi,
   CSGateSeal: abis.GateSealAbi__factory.abi,
   DualGovernanceLegacy: abis.DualGovernanceAbi__factory.abi,
   DualGovernanceConfigProvider: abis.DGConfigProviderAbi__factory.abi,
@@ -29,22 +26,7 @@ const ABI_EXCEPTIONS = {
   DualGovernanceTieBreakerCoreLegacy:
     abis.DualGovernanceTieBreakerCoreAbi__factory.abi,
   GateSealVEBAndTWG: abis.GateSealAbi__factory.abi,
-  GateSealVEBAndTWGProposed: abis.GateSealAbi__factory.abi,
   GateSealWithdrawalQueue: abis.GateSealAbi__factory.abi,
-  GateSealWithdrawalQueueProposed: abis.GateSealAbi__factory.abi,
-  GateSealProposedToRemove: abis.GateSealAbi__factory.abi,
-  TriggerableWithdrawalsGatewayProposed:
-    abis.TriggerableWithdrawalsGatewayAbi__factory.abi,
-  CSEjectorProposed: abis.CSEjectorAbi__factory.abi,
-  ValidatorExitDelayVerifierProposed:
-    abis.ValidatorExitDelayVerifierAbi__factory.abi,
-  CSStrikesProposed: abis.CSStrikesAbi__factory.abi,
-  CSParametersRegistryProposed: abis.CSParametersRegistryAbi__factory.abi,
-  IdentifiedCommunityStakersGateProposed:
-    abis.IdentifiedCommunityStakersGateAbi__factory.abi,
-  PermissionlessGateProposed: abis.PermissionlessGateAbi__factory.abi,
-  CSGateSealProposed: abis.GateSealAbi__factory.abi,
-  CSGateSealProposedToRemove: abis.GateSealAbi__factory.abi,
 } as const
 
 type ExceptionContractName = keyof typeof ABI_EXCEPTIONS
