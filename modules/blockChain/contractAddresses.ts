@@ -424,6 +424,7 @@ export const EVMScriptRegistry: ChainAddressMap = {
 
 export const AllowedTokensRegistry: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x4ac40c34f8992bb1e5e856a448792158022551ca',
+  [CHAINS.Hoodi]: '0x40db7e8047c487bd8359289272c717ea3c34d1d3',
 }
 
 export const InsuranceFund: ChainAddressMap = {
@@ -494,4 +495,28 @@ export const ValidatorExitDelayVerifierProposed: ChainAddressMap = {
 export const EVMScriptExecutor: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xFE5986E06210aC1eCC1aDCafc0cc7f8D63B3F977',
   [CHAINS.Hoodi]: '0x79a20FD0FA36453B2F45eAbab19bfef43575Ba9E',
+}
+
+export const Accounting: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0x9b5b78D1C9A3238bF24662067e34c57c83E8c354',
+}
+
+export const LazyOracle: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0xf41491C79C30e8f4862d3F4A5b790171adB8e04A',
+}
+
+export const OperatorGrid: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0x501e678182bB5dF3f733281521D3f3D1aDe69917',
+}
+
+export const VaultHub: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0x4c9ffc325392090f789255b9948ab1659b797964',
+}
+
+export const StakingVaultBeacon: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0xb3e6a8b6a752d3bb905a1b3ef12bbdee77e8160e',
+}
+
+export const PredepositGuarantee: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0xa5F55f3402beA2B14AE15Dae1b6811457D43581d',
 }
