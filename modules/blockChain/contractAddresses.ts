@@ -520,3 +520,7 @@ export const StakingVaultBeacon: ChainAddressMap = {
 export const PredepositGuarantee: ChainAddressMap = {
   [CHAINS.Hoodi]: '0xa5F55f3402beA2B14AE15Dae1b6811457D43581d',
 }
+
+export const TRPAllowedRecipientsRegistry: ChainAddressMap = {
+  [CHAINS.Hoodi]: '0xa5F55f3402beA2B14AE15Dae1b6811457D43581d',
+}
