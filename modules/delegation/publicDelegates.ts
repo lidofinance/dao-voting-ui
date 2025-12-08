@@ -110,13 +110,6 @@ export const PUBLIC_DELEGATES = [
     twitter: 'https://x.com/PGovTeam',
   },
   {
-    name: 'marcbcs',
-    avatar: `${basePath}/delegates/marcbcs.jpeg`,
-    address: '0x98308b6dA79B47D15e9438CB66831563649Dbd94',
-    lido: 'https://research.lido.fi/t/marcbcs-delegate-thread/8209',
-    twitter: 'https://x.com/marcbcs',
-  },
-  {
     name: 'Governance Grove',
     avatar: `${basePath}/delegates/grove.png`,
     address: '0x8Ab6612BbcF7E133A6BB03b3264718d30f25e0BA',
@@ -129,5 +122,19 @@ export const PUBLIC_DELEGATES = [
     address: '0x27D36879e84A94455F54E22250F6f7dc8163f70A',
     lido: 'https://research.lido.fi/t/deuceedeuce-delegate-thread-alignment-engineering/9381',
     twitter: 'https://x.com/BartekDeuce',
+  },
+  {
+    name: 'BCV Finance',
+    avatar: `${basePath}/delegates/bcv.png`,
+    address: '0x36f793859b34dab7d8fce45142cf731d0ab8a589',
+    lido: 'https://research.lido.fi/t/bcv-finance-delegate-thread/10930',
+    twitter: 'https://x.com/bcvfinance',
+  },
+  {
+    name: 'Curia Lab',
+    avatar: `${basePath}/delegates/curia.jpeg`,
+    address: '0x17296956b4E07Ff8931E4ff4eA06709FaB70b879',
+    lido: 'https://research.lido.fi/t/curia-lab-delegate-thread/10764',
+    twitter: 'https://twitter.com/curia_gov',
   },
 ]
