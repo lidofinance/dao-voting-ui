@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { GetStaticPaths, GetStaticProps } from 'next'
+import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { Container } from '@lidofinance/lido-ui'
 import {
@@ -21,27 +21,19 @@ const DelegationPage: FC<DelegationTabsLayoutProps> = ({ mode }) => {
 export default DelegationPage
 
 type DelegationModePageParams = {
-  mode: ['delegators'] | ['customize'] | undefined
+  mode: string[] | undefined
 }
 
-export const getStaticPaths: GetStaticPaths<DelegationModePageParams> = () => {
-  return {
-    paths: [
-      { params: { mode: undefined } },
-      { params: { mode: ['customize'] } },
-      { params: { mode: ['delegators'] } },
-    ],
-    fallback: false, // return 404 on non match
-  }
-}
-
-// we need [[...]] pattern for / and /unwrap
-export const getStaticProps: GetStaticProps<
+// we need [[...]] pattern for /, /customize and /delegators
+export const getServerSideProps: GetServerSideProps<
   DelegationTabsLayoutProps,
   DelegationModePageParams
-> = ({ params }) => {
+  // eslint-disable-next-line @typescript-eslint/require-await
+> = async ({ params }) => {
   const mode = params?.mode
-  if (!mode) return { props: { mode: 'delegation' }, revalidate: 60 }
-
-  return { props: { mode: mode[0] }, revalidate: 60 }
+  if (!mode) return { props: { mode: 'delegation' } }
+  if (mode.length > 1) return { notFound: true }
+  if (mode[0] === 'delegators') return { props: { mode: 'delegators' } }
+  if (mode[0] === 'customize') return { props: { mode: 'customize' } }
+  return { notFound: true }
 }
