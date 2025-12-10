@@ -22,6 +22,7 @@ import { ToastSuccess } from '@lidofinance/lido-ui'
 import { useProcessedPublicDelegatesList } from '../ui/PublicDelegateList/useProcessedPublicDelegatesList'
 import { useDelegateFromPublicListUpdate } from '../hooks/useDelegateFromPublicListUpdate'
 import { useDelegateFromQueryUpdate } from '../hooks/useDelegateFromQueryUpdate'
+import { useIsChainSupported } from 'modules/blockChain/hooks/useIsChainSupported'
 
 //
 // Data context
@@ -133,6 +134,7 @@ export const DelegationFormProvider: FC<DelegationFormProviderProps> = ({
   mode,
 }) => {
   const networkData = useDelegationFormNetworkData()
+  const isChainSupported = useIsChainSupported()
 
   const formObject = useForm<DelegationFormInput>({
     defaultValues: { delegateAddress: '' },
@@ -151,6 +153,8 @@ export const DelegationFormProvider: FC<DelegationFormProviderProps> = ({
     submitRevoke,
   } = useDelegationFormActions(networkData, mode)
 
+  const isFlowBlocked = useMemo(() => !isChainSupported, [isChainSupported])
+
   return (
     <FormProvider {...formObject}>
       <DelegationFormDataContext.Provider
@@ -160,6 +164,7 @@ export const DelegationFormProvider: FC<DelegationFormProviderProps> = ({
           isSubmitting,
           txAragonDelegate,
           txSnapshotDelegate,
+          isFlowBlocked,
           onSubmit: formObject.handleSubmit(submitDelegation),
           onRevoke: submitRevoke,
           register: formObject.register,

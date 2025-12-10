@@ -11,6 +11,7 @@ export function DelegationAddressInput() {
     aragonDelegateAddress,
     snapshotDelegateAddress,
     mode,
+    isFlowBlocked,
   } = useDelegationFormData()
 
   return (
@@ -18,7 +19,10 @@ export function DelegationAddressInput() {
       name="delegateAddress"
       label="Delegate address"
       disabled={
-        !isWalletConnected || loading.isDelegationInfoLoading || isSubmitting
+        !isWalletConnected ||
+        loading.isDelegationInfoLoading ||
+        isSubmitting ||
+        isFlowBlocked
       }
       rules={{
         required: 'Field is required',
