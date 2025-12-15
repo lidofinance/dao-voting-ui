@@ -474,6 +474,7 @@ export const StakingVaultBeacon: ChainAddressMap = {
 }
 
 export const PredepositGuarantee: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xF4bF42c6D6A0E38825785048124DBAD6c9eaaac3',
   [CHAINS.Hoodi]: '0xa5F55f3402beA2B14AE15Dae1b6811457D43581d',
 }
 
