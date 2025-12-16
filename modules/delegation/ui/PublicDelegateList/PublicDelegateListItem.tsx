@@ -23,12 +23,14 @@ type Props = {
   delegate: ProcessedDelegate
   isWalletConnected: boolean
   isMobile: boolean
+  isSelectDisabled: boolean
 }
 
 export function PublicDelegateListItem({
   delegate,
   isWalletConnected,
   isMobile,
+  isSelectDisabled,
 }: Props) {
   const { onPublicDelegateSelect } = useDelegateFromPublicList()
 
@@ -80,7 +82,7 @@ export function PublicDelegateListItem({
           <Button
             size="xs"
             variant="outlined"
-            disabled={!delegate.resolvedDelegateAddress}
+            disabled={!delegate.resolvedDelegateAddress || isSelectDisabled}
             onClick={onPublicDelegateSelect(delegate.resolvedDelegateAddress!)}
           >
             Select
@@ -121,7 +123,7 @@ export function PublicDelegateListItem({
         <Button
           size="xs"
           variant="outlined"
-          disabled={!delegate.resolvedDelegateAddress}
+          disabled={!delegate.resolvedDelegateAddress || isSelectDisabled}
           onClick={onPublicDelegateSelect(delegate.resolvedDelegateAddress!)}
         >
           Select
