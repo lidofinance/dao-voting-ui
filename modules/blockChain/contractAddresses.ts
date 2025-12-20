@@ -485,3 +485,7 @@ export const TRPAllowedRecipientsRegistry: ChainAddressMap = {
 export const LidoV3Template: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x34E01ecFebd403370b0879C628f8A5319dDb8507',
 }
+
+export const LDORevesting: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xc2f50d3277539fbd54346278e7b92faa76dc7364',
+}
