@@ -2,11 +2,10 @@ import {
   ABIElement,
   EVMScriptDecoded,
 } from '@lidofinance/evm-script-decoder/lib/types'
-// import { DEFAULT_ADMIN_ROLE, LIDO_ROLES } from 'modules/votes/constants'
+import { DEFAULT_ADMIN_ROLE, LIDO_ROLES } from 'modules/votes/constants'
 import { utils } from 'ethers'
 import { getContractName } from 'modules/config/utils/getContractName'
 import { CHAINS } from 'modules/blockChain/chains'
-import { DEFAULT_ADMIN_ROLE, LIDO_ROLES } from 'modules/votes/constants'
 
 const stringifyArray = (arr: any[], separator = ',\n'): string => {
   const result = arr
