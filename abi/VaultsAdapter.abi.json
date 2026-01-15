@@ -1,0 +1,289 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_trustedCaller",
+        "type": "address"
+      },
+      { "internalType": "address", "name": "_lidoLocator", "type": "address" },
+      {
+        "internalType": "address",
+        "name": "_evmScriptExecutor",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_validatorExitFeeLimit",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "badDebtVault",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vaultAcceptor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "maxSharesToSocialize",
+        "type": "uint256"
+      }
+    ],
+    "name": "BadDebtSocializationFailed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "pubkeys",
+        "type": "bytes"
+      }
+    ],
+    "name": "ForceValidatorExitFailed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "liabilitySharesTarget",
+        "type": "uint256"
+      }
+    ],
+    "name": "LiabilitySharesTargetUpdateFailed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "oldFee",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newFee",
+        "type": "uint256"
+      }
+    ],
+    "name": "ValidatorExitFeeLimitUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "infraFeeBP",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "liquidityFeeBP",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "reservationFeeBP",
+        "type": "uint256"
+      }
+    ],
+    "name": "VaultFeesUpdateFailed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isInJail",
+        "type": "bool"
+      }
+    ],
+    "name": "VaultJailStatusUpdateFailed",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "WITHDRAWAL_REQUEST_PREDEPLOY_ADDRESS",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "evmScriptExecutor",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_vault", "type": "address" },
+      { "internalType": "bytes", "name": "_pubkeys", "type": "bytes" }
+    ],
+    "name": "forceValidatorExit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lidoLocator",
+    "outputs": [
+      { "internalType": "contract ILidoLocator", "name": "", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_vault", "type": "address" },
+      {
+        "internalType": "uint256",
+        "name": "_liabilitySharesTarget",
+        "type": "uint256"
+      }
+    ],
+    "name": "setLiabilitySharesTarget",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_validatorExitFeeLimit",
+        "type": "uint256"
+      }
+    ],
+    "name": "setValidatorExitFeeLimit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_vault", "type": "address" },
+      { "internalType": "bool", "name": "_isInJail", "type": "bool" }
+    ],
+    "name": "setVaultJailStatus",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_badDebtVault", "type": "address" },
+      {
+        "internalType": "address",
+        "name": "_vaultAcceptor",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_maxSharesToSocialize",
+        "type": "uint256"
+      }
+    ],
+    "name": "socializeBadDebt",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "trustedCaller",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_vault", "type": "address" },
+      { "internalType": "uint256", "name": "_infraFeeBP", "type": "uint256" },
+      {
+        "internalType": "uint256",
+        "name": "_liquidityFeeBP",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_reservationFeeBP",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateVaultFees",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "validatorExitFeeLimit",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_recipient", "type": "address" }
+    ],
+    "name": "withdrawETH",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  { "stateMutability": "payable", "type": "receive" }
+]
