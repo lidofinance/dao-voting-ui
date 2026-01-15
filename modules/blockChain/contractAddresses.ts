@@ -486,6 +486,10 @@ export const LidoV3Template: ChainAddressMap = {
   [CHAINS.Mainnet]: '0x34E01ecFebd403370b0879C628f8A5319dDb8507',
 }
 
+export const LDORevesting: ChainAddressMap = {
+  [CHAINS.Mainnet]: '0xc2f50d3277539fbd54346278e7b92faa76dc7364',
+}
+
 export const VaultsAdapterPhaseOne: ChainAddressMap = {
   [CHAINS.Mainnet]: '0xe2DE6d2DefF15588a71849c0429101F8ca9FB14D',
 }
