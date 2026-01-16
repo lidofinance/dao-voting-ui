@@ -66,11 +66,14 @@ export const formatCallString = (
               callRes += '[empty string]'
             } else {
               let roleLabel: string | undefined
-              if (data === DEFAULT_ADMIN_ROLE) {
-                roleLabel = 'DEFAULT ADMIN ROLE'
-              } else {
-                roleLabel = LIDO_ROLES[data]
+              if (data.startsWith('0x') && data.length === 66) {
+                if (data === DEFAULT_ADMIN_ROLE) {
+                  roleLabel = 'DEFAULT ADMIN ROLE'
+                } else {
+                  roleLabel = LIDO_ROLES[data]
+                }
               }
+
               if (roleLabel?.length) {
                 callRes += `[${roleLabel}] `
               } else if (utils.isAddress(data)) {
