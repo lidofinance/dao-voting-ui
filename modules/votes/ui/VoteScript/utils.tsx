@@ -2,7 +2,7 @@ import {
   ABIElement,
   EVMScriptDecoded,
 } from '@lidofinance/evm-script-decoder/lib/types'
-// import { DEFAULT_ADMIN_ROLE, LIDO_ROLES } from 'modules/votes/constants'
+import { DEFAULT_ADMIN_ROLE, LIDO_ROLES } from 'modules/votes/constants'
 import { utils } from 'ethers'
 import { getContractName } from 'modules/config/utils/getContractName'
 import { CHAINS } from 'modules/blockChain/chains'
@@ -67,15 +67,13 @@ export const formatCallString = (
             } else {
               let roleLabel: string | undefined
               if (data.startsWith('0x') && data.length === 66) {
-                roleLabel = 'ENCODED ROLE'
+                if (data === DEFAULT_ADMIN_ROLE) {
+                  roleLabel = 'DEFAULT ADMIN ROLE'
+                } else {
+                  roleLabel = LIDO_ROLES[data]
+                }
               }
 
-              // if (data === DEFAULT_ADMIN_ROLE) {
-              //   roleLabel = 'DEFAULT ADMIN ROLE'
-              // } else {
-              //   // roleLabel = LIDO_ROLES[data]
-              //   roleLabel = 'ENCODED ROLE'
-              // }
               if (roleLabel?.length) {
                 callRes += `[${roleLabel}] `
               } else if (utils.isAddress(data)) {
