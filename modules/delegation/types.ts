@@ -33,6 +33,7 @@ export type DelegationFormDataContextValue = DelegationFormNetworkData & {
   isSubmitting: boolean
   txAragonDelegate: TransactionSender
   txSnapshotDelegate: TransactionSender
+  isFlowBlocked: boolean
   onSubmit: () => void
   onRevoke: (type: DelegationType) => () => Promise<void>
   register: UseFormRegister<DelegationFormInput>

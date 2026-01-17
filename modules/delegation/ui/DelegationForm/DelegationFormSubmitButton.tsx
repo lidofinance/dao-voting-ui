@@ -18,6 +18,7 @@ export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
     isSubmitting,
     aragonDelegateAddress,
     snapshotDelegateAddress,
+    isFlowBlocked,
     watch,
   } = useDelegationFormData()
   const ref = useRef<HTMLButtonElement>(null)
@@ -132,7 +133,11 @@ export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
 
   if (!match.isRedelegate || !isSimple) {
     return (
-      <DelegateButton type="submit" loading={isSubmitting}>
+      <DelegateButton
+        type="submit"
+        loading={isSubmitting}
+        disabled={isFlowBlocked}
+      >
         {buttonText}
       </DelegateButton>
     )
@@ -144,6 +149,7 @@ export function DelegationFormSubmitButton({ onCustomizeClick }: Props) {
         type="submit"
         loading={isSubmitting}
         onClick={onSubmitDialog}
+        disabled={isFlowBlocked}
       >
         {buttonText}
       </DelegateButton>
