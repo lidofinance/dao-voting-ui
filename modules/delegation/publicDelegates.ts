@@ -137,4 +137,11 @@ export const PUBLIC_DELEGATES = [
     lido: 'https://research.lido.fi/t/curia-lab-delegate-thread/10764',
     twitter: 'https://twitter.com/curia_gov',
   },
+  {
+    name: 'Kuzmich',
+    avatar: `${basePath}/delegates/kuzmich.jpeg`,
+    address: '0x3133e0C65779993d607B2B6d689378A012a05C00',
+    lido: 'https://research.lido.fi/t/kuzmich-delegate-thread/10191',
+    twitter: null,
+  },
 ]
