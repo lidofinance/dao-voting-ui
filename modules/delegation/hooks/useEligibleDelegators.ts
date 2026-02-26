@@ -91,22 +91,51 @@ export function useEligibleDelegators({ voteId }: Args) {
       _walletAddress: string,
     ) => {
       try {
-        const delegatedVotersAddresses = await voting.getDelegatedVoters(
-          _walletAddress,
-          0,
-          DELEGATED_VOTERS_ADDRESSES_LIMIT,
+        const totalCount = (
+          await voting.getDelegatedVotersCount(_walletAddress)
+        ).toNumber()
+
+        if (totalCount === 0) {
+          return {
+            delegatedVotersAddresses: [],
+            eligibleDelegatedVotingPower: BigNumber.from(0),
+            delegatedVotersState: [],
+            eligibleDelegatedVoters: [],
+            eligibleDelegatedVotersAddresses: [],
+          }
+        }
+
+        const batchCount = Math.ceil(
+          totalCount / DELEGATED_VOTERS_ADDRESSES_LIMIT,
         )
 
-        const delegatedVotersVotingPower =
-          await voting.getVotingPowerMultipleAtVote(
-            _voteId,
-            delegatedVotersAddresses,
-          )
-
-        const delegatedVotersState = await voting.getVoterStateMultipleAtVote(
-          _voteId,
-          delegatedVotersAddresses,
+        const addressBatches = await Promise.all(
+          Array.from({ length: batchCount }, (_, i) =>
+            voting.getDelegatedVoters(
+              _walletAddress,
+              i * DELEGATED_VOTERS_ADDRESSES_LIMIT,
+              DELEGATED_VOTERS_ADDRESSES_LIMIT,
+            ),
+          ),
         )
+
+        const delegatedVotersAddresses = addressBatches.flat()
+
+        const [votingPowerBatches, voterStateBatches] = await Promise.all([
+          Promise.all(
+            addressBatches.map(batch =>
+              voting.getVotingPowerMultipleAtVote(_voteId, batch),
+            ),
+          ),
+          Promise.all(
+            addressBatches.map(batch =>
+              voting.getVoterStateMultipleAtVote(_voteId, batch),
+            ),
+          ),
+        ])
+
+        const delegatedVotersVotingPower = votingPowerBatches.flat()
+        const delegatedVotersState = voterStateBatches.flat()
 
         const { eligibleDelegatedVoters, eligibleDelegatedVotingPower } =
           processEligibleDelegators(
