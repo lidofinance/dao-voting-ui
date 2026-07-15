@@ -1,5 +1,11 @@
 # Lido DAO Voting UI
 
+> [!WARNING]
+>
+> ### **_This repository is no longer maintained._**
+>
+> The voting functionality has moved to the [Governance Portal](https://github.com/lidofinance/governance-portal).
+
 ### Abstract
 
 Over the past year, there were multiple situations with Aragon voting UI being unavailable or dysfunctional at the times of ongoing DAO votings. It is critical to have a UI-friendly fallback option in the form of Lido's own resilient voting UI app.
