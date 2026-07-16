@@ -11,10 +11,12 @@ import { PageLoader } from 'modules/shared/ui/Common/PageLoader'
 import { PublicDelegateListItem } from './PublicDelegateListItem'
 
 import AragonSvg from 'assets/aragon.com.svg.react'
+import { useIsChainSupported } from 'modules/blockChain/hooks/useIsChainSupported'
 
 export function PublicDelegateList() {
   const { isWalletConnected } = useWeb3()
   const isMobile = useBreakpoint('md')
+  const isChainSupported = useIsChainSupported()
 
   const { data, initialLoading } = useProcessedPublicDelegatesList()
 
@@ -60,6 +62,7 @@ export function PublicDelegateList() {
             delegate={delegate}
             isWalletConnected={isWalletConnected}
             isMobile={isMobile}
+            isSelectDisabled={!isChainSupported}
           />
         ))}
       </InnerWrap>
