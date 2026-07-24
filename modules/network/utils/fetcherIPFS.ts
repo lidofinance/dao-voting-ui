@@ -30,14 +30,17 @@ export const fetcherIPFS: FetcherIPFS = async (
   const textRaw = await response.text()
   const text = textRaw.replaceAll('\x00', '')
 
+  // issue with IPFS gateway for vote 167
+  const preparedText = text.replaceAll(`\x00`, '')
+
   const [hash, hashBOM] = await Promise.all([
-    Hash.of(text, { cidVersion: 1, rawLeaves: true }),
-    Hash.of('\ufeff' + text, { cidVersion: 1, rawLeaves: true }),
+    Hash.of(preparedText, { cidVersion: 1, rawLeaves: true }),
+    Hash.of('\ufeff' + preparedText, { cidVersion: 1, rawLeaves: true }),
   ])
 
   if (![hash, hashBOM].includes(cid)) {
     throw new Error('An error occurred while validate fetched the data.')
   }
 
-  return text
+  return preparedText
 }
